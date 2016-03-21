@@ -11,4 +11,7 @@ package Model;
  */
 public class Building {
     
+    public Building(){
+        
+    }
 }
