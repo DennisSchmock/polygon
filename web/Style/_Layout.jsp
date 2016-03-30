@@ -10,10 +10,8 @@
 
 <%@include file="Header.jsp" %>
 
-
-
-<main>
     <title>JSP</title>
+<main>
     
     <h1>Headline 1</h1> 
     
