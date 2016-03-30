@@ -9,9 +9,6 @@ package Model;
  *
  * @author dennisschmock
  */
-public class Building {
+public class DBfacade {
     
-    public Building(){
-        
-    }
 }
