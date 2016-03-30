@@ -5,10 +5,29 @@
  */
 package Model;
 
+import java.sql.Connection;
+
 /**
  *
  * @author dennisschmock
  */
-public class DBfacade {
+public class DBFacade {
+    private Connection con;
+    private static DBFacade instance;
+    public static void main(String[] args) {
+        DBFacade facade = getInstance();
+        System.out.println(facade.toString());
+    }
     
+    private DBFacade() {
+      
+        con = DBconnector.getInstance().getConnection();
+    }
+
+    public static DBFacade getInstance() {
+        if (instance == null) {
+            instance = new DBFacade();
+        }
+        return instance;
+    }
 }
