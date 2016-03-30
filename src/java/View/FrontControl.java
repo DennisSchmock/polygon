@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * does not have to create an new instance every time the JSP returns here.
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage","/Style/frontpage"})
 public class FrontControl extends HttpServlet {
 
     /**
