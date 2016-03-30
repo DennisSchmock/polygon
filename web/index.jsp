@@ -15,11 +15,11 @@
 <main>
     
     <h1>Landing Page</h1>
-    
+    ${sessionScope.test}
     
     
     <a href="frontpage?page=index">Test Link</a>
-    <a href="frontpage?page=report">Reportk</a>
+    <a href="frontpage?page=report">Report</a>
     <a href="frontpage?page=addbuilding">Add building</a>
     
     

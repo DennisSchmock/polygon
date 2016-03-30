@@ -51,6 +51,9 @@
     
     <br>
     
+        <a href="/frontpage?page=report">Report</a>
+
+    
     
     
     
