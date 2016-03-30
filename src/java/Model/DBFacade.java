@@ -14,6 +14,10 @@ import java.sql.Connection;
 public class DBFacade {
     private Connection con;
     private static DBFacade instance;
+    public static void main(String[] args) {
+        DBFacade facade = getInstance();
+        System.out.println(facade);
+    }
     
     private DBFacade() {
       
