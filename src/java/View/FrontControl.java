@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
+ * The front controller for all the JSP Sites.
+ * All the JSP sites returns through actions to this servlet and then the
+ * sevlet passes on information to the controller class, and later redirects the user. 
+ * An instance of the controller class is kept in the session object so that it
+ * does not have to create an new instance every time the JSP returns here.
  * @author dennisschmock
  */
 @WebServlet(name = "FrontControl", urlPatterns = {"/frontpage"})
