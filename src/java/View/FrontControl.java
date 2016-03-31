@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * The front controller for all the JSP Sites.
- * All the JSP sites returns through actions to this servlet and then the
- * sevlet passes on information to the controller class, and later redirects the user. 
- * An instance of the controller class is kept in the session object so that it
- * does not have to create an new instance every time the JSP returns here.
+ * The front controller for all the JSP Sites. All the JSP sites returns through
+ * actions to this servlet and then the sevlet passes on information to the
+ * controller class, and later redirects the user. An instance of the controller
+ * class is kept in the session object so that it does not have to create an new
+ * instance every time the JSP returns here.
+ *
  * @author dennisschmock
  */
 @WebServlet(name = "FrontControl", urlPatterns = {"/frontpage"})
@@ -37,23 +38,28 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String url = "/index.jsp";
         String page = request.getParameter("page");
-        
-        if (page==null){
-            page="";
+
+        if (page == null) {
+            page = "";
         }
-        
-        if (page.equalsIgnoreCase("report")){
+
+        if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
         }
-        if (page.equalsIgnoreCase("addbuilding")){
+        if (page.equalsIgnoreCase("addbuilding")) {
             url = "/index.jsp";
             request.getSession().setAttribute("test", "tester");
         }
 
-      
+        if (page.equalsIgnoreCase("test")) {
+            url = "/index.jsp";
+            request.getSession().setAttribute("test", "tester");
+
+        }
+
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);

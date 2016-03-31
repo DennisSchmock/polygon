@@ -6,6 +6,7 @@
 package Control;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Building {
     private int bdgAge;
     private double bdgSize;
     private String useOfBdg;
-    private ArrayList<Report> listOfReports;
+    private List<Report> listOfReports;
     private int custId;
 
     /**
@@ -44,6 +45,7 @@ public class Building {
         this.bdgSize = bdgSize;
         this.useOfBdg = useOfBdg;
         this.custId = custId;
+        
     }
 
     public int getBdgId() {
@@ -74,7 +76,7 @@ public class Building {
         return useOfBdg;
     }
 
-    public ArrayList<Report> getListOfReports() {
+    public List<Report> getListOfReports() {
         return listOfReports;
     }
 
