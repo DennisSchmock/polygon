@@ -30,6 +30,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
 public class FrontControl extends HttpServlet {
 
+    private final CreateUserHelper CUH = new CreateUserHelper();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,10 +51,10 @@ public class FrontControl extends HttpServlet {
         if (df == null) {
             df = DomainFacade.getInstance();
             sessionObj.setAttribute("Controller", df);
-        } 
-        
+        }
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
@@ -60,9 +62,9 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "";
         }
-        
+
         if (page.equalsIgnoreCase("submitreport")) {
-            submitReport(request,response,df);
+            submitReport(request, response, df);
         }
 
         if (page.equalsIgnoreCase("report")) {
@@ -71,13 +73,21 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
         }
+         if (page.equalsIgnoreCase("addcustomer")) {
+            url = "/addcustomer.jsp";
+        }
         /**
-         * sending a rediret is better, 
-         * because a forward will add to the database twice
+         * sending a rediret is better, because a forward will add to the
+         * database twice
          */
-        if (page.equalsIgnoreCase("newbuilding")){
-            createBuilding(request,df, sessionObj);
+        if (page.equalsIgnoreCase("newbuilding")) {
+            createBuilding(request, df, sessionObj);
             response.sendRedirect("viewnewbuilding.jsp");
+            return;
+        }
+        if (page.equalsIgnoreCase("addcus")) {
+            createNewCustomer(request, df, sessionObj);
+            response.sendRedirect("customersubmitted.jsp");
             return;
         }
 
@@ -130,28 +140,32 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
- /**
-  * Takes all the fields from the HTML form, and sends that on to the domain
-  * Facade.
-  * Then it stores the created building object in the session to be displayed.
-  */
+
+    /**
+     * Takes all the fields from the HTML form, and sends that on to the domain
+     * Facade. Then it stores the created building object in the session to be
+     * displayed.
+     */
     private void createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
-        int zipcode =  Integer.parseInt(request.getParameter("zipCode"));
-        double buildingsize =  Double.parseDouble(request.getParameter("buildingSize"));
-        int buildingYear =  Integer.parseInt(request.getParameter("BuildingYear"));
+        int zipcode = Integer.parseInt(request.getParameter("zipCode"));
+        double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
+        int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-        
-       
-        Building b = df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
-                             buildingsize, buildingYear, useOfBuilding);
+
+        Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
+                buildingsize, buildingYear, useOfBuilding);
         session.setAttribute("newbuilding", b);
-}
+    }
+
+    private void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session) {
+        CUH.createNewCustomer(df, session, request);
+
+    }
+
     private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
-        
 
     }
 }
-

@@ -29,7 +29,7 @@ public class DBFacade {
 //        ReportRoomRecommendation rrr = new ReportRoomRecommendation(1,"needs replacement",1);
 //        System.out.println(facade.saveReportRoomRec(rrr));
 
-        Customer customer = new Customer("adsfdsa", "dfsda");
+        Customer customer = new Customer("Polygon", "Dennis Schmock","dennis@schmock.eu", "MyStreet12", 213, 2312, 1111, "Albertslund", "21321311");
         facade.addCustomer(customer);
 
     }
