@@ -17,7 +17,7 @@ public class Report {
     private String bdgName;
     private String bdgAddress;
     private int postNum;
-    private int bdgAge;
+    private int bdgYear;
     private double bdgSize;
     private String useOfBdg;
     private ArrayList<ReportRoom> listOfRepRoom;
@@ -30,20 +30,20 @@ public class Report {
      * @param bdgName  building name
      * @param bdgAddress   building address
      * @param postNum    post number
-     * @param bdgAge    building age
+     * @param bdgYear    building build year
      * @param bdgSize   building size
      * @param useOfBdg   use of the building
      * @param bdgId    building's ID
      */
     public Report(int reportNum, String date, String bdgName,
-            String bdgAddress, int postNum, int bdgAge, double bdgSize, 
+            String bdgAddress, int postNum, int bdgYear, double bdgSize, 
             String useOfBdg, int bdgId) {
         this.reportNum = reportNum;
         this.date = date;
         this.bdgName = bdgName;
         this.bdgAddress = bdgAddress;
         this.postNum = postNum;
-        this.bdgAge = bdgAge;
+        this.bdgYear = bdgYear;
         this.bdgSize = bdgSize;
         this.useOfBdg = useOfBdg;
         this.bdgId = bdgId;
@@ -70,7 +70,7 @@ public class Report {
     }
 
     public int getBdgAge() {
-        return bdgAge;
+        return bdgYear;
     }
 
     public double getBdgSize() {
