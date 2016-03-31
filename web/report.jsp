@@ -34,19 +34,19 @@
                 <td><input type="text" name="walls"></td>
                 </tr>
                 <tr>
+                <td></td>
+                <td></td>
+                </tr>
+                <tr>
+                <td></td>
+                <td></td>
+                </tr>
+                <tr>
+                <td></td>
+                <td></td>
+                </tr>
+                <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
-                <td><input type="text" name="" value="" readonly="readonly" /></td>
-                </tr>
-                <tr>
-                <td></td>
-                <td></td>
-                </tr>
-                <tr>
-                <td></td>
-                <td></td>
-                </tr>
-                <tr>
-                <td></td>
                 <td><input type="hidden" name="command" value="ReportSubmit">
             <p><input type="submit" name="submit"></p></td>
                 </tr>
