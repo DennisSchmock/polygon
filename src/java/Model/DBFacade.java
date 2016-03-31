@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Domain.Customer;
 import Domain.Report;
 import java.sql.Connection;
 import java.sql.Date;
@@ -47,4 +48,8 @@ public class DBFacade {
      public boolean saveNewReport(Report r) {
         return rm.saveNewReport(r, con);
     }
+     
+     public void addCustomer(Customer cus){
+          cm.addCustomerToDB(cus,con);
+     }
 }

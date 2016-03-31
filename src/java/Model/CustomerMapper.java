@@ -5,10 +5,20 @@
  */
 package Model;
 
+import Domain.Customer;
+import java.sql.Connection;
+
 /**
  *
  * @author dennisschmock
  */
 public class CustomerMapper {
+
+    public void addCustomerToDB(Customer cus, Connection con) {
+    }
+    
+    public void editCustomer(){
+        
+    }
     
 }
