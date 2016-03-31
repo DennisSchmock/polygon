@@ -45,16 +45,6 @@ public class FrontControl extends HttpServlet {
         if (page==null){
             page="";
         }
-        if (page.equalsIgnoreCase("report")){
-            url = "/report.jsp";
-        }
-        if (page.equalsIgnoreCase("addbuilding")){
-            url = "/addbuilding.jsp";
-        }
-        
-        if (page.equalsIgnoreCase("newbuilding")){
-            url = "/newbuilding.jsp";
-        }
 
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
@@ -74,6 +64,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("test")) {
             url = "/index.jsp";
             request.getSession().setAttribute("test", "tester");
+
 
         }
 
