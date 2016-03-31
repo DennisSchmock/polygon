@@ -47,6 +47,14 @@
                             
                             <tbody>
                                 <tr>
+                                <td>Choose Room</td>
+                                <td><select name="chosenRoom">
+                                        
+                                        <option></option>
+                                        
+                                    </select></td>
+                                </tr>
+                                <tr>
                                 <td>Has there been damage to the room?</td>
                                 <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
                             </tr>
