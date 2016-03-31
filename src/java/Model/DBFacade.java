@@ -7,6 +7,8 @@ package Model;
 
 import java.sql.Connection;
 import Control.*;
+import java.sql.Date;
+import java.text.DateFormat;
 
 /**
  * Contains the connection to the connections to the database
@@ -21,7 +23,8 @@ public class DBFacade {
     private static DBFacade instance;
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        Report r=new Report(1,"03-30-2016","CPHBusiness","Norgaardsvej, Lyngby",2950,10,100.5,"School",241);
+        Date date = new Date(20160330);
+        Report r=new Report(2,date,241,121);
         System.out.println(facade.saveNewReport(r));
     }
     
