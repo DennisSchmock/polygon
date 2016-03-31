@@ -21,6 +21,8 @@ public class DBFacade {
     private Connection con;
     private ReportMapper rm;
     private static DBFacade instance;
+    private CustomerMapper cm;
+    
     public static void main(String[] args) {
         DBFacade facade = getInstance();
         Date date = new Date(20160330);
@@ -31,6 +33,8 @@ public class DBFacade {
     private DBFacade() {
         rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
+        cm = new CustomerMapper();
+        
     }
 
     public static DBFacade getInstance() {
