@@ -29,8 +29,10 @@ public class ReportHelper extends HttpServlet{
     
     public HttpServletRequest process(HttpServletRequest request, HttpServletResponse response,DomainFacade df){
         
-        String command = (String)request.getAttribute("command");
+        String command = (String)request.getParameter("command");
         if (command==null)command="";
+        System.out.println(command);
+        System.out.println("We are in process");
         if (command.equals("reportAddRoom")) request=AddRoom(request,response);
         return request;
     }
@@ -39,8 +41,14 @@ public class ReportHelper extends HttpServlet{
         
     }
     public HttpServletRequest AddRoom(HttpServletRequest request, HttpServletResponse response){
-        int numOfRooms = (int)request.getAttribute("numOfRooms");
-        System.out.println(numOfRooms);
+        System.out.println("AddRoom");
+        int numOfRooms;
+        if (request.getParameter("numOfRooms")!=null && !(request.getParameter("numOfRooms")).equals("")){
+        numOfRooms = Integer.parseInt(request.getParameter("numOfRooms"))+1;
+        }
+        else numOfRooms = 1;
+        request.setAttribute("numOfRooms", numOfRooms);
+        System.out.println("numOfRooms");
         return request;
     }
     

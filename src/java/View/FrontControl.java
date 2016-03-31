@@ -57,12 +57,13 @@ public class FrontControl extends HttpServlet {
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
-        
+        System.out.println(page);
 
         if (page == null) {
             page = "/report.jsp";
         }
         if (page.equalsIgnoreCase("report")) {
+            System.out.println("We get to report");
             url = "/report.jsp";
             request=rh.process( request, response,df);
         }

@@ -15,7 +15,7 @@
 <main>
     
     <h1>Report</h1>
-    <form action="FrontControl" method="POST">
+    <form action="frontpage?page=report" method="POST">
         <div>
         
         <table border="0">
@@ -42,7 +42,7 @@
                 <td></td>
                 </tr>
                 <tr>
-                    <c:forEach var="i" begin="0" end="${numberOfRooms}">
+                    <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}">
                         <table border="0">
                             
                             <tbody>
@@ -77,10 +77,7 @@
                 </tr>
                 <tr>
                                 <td></td>
-                                <form action="FrontControl" method="GET">
-                                <input type="hidden" name="command" value="reportAddRoom">
-                                <td><input type="submit" value="Add Room" /></td>
-                                </form>
+                                
                                 </tr>
                 <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
@@ -96,6 +93,11 @@
              
              
         </form>
+    <form action="frontpage?page=report" method="POST">
+                                <input type="hidden" name="command" value="reportAddRoom">
+                                <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
+                                <td><input type="submit" value="Add Room" />${requestScope.numOfRooms}</td>
+                                </form>
     
 </main>
 
