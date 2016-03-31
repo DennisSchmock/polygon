@@ -42,8 +42,36 @@
                 <td></td>
                 </tr>
                 <tr>
-                <td></td>
-                <td></td>
+                <td>
+                    <c:forEach var="i" begin="0" end="${roomCount}">
+                        <table border="0">
+                            
+                            <tbody>
+                                <tr>
+                                <td>i</td>
+                                <td></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </c:forEach>
+                </td>
                 </tr>
                 <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
