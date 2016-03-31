@@ -5,10 +5,19 @@
  */
 package Domain;
 
+import java.util.List;
+
 /**
  *
  * @author CJS
  */
 public class Customer {
+    String cusName;
+    String cusCVR;
+    List<Building> buildings;
+    List<Report> reports;
+    
+    
+    
    
 }

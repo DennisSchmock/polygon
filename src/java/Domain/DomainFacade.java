@@ -5,6 +5,8 @@
  */
 package Domain;
 
+import Model.DBFacade;
+
 /**
  *
  The servlet knows this controller class.
@@ -13,6 +15,28 @@ package Domain;
  * @author dennisschmock
  */
 public class DomainFacade {
+    
+    private DBFacade dbFacade;
+    
+    private DomainFacade()
+    {
+      dbFacade = DBFacade.getInstance();
+    }
+
+    public static DomainFacade getInstance()
+    {
+         return new DomainFacade();
+    }
+
+    /**
+     * @see All the fields needed to create an building object
+     * Creates the building object and sends it to the DBFacade
+     */
+    public void createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
+        Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
+        
+    } 
+    
     
    
 }
