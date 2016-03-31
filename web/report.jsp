@@ -15,7 +15,7 @@
 <main>
     
     <h1>Report</h1>
-    <form action="FrontControl">
+    <form action="frontpage" method="POST">
         <div>
         
         <table border="0">
@@ -77,7 +77,10 @@
                 </tr>
                 <tr>
                                 <td></td>
+                                <form action="" method="POST">
+                                <input type="hidden" name="command" value="reportAddRoom">
                                 <td><input type="submit" value="Add Room" /></td>
+                                </form>
                                 </tr>
                 <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
