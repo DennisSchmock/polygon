@@ -51,6 +51,42 @@
     
     <br>
     
+        <a href="/frontpage?page=report">Report</a>
+
+    
+    
+ 
+   <!--This form also sets the page parameter to something. 
+   In this instance the page would be index -->
+   
+    <form name="DummieForm" action="frontpage">
+        <input type="hidden" name="page" value="index" />
+        <input type="submit" value="Go to Index" name="submit" />
+        
+    </form>
+    
+    
+ 
+   <!--This form also sets the page parameter to something. 
+   In this instance the page would be index -->
+   
+    <form name="DummieForm" action="frontpage">
+        <input type="hidden" name="page" value="index" />
+        <input type="submit" value="Go to Index" name="submit" />
+        
+    </form>
+    
+    
+ 
+   <!--This form also sets the page parameter to something. 
+   In this instance the page would be index -->
+   
+    <form name="DummieForm" action="frontpage">
+        <input type="hidden" name="page" value="index" />
+        <input type="submit" value="Go to Index" name="submit" />
+        
+    </form>
+    
     
  
    <!--This form also sets the page parameter to something. 
