@@ -59,6 +59,10 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "";
         }
+        
+        if (page.equalsIgnoreCase("submitreport")) {
+            submitReport(request,response,df);
+        }
 
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
@@ -120,5 +124,10 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
+        
+
+    }
 
 }

@@ -18,7 +18,7 @@ public class DomainFacade {
     
     private DBFacade dbFacade;
     
-     private DomainFacade()
+    private DomainFacade()
     {
       dbFacade = DBFacade.getInstance();
     }
