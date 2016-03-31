@@ -29,12 +29,14 @@ public class DomainFacade {
     }
 
     /**
+     * @return Returns the building object, so that it can be displayed in JSP.
      * @see All the fields needed to create an building object
      * Creates the building object and sends it to the DBFacade
      */
-    public void createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
+    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
-        
+        dbFacade.saveNewBuilding(b);
+        return b;
     } 
     
     
