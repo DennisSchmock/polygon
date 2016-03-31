@@ -5,6 +5,8 @@
  */
 package Domain;
 
+import Model.DBFacade;
+
 /**
  *
  The servlet knows this controller class.
@@ -13,6 +15,19 @@ package Domain;
  * @author dennisschmock
  */
 public class DomainFacade {
+    
+    private DBFacade dbFacade;
+    
+     private DomainFacade()
+    {
+      dbFacade = DBFacade.getInstance();
+    }
+
+    public static DomainFacade getInstance()
+    {
+         return new DomainFacade();
+    }
+    
     
    
 }
