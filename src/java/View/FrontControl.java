@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage","/Style/frontpage"})
 public class FrontControl extends HttpServlet {
 
     /**
@@ -41,9 +41,19 @@ public class FrontControl extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = "/index.jsp";
         String page = request.getParameter("page");
-
-        if (page == null) {
-            page = "";
+        
+        if (page==null){
+            page="";
+        }
+        if (page.equalsIgnoreCase("report")){
+            url = "/report.jsp";
+        }
+        if (page.equalsIgnoreCase("addbuilding")){
+            url = "/addbuilding.jsp";
+        }
+        
+        if (page.equalsIgnoreCase("newbuilding")){
+            url = "/newbuilding.jsp";
         }
 
         if (page.equalsIgnoreCase("report")) {
