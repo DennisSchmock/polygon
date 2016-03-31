@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 public class DBconnector {
 
     public static final String driver = "org.mariadb.jdbc.Driver";
-    public static final String url = "jdbc:mysql://it-vejlederen.dk:3306";
+    public static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polygon";
     public static final String dbuser = "polygonuser";
     public static final String pwd = "Ospekos_22";
 

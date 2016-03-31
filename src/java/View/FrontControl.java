@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
 public class FrontControl extends HttpServlet {
 
     /**
@@ -49,6 +49,14 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
         }
+        if (page.equalsIgnoreCase("addbuilding")) {
+            url = "/addbuilding.jsp";
+        }
+
+        if (page.equalsIgnoreCase("newbuilding")) {
+            url = "/newbuilding.jsp";
+        }
+
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/index.jsp";
             request.getSession().setAttribute("test", "tester");
