@@ -54,7 +54,7 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("newbuilding")){
-            url = "/newbuilding.jsp";
+            url = "/viewnewbuilding.jsp";
         }
 
         if (page.equalsIgnoreCase("test")) {
