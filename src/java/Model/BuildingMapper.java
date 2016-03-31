@@ -9,6 +9,6 @@ package Model;
  *
  * @author danie
  */
-public class BuildMapper {
+public class BuildingMapper {
     
 }

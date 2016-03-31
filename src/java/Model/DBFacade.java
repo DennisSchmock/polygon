@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.Connection;
+import Control.*;
 
 /**
  * Contains the connection to the connections to the database
@@ -16,14 +17,16 @@ import java.sql.Connection;
  */
 public class DBFacade {
     private Connection con;
+    private ReportMapper rm;
     private static DBFacade instance;
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        System.out.println(facade);
+        Report r=new Report(1,"03-30-2016","CPHBusiness","Norgaardsvej, Lyngby",2950,10,100.5,"School",241);
+        System.out.println(facade.saveNewReport(r));
     }
     
     private DBFacade() {
-      
+        rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
     }
 
@@ -32,5 +35,9 @@ public class DBFacade {
             instance = new DBFacade();
         }
         return instance;
+    }
+    
+     public boolean saveNewReport(Report r) {
+        return rm.saveNewReport(r, con);
     }
 }
