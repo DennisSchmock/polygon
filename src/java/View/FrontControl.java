@@ -40,6 +40,7 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("frontControl to Major Tom");
 
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
@@ -59,7 +60,7 @@ public class FrontControl extends HttpServlet {
         
 
         if (page == null) {
-            page = "";
+            page = "/report.jsp";
         }
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
@@ -77,6 +78,7 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("newbuilding")){
+            createBuilding(request,df);
             url = "/viewnewbuilding.jsp";
         }
 
@@ -130,4 +132,23 @@ public class FrontControl extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void createBuilding(HttpServletRequest request, DomainFacade df) {
+        String buildingName = request.getParameter("buildingName");
+        String StreetAddress = request.getParameter("streetAddress");
+        String StreetNumber = request.getParameter("streetNumber");
+        int zipcode =  Integer.parseInt(request.getParameter("zipCode"));
+        double buildingsize =  Double.parseDouble(request.getParameter("buildingSize"));
+        int buildingYear =  Integer.parseInt(request.getParameter("BuildingYear"));
+        String useOfBuilding = request.getParameter("useOfBuilding");
+        
+        
+                
+        df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
+                             buildingsize, buildingYear, useOfBuilding);
 }
+    private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
+        
+
+    }
+}
+

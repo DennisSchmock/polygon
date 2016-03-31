@@ -18,7 +18,7 @@ public class DomainFacade {
     
     private DBFacade dbFacade;
     
-     private DomainFacade()
+    private DomainFacade()
     {
       dbFacade = DBFacade.getInstance();
     }
@@ -27,6 +27,15 @@ public class DomainFacade {
     {
          return new DomainFacade();
     }
+
+    /**
+     * @see All the fields needed to create an building object
+     * Creates the building object and sends it to the DBFacade
+     */
+    public void createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
+        Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
+        
+    } 
     
     
    

@@ -23,16 +23,16 @@ public class Building {
     private ArrayList<Report> listOfReports;
     private int custId;
 
-    public Building(String buildingName, String streetAddress, String streetNumber, int buildingYear, String useOfBuilding) {
+    public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
         this.buildingName = buildingName;
         this.streetAddress = streetAddress;
         this.streetNumber = streetNumber;
+        this.zipCode = zipCode;
         this.buildingYear = buildingYear;
+        this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
     }
     
-    
-
     public int getBdgId() {
         return bdgId;
     }
@@ -111,6 +111,11 @@ public class Building {
 
     public void setCustId(int custId) {
         this.custId = custId;
+    }
+
+    @Override
+    public String toString() {
+        return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
     }
   
 
