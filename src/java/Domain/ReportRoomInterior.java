@@ -29,6 +29,11 @@ public class ReportRoomInterior {
         this.repRoomId = repRoomId;
     }
 
+    public void setRepRoomIntId(int repRoomIntId) {
+        this.repRoomIntId = repRoomIntId;
+    }
+
+    
     public int getRepRoomIntId() {
         return repRoomIntId;
     }

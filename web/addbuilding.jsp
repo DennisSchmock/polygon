@@ -17,7 +17,7 @@
     
     <h1>Here you can add a building</h1>
         
-    <form name="DummieForm" action="frontpage">
+    <form name="Building Form" action="frontpage" method="POST">
         <input type="hidden" name="page" value="newbuilding" />
         
         (An ID so that you can find it)  Building Name 

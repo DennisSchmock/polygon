@@ -6,6 +6,7 @@
 package View;
 
 import Domain.DomainFacade;
+import Domain.Building;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -70,10 +71,14 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
         }
-        
+        /**
+         * sending a rediret is better, 
+         * because a forward will add to the database twice
+         */
         if (page.equalsIgnoreCase("newbuilding")){
-            createBuilding(request,df);
-            url = "/viewnewbuilding.jsp";
+            createBuilding(request,df, sessionObj);
+            response.sendRedirect("viewnewbuilding.jsp");
+            return;
         }
 
         if (page.equalsIgnoreCase("test")) {
@@ -125,8 +130,12 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void createBuilding(HttpServletRequest request, DomainFacade df) {
+ /**
+  * Takes all the fields from the HTML form, and sends that on to the domain
+  * Facade.
+  * Then it stores the created building object in the session to be displayed.
+  */
+    private void createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -135,10 +144,10 @@ public class FrontControl extends HttpServlet {
         int buildingYear =  Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
         
-        
-                
-        df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
+       
+        Building b = df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
                              buildingsize, buildingYear, useOfBuilding);
+        session.setAttribute("newbuilding", b);
 }
     private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
         

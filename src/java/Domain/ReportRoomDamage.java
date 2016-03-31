@@ -38,6 +38,11 @@ public class ReportRoomDamage {
         this.whatIsRepaired = whatIsRepaired;
     }
 
+    public void setRepRoomDmgId(int repRoomDmgId) {
+        this.repRoomDmgId = repRoomDmgId;
+    }
+
+    
     public int getRepRoomDmgId() {
         return repRoomDmgId;
     }
