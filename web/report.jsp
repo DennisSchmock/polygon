@@ -16,6 +16,8 @@
     
     <h1>Report</h1>
     <form action="FrontControl">
+        <div>
+        
         <table border="0">
             
             <tbody>
@@ -32,8 +34,8 @@
                 <td><input type="text" name="walls"></td>
                 </tr>
                 <tr>
-                <td></td>
-                <td></td>
+                <td><input type="file" name="Image of Building" value="" /></td>
+                <td><input type="text" name="" value="" readonly="readonly" /></td>
                 </tr>
                 <tr>
                 <td></td>
@@ -50,7 +52,10 @@
                 </tr>
             </tbody>
         </table>
-
+        </div>
+        <div>
+            2nd div
+        </div>
              
              
         </form>
