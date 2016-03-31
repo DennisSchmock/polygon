@@ -26,6 +26,11 @@ public class ReportRoomRecommendation {
         this.repRoomId = repRoomId;
     }
 
+    public void setRepRoomRecId(int repRoomRecId) {
+        this.repRoomRecId = repRoomRecId;
+    }
+
+    
     public int getRepRoomRecId() {
         return repRoomRecId;
     }

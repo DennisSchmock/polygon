@@ -29,6 +29,11 @@ public class ReportRoomExterior {
         this.reportId = reportId;
     }
 
+    public void setRepExtId(int repExtId) {
+        this.repExtId = repExtId;
+    }
+
+    
     public int getRepExtId() {
         return repExtId;
     }
