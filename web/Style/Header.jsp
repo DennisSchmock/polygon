@@ -13,8 +13,9 @@
             <body> <header>
                     Header Area.
                     <br>
-                    
+<a href="frontpage?page=index">  
 <img src="${pageContext.request.contextPath}/images/Polygon.png"/>
+</a>
                     
         </header>
       
