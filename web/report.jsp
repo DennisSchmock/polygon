@@ -42,37 +42,43 @@
                 <td></td>
                 </tr>
                 <tr>
-                <td>
-                    <c:forEach var="i" begin="0" end="${roomCount}">
+                    <c:forEach var="i" begin="0" end="${numberOfRooms}">
                         <table border="0">
                             
                             <tbody>
                                 <tr>
-                                <td>i</td>
-                                <td></td>
+                                <td>Has there been damage to the room?</td>
+                                <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
+                            </tr>
+                                <tr>
+                                <td>When?</td>
+                                <td><input type="text" name="When (in the form of (YYYY-MM-DD)" value="" /></td>
+                                
                                 </tr>
                                 <tr>
-                                <td></td>
-                                <td></td>
+                                <td>Where?</td>
+                                <td><input type="text" name="where" value="" /></td></td
+                                
                                 </tr>
                                 <tr>
-                                <td></td>
-                                <td></td>
+                                <td>How?</td>
+                                <td><input type="text" name="how" value="" /></td>
                                 </tr>
                                 <tr>
-                                <td></td>
-                                <td></td>
-                                </tr>
-                                <tr>
-                                <td></td>
-                                <td></td>
+                                <td>What has been done?</td>
+                                <td><input type="text" name="whatIsDone" value="" /></td>
+                                
                                 </tr>
                             </tbody>
                         </table>
 
                     </c:forEach>
-                </td>
+                
                 </tr>
+                <tr>
+                                <td></td>
+                                <td><input type="submit" value="Add Room" /></td>
+                                </tr>
                 <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
                 <td><input type="hidden" name="command" value="ReportSubmit">
