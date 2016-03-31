@@ -20,6 +20,7 @@ public class Building {
     private int buildingYear;
     private double buildingSize;
     private String useOfBuilding;
+    private int building_pic;
     private ArrayList<Report> listOfReports;
     private int custId;
 
@@ -111,6 +112,14 @@ public class Building {
 
     public void setCustId(int custId) {
         this.custId = custId;
+    }
+
+    public int getBuilding_pic() {
+        return building_pic;
+    }
+
+    public void setBuilding_pic(int building_pic) {
+        this.building_pic = building_pic;
     }
 
     @Override

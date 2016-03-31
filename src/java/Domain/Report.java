@@ -26,14 +26,18 @@ public class Report {
      * @param bdgId    building's ID
      * @param catCon  category conclusion
      */
-    public Report(int reportNum, String date, int bdgId, int catCon) {
-        this.reportId = reportNum;
+    public Report(int reportId, String date, int bdgId, int catCon) {
+        this.reportId = reportId;
         this.date = date;
         this.bdgId = bdgId;
         this.categoryConclusion = catCon;
     }
 
-    public int getReportNum() {
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
+    }
+    
+    public int getReportId() {
         return reportId;
     }
 
