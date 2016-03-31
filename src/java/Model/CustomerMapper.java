@@ -18,15 +18,16 @@ import java.sql.Statement;
 public class CustomerMapper {
 
     public void addCustomerToDB(Customer cus, Connection con) {
-        String SQLString = "insert into Customer values (?,?,?,?)";
+        String SQLString = "insert into customer values (?,?)";
         try (
                 PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, cus.getCompanyName());
             statement.setString(2, cus.getContactPerson());
 
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            //int rowsInserted = statement.executeUpdate();
+            //ResultSet rs = statement.getGeneratedKeys();
+            statement.execute();
         } catch (Exception e) {
             System.out.println("Fail in saving new report - saveNewReport");
             System.out.println(e.getMessage());

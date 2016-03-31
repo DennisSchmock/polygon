@@ -33,6 +33,13 @@ public class Customer {
         this.city = city;
         this.phoneNumber = phoneNumber;
     }
+
+    public Customer(String companyName, String contactPerson) {
+        this.companyName = companyName;
+        this.contactPerson = contactPerson;
+    }
+    
+    
     
     
     
