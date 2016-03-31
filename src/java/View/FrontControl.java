@@ -139,9 +139,10 @@ public class FrontControl extends HttpServlet {
                 
         df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
                              buildingsize, buildingYear, useOfBuilding);
+}
     private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
         
 
     }
-
 }
+
