@@ -14,5 +14,14 @@ package Domain;
  */
 public class DomainFacade {
     
+     private DomainFacade()
+    {
+      
+    }
+
+    public static DomainFacade getInstance()
+    {
+         return new DomainFacade();
+    }
    
 }

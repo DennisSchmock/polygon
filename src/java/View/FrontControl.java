@@ -5,6 +5,7 @@
  */
 package View;
 
+import Domain.DomainFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage","/Style/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
 public class FrontControl extends HttpServlet {
 
     /**
@@ -38,29 +40,40 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession sessionObj = request.getSession(); //Get the session
+
+        DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
+        //If it is a new session, create a new DomainFacade Object and put it in the session.
+        if (df == null) {
+            df = DomainFacade.getInstance();
+            sessionObj.setAttribute("Controller", df);
+        } 
+        
         response.setContentType("text/html;charset=UTF-8");
+        
+        //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
-        
-        if (page==null){
-            page="";
+
+        if (page == null) {
+            page = "";
         }
 
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
         }
-        if (page.equalsIgnoreCase("addbuilding")){
+        if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
         }
-        
-        if (page.equalsIgnoreCase("newbuilding")){
+
+        if (page.equalsIgnoreCase("newbuilding")) {
             url = "/newbuilding.jsp";
         }
 
         if (page.equalsIgnoreCase("test")) {
             url = "/index.jsp";
             request.getSession().setAttribute("test", "tester");
-
 
         }
 
