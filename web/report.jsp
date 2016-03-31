@@ -16,6 +16,8 @@
     
     <h1>Report</h1>
     <form action="FrontControl">
+        <div>
+        
         <table border="0">
             
             <tbody>
@@ -44,13 +46,16 @@
                 <td></td>
                 </tr>
                 <tr>
-                <td></td>
+                <td><input type="file" name="Image of Building" value="" /></td>
                 <td><input type="hidden" name="command" value="ReportSubmit">
             <p><input type="submit" name="submit"></p></td>
                 </tr>
             </tbody>
         </table>
-
+        </div>
+        <div>
+            2nd div
+        </div>
              
              
         </form>
