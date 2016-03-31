@@ -16,12 +16,11 @@
     
     <h1>Landing Page</h1>
     
-    
-    <a href="frontpage?page=index">Test Link</a><br>
-    <a href="frontpage?page=report">Report</a><br>
-    <a href="frontpage?page=addbuilding">Add building</a><br>
-    <a href="frontpage?page=addcustomer">Add customer</a><br>
-    
+    <nav>
+    <a href="frontpage?page=report">Report</a>
+    <a href="frontpage?page=addbuilding">Add building</a>
+    <a href="frontpage?page=addcustomer">Add customer</a>
+    </nav>
     
     
     

@@ -15,7 +15,7 @@
 
 <main>
     
-    <h1>JSP Templete</h1>
+    <h1>New Customer created!</h1>
     
     
 </main>

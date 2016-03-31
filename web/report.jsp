@@ -15,7 +15,7 @@
 <main>
     
     <h1>Report</h1>
-    <form action="FrontControl">
+    <form action="frontpage">
         <div>
         
         <table border="0">

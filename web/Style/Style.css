@@ -23,3 +23,43 @@ p2{
 textarea{
     resize: none;
 }
+
+input:focus {
+    background-color: lightblue;
+}
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: darkslateblue;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-decoration: none;
+    
+    cursor: pointer;
+}
+input{
+    border: 1px solid black;
+    margin-bottom:  5px;
+}
+
+
+* { 
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+label {
+    float: left;
+    width: 20%;
+    text-align: right;
+    margin-right: 0.5em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+.form-field-no-caption {
+    margin-left: 20%;
+    padding-left: 0.5em;
+}

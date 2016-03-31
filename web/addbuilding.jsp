@@ -8,54 +8,51 @@
 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<link rel="stylesheet" type="text/css" href="Style/Style.css">
 
 <title>Add a building</title>
 <%@include file="Style/Header.jsp" %>
 
 <main>
-    
+
     <h1>Here you can add a building</h1>
-        
+
     <form name="Building Form" action="frontpage" method="POST">
         <input type="hidden" name="page" value="newbuilding" />
-        
-        (An ID so that you can find it)  Building Name 
+
+        <label>(An ID so that you can find it)  Building Name</label> 
         <input type="text" name="buildingName" />
         <br>
-        <br>
         
-        Street Address 
+
+        <label>Street Address </label>
         <input type="text" name="streetAddress" required />
+        
         <br>
-        <br>
-        Street Number 
+        <label>Street Number </label>
         <input type="text" name="streetNumber" required />
         <br>
-        <br>
-        Zip Code 
+        
+        <label>Zip Code </label>
         <input type="number" name="zipCode" value="" max="9900" required />
         <br>
-        <br>
-        Building Size (m^2) 
+        
+        <label>Building Size (m^2) </label>
         <input type="number" step="0.01" name="buildingSize" max="9999"  required />
         <br>
-        <br>
-        Building Year 
+        
+        <label>Building Year </label>
         <input type="number" name="BuildingYear" max="2016" required />
         <br>
-        <br>
-        Description of building use
+
+        <label>Description of building use</label>
         <textarea name="useOfBuilding" rows="4" cols="20">
         </textarea>
-        
         <br>
-        
-        <input type="submit" value="Save Building" name="submitbuilding"  />
-        
+        <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
+
     </form>
-    
-    
+
+
 </main>
 
 
