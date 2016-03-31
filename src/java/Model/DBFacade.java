@@ -7,8 +7,6 @@ package Model;
 
 import Domain.*;
 import java.sql.Connection;
-import java.sql.Date;
-import java.text.DateFormat;
 
 /**
  * Contains the connection to the connections to the database
@@ -21,6 +19,8 @@ public class DBFacade {
     private Connection con;
     private ReportMapper rm;
     private static DBFacade instance;
+    private CustomerMapper cm;
+    
     public static void main(String[] args) {
         DBFacade facade = getInstance();
 //        ReportRoomRecommendation rrr = new ReportRoomRecommendation(1,"needs replacement",1);
@@ -30,6 +30,8 @@ public class DBFacade {
     private DBFacade() {
         rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
+        cm = new CustomerMapper();
+        
     }
 
     public static DBFacade getInstance() {
@@ -42,7 +44,7 @@ public class DBFacade {
     public boolean saveNewReport(Report r) {
         return rm.saveNewReport(r, con);
     }
-    
+
     public boolean saveReportRoom(ReportRoom rr){
         return rm.saveReportRoom(rr, con);
     }
@@ -62,4 +64,8 @@ public class DBFacade {
     public boolean saveReportRoomRec(ReportRoomRecommendation rrr){
         return rm.saveReportRoomRec(rrr,con);
     }
+    
+     public void addCustomer(Customer cus){
+          cm.addCustomerToDB(cus,con);
+     }
 }
