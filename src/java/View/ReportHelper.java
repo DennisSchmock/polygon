@@ -26,15 +26,15 @@ import javax.servlet.RequestDispatcher;
  */
 
 public class ReportHelper extends HttpServlet{
-    
+    DomainFacade df;
     public HttpServletRequest process(HttpServletRequest request, HttpServletResponse response,DomainFacade df){
-        
+        this.df=df;
         String command = (String)request.getParameter("command");
         if (command==null)command="";
-        System.out.println(command);
-        System.out.println("We are in process");
         if (command.equals("reportAddRoom")) request=AddRoom(request,response);
+        if (command.equals("reportSubmit")) submitReport(request,response);
         return request;
+        
     }
   
     public void AddDamage(){
@@ -52,7 +52,13 @@ public class ReportHelper extends HttpServlet{
         return request;
     }
     
-    public void submitReport(){
-        
+    public void submitReport(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("submitReport");
+        String reportDate = request.getParameter("date");
+        int reportBuildingId = 1; //some bookkeeping to be done
+        int reportCategory = Integer.parseInt(request.getParameter("category"));
+        df.saveNewReport(reportDate,reportBuildingId,reportCategory);
+        String buildingName = request.getParameter("buildingName");
+        //String buildingName = request.getParameter("buildingName");
     }
 }

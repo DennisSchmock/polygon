@@ -39,6 +39,9 @@ public class DomainFacade {
         return b;
     } 
     
-    
+    public void saveNewReport(String date, int buildingId, int category){
+        Report r = new Report(0,date,buildingId,category); // Fix
+        dbFacade.saveNewReport(r);
+    }
    
 }
