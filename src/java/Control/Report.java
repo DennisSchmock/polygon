@@ -14,72 +14,30 @@ import java.util.ArrayList;
  */
 public class Report {
     private int reportNum;
-    private String date;
-    private String bdgName;
-    private String bdgAddress;
-    private int postNum;
-    private int bdgYear;
-    private double bdgSize;
-    private String useOfBdg;
+    private Date date;
     private ArrayList<ReportRoom> listOfRepRoom;
     private int bdgId;
+    private int categoryConclusion;
 
     /**
      *
      * @param reportNum  report number
      * @param date   date
-     * @param bdgName  building name
-     * @param bdgAddress   building address
-     * @param postNum    post number
-     * @param bdgYear    building build year
-     * @param bdgSize   building size
-     * @param useOfBdg   use of the building
      * @param bdgId    building's ID
      */
-    public Report(int reportNum, String date, String bdgName,
-            String bdgAddress, int postNum, int bdgYear, double bdgSize, 
-            String useOfBdg, int bdgId) {
+    public Report(int reportNum, Date date, int bdgId, int catCon) {
         this.reportNum = reportNum;
         this.date = date;
-        this.bdgName = bdgName;
-        this.bdgAddress = bdgAddress;
-        this.postNum = postNum;
-        this.bdgYear = bdgYear;
-        this.bdgSize = bdgSize;
-        this.useOfBdg = useOfBdg;
         this.bdgId = bdgId;
+        this.categoryConclusion = catCon;
     }
 
     public int getReportNum() {
         return reportNum;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
-    }
-
-    public String getBdgName() {
-        return bdgName;
-    }
-
-    public String getBdgAddress() {
-        return bdgAddress;
-    }
-
-    public int getPostNum() {
-        return postNum;
-    }
-
-    public int getBdgAge() {
-        return bdgYear;
-    }
-
-    public double getBdgSize() {
-        return bdgSize;
-    }
-
-    public String getUseOfBdg() {
-        return useOfBdg;
     }
 
     public ArrayList<ReportRoom> getListOfRepRoom() {
@@ -94,5 +52,8 @@ public class Report {
         this.listOfRepRoom = listOfRepRoom;
     }
 
-    
+    public int getCategoryConclusion() {
+        return categoryConclusion;
+    }
+
 }

@@ -17,18 +17,13 @@ import java.sql.Statement;
  */
 public class ReportMapper {
     public boolean saveNewReport(Report r, Connection con) {
-        String SQLString = "insert into Report values (?,?,?,?,?,?,?,?,?)";
+        String SQLString = "insert into Report values (?,?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, r.getReportNum());
-            statement.setString(2, r.getDate());
-            statement.setString(3, r.getBdgName());
-            statement.setString(4,r.getBdgAddress());
-            statement.setInt(5,r.getPostNum());
-            statement.setInt(6,r.getBdgAge());
-            statement.setDouble(7,r.getBdgSize());
-            statement.setString(8,r.getUseOfBdg());
-            statement.setInt(9,r.getBdgId());
+            statement.setDate(2, r.getDate());
+            statement.setInt(3, r.getBdgId());
+            statement.setInt(4, r.getCategoryConclusion());
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             return rowsInserted == 1;
