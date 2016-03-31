@@ -23,8 +23,8 @@ public class DBFacade {
     
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        ReportRoomRecommendation r = new ReportRoomRecommendation(1,"dkjfhdskj",1);
-        System.out.println(facade.saveReportRoomRec(r));
+//        ReportRoomRecommendation r = new ReportRoomRecommendation(1,"dkjfhdskj",1);
+//        System.out.println(facade.saveReportRoomRec(r));
     }
     
     private DBFacade() {
