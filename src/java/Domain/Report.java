@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * @author CJS
  */
 public class Report {
-    private int reportNum;
-    private Date date;
+    private int reportId;
+    private String date;
     private ArrayList<ReportRoom> listOfRepRoom;
     private int bdgId;
     private int categoryConclusion;
@@ -24,19 +24,24 @@ public class Report {
      * @param reportNum  report number
      * @param date   date
      * @param bdgId    building's ID
+     * @param catCon  category conclusion
      */
-    public Report(int reportNum, Date date, int bdgId, int catCon) {
-        this.reportNum = reportNum;
+    public Report(int reportId, String date, int bdgId, int catCon) {
+        this.reportId = reportId;
         this.date = date;
         this.bdgId = bdgId;
         this.categoryConclusion = catCon;
     }
 
-    public int getReportNum() {
-        return reportNum;
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
+    }
+    
+    public int getReportId() {
+        return reportId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

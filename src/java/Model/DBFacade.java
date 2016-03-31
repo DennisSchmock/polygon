@@ -5,12 +5,8 @@
  */
 package Model;
 
-import Domain.Building;
-import Domain.Customer;
-import Domain.Report;
+import Domain.*;
 import java.sql.Connection;
-import java.sql.Date;
-import java.text.DateFormat;
 
 /**
  * Contains the connection to the connections to the database
@@ -28,9 +24,8 @@ public class DBFacade {
     
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        Date date = new Date(20160330);
-        Report r=new Report(2,date,241,121);
-        System.out.println(facade.saveNewReport(r));
+        ReportRoomRecommendation r = new ReportRoomRecommendation(1,"dkjfhdskj",1);
+        System.out.println(facade.saveReportRoomRec(r));
     }
     
     private DBFacade() {
@@ -48,10 +43,30 @@ public class DBFacade {
         return instance;
     }
     
-     public boolean saveNewReport(Report r) {
+    public boolean saveNewReport(Report r) {
         return rm.saveNewReport(r, con);
     }
-     
+
+    public boolean saveReportRoom(ReportRoom rr){
+        return rm.saveReportRoom(rr, con);
+    }
+    
+    public boolean saveReportExt(ReportRoomExterior re) {
+        return rm.saveReportExt(re, con);
+    }
+    
+    public boolean saveReportRoomDamage(ReportRoomDamage rrd){
+        return rm.saveReportRoomDamage(rrd,con);
+    }
+    
+    public boolean saveReportInterior(ReportRoomInterior ri){
+        return rm.saveReportInterior(ri,con);
+    }
+    
+    public boolean saveReportRoomRec(ReportRoomRecommendation rrr){
+        return rm.saveReportRoomRec(rrr,con);
+    }
+    
      public void addCustomer(Customer cus){
           cm.addCustomerToDB(cus,con);
      }
