@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Domain.Customer;
 import Domain.Report;
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,6 +22,8 @@ public class DBFacade {
     private Connection con;
     private ReportMapper rm;
     private static DBFacade instance;
+    private CustomerMapper cm;
+    
     public static void main(String[] args) {
         DBFacade facade = getInstance();
         Date date = new Date(20160330);
@@ -31,6 +34,8 @@ public class DBFacade {
     private DBFacade() {
         rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
+        cm = new CustomerMapper();
+        
     }
 
     public static DBFacade getInstance() {
@@ -43,4 +48,8 @@ public class DBFacade {
      public boolean saveNewReport(Report r) {
         return rm.saveNewReport(r, con);
     }
+     
+     public void addCustomer(Customer cus){
+          cm.addCustomerToDB(cus,con);
+     }
 }
