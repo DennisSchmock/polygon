@@ -5,8 +5,8 @@
  */
 package Model;
 
+import Domain.Report;
 import java.sql.Connection;
-import Control.*;
 import java.sql.Date;
 import java.text.DateFormat;
 
