@@ -68,6 +68,7 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("newbuilding")){
+            createBuilding(request,df);
             url = "/viewnewbuilding.jsp";
         }
 
@@ -120,5 +121,20 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void createBuilding(HttpServletRequest request, DomainFacade df) {
+        String buildingName = request.getParameter("buildingName");
+        String StreetAddress = request.getParameter("streetAddress");
+        String StreetNumber = request.getParameter("streetNumber");
+        int zipcode =  Integer.parseInt(request.getParameter("zipCode"));
+        double buildingsize =  Double.parseDouble(request.getParameter("buildingSize"));
+        int buildingYear =  Integer.parseInt(request.getParameter("BuildingYear"));
+        String useOfBuilding = request.getParameter("useOfBuilding");
+        
+        
+                
+        df.createnewBuilding(buildingName,StreetAddress,StreetNumber,zipcode,
+                             buildingsize, buildingYear, useOfBuilding);
+    }
 
 }

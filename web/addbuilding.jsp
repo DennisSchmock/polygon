@@ -20,23 +20,29 @@
     <form name="DummieForm" action="frontpage">
         <input type="hidden" name="page" value="newbuilding" />
         
-        (An ID so that you can find it)  Building Name <input type="text" name="buildingName" value="" />
+        (An ID so that you can find it)  Building Name 
+        <input type="text" name="buildingName" />
         <br>
         <br>
         
-        Street Address <input type="text" name="streetAddress" value="" />
+        Street Address 
+        <input type="text" name="streetAddress" required />
         <br>
         <br>
-        Street Number <input type="text" name="streetNumber" value="" />
+        Street Number 
+        <input type="text" name="streetNumber" required />
         <br>
         <br>
-        Zip Code <input type="text" name="zipCode" value="" />
+        Zip Code 
+        <input type="number" name="zipCode" value="" max="9900" required />
         <br>
         <br>
-        Building Size (m^2) <input type="text" name="buildingSize" value="" />
+        Building Size (m^2) 
+        <input type="number" step="0.01" name="buildingSize" max="9999"  required />
         <br>
         <br>
-        Building Year <input type="text" name="BuildingYear" value="" />
+        Building Year 
+        <input type="number" name="BuildingYear" max="2016" required />
         <br>
         <br>
         Description of building use
