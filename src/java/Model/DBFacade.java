@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Domain.Building;
 import Domain.Customer;
 import Domain.Report;
 import java.sql.Connection;
@@ -23,6 +24,7 @@ public class DBFacade {
     private ReportMapper rm;
     private static DBFacade instance;
     private CustomerMapper cm;
+    private BuildingMapper bm;
     
     public static void main(String[] args) {
         DBFacade facade = getInstance();
@@ -35,6 +37,7 @@ public class DBFacade {
         rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
         cm = new CustomerMapper();
+        bm = new BuildingMapper();
         
     }
 
@@ -52,4 +55,12 @@ public class DBFacade {
      public void addCustomer(Customer cus){
           cm.addCustomerToDB(cus,con);
      }
+
+    /**
+     * Sends the building object to be saved to the mapper
+     * @param b A Building object that is to be saved in the database
+     */
+    public void saveNewBuilding(Building b) {
+        bm.saveNewBuildingDB(b, con);
+    }
 }
