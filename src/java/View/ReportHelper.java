@@ -41,19 +41,17 @@ public class ReportHelper extends HttpServlet{
         
     }
     public HttpServletRequest AddRoom(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("AddRoom");
         int numOfRooms;
         if (request.getParameter("numOfRooms")!=null && !(request.getParameter("numOfRooms")).equals("")){
         numOfRooms = Integer.parseInt(request.getParameter("numOfRooms"))+1;
         }
         else numOfRooms = 1;
         request.setAttribute("numOfRooms", numOfRooms);
-        System.out.println("numOfRooms");
         return request;
     }
     
     public void submitReport(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("submitReport");
+        
         String reportDate = request.getParameter("date");
         int reportBuildingId = 1; //some bookkeeping to be done
         int reportCategory = Integer.parseInt(request.getParameter("category"));
