@@ -8,20 +8,14 @@
 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<link rel="stylesheet" type="text/css" href="Style/Style.css">
 
-<title>Landing Page</title>
+<title>Custom Title</title>
 <%@include file="Style/Header.jsp" %>
 
 <main>
     
-    <h1>Landing Page</h1>
-    
-    <nav>
-    <a href="frontpage?page=report">Report</a>
-    <a href="frontpage?page=addbuilding">Add building</a>
-    <a href="frontpage?page=addcustomer">Add customer</a>
-    </nav>
-    
+    <h1>New Customer created!</h1>
     
     
 </main>

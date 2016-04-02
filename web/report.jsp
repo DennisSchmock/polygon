@@ -12,12 +12,12 @@
 <title>Report</title>
 <%@include file="Style/Header.jsp" %>
 
-
-
-<h1>Report</h1>
-<form action="frontpage?page=report" method="POST">
-    <div>
-
+<main>
+    
+    <h1>Report</h1>
+    <form action="frontpage">
+        <div>
+        
         <table border="0">
 
             <tbody>

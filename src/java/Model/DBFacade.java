@@ -26,11 +26,26 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-//        ReportRoomRecommendation rrr = new ReportRoomRecommendation(1,"needs replacement",1);
-//        System.out.println(facade.saveReportRoomRec(rrr));
-
-        Customer customer = new Customer("adsfdsa", "dfsda");
-        facade.addCustomer(customer);
+        Report r = facade.getReport(1);
+        System.out.println(r.getReportId() + r.getDate() + r.getBdgId() + r.getCategoryConclusion());
+        
+        ReportRoomExterior re = facade.getReportExt(1);
+        System.out.println(re.getRepExtId() + re.getRepExtDescription() + re.getRepExtPic() + re.getReportId());
+        
+        ReportRoom rr = facade.getReportRoom(1);
+        System.out.println(rr.getRepRoomId() + rr.getRoomName() + rr.getReportId());
+        
+        ReportRoomDamage rd = facade.getReportDamage(1);
+        System.out.println(rd.getRepRoomDmgId() + rd.getDamageTime() + rd.getPlace() + rd.getWhatHappened() + rd.getWhatIsRepaired() + rd.getDamageType() + rd.getRepRoomId());
+        
+        ReportRoomInterior ri = facade.getReportInt(1);
+        System.out.println(ri.getRepRoomIntId()+ri.getRepRoomIntName()+ri.getRemark()+ri.getRepRoomId());
+        
+        ReportRoomRecommendation rc = facade.getReportRec(1);
+        System.out.println(rc.getRepRoomRecId()+rc.getRecommendation()+rc.getRepRoomId());
+        
+//        Customer customer = new Customer("Polygon", "Dennis Schmock","dennis@schmock.eu", "MyStreet12", 213, 2312, 1111, "Albertslund", "21321311");
+//        facade.addCustomer(customer);
 
     }
 
@@ -49,31 +64,55 @@ public class DBFacade {
         return instance;
     }
 
-    public boolean saveNewReport(Report r) {
-        return rm.saveNewReport(r, con);
+    public void saveNewReport(Report r) {
+        rm.saveNewReport(r, con);
     }
 
-    public boolean saveReportRoom(ReportRoom rr) {
-        return rm.saveReportRoom(rr, con);
+    public void saveReportRoom(ReportRoom rr) {
+        rm.saveReportRoom(rr, con);
     }
 
-    public boolean saveReportExt(ReportRoomExterior re) {
-        return rm.saveReportExt(re, con);
+    public void saveReportExt(ReportRoomExterior re) {
+        rm.saveReportExt(re, con);
     }
 
-    public boolean saveReportRoomDamage(ReportRoomDamage rrd) {
-        return rm.saveReportRoomDamage(rrd, con);
+    public void saveReportRoomDamage(ReportRoomDamage rrd) {
+        rm.saveReportRoomDamage(rrd, con);
     }
 
-    public boolean saveReportInterior(ReportRoomInterior ri) {
-        return rm.saveReportInterior(ri, con);
+    public void saveReportInterior(ReportRoomInterior ri) {
+        rm.saveReportInterior(ri, con);
     }
 
-    public boolean saveReportRoomRec(ReportRoomRecommendation rrr) {
-        return rm.saveReportRoomRec(rrr, con);
+    public void saveReportRoomRec(ReportRoomRecommendation rrr) {
+        rm.saveReportRoomRec(rrr, con);
     }
     
-     public void addCustomer(Customer cus){
+     public Report getReport(int id){
+        return rm.getReport(id, con);
+     }
+     
+     public ReportRoomExterior getReportExt(int id){
+        return rm.getReportExt(id, con);
+     }
+     
+     public ReportRoom getReportRoom(int id){
+        return rm.getReportRoom(id, con);
+     }
+     
+     public ReportRoomDamage getReportDamage(int id){
+        return rm.getReportDamage(id, con);
+     }
+     
+     public ReportRoomInterior getReportInt(int id){
+        return rm.getReportInt(id, con);
+     }
+     
+     public ReportRoomRecommendation getReportRec(int id){
+        return rm.getReportRec(id, con);
+     }
+    
+    public void addCustomer(Customer cus){
           cm.addCustomerToDB(cus,con);
      }
 

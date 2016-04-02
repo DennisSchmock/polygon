@@ -21,13 +21,19 @@ public class Report {
 
     /**
      *
-     * @param reportNum  report number
+     * @param reportId  report number
      * @param date   date
      * @param bdgId    building's ID
      * @param catCon  category conclusion
      */
     public Report(int reportId, String date, int bdgId, int catCon) {
         this.reportId = reportId;
+        this.date = date;
+        this.bdgId = bdgId;
+        this.categoryConclusion = catCon;
+    }
+    
+    public Report( String date, int bdgId, int catCon) {
         this.date = date;
         this.bdgId = bdgId;
         this.categoryConclusion = catCon;

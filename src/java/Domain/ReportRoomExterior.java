@@ -28,6 +28,12 @@ public class ReportRoomExterior {
         this.repExtPic = repExtPic;
         this.reportId = reportId;
     }
+    
+    public ReportRoomExterior( String repExtDescription, int repExtPic, int reportId) {
+        this.repExtDescription = repExtDescription;
+        this.repExtPic = repExtPic;
+        this.reportId = reportId;
+    }
 
     public void setRepExtId(int repExtId) {
         this.repExtId = repExtId;
