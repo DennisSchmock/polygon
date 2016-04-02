@@ -25,6 +25,11 @@ public class ReportRoomRecommendation {
         this.recommendation = recommendation;
         this.repRoomId = repRoomId;
     }
+    
+    public ReportRoomRecommendation( String recommendation, int repRoomId) {
+        this.recommendation = recommendation;
+        this.repRoomId = repRoomId;
+    }
 
     public void setRepRoomRecId(int repRoomRecId) {
         this.repRoomRecId = repRoomRecId;
