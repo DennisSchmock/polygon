@@ -28,6 +28,12 @@ public class ReportRoomInterior {
         this.remark = remark;
         this.repRoomId = repRoomId;
     }
+    
+    public ReportRoomInterior(String repRoomIntName, String remark, int repRoomId) {
+        this.repRoomIntName = repRoomIntName;
+        this.remark = remark;
+        this.repRoomId = repRoomId;
+    }
 
     public void setRepRoomIntId(int repRoomIntId) {
         this.repRoomIntId = repRoomIntId;

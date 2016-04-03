@@ -39,6 +39,21 @@ public class DomainFacade {
         return b;
     } 
     
+    public Report saveNewReport(String date, int buildingId, int category){
+        Report r = new Report(0,date,buildingId,category); // Fix
+        r=dbFacade.saveNewReport(r);
+        return r;
+    }
+    
+    public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId){
+        ReportRoomExterior r = new ReportRoomExterior(0,repExtDescription,repExtPic,reportId); // Fix
+        dbFacade.saveReportExt(r);
+    }
+    
+//    public void saveNewReport(String date, int buildingId, int category){
+//        Report r = new Report(0,date,buildingId,category); // Fix
+//        dbFacade.saveNewReport(r);
+//    }
     public void createNewCustomer(String companyName, String contactPerson, String email, String street, int streetnumber, int CVR, int zip, String city, String phonenumber){
         Customer customer = new Customer(companyName, contactPerson, email, street, streetnumber, CVR, zip, city, phonenumber);
         dbFacade.addCustomer(customer);

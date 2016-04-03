@@ -16,18 +16,25 @@ public class Report {
     private int reportId;
     private String date;
     private ArrayList<ReportRoom> listOfRepRoom;
+    private ArrayList<ReportRoomExterior> listOfRepRoomExt;
     private int bdgId;
     private int categoryConclusion;
 
     /**
      *
-     * @param reportNum  report number
+     * @param reportId  report number
      * @param date   date
      * @param bdgId    building's ID
      * @param catCon  category conclusion
      */
     public Report(int reportId, String date, int bdgId, int catCon) {
         this.reportId = reportId;
+        this.date = date;
+        this.bdgId = bdgId;
+        this.categoryConclusion = catCon;
+    }
+    
+    public Report( String date, int bdgId, int catCon) {
         this.date = date;
         this.bdgId = bdgId;
         this.categoryConclusion = catCon;
@@ -47,6 +54,14 @@ public class Report {
 
     public ArrayList<ReportRoom> getListOfRepRoom() {
         return listOfRepRoom;
+    }
+
+    public ArrayList<ReportRoomExterior> getListOfRepRoomExt() {
+        return listOfRepRoomExt;
+    }
+
+    public void setListOfRepRoomExt(ArrayList<ReportRoomExterior> listOfRepRoomExt) {
+        this.listOfRepRoomExt = listOfRepRoomExt;
     }
 
     public int getBdgId() {

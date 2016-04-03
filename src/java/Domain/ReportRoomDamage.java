@@ -37,6 +37,15 @@ public class ReportRoomDamage {
         this.repRoomId = repRoomId;
         this.whatIsRepaired = whatIsRepaired;
     }
+    
+    public ReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
+        this.damageTime = damageTime;
+        this.place = place;
+        this.whatHappened = whatHappened;
+        this.damageType = damageType;
+        this.repRoomId = repRoomId;
+        this.whatIsRepaired = whatIsRepaired;
+    }
 
     public void setRepRoomDmgId(int repRoomDmgId) {
         this.repRoomDmgId = repRoomDmgId;
