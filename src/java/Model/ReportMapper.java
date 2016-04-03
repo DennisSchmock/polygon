@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -261,6 +262,118 @@ public class ReportMapper {
             return rrr;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getReportRec");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    //method that will take all the Report_Exteriour details in a certain Report
+    public ArrayList<ReportRoomExterior> getListOfExt(int id, Connection con){
+        String SQLString = "select * from Report_Exteriour where Report=?";
+        ArrayList<ReportRoomExterior> listOfExt = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                ReportRoomExterior re = new ReportRoomExterior(
+                rs.getInt("Report_Ext_Id"),
+                rs.getString("Report_Ext_Description"),
+                rs.getInt("Report_Ext_Pic"),
+                rs.getInt("Report"));
+                listOfExt.add(re);
+            }
+            return listOfExt;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfExt");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public ArrayList<ReportRoom> getListOfReportRoom(int id, Connection con){
+        String SQLString = "select * from Report_Room where Report=?";
+        ArrayList<ReportRoom> listOfRepRm = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                ReportRoom rr = new ReportRoom(
+                rs.getInt("Report_Room_Id"),
+                rs.getString("Room_Name"),
+                rs.getInt("Report"));
+                listOfRepRm.add(rr);
+            }
+            return listOfRepRm;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfReportRoom");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con){
+        String SQLString = "select * from Report_Room_Damage where Report_Room=?";
+        ArrayList<ReportRoomDamage> listOfDmg = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                ReportRoomDamage rd = new ReportRoomDamage(
+                rs.getInt("Report_Room_Damage_Id"),
+                rs.getDate("Damage_Time").toString(),
+                rs.getString("Place"),
+                rs.getString("WhatHappened"),
+                rs.getString("WhatIsRepaired"),
+                rs.getString("DamageType"),
+                rs.getInt("Report_Room"));
+                listOfDmg.add(rd);
+            }
+            return listOfDmg;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfDamages");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con){
+        String SQLString = "select * from Report_Room_Interiour where Report_Room=?";
+        ArrayList<ReportRoomInterior> listOfInt = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                ReportRoomInterior ri = new ReportRoomInterior(
+                rs.getInt("Report_Room_Interiour_Id"),
+                rs.getString("Report_Room_Interiour_Name"),
+                rs.getString("Remark"),
+                rs.getInt("Report_Room"));
+                listOfInt.add(ri);
+            }
+            return listOfInt;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfInt");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con){
+        String SQLString = "select * from Report_Room_Recommendation where Report_Room=?";
+        ArrayList<ReportRoomRecommendation> listOfRec = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                ReportRoomRecommendation rrr = new ReportRoomRecommendation(
+                rs.getInt("Report_Room_Recommendation_Id"),
+                rs.getString("Recommendation"),
+                rs.getInt("Report_Room"));
+                listOfRec.add(rrr);
+            }
+            return listOfRec;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfRec");
             System.out.println(e.getMessage());
             return null;
         }

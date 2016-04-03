@@ -16,6 +16,7 @@ public class Report {
     private int reportId;
     private String date;
     private ArrayList<ReportRoom> listOfRepRoom;
+    private ArrayList<ReportRoomExterior> listOfRepRoomExt;
     private int bdgId;
     private int categoryConclusion;
 
@@ -53,6 +54,14 @@ public class Report {
 
     public ArrayList<ReportRoom> getListOfRepRoom() {
         return listOfRepRoom;
+    }
+
+    public ArrayList<ReportRoomExterior> getListOfRepRoomExt() {
+        return listOfRepRoomExt;
+    }
+
+    public void setListOfRepRoomExt(ArrayList<ReportRoomExterior> listOfRepRoomExt) {
+        this.listOfRepRoomExt = listOfRepRoomExt;
     }
 
     public int getBdgId() {

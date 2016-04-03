@@ -5,6 +5,8 @@
  */
 package Domain;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author CJS
@@ -13,6 +15,9 @@ public class ReportRoom {
     private int repRoomId;
     private String roomName;
     private int reportId;
+    private ArrayList<ReportRoomDamage> listOfDamages;
+    private ArrayList<ReportRoomInterior> listOfInt;
+    private ArrayList<ReportRoomRecommendation> listOfRec;
 
     /**
      *
@@ -46,6 +51,30 @@ public class ReportRoom {
 
     public int getReportId() {
         return reportId;
+    }
+
+    public ArrayList<ReportRoomDamage> getListOfDamages() {
+        return listOfDamages;
+    }
+
+    public void setListOfDamages(ArrayList<ReportRoomDamage> listOfDamages) {
+        this.listOfDamages = listOfDamages;
+    }
+
+    public ArrayList<ReportRoomInterior> getListOfInt() {
+        return listOfInt;
+    }
+
+    public void setListOfInt(ArrayList<ReportRoomInterior> listOfInt) {
+        this.listOfInt = listOfInt;
+    }
+
+    public ArrayList<ReportRoomRecommendation> getListOfRec() {
+        return listOfRec;
+    }
+
+    public void setListOfRec(ArrayList<ReportRoomRecommendation> listOfRec) {
+        this.listOfRec = listOfRec;
     }
     
 }
