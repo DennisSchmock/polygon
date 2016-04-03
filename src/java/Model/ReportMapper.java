@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class ReportMapper {
     
     //Saving a new report in DB-Report Table
-    public void saveNewReport(Report r, Connection con) {
+    public Report saveNewReport(Report r, Connection con) {
         String SQLString = "insert into Report(ReportDate,BuildingId,Category_conclusion) values (?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
@@ -38,6 +38,7 @@ public class ReportMapper {
             System.out.println("Fail in saving new report - saveNewReport");
             System.out.println(e.getMessage());
         }
+        return r;
     }
     
     //saving a new room exterior report in DB-Report_Exterior table

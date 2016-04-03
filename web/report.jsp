@@ -15,6 +15,33 @@
 <main>
     
     <h1>Report</h1>
+    
+    <div>
+        <table border="3">
+            
+            <tbody>
+                <tr>
+                <td>Building Name</td>
+                <td>Adress</td>
+                <td>Zip Code</td>
+                <td>
+                    Some extra info
+                </td>    
+                </tr>
+                <tr>
+                <td>${sessionScope.testBuilding.buildingName}</td>
+                <td>${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}</td>
+                <td>${sessionScope.testBuilding.zipCode}</td>
+                <td>
+                    Some extra info
+                </td>    
+                </tr>
+            </tbody>
+        </table>
+
+        
+        
+    </div>
     <form action="frontpage">
         <div>
         
@@ -49,25 +76,29 @@
                 </tr>
                 <tr>
                     </tr>
+        </table>
+            
+            
+            
                     <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}">
+                        <select name="roomSelect" id="roomSel">
+                        <c:forEach items="${buildingRooms}" var="room">
+                            <option value="${room.roomName}">
+                                ${room.roomName}
+                            </option>
+                        </c:forEach>                       
+                        
+                    </select>
                     <table border="0">
 
                         <tbody>
-                            <tr>
-                            <td>Choose Room</td>
-                            <td><select name="chosenRoom">
-
-                                    <option>1</option>
-
-                                </select></td>
-                            </tr>
                             <tr>
                             <td>Has there been damage to the room?</td>
                             <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
                             </tr>
                             <tr>
-                            <td>When?</td>
-                            <td><input type="text" name="When (in the form of (YYYY-MM-DD)" value="" /></td>
+                            <td>When (in the form of (YYYY-MM-DD)?</td>
+                            <td><input type="text" name="when" value="" /></td>
 
                             </tr>
                             <tr>
@@ -88,8 +119,7 @@
                     </table>
 
                 </c:forEach>
-
-                
+            <table border="0">
                 <tr>
                 <td></td>
 

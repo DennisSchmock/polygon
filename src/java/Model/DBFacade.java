@@ -99,8 +99,9 @@ public class DBFacade {
         return instance;
     }
 
-    public void saveNewReport(Report r) {
-        rm.saveNewReport(r, con);
+    public Report saveNewReport(Report r) {
+        r=rm.saveNewReport(r, con);
+        return r;
     }
 
     public void saveReportRoom(ReportRoom rr) {
