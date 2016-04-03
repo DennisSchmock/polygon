@@ -16,12 +16,14 @@
     </head>
     <body> <header>
             <a href="frontpage?page=index">  
-                <img src="${pageContext.request.contextPath}/images/Polygon.png"/>
+                <img src="${pageContext.request.contextPath}/images/polygon-logo.svg"/>
             </a>
-
         </header>
-        <nav class="w3-sidenav w3-light-grey" style="width:25%">
-            <a href="frontpage?page=report" class="w3-green">Report</a>
-            <a href="frontpage?page=addbuilding">Add building</a>
-            <a href="frontpage?page=addcustomer">Add customer</a>
-        </nav>
+        
+            <ul class="w3-navbar w3-blue">
+                <li><a href="frontpage?page=report">Report</a></li>
+                <li><a href="frontpage?page=addbuilding">Add building</a></li>
+                <li><a href="frontpage?page=addcustomer">Add customer</a></li>
+                <li><a href="frontpage?page=login">Login</a></li>
+            </ul>
+        
