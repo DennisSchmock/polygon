@@ -10,10 +10,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="Style/Style.css">
     </head>
-            <body> <header>
-                <a href="frontpage?page=index">  
-<img src="${pageContext.request.contextPath}/images/Polygon.png"/>
-</a>
-                    
+    <body> 
+        <header>
+            <a href="frontpage?page=index">  
+                <img src="${pageContext.request.contextPath}/images/Polygon.png"/>
+            </a>
+
         </header>
-      
