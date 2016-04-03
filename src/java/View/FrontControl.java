@@ -43,9 +43,8 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession sessionObj = request.getSession(); //Get the session
-
+        ReportHelper rh = new ReportHelper();
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
         if (df == null) {
@@ -58,17 +57,21 @@ public class FrontControl extends HttpServlet {
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
+        System.out.println(page);
 
         if (page == null) {
-            page = "";
+            page = "/report.jsp";
         }
-
-        if (page.equalsIgnoreCase("submitreport")) {
-            submitReport(request, response, df);
-        }
-
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
+            request=rh.process( request, response,df);
+        }
+
+        if (page.equalsIgnoreCase("reportSubmit")) {
+            //url = "/report.jsp";
+        }
+        if (page.equalsIgnoreCase("reportAddRoom")) {
+            //url = "/report.jsp";
         }
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";

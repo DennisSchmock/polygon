@@ -22,6 +22,7 @@ public class Building {
     private String useOfBuilding;
     private int building_pic;
     private ArrayList<Report> listOfReports;
+    private ArrayList<BuildingRoom> listOfRooms;
     private int custId;
 
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
@@ -105,8 +106,8 @@ public class Building {
     public void setListOfReports(ArrayList<Report> listOfReports) {
         this.listOfReports = listOfReports;
     }
-
-    public int getCustId() {
+    
+        public int getCustId() {
         return custId;
     }
 
@@ -126,6 +127,12 @@ public class Building {
     public String toString() {
         return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
     }
-  
 
+    public ArrayList<BuildingRoom> getListOfRooms() {
+        return listOfRooms;
+    }
+
+    public void setListOfRooms(ArrayList<BuildingRoom> listOfRooms) {
+        this.listOfRooms = listOfRooms;
+    }
 }
