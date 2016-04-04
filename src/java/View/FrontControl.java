@@ -8,7 +8,6 @@ package View;
 import Domain.DomainFacade;
 import Domain.Building;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +26,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage","/login"})
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
@@ -64,7 +63,7 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
-            request=rh.process( request, response,df);
+            request = rh.process(request, response, df);
         }
 
         if (page.equalsIgnoreCase("reportSubmit")) {
@@ -76,7 +75,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
         }
-         if (page.equalsIgnoreCase("addcustomer")) {
+        if (page.equalsIgnoreCase("addcustomer")) {
             url = "/addcustomer.jsp";
         }
         /**
@@ -88,9 +87,15 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
-        if (page.equalsIgnoreCase("addcus")) {
+        if (page.equalsIgnoreCase("submitcustomer")) {
             createNewCustomer(request, df, sessionObj);
             response.sendRedirect("customersubmitted.jsp");
+            return;
+        }
+        
+        if (page.equalsIgnoreCase("createuser")){
+            createUser(request,df,sessionObj);
+            response.sendRedirect("login");
             return;
         }
 
@@ -168,4 +173,11 @@ public class FrontControl extends HttpServlet {
 
     }
 
+    private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
+
+    }
+
+    private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+        
+    }
 }

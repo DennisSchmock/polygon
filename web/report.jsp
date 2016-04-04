@@ -153,7 +153,7 @@
         <td><input type="submit" value="Add Room" />${requestScope.numOfRooms}</td>
     </form>
 
-
+</main>
 
 
     <%@include file="Style/Footer.jsp" %>
