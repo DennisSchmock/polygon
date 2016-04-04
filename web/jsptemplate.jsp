@@ -8,7 +8,6 @@
 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<link rel="stylesheet" type="text/css" href="Style/Style.css">
 
 <title>Custom Title</title>
 <%@include file="Style/Header.jsp" %>

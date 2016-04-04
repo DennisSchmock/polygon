@@ -8,6 +8,7 @@ package Model;
 import Domain.*;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains the connection to the connections to the database Uses all of the
@@ -178,5 +179,23 @@ public class DBFacade {
      */
     public void saveNewBuilding(Building b) {
         bm.saveNewBuildingDB(b, con);
+    }
+
+    /**
+     * Uses the Building mapper to find the list of buildings in the database
+     * @param customerID ID of the customer that is to be loaded 
+     * @return An list of buildings related to the customerID
+     */
+    public List<Building> getListOfbuildingsDB(int customerID) {
+       return bm.getListOfBuildingsBM(customerID, con);
+    }
+
+    /**
+     * Sends the to be updated building object to the right mapper
+     * @param updatedBuildObj The object that should be updated in the database
+     *
+     */
+    public void updateBuildingDBFacade(Building updatedBuildObj) {
+        bm.updateBuildingBm(updatedBuildObj, con);
     }
 }
