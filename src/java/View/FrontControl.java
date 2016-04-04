@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage","/login"})
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
@@ -77,7 +77,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
         }
-         if (page.equalsIgnoreCase("addcustomer")) {
+        if (page.equalsIgnoreCase("addcustomer")) {
             url = "/addcustomer.jsp";
         }
          if (page.equalsIgnoreCase("viewlistofbuildings")) {
@@ -104,9 +104,15 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
-        if (page.equalsIgnoreCase("addcus")) {
+        if (page.equalsIgnoreCase("submitcustomer")) {
             createNewCustomer(request, df, sessionObj);
             response.sendRedirect("customersubmitted.jsp");
+            return;
+        }
+        
+        if (page.equalsIgnoreCase("createuser")){
+            createUser(request,df,sessionObj);
+            response.sendRedirect("login");
             return;
         }
 

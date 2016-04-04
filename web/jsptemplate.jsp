@@ -14,7 +14,8 @@
 
 <main>
     
-    <h1>JSP Templete</h1>
+    <h1>Example Page</h1>
+    
     
     
 </main>

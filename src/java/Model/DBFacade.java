@@ -28,58 +28,15 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-//        ReportRoomRecommendation re = new ReportRoomRecommendation("for check-up", 1);
-//        facade.saveReportRoomRec(re);
-//        
-//        ArrayList<ReportRoomRecommendation> listRRR = facade.getListOfRec(1);
-//        for (int i = 0; i < listRRR.size(); i++) {
-//            System.out.println("in here");
-//            System.out.println(".." + listRRR.get(i).getRepRoomRecId()+".." +listRRR.get(i).getRecommendation());
-//        }
-        
-//        ArrayList<ReportRoomInterior> listRI = facade.getListOfInt(1);
-//        for (int i = 0; i < listRI.size(); i++) {
-//            System.out.println("in here");
-//            System.out.println(".." + listRI.get(i).getRepRoomIntId()+".." +listRI.get(i).getRepRoomIntName() + listRI.get(i).getRemark());
-//        }
-        
-//        ArrayList<ReportRoomDamage> listRD = facade.getListOfDamages(1);
-//        for (int i = 0; i < listRD.size(); i++) {
-//            System.out.println("in here");
-//            System.out.println(".." + listRD.get(i).getWhatHappened()+".." +listRD.get(i).getDamageTime() + listRD.get(i).getRepRoomDmgId());
-//        }
+        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
+        for (Contact c : listOfContacts) {
+            System.out.println("\t" + c.getContactID()+ "\t" + c.getName() + "\t" +c.getEmail() + "\t" + c.getTelNum() + "\t" + c.getCustID());
+        }
         
         
-//        ArrayList<ReportRoomExterior> listRE = facade.getListOfExt(1);
-//        for (int i = 0; i < listRE.size(); i++) {
-//            System.out.println("in here");
-//            System.out.println(".." + listRE.get(i).getRepExtDescription()+".." +listRE.get(i).getRepExtPic());
-//        }
-        
-//        ArrayList<ReportRoom> listRR = facade.getListOfReportRoom(1);
-//        for (int i = 0; i < listRR.size(); i++) {
-//            System.out.println(".." + listRR.get(i).getRoomName()+".." +listRR.get(i).getRepRoomId());
-//        }
-        
-        
-//        Report r = facade.getReport(1);
-//        System.out.println(r.getReportId() + r.getDate() + r.getBdgId() + r.getCategoryConclusion());
-//        
-//        ReportRoomExterior re = facade.getReportExt(1);
-//        System.out.println(re.getRepExtId() + re.getRepExtDescription() + re.getRepExtPic() + re.getReportId());
-//        
-//        ReportRoom rr = facade.getReportRoom(1);
-//        System.out.println(rr.getRepRoomId() + rr.getRoomName() + rr.getReportId());
-//        
-//        ReportRoomDamage rd = facade.getReportDamage(1);
-//        System.out.println(rd.getRepRoomDmgId() + rd.getDamageTime() + rd.getPlace() + rd.getWhatHappened() + rd.getWhatIsRepaired() + rd.getDamageType() + rd.getRepRoomId());
-//        
-//        ReportRoomInterior ri = facade.getReportInt(1);
-//        System.out.println(ri.getRepRoomIntId()+ri.getRepRoomIntName()+ri.getRemark()+ri.getRepRoomId());
-//        
-//        ReportRoomRecommendation rc = facade.getReportRec(1);
-//        System.out.println(rc.getRepRoomRecId()+rc.getRecommendation()+rc.getRepRoomId());
-        
+//        Contact c = new Contact("name","..@....dk","(+45)98564730",2);
+//        facade.saveContact(c);
+
 //        Customer customer = new Customer("Polygon", "Dennis Schmock","dennis@schmock.eu", "MyStreet12", 213, 2312, 1111, "Albertslund", "21321311");
 //        facade.addCustomer(customer);
 
@@ -105,8 +62,9 @@ public class DBFacade {
         return r;
     }
 
-    public void saveReportRoom(ReportRoom rr) {
-        rm.saveReportRoom(rr, con);
+    public ReportRoom saveReportRoom(ReportRoom rr) {
+        rr=rm.saveReportRoom(rr, con);
+        return rr;
     }
 
     public void saveReportExt(ReportRoomExterior re) {
@@ -171,8 +129,16 @@ public class DBFacade {
      
     public void addCustomer(Customer cus){
           cm.addCustomerToDB(cus,con);
-     }
+    }
+    
+    public void saveContact(Contact c){
+        cm.saveContact(c, con);
+    }
 
+    public ArrayList<Contact> getListOfContacts(int id){
+        return cm.getListOfContacts(id, con);
+    }
+    
     /**
      * Sends the building object to be saved to the mapper
      * @param b A Building object that is to be saved in the database

@@ -42,9 +42,10 @@
         
         
     </div>
-    <form action="frontpage">
+    
         <div>
-        
+            <form action="frontpage" method="post">
+                <input type="hidden" name="page" value="report" />
         <table border="0">
 
             <tbody>
@@ -77,46 +78,51 @@
                 <tr>
                     </tr>
         </table>
+                
             
             
             
-                    <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}">
+                    <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}" varStatus="count">
                         <select name="roomSelect" id="roomSel">
                         <c:forEach items="${buildingRooms}" var="room">
-                            <option value="${room.roomName}">
+                            <option value="${room.roomId}">
                                 ${room.roomName}
                             </option>
-                        </c:forEach>                       
+                            
+                        </c:forEach>
+                            
                         
                     </select>
+                        
                     <table border="0">
 
                         <tbody>
                             <tr>
-                            <td>Has there been damage to the room?</td>
+                            <td>Has there been damage to the room? ${chosenRoom}</td>
                             <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
                             </tr>
                             <tr>
-                            <td>When (in the form of (YYYY-MM-DD)?</td>
-                            <td><input type="text" name="when" value="" /></td>
+                            <td>When (in the form of (YYYY-MM-DD)? when${count.count}</td>
+                            <td><input type="text" name="when${count.count}" value="" /></td>
 
                             </tr>
                             <tr>
                             <td>Where?</td>
-                            <td><input type="text" name="where" value="" /></td>
+                            <td><input type="text" name="where${count.count}" value="" /></td>
 
                             </tr>
                             <tr>
                             <td>How?</td>
-                            <td><input type="text" name="how" value="" /></td>
+                            <td><input type="text" name="how${count.count}" value="" /></td>
                             </tr>
                             <tr>
                             <td>What has been done?</td>
-                            <td><input type="text" name="whatIsDone" value="" /></td>
+                            <td><input type="text" name="whatIsDone${count.count}" value="" /></td>
 
                             </tr>
                         </tbody>
                     </table>
+                            
 
                 </c:forEach>
             <table border="0">
@@ -128,10 +134,12 @@
                 <td><input type="file" name="Image of Building" value="" /></td>
                 <td><input type="hidden" name="command" value="reportSubmit">
                     <p><input type="submit" name="submit"></p></td>
-                </form>
+                
                 </tr>
+                
             </tbody>
         </table>
+                </form>
     </div>
     <div>
         2nd div
@@ -145,7 +153,7 @@
         <td><input type="submit" value="Add Room" />${requestScope.numOfRooms}</td>
     </form>
 
-
+</main>
 
 
     <%@include file="Style/Footer.jsp" %>

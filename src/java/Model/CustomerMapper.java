@@ -5,11 +5,12 @@
  */
 package Model;
 
-import Domain.Customer;
+import Domain.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,6 +41,60 @@ public class CustomerMapper {
 
     }
 
+    /**
+     *
+     * @param c new Contact
+     * @param con
+     * save a new contact to DB
+     */
+    public void saveContact(Contact c, Connection con){
+        String SQLString = "insert into contact(name,email,tel,customerID) values (?,?,?,?)";
+        try (PreparedStatement statement
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, c.getName());
+            statement.setString(2, c.getEmail());
+            statement.setString(3,c.getTelNum());
+            statement.setInt(4,c.getCustID());
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            if (!rs.next()){
+                c.setContactID(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Fail in saving Contact - saveContact");
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     *
+     * @param id   the customer ID
+     * @param con  connection to the DB
+     * @return  a list of contacts of a certain customer
+     */
+    public ArrayList<Contact> getListOfContacts(int id, Connection con){
+        String SQLString = "select * from contact where customerID=?";
+        ArrayList<Contact> listOfContacts = new ArrayList();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Contact c = new Contact(
+                rs.getInt("contactID"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getString("tel"),
+                rs.getInt("customerID"));
+                listOfContacts.add(c);
+            }
+            return listOfContacts;
+        } catch (Exception e) {
+            System.out.println("Fail in getListOfContacts");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
     public void editCustomer() {
 
     }

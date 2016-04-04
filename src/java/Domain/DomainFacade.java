@@ -46,6 +46,17 @@ public class DomainFacade {
         return r;
     }
     
+    public ReportRoom saveReportRoom(int repRoomId, String roomName, int reportId) {
+        ReportRoom rr = new ReportRoom(0,roomName,reportId);
+        rr=dbFacade.saveReportRoom(rr);
+        return rr;
+    }
+    
+    public void saveReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
+        ReportRoomDamage rrd = new ReportRoomDamage(damageTime, place, whatHappened, whatIsRepaired, damageType, repRoomId);
+        dbFacade.saveReportRoomDamage(rrd);
+    }
+    
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId){
         ReportRoomExterior r = new ReportRoomExterior(0,repExtDescription,repExtPic,reportId); // Fix
         dbFacade.saveReportExt(r);
