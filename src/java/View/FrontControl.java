@@ -94,8 +94,8 @@ public class FrontControl extends HttpServlet {
             return;
         }
 
-        if (page.equalsIgnoreCase("test")) {
-            url = "/index.jsp";
+        if (page.equalsIgnoreCase("login")) {
+            url = "/login.jsp";
             request.getSession().setAttribute("test", "tester");
 
         }

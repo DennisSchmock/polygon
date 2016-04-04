@@ -13,18 +13,6 @@
 <%@include file="Style/Header.jsp" %>
 
 <main>
-    
-    <h1>Landing Page</h1>
-    
-    <nav>
-    <a href="frontpage?page=report">Report</a>
-    <a href="frontpage?page=addbuilding">Add building</a>
-    <a href="frontpage?page=addcustomer">Add customer</a>
-    </nav>
-    
-    
-    
+    <h1>Landing page</h1>
 </main>
-
-
 <%@include file="Style/Footer.jsp" %>
