@@ -168,7 +168,4 @@ public class FrontControl extends HttpServlet {
 
     }
 
-    private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
-
-    }
 }

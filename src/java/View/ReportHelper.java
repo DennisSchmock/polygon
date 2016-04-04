@@ -88,6 +88,14 @@ public class ReportHelper extends HttpServlet{
         String walls = request.getParameter("walls");
         df.saveNewReportExt(1,roof,reportBuildingId,reportId);
         df.saveNewReportExt(1,walls,reportBuildingId,reportId);
-        //String buildingName = request.getParameter("buildingName");
+        
+        
+        for (int roomCount = 0; roomCount <= (int)request.getAttribute("numOfRooms"); roomCount++) {
+            
+        
+        }
+        String when = request.getParameter("buildingName");
+        String where = request.getParameter("buildingName");
+        String whatIsDone = request.getParameter("buildingName");
     }
 }
