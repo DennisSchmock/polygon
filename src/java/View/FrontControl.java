@@ -111,7 +111,7 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("createuser")){
-            createUser(request,df,sessionObj);
+//            createUser(request,df,sessionObj);
             response.sendRedirect("login");
             return;
         }
