@@ -111,7 +111,7 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("createuser")){
-//            createUser(request,df,sessionObj);
+            createUser(request,df,sessionObj);
             response.sendRedirect("login");
             return;
         }
@@ -254,4 +254,9 @@ public class FrontControl extends HttpServlet {
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
     }
+    
+    private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+        
+    }      
+    
 }
