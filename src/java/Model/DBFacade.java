@@ -104,8 +104,9 @@ public class DBFacade {
         return r;
     }
 
-    public void saveReportRoom(ReportRoom rr) {
-        rm.saveReportRoom(rr, con);
+    public ReportRoom saveReportRoom(ReportRoom rr) {
+        rr=rm.saveReportRoom(rr, con);
+        return rr;
     }
 
     public void saveReportExt(ReportRoomExterior re) {

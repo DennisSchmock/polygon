@@ -9,6 +9,7 @@ import Domain.Building;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
 import Domain.Report;
+import Domain.ReportRoom;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -67,6 +68,16 @@ public class ReportHelper extends HttpServlet{
     public void AddDamage(){
         
     }
+    
+    // Add a new form for adding a rooms report
+
+    /**
+     * Increments the counter that the report.jsp uses to determine the 
+     * amount of input fields for room damages
+     * @param request
+     * @param response
+     * @return
+     */
     public HttpServletRequest AddRoom(HttpServletRequest request, HttpServletResponse response){
         int numOfRooms;
         if (request.getParameter("numOfRooms")!=null && !(request.getParameter("numOfRooms")).equals("")){
@@ -77,12 +88,21 @@ public class ReportHelper extends HttpServlet{
         return request;
     }
     
+    /**
+     * Uses information from the request to submit a report including subparts in the database
+     * @param request
+     * @param response
+     */
     public void submitReport(HttpServletRequest request, HttpServletResponse response){
-        
+        //Add report
+        //Add reportRoom
+        //Add reportRoomDamage
         String reportDate = request.getParameter("date");
         int reportBuildingId = 1; //some bookkeeping to be done with ID
         int reportCategory = Integer.parseInt(request.getParameter("category"));
         Report r =df.saveNewReport(reportDate,reportBuildingId,reportCategory);
+        System.out.println("Report ID");
+        System.out.println(r.getReportId());
         int reportId = r.getReportId();
         String roof  = request.getParameter("roof");
         String walls = request.getParameter("walls");
@@ -90,12 +110,25 @@ public class ReportHelper extends HttpServlet{
         df.saveNewReportExt(1,walls,reportBuildingId,reportId);
         
         
-        for (int roomCount = 0; roomCount <= (int)request.getAttribute("numOfRooms"); roomCount++) {
+        System.out.println("Ready for forLoop in submitReport");
+        int numOfRooms = 0;
+        if (request.getAttribute("numOfRooms")!=null) numOfRooms = (int)request.getAttribute("numOfRooms");
+         
+        for (int roomCount = 0; roomCount <= numOfRooms; roomCount++) {
+            System.out.println("when1");
+            System.out.println(request.getParameter("when1"));
+            System.out.println("when2");
+            System.out.println(request.getParameter("when2"));
             
+        ReportRoom rr=df.saveReportRoom(0, "ShouldGetFromRoom", r.getReportId());
+        
+        int rrId=rr.getRepRoomId();
+        String when = request.getParameter("when"+String.valueOf(roomCount+1));
+        String where = request.getParameter("where"+String.valueOf(roomCount+1));
+        String how = request.getParameter("how"+String.valueOf(roomCount+1));
+        String whatIsDone = request.getParameter("whatIsDone"+String.valueOf(roomCount+1));
+        df.saveReportRoomDamage(when, where, how, whatIsDone, "Add dmgType", rrId);
         
         }
-        String when = request.getParameter("buildingName");
-        String where = request.getParameter("buildingName");
-        String whatIsDone = request.getParameter("buildingName");
     }
 }
