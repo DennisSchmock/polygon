@@ -5,6 +5,7 @@
 
 <title>Login</title>
 <%@include file="Style/Header.jsp" %>
+<main>
 <h1>Login</h1>
 <form action="frontpage" method="POST">
     <input type="hidden" name="page" value="login"/>          
@@ -12,5 +13,5 @@
     <label>Password </label><input type="password" name="pwd" value="" /><br>
     <span  class="form-field-no-caption"><input type="submit" value="Login" /><br>
         </form>
-
+</main>
         <%@include file="Style/Footer.jsp" %>
