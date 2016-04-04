@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +14,15 @@ import java.util.List;
  */
 public class Customer {
     private String companyName;
-    private String contactPerson;
-    private String cusMail;
+    private String contactPerson; 
+    private String cusMail; 
     private String street;
     private int streetNumber;
     private int cusCVR;
     private int zip;
     private String city;
     private String phoneNumber;
+    private ArrayList<Contact> listOfContacts;
 
     public Customer(String companyName, String contactPerson, String cusMail, String street, int streetNumber, int cusCVR, int zip, String city, String phoneNumber) {
         this.companyName = companyName;
@@ -122,8 +124,17 @@ public class Customer {
     public List<Report> getReports() {
         return reports;
     }
+
+    /**
+     *
+     * @return the list of contacts
+     */
+    public ArrayList<Contact> getListOfContacts() {
+        return listOfContacts;
+    }
+
+    public void setListOfContacts(ArrayList<Contact> listOfContacts) {
+        this.listOfContacts = listOfContacts;
+    }
     
-    
-    
-   
 }
