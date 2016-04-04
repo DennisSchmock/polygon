@@ -120,6 +120,17 @@
                             <td><input type="text" name="whatIsDone${count.count}" value="" /></td>
 
                             </tr>
+                            
+                            <tr>
+                            <td>Moist scan:</td>
+                            <td><input type="text" name="moistScan${count.count}" value="" /></td>
+
+                            </tr>
+                            <tr>
+                            <td>moistMeasurePoint:</td>
+                            <td><input type="text" name="moistPoint${count.count}" value="" /></td>
+
+                            </tr>
                         </tbody>
                     </table>
                             
