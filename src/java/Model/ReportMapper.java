@@ -141,8 +141,8 @@ public class ReportMapper {
             System.out.println(e.getMessage());
         }
     }
-
-    //Getting data from the DB
+    
+    //Get a report from the DB
     public Report getReport(int id, Connection con) {
 
         String SQLString = "select * from Report where Report_Id=?";
@@ -164,7 +164,8 @@ public class ReportMapper {
             return null;
         }
     }
-
+    
+    //Get data of a room exterior in db
     public ReportRoomExterior getReportExt(int id, Connection con) {
 
         String SQLString = "select * from Report_Exteriour where Report_Ext_Id=?";
@@ -186,7 +187,8 @@ public class ReportMapper {
             return null;
         }
     }
-
+    
+    //get data of reported room from db
     public ReportRoom getReportRoom(int id, Connection con) {
 
         String SQLString = "select * from Report_Room where Report_Room_Id=?";
@@ -207,7 +209,8 @@ public class ReportMapper {
             return null;
         }
     }
-
+    
+    //get a reported damage from db
     public ReportRoomDamage getReportDamage(int id, Connection con) {
 
         String SQLString = "select * from Report_Room_Damage where Report_Room_Damage_Id=?";
@@ -232,7 +235,8 @@ public class ReportMapper {
             return null;
         }
     }
-
+    
+    //get a data of a report interior
     public ReportRoomInterior getReportInt(int id, Connection con) {
 
         String SQLString = "select * from Report_Room_Interiour where Report_Room_Interiour_Id=?";
@@ -254,7 +258,8 @@ public class ReportMapper {
             return null;
         }
     }
-
+    
+    //get a room recommndation from db
     public ReportRoomRecommendation getReportRec(int id, Connection con) {
 
         String SQLString = "select * from Report_Room_Recommendation where Report_Room_Recommendation_Id=?";
@@ -298,8 +303,9 @@ public class ReportMapper {
             return null;
         }
     }
-
-    public ArrayList<ReportRoom> getListOfReportRoom(int id, Connection con) {
+    
+    //take all the listed report rooms of a certain report
+    public ArrayList<ReportRoom> getListOfReportRoom(int id, Connection con){
         String SQLString = "select * from Report_Room where Report=?";
         ArrayList<ReportRoom> listOfRepRm = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -319,8 +325,9 @@ public class ReportMapper {
             return null;
         }
     }
-
-    public ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) {
+    
+    //take all damages of a certain report room
+    public ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con){
         String SQLString = "select * from Report_Room_Damage where Report_Room=?";
         ArrayList<ReportRoomDamage> listOfDmg = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -344,8 +351,9 @@ public class ReportMapper {
             return null;
         }
     }
-
-    public ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con) {
+    
+    //take all interiors data of a certain room 
+    public ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con){
         String SQLString = "select * from Report_Room_Interiour where Report_Room=?";
         ArrayList<ReportRoomInterior> listOfInt = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -366,8 +374,9 @@ public class ReportMapper {
             return null;
         }
     }
-
-    public ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con) {
+    
+    //take all recommendations of a ceratin reported room
+    public ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con){
         String SQLString = "select * from Report_Room_Recommendation where Report_Room=?";
         ArrayList<ReportRoomRecommendation> listOfRec = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
