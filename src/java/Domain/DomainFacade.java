@@ -6,6 +6,7 @@
 package Domain;
 
 import Model.DBFacade;
+import java.util.List;
 
 /**
  *
@@ -70,8 +71,28 @@ public class DomainFacade {
         dbFacade.addCustomer(customer);
     }
 
+    /**
+     * Returns an list of buildings, for an specific customer
+     * @param customerID ID of the customer that is to be loaded 
+     * @return An list of buildings related to the customerID
+     */
+    public List<Building> getListOfBuildings(int customerID) {
+        // When we have implemeted an hashmap, where should be some logic, to
+        // Find out if the hashmap is empty or not. Otherwise it loads it form 
+        // The database.
+        return dbFacade.getListOfbuildingsDB(customerID);
+    }
+
+    /**
+     * Take the building object that needs to be saved in the DB, and sends it
+     * to the DBFacade
+     * @param buildingToBeEdited Is the updated building object that needs to be
+     * saved in the database
+     */
+    public void Updatebuilding(Building buildingToBeEdited) {
+        dbFacade.updateBuildingDBFacade(buildingToBeEdited);
+    }
+
    
     
-    
-   
 }
