@@ -1,7 +1,7 @@
 <%-- 
     Document   : jsptemplate
     Created on : 
-    Author     : 
+    Author     : Dennis Schmock
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
