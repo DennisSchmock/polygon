@@ -65,7 +65,7 @@ textarea{
 }
 
 
-lsabel {
+label {
     float: left;
     width: 20%;
     text-align: right;
@@ -76,7 +76,7 @@ lsabel {
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
 }
-.fosrm-field-no-caption {
+.form-field-no-caption {
     margin-left: 20%;
     padding-left: 0.5em;
 }
