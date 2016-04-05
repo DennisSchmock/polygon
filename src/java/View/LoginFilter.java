@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebFilter(urlPatterns = {"", })
+@WebFilter(urlPatterns = {"/frontpagde", })
 public class LoginFilter implements Filter {
 
     @Override
@@ -34,7 +34,7 @@ public class LoginFilter implements Filter {
         
         //Get session, but do not create a new if it doesn't exist
         HttpSession session = req.getSession(false);
-        if(session ==null || session.getAttribute("loggedInUser")==null){
+        if(session ==null || session.getAttribute("loggedin")==null){
             res.sendRedirect(req.getContextPath()+"/index.jsp");
         } else{
             chain.doFilter(req, res);

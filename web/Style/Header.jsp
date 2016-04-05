@@ -38,7 +38,7 @@
                 <li><a href="frontpage?page=report">Report</a></li>
                 <li><a href="frontpage?page=addbuilding">Add building</a></li>
                 <li><a href="frontpage?page=addcustomer">Add customer</a></li>
-                <li><a href="frontpage?page=login">Login</a></li>
+                <li><a href="login?page=login">Login</a></li>
                 <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
             </ul>
         

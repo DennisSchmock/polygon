@@ -9,7 +9,7 @@
     <h1>Login</h1>
 
     <c:if test="${sessionScope.loggedin==null||sessionScope.loggedin==false}">
-        <form action="frontpage" method="POST">
+        <form action="login" method="POST">
             
             <input type="hidden" name="page" value="loguserin"/>          
             <label>Username</label><input type="text" name="username" value="" /><br>
