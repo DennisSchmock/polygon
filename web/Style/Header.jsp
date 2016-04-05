@@ -8,8 +8,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
         <link rel="stylesheet" type="text/css" href="Style/Style.css">
 
@@ -26,6 +24,7 @@
                 <li><a href="frontpage?page=report">Report</a></li>
                 <li><a href="frontpage?page=addbuilding">Add building</a></li>
                 <li><a href="frontpage?page=addcustomer">Add customer</a></li>
-                <li><a href="login?page=login">Login</a></li>
+                <li><a href="frontpage?page=login">Login</a></li>
+                <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
             </ul>
         

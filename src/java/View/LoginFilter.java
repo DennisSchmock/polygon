@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebFilter(urlPatterns = {"/frontpffage"})
+@WebFilter(urlPatterns = {"", })
 public class LoginFilter implements Filter {
 
     @Override
