@@ -63,11 +63,12 @@ public class ReportMapper {
 
     //saving a new report of a room in DB-Report_Room table
     public ReportRoom saveReportRoom(ReportRoom rr, Connection con) {
-        String SQLString = "insert into report_room(room_name,report) values (?,?)";
+        String SQLString = "insert into report_room(room_name,report,building_room) values (?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, rr.getRoomName());
             statement.setInt(2, rr.getReportId());
+            statement.setInt(3, rr.getBuildingRoomId());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
@@ -120,6 +121,25 @@ public class ReportMapper {
             }
         } catch (Exception e) {
             System.out.println("Fail in saving report room interior - saveReportInterior");
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    //saving a new room moist report in DB-report_room_moist table
+    public void saveReportMoist(ReportRoomMoist rm, Connection con) {
+        String SQLString = "insert into report_room_moist(report_room_moist_measured, report_room_moist_place,report_room_id) values (?,?,?)";
+        try (PreparedStatement statement
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, rm.getMoistMeasured());
+            statement.setString(2, rm.getMeasurePoint());
+            statement.setInt(3, rm.getReportRoom());
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                rm.setMoistMeasureId(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Fail in saving report moist - report_room_moist");
             System.out.println(e.getMessage());
         }
     }

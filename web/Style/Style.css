@@ -81,3 +81,7 @@ label {
     padding-left: 0.5em;
 }
 
+div.topbar{
+    float: right;
+}
+
