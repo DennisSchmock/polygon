@@ -5,7 +5,6 @@
  */
 package Domain;
 
-import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 /**
