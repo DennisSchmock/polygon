@@ -5,10 +5,8 @@
  */
 package Model;
 
-import Domain.Customer;
 import Domain.User;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,14 +20,16 @@ import java.util.logging.Logger;
  */
 public class UserMapper {
 
+    /**
+     * For saving a user to the database
+     * @param user User object to get put into the database
+     * @param con
+     */
     public void addUserToDB(User user, Connection con) {
         String SQLString = "insert into user (username,pwd) values (?,?)";
         try (
                 PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-
-            //int rowsInserted = statement.executeUpdate();
-            //ResultSet rs = statement.getGeneratedKeys();
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {        
             statement.execute();
         } catch (Exception e) {
             System.out.println("Failed at creating user");
@@ -62,7 +62,7 @@ public class UserMapper {
 
     User getUser(String userName, Connection con) {
         User user = null;
-        
+
         try {
 
             String sqlString = "SELECT username,customer_user.customer_id,pwd,fname,lname,"
@@ -82,10 +82,10 @@ public class UserMapper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 int customerId = rs.getInt("customer_id");
-                user = new User(userName, pwd, customerId, fName, lName, email, phone,companyname);
+                user = new User(userName, pwd, customerId, fName, lName, email, phone, companyname);
                 System.out.println(name + pwd + customerId);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
         }

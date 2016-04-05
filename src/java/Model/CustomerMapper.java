@@ -18,6 +18,11 @@ import java.util.ArrayList;
  */
 public class CustomerMapper {
 
+    /**
+     * This method takes the 
+     * @param cus the customer object
+     * @param con the connection to the database
+     */
     public void addCustomerToDB(Customer cus, Connection con) {
         String SQLString = "insert into customer (companyname,street,streetnumber,zipcode,phone,email,contactperson) values (?,?,?,?,?,?,?)";
         try (
