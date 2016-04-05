@@ -35,8 +35,4 @@ public class UserMapper {
 
     }
 
-    public void editCustomer() {
-
-    }
-
 }
