@@ -4,18 +4,19 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author daniel
  */
-public class BuildingRoom {
+public class BuildingRoom implements Serializable{
     private int roomId;
     private String roomName;
-    private List damages;
-    private List remarks;
-    private List moist;
+    
+    
+    // Do we keep info about damages in the object here as well?
     
     
     public BuildingRoom(int roomId, String roomName){
@@ -39,29 +40,5 @@ public class BuildingRoom {
         this.roomId = roomId;
     }
 
-    public List getDamages() {
-        return damages;
-    }
-
-    public void setDamages(List damages) {
-        this.damages = damages;
-    }
-
-    public List getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(List remarks) {
-        this.remarks = remarks;
-    }
-
-    public List getMoist() {
-        return moist;
-    }
-
-    public void setMoist(List moist) {
-        this.moist = moist;
-    }
-    
     
 }

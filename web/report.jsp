@@ -83,7 +83,7 @@
             
             
                     <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}" varStatus="count">
-                        <select name="roomSelect" id="roomSel">
+                        <select name="roomSelect${count.count}" id="roomSel${count.count}" selected="${buildingRooms[0].roomId}">
                         <c:forEach items="${buildingRooms}" var="room">
                             <option value="${room.roomId}">
                                 ${room.roomName}
@@ -93,6 +93,7 @@
                             
                         
                     </select>
+                        
                         
                     <table border="0">
 
@@ -131,6 +132,30 @@
                             <td><input type="text" name="moistPoint${count.count}" value="" /></td>
 
                             </tr>
+                            <tr>
+                            <td>Remarks for walls?</td>
+                            <td><input type="text" name="rWalls${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                            <td>Remarks for ceiling?</td>
+                            <td><input type="text" name="rCeil${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                            <td>Remarks for floor?</td>
+                            <td><input type="text" name="rFloor${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                            <td>Remarks for windows/doors?</td>
+                            <td><input type="text" name="rWinDoor${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                            <td><input type="text" name="" value="*If other type location here*" /></td>
+                            <td><input type="text" name="r1other${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                            <td><input type="text" name="" value="*If other type location here*" /></td>
+                            <td><input type="text" name="r2other${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            </tr>
                         </tbody>
                     </table>
                             
@@ -152,9 +177,7 @@
         </table>
                 </form>
     </div>
-    <div>
-        2nd div
-    </div>
+    
 
 
 
