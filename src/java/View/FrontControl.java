@@ -266,6 +266,12 @@ public class FrontControl extends HttpServlet {
         session.setAttribute("newbuilding", buildingToBeEdited);
     }
 
+    /**
+     * Method for logging in. 
+     * @param df
+     * @param request
+     * @param response
+     */
     public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
         String username = (String) request.getParameter("username");
         String pwd = (String) request.getParameter("pwd");

@@ -38,6 +38,13 @@ public class UserMapper {
 
     }
 
+    /**
+     * Method for validation a user
+     * @param userName 
+     * @param pwd the users password
+     * @param con the DB-connection
+     * @return
+     */
     public boolean validateUser(String userName, String pwd, Connection con) {
         try {
 
@@ -60,7 +67,13 @@ public class UserMapper {
 
     }
 
-    User getUser(String userName, Connection con) {
+    /**
+     * Method for retrieving a user from the Database and returning it as a user Object.
+     * @param userName
+     * @param con DB-connection
+     * @return a User Object
+     */
+    public User getUser(String userName, Connection con) {
         User user = null;
 
         try {

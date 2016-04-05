@@ -27,9 +27,18 @@ public class User {
         this.customerid = customerid;
     }
 
-   
-    
-     public User(String userName, String password, int customerid, String fName, String lName, String email, String phone,String companyName) {
+    /**
+     *
+     * @param userName
+     * @param password
+     * @param customerid
+     * @param fName
+     * @param lName
+     * @param email
+     * @param phone
+     * @param companyName
+     */
+    public User(String userName, String password, int customerid, String fName, String lName, String email, String phone,String companyName) {
         this.userName = userName;
         this.password = password;
         this.customerid = customerid;
