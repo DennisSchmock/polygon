@@ -4,6 +4,8 @@
     Author     : Daniel
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,6 +20,18 @@
             <a href="frontpage?page=index">  
                 <img src="${pageContext.request.contextPath}/images/polygon-logo.svg"/>
             </a>
+                <c:if test="${sessionScope.loggedin==true}">
+            <div class="topbar w3-container">
+                <c:out value="${sessionScope.user.companyName}"/><br> 
+                
+                <c:out value="${sessionScope.user.fName}"/> 
+                <c:out value="${sessionScope.user.lName}"/><br>
+                <a href="?page=logout">log out</a>
+            
+            
+            </div>
+                
+            </c:if>
         </header>
         
             <ul class="w3-navbar w3-blue">

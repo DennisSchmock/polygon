@@ -22,8 +22,20 @@ public class Customer {
     private int zip;
     private String city;
     private String phoneNumber;
-    private ArrayList<Contact> listOfContacts;
+    private ArrayList<User> listOfUsers;
 
+    /**
+     *
+     * @param companyName
+     * @param contactPerson
+     * @param cusMail
+     * @param street
+     * @param streetNumber
+     * @param cusCVR
+     * @param zip
+     * @param city
+     * @param phoneNumber
+     */
     public Customer(String companyName, String contactPerson, String cusMail, String street, int streetNumber, int cusCVR, int zip, String city, String phoneNumber) {
         this.companyName = companyName;
         this.contactPerson = contactPerson;
@@ -40,10 +52,6 @@ public class Customer {
         this.companyName = companyName;
         this.contactPerson = contactPerson;
     }
-    
-    
-    
-    
     
     private List<Building> buildings;
     private List<Report> reports;
@@ -129,12 +137,12 @@ public class Customer {
      *
      * @return the list of contacts
      */
-    public ArrayList<Contact> getListOfContacts() {
-        return listOfContacts;
+    public ArrayList<User> getListOfUsers() {
+        return listOfUsers;
     }
 
-    public void setListOfContacts(ArrayList<Contact> listOfContacts) {
-        this.listOfContacts = listOfContacts;
+    public void setListOfUsers(ArrayList<User> listOfUsers) {
+        this.listOfUsers = listOfUsers;
     }
     
 }

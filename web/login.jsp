@@ -22,8 +22,10 @@
     </c:if>
     <c:if test="${sessionScope.loggedin==true}">
         
-        Hello <c:out value="${sessionScope.user.userName}"/>
-        
+        Hello <c:out value="${sessionScope.user.fName}"/> <c:out value="${sessionScope.user.userName}"/>
+
+       
+            
     </c:if>
     
     
