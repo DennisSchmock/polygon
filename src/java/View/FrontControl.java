@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage","/login"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
@@ -66,7 +66,7 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
-            request=rh.process( request, response,df);
+            request = rh.process(request, response, df);
         }
 
         if (page.equalsIgnoreCase("reportSubmit")) {
@@ -81,17 +81,17 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addcustomer")) {
             url = "/addcustomer.jsp";
         }
-         if (page.equalsIgnoreCase("viewlistofbuildings")) {
-            findListOfBuilding(request, df, sessionObj); 
+        if (page.equalsIgnoreCase("viewlistofbuildings")) {
+            findListOfBuilding(request, df, sessionObj);
             url = "/viewlistofbuildings.jsp";
         }
-         if (page.equalsIgnoreCase("editBuilding")) {
-            findBuildingToBeEdit(request,sessionObj);
+        if (page.equalsIgnoreCase("editBuilding")) {
+            findBuildingToBeEdit(request, sessionObj);
             response.sendRedirect("editBuilding.jsp");
             return;
-         }
-         
-         /**
+        }
+
+        /**
          * sending a rediret is better, because a forward will add to the
          * database twice
          */
@@ -99,7 +99,7 @@ public class FrontControl extends HttpServlet {
             createBuilding(request, df, sessionObj);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
-        } 
+        }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             updateBuilding(request, df, sessionObj);
             response.sendRedirect("viewnewbuilding.jsp");
@@ -110,9 +110,9 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("customersubmitted.jsp");
             return;
         }
-        
-        if (page.equalsIgnoreCase("createuser")){
-            createUser(request,df,sessionObj);
+
+        if (page.equalsIgnoreCase("createuser")) {
+            createUser(request, df, sessionObj);
             response.sendRedirect("login");
             return;
         }
@@ -124,6 +124,11 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("loguserin")) {
             login(df, request, response);
             url = "/login.jsp";
+        }
+        if (page.equalsIgnoreCase("logout")) {
+            request.setAttribute("user", null);
+            request.setAttribute("loggedin", false);
+            request.getSession().invalidate();
         }
 
         RequestDispatcher dispatcher
@@ -200,52 +205,54 @@ public class FrontControl extends HttpServlet {
 
     /**
      * Loads a list of buildings from database for the customer_id Attribute
+     *
      * @param request
      * @param df
-     * @param sessionObj this method assumes that the Attribute customer_id
-     * is not null. Either this Attribute should be filled when an customer user
-     * logs on, or before an admin gets to the site.
-     * because it loads that
+     * @param sessionObj this method assumes that the Attribute customer_id is
+     * not null. Either this Attribute should be filled when an customer user
+     * logs on, or before an admin gets to the site. because it loads that
      */
     private void findListOfBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
 //        int customerID = (Integer) sessionObj.getAttribute("customer_id");
-        
+
         /**
          * This is just for testing. I have set the customerID by hardcode to 1
          */
         int customerID = 1;
-        List<Building> buildingList =   df.getListOfBuildings(customerID);
+        List<Building> buildingList = df.getListOfBuildings(customerID);
         sessionObj.setAttribute("listOfBuildings", buildingList);
     }
 
     /**
      * Finds the building to be displayed in the edit JSP Site
-     * @param request In this object it is looking for a parameter called buildingidEdit
-     * that should contain the id of the building to be display
-     * @param sessionObj The session object holds the list of the buildings for that
-     * customer. 
+     *
+     * @param request In this object it is looking for a parameter called
+     * buildingidEdit that should contain the id of the building to be display
+     * @param sessionObj The session object holds the list of the buildings for
+     * that customer.
      */
     private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj) {
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
-        
+
         for (Building building : listofbuildings) {
-            if(building.getBdgId() == buildingID){
+            if (building.getBdgId() == buildingID) {
                 sessionObj.setAttribute("buildingToBeEdited", building);
             }
         }
     }
 
     /**
-     * Updates the existing object of the building with the fields from 
-     * the form from the jsp site
+     * Updates the existing object of the building with the fields from the form
+     * from the jsp site
+     *
      * @param request holds the parameters (input fields)
      * @param df Db facade connection
-     * @param sessionObj Session object holds the buildingToBeEdited object, that
-     * that we have to change based on the input fields
+     * @param sessionObj Session object holds the buildingToBeEdited object,
+     * that that we have to change based on the input fields
      */
     private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
-        
+
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));
         buildingToBeEdited.setStreetAddress(request.getParameter("streetAddress"));
@@ -254,12 +261,11 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
-                
+
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
     }
-    
- 
+
     public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
         String username = (String) request.getParameter("username");
         String pwd = (String) request.getParameter("pwd");
@@ -275,7 +281,5 @@ public class FrontControl extends HttpServlet {
 
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
-    
-    
-    
+
 }

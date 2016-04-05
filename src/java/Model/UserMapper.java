@@ -41,7 +41,7 @@ public class UserMapper {
     public boolean validateUser(String userName, String pwd, Connection con) {
         try {
 
-            String sqlString = "select pwd from user where username = ?;";
+            String sqlString = "select pwd from customer_user where username = ?;";
             PreparedStatement stmt = con.prepareStatement(sqlString);
 
             stmt.setString(1, userName);
@@ -62,24 +62,30 @@ public class UserMapper {
 
     User getUser(String userName, Connection con) {
         User user = null;
-        String name = "";
-        String pwd = "";
-        int customerId;
+        
         try {
 
-            String sqlString = "select * from user where username = ?;";
+            String sqlString = "SELECT username,customer_user.customer_id,pwd,fname,lname,"
+                    + "customer_user.email,customer_user.phone, companyname "
+                    + "FROM customer_user,customer where username = ? and "
+                    + "customer_user.customer_id = customer.customer_id;";
             PreparedStatement stmt = con.prepareStatement(sqlString);
 
             stmt.setString(1, userName);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                name = rs.getString("username");
-                pwd = rs.getString("pwd");
-                customerId = rs.getInt("customerid");
-                user = new User(name, pwd, customerId);
+                String companyname = rs.getString("companyname");
+                String name = rs.getString("username");
+                String fName = rs.getString("fname");
+                String pwd = rs.getString("pwd");
+                String lName = rs.getString("lname");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                int customerId = rs.getInt("customer_id");
+                user = new User(userName, pwd, customerId, fName, lName, email, phone,companyname);
+                System.out.println(name + pwd + customerId);
             }
             
-
         } catch (SQLException ex) {
             Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
