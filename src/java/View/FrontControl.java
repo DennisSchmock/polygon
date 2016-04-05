@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -118,8 +119,11 @@ public class FrontControl extends HttpServlet {
 
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
-            request.getSession().setAttribute("test", "tester");
 
+        }
+        if (page.equalsIgnoreCase("loguserin")) {
+            login(df, request, response);
+            url = "/login.jsp";
         }
 
         RequestDispatcher dispatcher
@@ -255,8 +259,23 @@ public class FrontControl extends HttpServlet {
         session.setAttribute("newbuilding", buildingToBeEdited);
     }
     
+ 
+    public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
+        String username = (String) request.getParameter("username");
+        String pwd = (String) request.getParameter("pwd");
+
+        if (df.logUserIn(username, pwd)) {
+            request.getSession().setAttribute("loggedin", true);
+            User user = df.loadUser(username);
+            request.getSession().setAttribute("user", user);
+        } else {
+            request.getSession().setAttribute("loggedin", false);
+        }
+    }
+
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
-        
-    }      
+    }
+    
+    
     
 }

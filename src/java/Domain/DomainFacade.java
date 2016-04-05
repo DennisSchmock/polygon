@@ -92,6 +92,14 @@ public class DomainFacade {
     public void Updatebuilding(Building buildingToBeEdited) {
         dbFacade.updateBuildingDBFacade(buildingToBeEdited);
     }
+    
+    public boolean logUserIn(String userName, String pwd){
+        return dbFacade.validateUser(userName, pwd);
+    }
+
+    public User loadUser(String username) {
+    return dbFacade.loadUser(username);
+    }
 
    
     

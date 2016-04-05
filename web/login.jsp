@@ -6,12 +6,26 @@
 <title>Login</title>
 <%@include file="Style/Header.jsp" %>
 <main>
-<h1>Login</h1>
-<form action="frontpage" method="POST">
-    <input type="hidden" name="page" value="login"/>          
-    <label>Username</label><input type="text" name="username" value="" /><br>
-    <label>Password </label><input type="password" name="pwd" value="" /><br>
-    <span  class="form-field-no-caption"><input type="submit" value="Login" /><br>
+    <h1>Login</h1>
+
+    <c:if test="${sessionScope.loggedin==null||sessionScope.loggedin==false}">
+        <form action="frontpage" method="POST">
+            
+            <input type="hidden" name="page" value="loguserin"/>          
+            <label>Username</label><input type="text" name="username" value="" /><br>
+            <label>Password </label><input type="password" name="pwd" value="" /><br>
+            <input type="submit" value="Login" /><br>
         </form>
-</main>
-        <%@include file="Style/Footer.jsp" %>
+         <c:if test="${sessionScope.loggedin!=null&&sessionScope.loggedin==false}">
+                Wrong user name or password!
+            </c:if>
+    </c:if>
+    <c:if test="${sessionScope.loggedin==true}">
+        
+        Hello <c:out value="${sessionScope.user.userName}"/>
+        
+    </c:if>
+    
+    
+    </main>
+    <%@include file="Style/Footer.jsp" %>
