@@ -46,10 +46,17 @@ public class DomainFacade {
         return r;
     }
     
-    public ReportRoom saveReportRoom(int repRoomId, String roomName, int reportId) {
+    public ReportRoom saveReportRoom(int repRoomId, String roomName, int reportId, int buildingId) {
         ReportRoom rr = new ReportRoom(0,roomName,reportId);
+        rr.setBuildingRoomId(buildingId);
         rr=dbFacade.saveReportRoom(rr);
         return rr;
+    }
+    
+    public void saveReportMoist(int moistMeasured,String measurePoint, int reportRoom){
+        ReportRoomMoist rrm = new ReportRoomMoist(0,moistMeasured,measurePoint, reportRoom);
+        
+        dbFacade.saveReportMoist(rrm);
     }
     
     public void saveReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
@@ -60,6 +67,16 @@ public class DomainFacade {
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId){
         ReportRoomExterior r = new ReportRoomExterior(0,repExtDescription,repExtPic,reportId); // Fix
         dbFacade.saveReportExt(r);
+    }
+    
+    public void saveReportRoomRec(String recommendation, int repRoomId) {
+        ReportRoomRecommendation rrr = new ReportRoomRecommendation(recommendation, repRoomId);
+        dbFacade.saveReportRoomRec(rrr);
+    }
+    
+    public void saveReportInterior(String repRoomIntName, String remark, int repRoomId) {
+        ReportRoomInterior ri = new ReportRoomInterior(repRoomIntName, remark, repRoomId);
+        dbFacade.saveReportInterior(ri);
     }
     
 //    public void saveNewReport(String date, int buildingId, int category){

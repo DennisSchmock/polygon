@@ -15,6 +15,7 @@ public class ReportRoom {
     private int repRoomId;
     private String roomName;
     private int reportId;
+    private int buildingRoomId;
     private ArrayList<ReportRoomDamage> listOfDamages;
     private ArrayList<ReportRoomInterior> listOfInt;
     private ArrayList<ReportRoomRecommendation> listOfRec;
@@ -64,8 +65,8 @@ public class ReportRoom {
     public ArrayList<ReportRoomInterior> getListOfInt() {
         return listOfInt;
     }
-
-    public void setListOfInt(ArrayList<ReportRoomInterior> listOfInt) {
+    
+        public void setListOfInt(ArrayList<ReportRoomInterior> listOfInt) {
         this.listOfInt = listOfInt;
     }
 
@@ -75,6 +76,14 @@ public class ReportRoom {
 
     public void setListOfRec(ArrayList<ReportRoomRecommendation> listOfRec) {
         this.listOfRec = listOfRec;
+    }
+
+    public int getBuildingRoomId() {
+        return buildingRoomId;
+    }
+
+    public void setBuildingRoomId(int buildingRoomId) {
+        this.buildingRoomId = buildingRoomId;
     }
     
 }

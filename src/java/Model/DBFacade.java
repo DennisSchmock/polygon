@@ -139,11 +139,17 @@ public class DBFacade {
     public void saveContact(Contact c) {
         cm.saveContact(c, con);
     }
+    
+    public void saveReportMoist (ReportRoomMoist rrm){
+        rm.saveReportMoist(rrm, con);
+    
+    }
 
     public ArrayList<Contact> getListOfContacts(int id) {
         return cm.getListOfContacts(id, con);
     }
 
+    
     /**
      * Sends the building object to be saved to the mapper
      *
