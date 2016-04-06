@@ -62,7 +62,7 @@ public class FrontControl extends HttpServlet {
         System.out.println(page);
 
         if (page == null) {
-            page = "/report.jsp";
+            page = "/index.jsp";
         }
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";

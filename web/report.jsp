@@ -24,17 +24,13 @@
                 <td>Building Name</td>
                 <td>Adress</td>
                 <td>Zip Code</td>
-                <td>
-                    Some extra info
-                </td>    
+                    
                 </tr>
                 <tr>
                 <td>${sessionScope.testBuilding.buildingName}</td>
                 <td>${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}</td>
                 <td>${sessionScope.testBuilding.zipCode}</td>
-                <td>
-                    Some extra info
-                </td>    
+                   
                 </tr>
             </tbody>
         </table>
@@ -46,7 +42,8 @@
         <div>
             <form action="frontpage" method="post">
                 <input type="hidden" name="page" value="report" />
-        <table border="0">
+                <table>
+
 
             <tbody>
                 <tr>
@@ -64,11 +61,10 @@
                 <tr>
                 <td>Category</td>
                 <td><select name="category">
+                        <option>0</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
                     </select></td>
                 </tr>
                 <tr>
@@ -95,15 +91,15 @@
                     </select>
                         
                         
-                    <table border="0">
-
+                        <table border="0" cellspacing="5" cellpadding="5">
+ 
                         <tbody>
                             <tr>
                             <td>Has there been damage to the room? ${chosenRoom}</td>
                             <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
                             </tr>
                             <tr>
-                            <td>When (in the form of (YYYY-MM-DD)? when${count.count}</td>
+                            <td>When (in the form of (YYYY-MM-DD)? </td>
                             <td><input type="text" name="when${count.count}" value="" /></td>
 
                             </tr>
@@ -122,6 +118,7 @@
 
                             </tr>
                             
+                            
                             <tr>
                             <td>Moist scan:</td>
                             <td><input type="text" name="moistScan${count.count}" value="" /></td>
@@ -132,32 +129,45 @@
                             <td><input type="text" name="moistPoint${count.count}" value="" /></td>
 
                             </tr>
+                            <br>
                             <tr>
                             <td>Remarks for walls?</td>
-                            <td><input type="text" name="rWalls${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="rWalls${count.count}" value="" /></td>
                             </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
                             <tr>
                             <td>Remarks for ceiling?</td>
-                            <td><input type="text" name="rCeil${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="rCeil${count.count}" value="" /></td>
                             </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
                             <tr>
                             <td>Remarks for floor?</td>
-                            <td><input type="text" name="rFloor${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="rFloor${count.count}" value="" /></td>
                             </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
                             <tr>
                             <td>Remarks for windows/doors?</td>
-                            <td><input type="text" name="rWinDoor${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="rWinDoor${count.count}" value="" /></td>
                             </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
                             <tr>
-                            <td><input type="text" name="" value="*If other type location here*" /></td>
-                            <td><input type="text" name="r1other${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="r1otherLoc" value="*If other type location here*" size="35"/></td>
+                            <td><input type="text" name="r1other${count.count}" value="" /></td>
                             </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
                             <tr>
-                            <td><input type="text" name="" value="*If other type location here*" /></td>
-                            <td><input type="text" name="r2other${count.count}" value="" /><input type="file" name="" value="" /></td>
+                            <td><input type="text" name="r2otherLoc" value="*If other type location here*" size="35"/></td>
+                            <td><input type="text" name="r2other${count.count}" value="" /></td>
+                            </tr>
+                            <tr><td></td><td><input type="file" name="" value="" /></td></tr>
+                    <tr>
+                            <td>Recommendations for this room</td>
+                            <td><input type="text" name="recommendation${count.count}" value="" size="35" /></td>
                             </tr>
                         </tbody>
                     </table>
+                            
+                            
                             
 
                 </c:forEach>
@@ -169,23 +179,28 @@
                 <tr>
                 <td><input type="file" name="Image of Building" value="" /></td>
                 <td><input type="hidden" name="command" value="reportSubmit">
+                    <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
                     <p><input type="submit" name="submit"></p></td>
                 
                 </tr>
                 
             </tbody>
         </table>
-                </form>
-    </div>
+                
     
+                
+                
+                            
+    </form>
 
-
+</div>
 
     <form action="frontpage?page=report" method="POST">
         <input type="hidden" name="command" value="reportAddRoom">
         <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
-        <td><input type="submit" value="Add Room" />${requestScope.numOfRooms}</td>
+        <input type="submit" value="Add Room" />
     </form>
+    
 
 </main>
 
