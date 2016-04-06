@@ -36,10 +36,7 @@ public class DBFacadeTest {
     public void testMain() {
     }
 
-//    @Test
-//    public void testGetInstance() {
-//    }
-//
+
 //    @Test
 //    public void testValidateUser() {
 //    }
