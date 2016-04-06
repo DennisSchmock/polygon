@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import Domain.*;
 
 /**
  *
@@ -16,15 +17,20 @@ import static org.junit.Assert.*;
  */
 public class DBFacadeTest {
     
+        DBFixture fixture;
+        DBFacade dbf;
+
+    
     public DBFacadeTest() {
         
     }
     
     @Before
     public void setUp() throws Exception {
-        JdbcTest test = new JdbcTest();
-        test.setUp();
-        DBFacade dbf = DBFacade.getInstance();
+        DBFixture fixture = new DBFixture();
+        fixture.setUp();
+        dbf = DBFacade.getInstance();
+        dbf.setCon(fixture.getConnection());
     }
 
     @Test
@@ -35,9 +41,15 @@ public class DBFacadeTest {
 //    public void testGetInstance() {
 //    }
 //
-//    @Test
-//    public void testValidateUser() {
-//    }
+    @Test
+    public void testValidateUser() {
+        dbf.createUserDBFacade(null);
+    }
+    
+    @Test
+    public void createUserDBFacade() {
+        
+    }
 //
 //    @Test
 //    public void testSaveNewReport() {
@@ -135,8 +147,8 @@ public class DBFacadeTest {
 //    public void testUpdateBuildingDBFacade() {
 //    }
 //
-//    @Test
-//    public void testLoadUser() {
-//    }
+    @Test
+    public void testLoadUser() {
+    }
     
 }
