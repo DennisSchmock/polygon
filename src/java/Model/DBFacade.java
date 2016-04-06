@@ -183,7 +183,7 @@ public class DBFacade {
      *
      */
     public void updateBuildingDBFacade(Building updatedBuildObj) {
-        bm.updateBuildingBm(updatedBuildObj, getCon());
+        bm.updateBuildingBm(updatedBuildObj, con);
     }
     
     
@@ -193,7 +193,7 @@ public class DBFacade {
     }
 
     public User loadUser(String username) {
-        return um.getUser(username, getCon());
+        return um.getUser(username, con);
     }
     
     /**

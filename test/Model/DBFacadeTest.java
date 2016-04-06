@@ -36,6 +36,9 @@ public class DBFacadeTest {
         fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
+        System.out.println(fixture.getConnection()!=null);
+        System.out.println(fixture.getConnection().isClosed());
+        System.out.println(fixture.getConnection());
         dbf.setCon(fixture.getConnection());
     }
 
@@ -53,83 +56,83 @@ public class DBFacadeTest {
 //    }
 //
 
-    /**
-     *Validation of a user.
-     * First creates an user, and saves it to the database.
-     * Then calls the validate method to check the password
-     */
-        @Test
-    public void testValidateUser1() {
-        String username ="HejmedDig";
-        String password = "HELLo";
-        
-        User user = new User(username, password, 1, null, null, null, null, null);
-        dbf.createUserDBFacade(user);
-        
-        
-        boolean expected = true;
-        boolean actual = dbf.validateUser(username, password);
-        
-            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-        
-    }
-    
-    /**
-     *Test for difference in captions
-     */
+//    /**
+//     *Validation of a user.
+//     * First creates an user, and saves it to the database.
+//     * Then calls the validate method to check the password
+//     */
+//        @Test
+//    public void testValidateUser1() {
+//        String username ="HejmedDig";
+//        String password = "HELLo";
+//        
+//        User user = new User(username, password, 1, null, null, null, null, null);
+//        dbf.createUserDBFacade(user);
+//        
+//        
+//        boolean expected = true;
+//        boolean actual = dbf.validateUser(username, password);
+//        
+//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+//        
+//    }
+//    
+//    /**
+//     *Test for difference in captions
+//     */
+////    @Test
+//    public void testValidateUser2() {
+//        String username ="HejmedDig";
+//        String password = "HELLo";
+//        
+//        User user = new User(username, password, 1, null, null, null, null, null);
+//        dbf.createUserDBFacade(user);
+//        
+//        
+//        boolean expected = false;
+//        boolean actual = dbf.validateUser(username, "HeLLO");
+//        
+//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+//        
+//    }
+//    
+//    /**
+//     * difference in username
+//     */
 //    @Test
-    public void testValidateUser2() {
-        String username ="HejmedDig";
-        String password = "HELLo";
-        
-        User user = new User(username, password, 1, null, null, null, null, null);
-        dbf.createUserDBFacade(user);
-        
-        
-        boolean expected = false;
-        boolean actual = dbf.validateUser(username, "HeLLO");
-        
-            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-        
-    }
-    
-    /**
-     * difference in username
-     */
-    @Test
-    public void testValidateUser3() {
-        String username ="HejmedDig";
-        String password = "HELLo";
-        
-        User user = new User(username, password, 1, null, null, null, null, null);
-        dbf.createUserDBFacade(user);
-        
-        
-        boolean expected = false;
-        boolean actual = dbf.validateUser("medDig", password);
-        
-            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-        
-    }
-    
-    /**
-     * Test with password difference in just a space
-     */
-    @Test
-    public void testValidateUser4() {
-        String username ="HejmedDig";
-        String password = "HELLo";
-        
-        User user = new User(username, password, 1, null, null, null, null, null);
-        dbf.createUserDBFacade(user);
-        
-        
-        boolean expected = false;
-        boolean actual = dbf.validateUser("HELLo ", password);
-        
-            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-        
-    }
+//    public void testValidateUser3() {
+//        String username ="HejmedDig";
+//        String password = "HELLo";
+//        
+//        User user = new User(username, password, 1, null, null, null, null, null);
+//        dbf.createUserDBFacade(user);
+//        
+//        
+//        boolean expected = false;
+//        boolean actual = dbf.validateUser("medDig", password);
+//        
+//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+//        
+//    }
+//    
+//    /**
+//     * Test with password difference in just a space
+//     */
+//    @Test
+//    public void testValidateUser4() {
+//        String username ="HejmedDig";
+//        String password = "HELLo";
+//        
+//        User user = new User(username, password, 1, null, null, null, null, null);
+//        dbf.createUserDBFacade(user);
+//        
+//        
+//        boolean expected = false;
+//        boolean actual = dbf.validateUser("HELLo ", password);
+//        
+//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+//        
+//    }
     
     /**
      * Test to see if a user is created the right way.
@@ -266,136 +269,136 @@ public class DBFacadeTest {
 //    }
 //
 
-    @Test
-    public void testMain() {
-    }
-
-    @Test
-    public void testGetInstance() {
-    }
-
-    @Test
-    public void testGetCustomer() {
-    }
-
-    @Test
-    public void testValidateUser() {
-    }
-
-    @Test
-    public void testSaveNewReport() {
-    }
-
-    @Test
-    public void testSaveReportRoom() {
-    }
-
-    @Test
-    public void testSaveReportExt() {
-    }
-
-    @Test
-    public void testSaveReportRoomDamage() {
-    }
-
-    @Test
-    public void testSaveReportInterior() {
-    }
-
-    @Test
-    public void testSaveReportRoomRec() {
-    }
-
-    @Test
-    public void testGetReport() {
-    }
-
-    @Test
-    public void testGetReportExt() {
-    }
-
-    @Test
-    public void testGetReportRoom() {
-    }
-
-    @Test
-    public void testGetReportDamage() {
-    }
-
-    @Test
-    public void testGetReportInt() {
-    }
-
-    @Test
-    public void testGetReportRec() {
-    }
-
-    @Test
-    public void testGetListOfExt() {
-    }
-
-    @Test
-    public void testGetListOfReportRoom() {
-    }
-
-    @Test
-    public void testGetListOfDamages() {
-    }
-
-    @Test
-    public void testGetListOfInt() {
-    }
-
-    @Test
-    public void testGetListOfRec() {
-    }
-
-    @Test
-    public void testAddCustomer() {
-    }
-
-    @Test
-    public void testSaveContact() {
-    }
-
-    @Test
-    public void testSaveReportMoist() {
-    }
-
-    @Test
-    public void testGetListOfContacts() {
-    }
-
-    @Test
-    public void testSaveNewBuilding() {
-    }
-
-    @Test
-    public void testGetListOfbuildingsDB() {
-    }
-
-    @Test
-    public void testUpdateBuildingDBFacade() {
-    }
-
-    @Test
-    public void testNewReportToDB() {
-    }
-
-    @Test
-    public void testLoadUser() {
-    }
-
-    @Test
-    public void testCreateUserDBFacade() {
-    }
-
-    @Test
-    public void testGetCon() {
-    }
-
-    @Test
-    public void testSetCon() {
-    }
-    
+//    @Test
+//    public void testMain() {
+//    }
+//
+//    @Test
+//    public void testGetInstance() {
+//    }
+//
+//    @Test
+//    public void testGetCustomer() {
+//    }
+//
+//    @Test
+//    public void testValidateUser() {
+//    }
+//
+//    @Test
+//    public void testSaveNewReport() {
+//    }
+//
+//    @Test
+//    public void testSaveReportRoom() {
+//    }
+//
+//    @Test
+//    public void testSaveReportExt() {
+//    }
+//
+//    @Test
+//    public void testSaveReportRoomDamage() {
+//    }
+//
+//    @Test
+//    public void testSaveReportInterior() {
+//    }
+//
+//    @Test
+//    public void testSaveReportRoomRec() {
+//    }
+//
+//    @Test
+//    public void testGetReport() {
+//    }
+//
+//    @Test
+//    public void testGetReportExt() {
+//    }
+//
+//    @Test
+//    public void testGetReportRoom() {
+//    }
+//
+//    @Test
+//    public void testGetReportDamage() {
+//    }
+//
+//    @Test
+//    public void testGetReportInt() {
+//    }
+//
+//    @Test
+//    public void testGetReportRec() {
+//    }
+//
+//    @Test
+//    public void testGetListOfExt() {
+//    }
+//
+//    @Test
+//    public void testGetListOfReportRoom() {
+//    }
+//
+//    @Test
+//    public void testGetListOfDamages() {
+//    }
+//
+//    @Test
+//    public void testGetListOfInt() {
+//    }
+//
+//    @Test
+//    public void testGetListOfRec() {
+//    }
+//
+//    @Test
+//    public void testAddCustomer() {
+//    }
+//
+//    @Test
+//    public void testSaveContact() {
+//    }
+//
+//    @Test
+//    public void testSaveReportMoist() {
+//    }
+//
+//    @Test
+//    public void testGetListOfContacts() {
+//    }
+//
+//    @Test
+//    public void testSaveNewBuilding() {
+//    }
+//
+//    @Test
+//    public void testGetListOfbuildingsDB() {
+//    }
+//
+//    @Test
+//    public void testUpdateBuildingDBFacade() {
+//    }
+//
+//    @Test
+//    public void testNewReportToDB() {
+//    }
+//
+//    @Test
+//    public void testLoadUser() {
+//    }
+//
+//    @Test
+//    public void testCreateUserDBFacade() {
+//    }
+//
+//    @Test
+//    public void testGetCon() {
+//    }
+//
+//    @Test
+//    public void testSetCon() {
+//    }
+//    
 }

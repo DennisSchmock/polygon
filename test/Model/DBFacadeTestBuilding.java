@@ -6,8 +6,10 @@
 package Model;
 
 import Domain.Building;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,19 +19,24 @@ import static org.junit.Assert.*;
  * @author dennisschmock
  */
 public class DBFacadeTestBuilding {
-
+    DBFixture fixture;
     DBFacade dbf;
-    DBFixture test;
-
+        
+        
     public DBFacadeTestBuilding() {
 
     }
 
     @Before
     public void setUp() throws Exception {
-        test = new DBFixture();
-        test.setUp();
+        fixture = new DBFixture();
+        fixture.setUp();
         dbf = DBFacade.getInstance();
+        System.out.println(fixture.getConnection()!=null);
+        System.out.println(fixture.getConnection().isClosed());
+        Connection con =fixture.getConnection();
+        con.setAutoCommit(true);
+        dbf.setCon(con);
     }
 
 //
@@ -39,13 +46,15 @@ public class DBFacadeTestBuilding {
 //
     @Test
     public void testSaveNewBuilding() {
-        Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
+        
+        Building b = new Building("vor Fredfdasflser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
-        dbf.saveNewBuilding(new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord"));
-        Building b2;
-        List<Building> builds = dbf.getListOfbuildingsDB(1);
-        b2 = builds.get(0);
-        assertTrue(dbf.getListOfbuildingsDB(1).size() == 1);
+        
+        dbf.saveNewBuilding(b);
+        Building b2=null;
+        List<Building> builds=dbf.getListOfbuildingsDB(1);
+        if (!builds.isEmpty())b2=builds.get(0);
+        assertTrue("Building size wrong",builds.size()==1);
         assertTrue("Getting building out failed", b2 != null);
         assertTrue("Getting same building back failed", b2.equals(b));
     }
@@ -61,5 +70,7 @@ public class DBFacadeTestBuilding {
 //    @Test
 //    public void testLoadUser() {
 //    }
-
+    public void tearDown() throws SQLException {
+        fixture.closeConnection();
+    }
 }

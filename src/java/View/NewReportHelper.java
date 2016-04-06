@@ -123,11 +123,15 @@ public class NewReportHelper extends HttpServlet {
         //Add report
         //Add reportRoom
         //Add reportRoomDamage
+        Report report;
+        List<ReportRoom> reportRooms;
+        
         
         int reportCategory = Integer.parseInt(request.getParameter("category"));
         int buildingId = 1;
         String reportDate = request.getParameter("date");    
-        Report report = new Report( reportDate, buildingId, reportCategory);
+        report = new Report( reportDate, buildingId, reportCategory);
+        
         
         
         
