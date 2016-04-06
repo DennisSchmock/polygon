@@ -30,7 +30,7 @@ public class BuildingMapper {
     public void saveNewBuildingDB(Building b, Connection con) {
             String sqlString = "insert into building(building_name, building_m2, "
                     + "building_adress, building_housenumber, building_zip, "
-                    + "building_pic, building_use, building_buildyear, customer_id ) values(?,?,?,?,?,?,?,?,?) ";
+                    + "building_pic, building_use, building_buildyear) values(?,?,?,?,?,?,?,?) ";
         try {
             PreparedStatement statement = con.prepareStatement(sqlString);
             statement.setString(1, b.getBuildingName());
@@ -41,7 +41,6 @@ public class BuildingMapper {
             statement.setInt(6, b.getBuilding_pic());
             statement.setString(7, b.getUseOfBuilding());
             statement.setInt(8, b.getBuildingYear());
-            statement.setInt(9, b.getCustId());
             statement.execute();
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN SaveNewBuildingDB " +ex.getMessage());

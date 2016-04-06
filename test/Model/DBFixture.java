@@ -344,7 +344,7 @@ public class DBFixture {
     }
 
     public void tearDown() throws SQLException {
-        getConnection().close();
+        
     }
 
     /**
@@ -353,6 +353,7 @@ public class DBFixture {
     public Connection getConnection() {
         return connection;
     }
+    
 
     /**
      * @param connection the connection to set

@@ -27,7 +27,7 @@ public class DBFacadeTest {
     
     @Before
     public void setUp() throws Exception {
-        DBFixture fixture = new DBFixture();
+        fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
         dbf.setCon(fixture.getConnection());
