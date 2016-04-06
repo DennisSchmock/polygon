@@ -6,6 +6,7 @@
 package Model;
 
 import Domain.Building;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +35,9 @@ public class DBFacadeTestBuilding {
         dbf = DBFacade.getInstance();
         System.out.println(fixture.getConnection()!=null);
         System.out.println(fixture.getConnection().isClosed());
-        dbf.setCon(fixture.getConnection());
+        Connection con =fixture.getConnection();
+        con.setAutoCommit(true);
+        dbf.setCon(con);
     }
 
     
@@ -47,6 +50,7 @@ public class DBFacadeTestBuilding {
 //
     @Test
     public void testSaveNewBuilding() {
+        
         Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
         
@@ -70,5 +74,7 @@ public class DBFacadeTestBuilding {
 //    @Test
 //    public void testLoadUser() {
 //    }
-    
+    public void tearDown() throws SQLException {
+        fixture.closeConnection();
+    }
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBFixture {
 
@@ -344,7 +346,7 @@ public class DBFixture {
     }
 
     public void tearDown() throws SQLException {
-        connection.close();
+        
     }
 
     /**
@@ -352,6 +354,14 @@ public class DBFixture {
      */
     public Connection getConnection() {
         return connection;
+    }
+    
+    public void closeConnection(){
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBFixture.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
