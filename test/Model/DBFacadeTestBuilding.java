@@ -35,6 +35,7 @@ public class DBFacadeTestBuilding {
         dbf = DBFacade.getInstance();
         System.out.println(fixture.getConnection()!=null);
         System.out.println(fixture.getConnection().isClosed());
+        System.out.println(fixture.getConnection());
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
         dbf.setCon(con);
@@ -60,17 +61,43 @@ public class DBFacadeTestBuilding {
         if (!builds.isEmpty())b2=builds.get(0);
         assertTrue("Building size wrong",builds.size()==1);
         assertTrue("Getting building out failed", b2 != null);
-        assertTrue("Getting same building back failed", b2.equals(b));
+        assertTrue("Getting same building back failed", compareBuildings(b,b2));
     }
-//
-//    @Test
-//    public void testGetListOfbuildingsDB() {
-//    }
-//
-//    @Test
-//    public void testUpdateBuildingDBFacade() {
-//    }
-//
+    
+    public boolean compareBuildings(Building b1, Building b2){
+        boolean equals;
+        equals = b1.getBuildingName().equals(b2.getBuildingName());
+        if (b1.getBuildingSize()!=b2.getBuildingSize() || b1.getBuildingYear()!= b2.getBuildingYear()){
+            equals=false;
+        }
+        return equals;
+    }
+
+    @Test
+    public void testGetListOfbuildingsDB() {
+       Building b = new Building("Vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
+        b.setCustId(1);
+        dbf.saveNewBuilding(b); 
+        dbf.saveNewBuilding(b);
+        dbf.saveNewBuilding(b); 
+        List<Building> builds=dbf.getListOfbuildingsDB(1);
+        assertTrue("Building size wrong",builds.size()==3);
+    }
+
+    @Test
+    public void testUpdateBuildingDBFacade() {
+         Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
+        b.setCustId(1);
+        dbf.saveNewBuilding(b);
+        b.setBdgId(1);
+        b.setBuildingName("New Name");
+        b.setBuildingSize(100);
+        dbf.updateBuildingDBFacade(b);
+        Building b2 = dbf.getListOfbuildingsDB(1).get(0);
+        assertTrue("Building name wrong",b2.getBuildingName().equals("New Name"));
+        assertTrue("Building size wrong",b2.getBuildingSize()==100);
+    }
+
 //    @Test
 //    public void testLoadUser() {
 //    }

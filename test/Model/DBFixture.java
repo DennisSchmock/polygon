@@ -11,7 +11,7 @@ public class DBFixture {
 
     private Connection connection;
     private static String driver = "com.mysql.jdbc.Driver";
-    private static String URL = "jdbc:mysql://localhost:3306/Polytest";
+    private static String URL = "jdbc:mysql://localhost:3306/polytest";
     private static String id = "root";			
     private static String pw = "kodeord";
 
