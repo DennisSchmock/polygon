@@ -8,6 +8,8 @@ package Model;
 import Domain.Building;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -30,6 +32,8 @@ public class DBFacadeTestBuilding {
         fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
+        System.out.println(fixture.getConnection()!=null);
+        System.out.println(fixture.getConnection().isClosed());
         dbf.setCon(fixture.getConnection());
     }
 
@@ -47,6 +51,7 @@ public class DBFacadeTestBuilding {
     public void testSaveNewBuilding() {
         Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
+        
         dbf.saveNewBuilding(b);
         Building b2=null;
         List<Building> builds=dbf.getListOfbuildingsDB(1);

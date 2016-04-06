@@ -30,6 +30,8 @@ public class DBFacadeTest {
         DBFixture fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
+        System.out.println(fixture.getConnection()!=null);
+        System.out.println(fixture.getConnection().isClosed());
         dbf.setCon(fixture.getConnection());
     }
 
