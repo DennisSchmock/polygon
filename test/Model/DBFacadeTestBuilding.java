@@ -17,22 +17,20 @@ import static org.junit.Assert.*;
  * @author dennisschmock
  */
 public class DBFacadeTestBuilding {
+
     DBFacade dbf;
+    DBFixture test;
+
     public DBFacadeTestBuilding() {
-        
+
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        DBFixture test = new DBFixture();
+        test = new DBFixture();
         test.setUp();
         dbf = DBFacade.getInstance();
     }
-
-    @Test
-    public void testMain() {
-    }
-
 
 //
 //    @Test
@@ -45,9 +43,9 @@ public class DBFacadeTestBuilding {
         b.setCustId(1);
         dbf.saveNewBuilding(new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord"));
         Building b2;
-        List<Building> builds=dbf.getListOfbuildingsDB(1);
-        b2=builds.get(0);
-        assertTrue(dbf.getListOfbuildingsDB(1).size()==1);
+        List<Building> builds = dbf.getListOfbuildingsDB(1);
+        b2 = builds.get(0);
+        assertTrue(dbf.getListOfbuildingsDB(1).size() == 1);
         assertTrue("Getting building out failed", b2 != null);
         assertTrue("Getting same building back failed", b2.equals(b));
     }
@@ -63,5 +61,5 @@ public class DBFacadeTestBuilding {
 //    @Test
 //    public void testLoadUser() {
 //    }
-    
+
 }

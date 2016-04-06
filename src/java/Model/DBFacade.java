@@ -162,7 +162,8 @@ public class DBFacade {
      * @param b A Building object that is to be saved in the database
      */
     public void saveNewBuilding(Building b) {
-        bm.saveNewBuildingDB(b, getCon());
+        bm.saveNewBuildingDB(b, con);
+        System.out.println("Saved building");
     }
 
     /**
@@ -172,7 +173,7 @@ public class DBFacade {
      * @return An list of buildings related to the customerID
      */
     public List<Building> getListOfbuildingsDB(int customerID) {
-        return bm.getListOfBuildingsBM(customerID, getCon());
+        return bm.getListOfBuildingsBM(customerID, con);
     }
 
     /**
