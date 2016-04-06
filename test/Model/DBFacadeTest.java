@@ -16,15 +16,20 @@ import static org.junit.Assert.*;
  */
 public class DBFacadeTest {
     
+        DBFixture fixture;
+        DBFacade dbf;
+
+    
     public DBFacadeTest() {
         
     }
     
     @Before
     public void setUp() throws Exception {
-        JdbcTest test = new JdbcTest();
-        test.setUp();
-        DBFacade dbf = DBFacade.getInstance();
+        DBFixture fixture = new DBFixture();
+        fixture.setUp();
+        dbf = DBFacade.getInstance();
+        dbf.setCon(fixture.getConnection());
     }
 
     @Test
