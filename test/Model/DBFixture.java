@@ -8,10 +8,10 @@ import java.sql.Statement;
 public class DBFixture {
 
     private Connection connection;
-    public static final String driver = "org.mariadb.jdbc.Driver";
-    public static final String URL = "jdbc:mysql://it-vejlederen.dk:3306/Polytest";
-    public static final String id = "polygonuser";
-    public static final String pw = "Ospekos_22";
+    private static String driver = "com.mysql.jdbc.Driver";
+    private static String URL = "jdbc:mysql://localhost:3306/Polytest";
+    private static String id = "root";			
+    private static String pw = "kodeord";
 
     public void setUp() throws SQLException {
         try {
@@ -21,12 +21,13 @@ public class DBFixture {
             // start transaction
             getConnection().setAutoCommit(false);
 
-// Test setup start            
+// Test setup start
             st.addBatch("drop table if exists floorplan, report_room_damage, report_room_recommendation, "
                     + "report_room_moist,report_room_interior_pic,\n"
                     + "report_room_interior,report_exterior,report_room,report_pic,report,"
                     + "building_room,order_request,building_documents,building,customer_user,"
                     + "contact,customer,zip_codes,polygon_user;");
+      
 
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`customer` ("
                     + "`customer_id` INT(11) NOT NULL AUTO_INCREMENT,"
@@ -339,12 +340,11 @@ public class DBFixture {
             System.out.println("Fail in JdbcTest - setup");
             System.out.println(e.getMessage());
         } finally {
-            getConnection().close();
         }
     }
 
     public void tearDown() throws SQLException {
-        
+        connection.close();
     }
 
     /**
