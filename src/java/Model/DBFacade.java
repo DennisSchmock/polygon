@@ -26,6 +26,7 @@ public class DBFacade {
     private CustomerMapper cm;
     private BuildingMapper bm;
     private UserMapper um;
+    private NewReportMapper nrm;
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
@@ -182,6 +183,12 @@ public class DBFacade {
      */
     public void updateBuildingDBFacade(Building updatedBuildObj) {
         bm.updateBuildingBm(updatedBuildObj, getCon());
+    }
+    
+    
+    //Sending the report as a whole to DB - new method
+    public void newReportToDB(Report R){
+        nrm.reportToDataBase(R, con);
     }
 
     public User loadUser(String username) {

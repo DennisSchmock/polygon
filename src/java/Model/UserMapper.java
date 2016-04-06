@@ -26,7 +26,7 @@ public class UserMapper {
      * @param con
      */
     public void addUserToDB(User user, Connection con) {
-        String SQLString = "insert into user (username,pwd,customer_id,fname,lname,email,phone) values (?,?,?,?,?,?,?)";
+        String SQLString = "insert into customer_user (username,pwd,customer_id,fname,lname,email,phone) values (?,?,?,?,?,?,?)";
         try (
                 PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {        
