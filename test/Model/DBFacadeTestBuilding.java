@@ -7,6 +7,7 @@ package Model;
 
 import Domain.Building;
 import java.sql.SQLException;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,7 +24,7 @@ public class DBFacadeTestBuilding {
     
     @Before
     public void setUp() throws Exception {
-        JdbcTest test = new JdbcTest();
+        DBFixture test = new DBFixture();
         test.setUp();
         dbf = DBFacade.getInstance();
     }
@@ -43,8 +44,12 @@ public class DBFacadeTestBuilding {
         Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
         dbf.saveNewBuilding(new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord"));
-        b2 = 
-        assertTrue("Update part failed1", b != null);
+        Building b2;
+        List<Building> builds=dbf.getListOfbuildingsDB(1);
+        b2=builds.get(0);
+        assertTrue(dbf.getListOfbuildingsDB(1).size()==1);
+        assertTrue("Getting building out failed", b2 != null);
+        assertTrue("Getting same building back failed", b2.equals(b));
     }
 //
 //    @Test

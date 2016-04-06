@@ -328,6 +328,9 @@ public class DBFixture {
                     + "PRIMARY KEY (`zipcode`))");
 
             // insert
+            st.addBatch("insert into customer (companyname,street)"
+            +"values ('CPH-Business','Nørregårsvej')");
+            
             int[] updateCounts = st.executeBatch();
 
             // end transaction
