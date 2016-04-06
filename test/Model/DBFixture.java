@@ -8,10 +8,10 @@ import java.sql.Statement;
 public class DBFixture {
 
     private Connection connection;
-    public static final String driver = "org.mariadb.jdbc.Driver";
-    public static final String URL = "jdbc:mysql://it-vejlederen.dk:3306/Polytest";
-    public static final String id = "polygonuser";
-    public static final String pw = "Ospekos_22";
+    private static String driver = "com.mysql.jdbc.Driver";
+    private static String URL = "jdbc:mysql://localhost:3306/Polytest";
+    private static String id = "root";			
+    private static String pw = "";
 
     public void setUp() throws SQLException {
         try {
@@ -328,6 +328,9 @@ public class DBFixture {
                     + "PRIMARY KEY (`zipcode`))");
 
             // insert
+            st.addBatch("insert into customer (companyname,street)"
+            +"values ('CPH-Business','Nørregårsvej')");
+            
             int[] updateCounts = st.executeBatch();
 
             // end transaction
@@ -335,6 +338,7 @@ public class DBFixture {
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Fail in JdbcTest - setup");
             System.out.println(e.getMessage());
+        } finally {
         }
     }
 
