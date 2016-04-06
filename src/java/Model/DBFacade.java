@@ -187,6 +187,15 @@ public class DBFacade {
     public User loadUser(String username) {
         return um.getUser(username, getCon());
     }
+    
+    /**
+     * Sends the user object to the right mapper, that creates the user
+     * in the Database
+     * @param user to be inserted to 
+     */
+    public void createUserDBFacade(User user){
+        um.addUserToDB(user, con);
+    }
 
     /**
      * @return the con
