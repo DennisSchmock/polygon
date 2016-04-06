@@ -79,9 +79,6 @@ public class ReportHelper extends HttpServlet {
 
     }
 
-    public void AddDamage() {
-
-    }
 
     /**
      * Increments the counter that the report.jsp uses to determine the amount
