@@ -56,11 +56,11 @@ public class DBFacadeTest {
 //    }
 //
 
-//    /**
-//     *Validation of a user.
-//     * First creates an user, and saves it to the database.
-//     * Then calls the validate method to check the password
-//     */
+    /**
+     *Validation of a user.
+     * First creates an user, and saves it to the database.
+     * Then calls the validate method to check the password
+     */
 //        @Test
 //    public void testValidateUser1() {
 //        String username ="HejmedDig";
@@ -76,29 +76,29 @@ public class DBFacadeTest {
 //            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
 //        
 //    }
-//    
-//    /**
-//     *Test for difference in captions
-//     */
-////    @Test
-//    public void testValidateUser2() {
-//        String username ="HejmedDig";
-//        String password = "HELLo";
-//        
-//        User user = new User(username, password, 1, null, null, null, null, null);
-//        dbf.createUserDBFacade(user);
-//        
-//        
-//        boolean expected = false;
-//        boolean actual = dbf.validateUser(username, "HeLLO");
-//        
-//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-//        
-//    }
-//    
-//    /**
-//     * difference in username
-//     */
+    
+    /**
+     *Test for difference in captions
+     */
+//    @Test
+    public void testValidateUser2() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser(username, "HeLLO");
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
+    /**
+     * difference in username
+     */
 //    @Test
 //    public void testValidateUser3() {
 //        String username ="HejmedDig";
@@ -115,9 +115,9 @@ public class DBFacadeTest {
 //        
 //    }
 //    
-//    /**
-//     * Test with password difference in just a space
-//     */
+    /**
+     * Test with password difference in just a space
+     */
 //    @Test
 //    public void testValidateUser4() {
 //        String username ="HejmedDig";
@@ -133,7 +133,7 @@ public class DBFacadeTest {
 //            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
 //        
 //    }
-    
+//    
     /**
      * Test to see if a user is created the right way.
      * Also needs to run the load method for loading to check if its right
