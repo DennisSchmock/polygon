@@ -31,7 +31,7 @@ public class DBconnector {
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
-        }
+        } 
     }
 
     public static DBconnector getInstance() {
