@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Domain.Building;
 import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +40,11 @@ public class DBFacadeTestBuilding {
 //
     @Test
     public void testSaveNewBuilding() {
-        
-    
+        Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
+        b.setCustId(1);
+        dbf.saveNewBuilding(new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord"));
+        b2 = 
+        assertTrue("Update part failed1", b != null);
     }
 //
 //    @Test
