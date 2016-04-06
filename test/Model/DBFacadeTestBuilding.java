@@ -39,7 +39,7 @@ public class DBFacadeTestBuilding {
 //
     @Test
     public void testSaveNewBuilding() {
-        dbf.
+        
     
     }
 //
