@@ -123,6 +123,14 @@ public class NewReportHelper extends HttpServlet {
         //Add report
         //Add reportRoom
         //Add reportRoomDamage
+        
+        int reportCategory = Integer.parseInt(request.getParameter("category"));
+        int buildingId = 1;
+        String reportDate = request.getParameter("date");    
+        Report report = new Report( reportDate, buildingId, reportCategory);
+        
+        
+        
 
         int numOfRooms = 0;
         if (request.getParameter("numOfRooms") != null) {
@@ -131,9 +139,7 @@ public class NewReportHelper extends HttpServlet {
         
         else System.out.println("numOfRooms is null");
 
-        String reportDate = request.getParameter("date");
         int reportBuildingId = 1; //some bookkeeping to be done with ID
-        int reportCategory = Integer.parseInt(request.getParameter("category"));
         Report r = df.saveNewReport(reportDate, reportBuildingId, reportCategory);
         System.out.println("Report ID");
         System.out.println(r.getReportId());

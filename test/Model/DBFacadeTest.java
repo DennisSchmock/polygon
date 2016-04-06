@@ -52,13 +52,89 @@ public class DBFacadeTest {
 //    public void testGetInstance() {
 //    }
 //
+
+    /**
+     *Validation of a user.
+     * First creates an user, and saves it to the database.
+     * Then calls the validate method to check the password
+     */
+        @Test
+    public void testValidateUser1() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = true;
+        boolean actual = dbf.validateUser(username, password);
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
+    /**
+     *Test for difference in captions
+     */
 //    @Test
-//    public void testValidateUser() {
-//    }
+    public void testValidateUser2() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser(username, "HeLLO");
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
+    /**
+     * difference in username
+     */
+    @Test
+    public void testValidateUser3() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser("medDig", password);
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
+    /**
+     * Test with password difference in just a space
+     */
+    @Test
+    public void testValidateUser4() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser("HELLo ", password);
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
     
     /**
      * Test to see if a user is created the right way.
-     * Also needs to run the load method for loading to check if its right 
+     * Also needs to run the load method for loading to check if its right
+     * Checks all the fields but the company name in user table.
      * 
      */
     @Test
@@ -83,7 +159,6 @@ public class DBFacadeTest {
         String lNameactual= actualUser.getlName();
         String emailactual = actualUser.getEmail();
         String phoneactual = actualUser.getPhone();
-        String companyNameactual = actualUser.getCompanyName();
         
         assertTrue("Fail, Expeted: " +usernameexpected + " Found: " + usernameactual,usernameexpected.equals(usernameactual));
         assertTrue("Fail, Expeted: " +Passwordexpected + " Found: " + Passwordactual,Passwordexpected.equals(Passwordactual));
@@ -93,8 +168,7 @@ public class DBFacadeTest {
         assertTrue("Fail, Expeted: " +emailexpected + " Found: " + emailactual,emailexpected.equals(emailactual));
         assertTrue("Fail, Expeted: " +phoneexpected + " Found: " + phoneexpected,phoneexpected.equals(phoneactual));
     }
-    
-//
+
 //    @Test
 //    public void testSaveNewReport() {
 //    }

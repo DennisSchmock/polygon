@@ -17,7 +17,7 @@ public class Report {
     private String date;
     private ArrayList<ReportRoom> listOfRepRoom;
     private ArrayList<ReportRoomExterior> listOfRepRoomExt;
-    private int bdgId;
+    private int buildingId;
     private int categoryConclusion;
 
     /**
@@ -27,16 +27,16 @@ public class Report {
      * @param bdgId    building's ID
      * @param catCon  category conclusion
      */
-    public Report(int reportId, String date, int bdgId, int catCon) {
+    public Report(int reportId, String date, int buildingId, int catCon) {
         this.reportId = reportId;
         this.date = date;
-        this.bdgId = bdgId;
+        this.buildingId = buildingId;
         this.categoryConclusion = catCon;
     }
     
-    public Report( String date, int bdgId, int catCon) {
+    public Report( String date, int buildingId, int catCon) {
         this.date = date;
-        this.bdgId = bdgId;
+        this.buildingId = buildingId;
         this.categoryConclusion = catCon;
     }
 
@@ -64,9 +64,6 @@ public class Report {
         this.listOfRepRoomExt = listOfRepRoomExt;
     }
 
-    public int getBdgId() {
-        return bdgId;
-    }
   
     public void setListOfRepRoom(ArrayList<ReportRoom> listOfRepRoom) {
         this.listOfRepRoom = listOfRepRoom;
@@ -74,6 +71,20 @@ public class Report {
 
     public int getCategoryConclusion() {
         return categoryConclusion;
+    }
+
+    /**
+     * @return the buildingId
+     */
+    public int getBuildingId() {
+        return buildingId;
+    }
+
+    /**
+     * @param buildingId the buildingId to set
+     */
+    public void setBuildingId(int buildingId) {
+        this.buildingId = buildingId;
     }
 
 }
