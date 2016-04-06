@@ -17,16 +17,20 @@ import Domain.*;
  */
 public class DBFacadeTest {
     
-    DBFacade dbf;
+        DBFixture fixture;
+        DBFacade dbf;
+
+    
     public DBFacadeTest() {
         
     }
     
     @Before
     public void setUp() throws Exception {
-        JdbcTest test = new JdbcTest();
-        test.setUp();
+        DBFixture fixture = new DBFixture();
+        fixture.setUp();
         dbf = DBFacade.getInstance();
+        dbf.setCon(fixture.getConnection());
     }
 
     @Test
