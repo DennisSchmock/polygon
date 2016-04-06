@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import Domain.*;
 
 /**
  *
@@ -36,10 +37,19 @@ public class DBFacadeTest {
     public void testMain() {
     }
 
-
 //    @Test
-//    public void testValidateUser() {
+//    public void testGetInstance() {
 //    }
+//
+    @Test
+    public void testValidateUser() {
+        dbf.createUserDBFacade(null);
+    }
+    
+    @Test
+    public void createUserDBFacade() {
+        
+    }
 //
 //    @Test
 //    public void testSaveNewReport() {
@@ -137,8 +147,8 @@ public class DBFacadeTest {
 //    public void testUpdateBuildingDBFacade() {
 //    }
 //
-//    @Test
-//    public void testLoadUser() {
-//    }
+    @Test
+    public void testLoadUser() {
+    }
     
 }
