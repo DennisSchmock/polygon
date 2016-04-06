@@ -48,7 +48,7 @@
             <tbody>
                 <tr>
                 <td>Date in format of YYYY-MM-DD</td>
-                <td><input type="text" name="date"></td>
+                <td><input type="text" name="date" required></td>
                 </tr>
                 <tr>
                 <td>Remarks for roof</td>
@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                 <td>Category</td>
-                <td><select name="category">
+                <td><select name="category" required>
                         <option>0</option>
                         <option>1</option>
                         <option>2</option>
@@ -84,32 +84,21 @@
                             <option value="${room.roomId}">
                                 ${room.roomName}
                             </option>
-                            
                         </c:forEach>
-                            
-                        
                     </select>
-                        
-                        
                         <table border="0" cellspacing="5" cellpadding="5">
- 
                         <tbody>
                             <tr>
-                            <td>Has there been damage to the room? ${chosenRoom}</td>
-                            <td><input type="checkbox" name="damageToRoom" value="OFF" /></td>
-                            </tr>
-                            <tr>
                             <td>When (in the form of (YYYY-MM-DD)? </td>
-                            <td><input type="text" name="when${count.count}" value="" /></td>
-
+                            <td><input type="number" name="when${count.count}" value="" /></td>
                             </tr>
                             <tr>
-                            <td>Where?</td>
+                            <td>Where did the damage occour?</td>
                             <td><input type="text" name="where${count.count}" value="" /></td>
 
                             </tr>
                             <tr>
-                            <td>How?</td>
+                            <td>How did the damage occour?</td>
                             <td><input type="text" name="how${count.count}" value="" /></td>
                             </tr>
                             <tr>
@@ -121,7 +110,7 @@
                             
                             <tr>
                             <td>Moist scan:</td>
-                            <td><input type="text" name="moistScan${count.count}" value="" /></td>
+                            <td><input type="number" name="moistScan${count.count}" value="" /></td>
 
                             </tr>
                             <tr>
@@ -166,10 +155,6 @@
                             </tr>
                         </tbody>
                     </table>
-                            
-                            
-                            
-
                 </c:forEach>
             <table border="0">
                 <tr>
@@ -185,12 +170,7 @@
                 </tr>
                 
             </tbody>
-        </table>
-                
-    
-                
-                
-                            
+        </table>       
     </form>
 
 </div>
