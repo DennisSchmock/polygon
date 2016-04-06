@@ -26,10 +26,18 @@ public class UserMapper {
      * @param con
      */
     public void addUserToDB(User user, Connection con) {
-        String SQLString = "insert into user (username,pwd) values (?,?)";
+        String SQLString = "insert into customer_user (username,pwd,customer_id,fname,lname,email,phone) values (?,?,?,?,?,?,?)";
         try (
                 PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {        
+            
+            statement.setString(1, user.getUserName());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3, user.getCustomerid());
+            statement.setString(4, user.getfName());
+            statement.setString(5, user.getlName());
+            statement.setString(6, user.getEmail());
+            statement.setString(7, user.getPhone());
             statement.execute();
         } catch (Exception e) {
             System.out.println("Failed at creating user");
@@ -37,6 +45,8 @@ public class UserMapper {
         }
 
     }
+    
+    
 
     /**
      * Method for validation a user

@@ -28,9 +28,9 @@ import javax.servlet.RequestDispatcher;
 
 /**
  *
- * @author danie
+ * @author Dennis Schmock, Daniel Grønberg, Cherry Rose
  */
-public class ReportHelper extends HttpServlet {
+public class NewReportHelper extends HttpServlet {
 
     DomainFacade df;
     Building b; // This is only a placeholder until we can get a building out of db
@@ -39,7 +39,7 @@ public class ReportHelper extends HttpServlet {
     BuildingRoom r3;
     ArrayList listOfRooms;
 
-    public ReportHelper() {
+    public NewReportHelper() {
         b = new Building("Vaskeriet", "Nørregårdsvej", "28", 2800, 1978, 145.6, "Study facility");
         r1 = new BuildingRoom(1, "Entrance");
         r2 = new BuildingRoom(2, "Toilets");
