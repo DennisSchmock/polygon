@@ -45,6 +45,10 @@ public class CustomerMapper {
         }
 
     }
+    
+    
+    
+    
 
     /**
      *
@@ -102,6 +106,10 @@ public class CustomerMapper {
     
     public void editCustomer() {
 
+    }
+
+    Customer getCustomer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

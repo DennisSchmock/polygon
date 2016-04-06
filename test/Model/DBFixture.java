@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -12,18 +13,18 @@ import java.sql.DriverManager;
  *
  * @author dennisschmock
  */
-public class DBconnector {
+public class DBFixture {
 
     public static final String driver = "org.mariadb.jdbc.Driver";
-    public static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polygon";
+    public static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polytest";
     public static final String dbuser = "polygonuser";
     public static final String pwd = "Ospekos_22";
 
     private Connection con;
 
-    private static DBconnector instance;
+    private static DBFixture instance;
 
-    private DBconnector() {
+    private DBFixture() {
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(url, dbuser, pwd);
@@ -31,12 +32,12 @@ public class DBconnector {
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
-        } 
+        }
     }
 
-    public static DBconnector getInstance() {
+    public static DBFixture getInstance() {
         if (instance == null) {
-            instance = new DBconnector();
+            instance = new DBFixture();
         }
         return instance;
     }
@@ -44,4 +45,5 @@ public class DBconnector {
     public Connection getConnection() {
         return con;
     }
+    
 }
