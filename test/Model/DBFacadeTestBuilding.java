@@ -9,8 +9,7 @@ import Domain.Building;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,9 +24,9 @@ public class DBFacadeTestBuilding {
         
         
     public DBFacadeTestBuilding() {
-        
+
     }
-    
+
     @Before
     public void setUp() throws Exception {
         fixture = new DBFixture();
@@ -41,9 +40,6 @@ public class DBFacadeTestBuilding {
         dbf.setCon(con);
     }
 
-    
-
-
 //
 //    @Test
 //    public void testGetListOfContacts() {
@@ -52,7 +48,7 @@ public class DBFacadeTestBuilding {
     @Test
     public void testSaveNewBuilding() {
         
-        Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
+        Building b = new Building("vor Fredfdasflser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
         
         dbf.saveNewBuilding(b);
