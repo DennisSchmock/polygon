@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class DBFacadeTestBuilding {
     DBFixture fixture;
-        DBFacade dbf;
+    DBFacade dbf;
         
         
     public DBFacadeTestBuilding() {
@@ -37,9 +37,7 @@ public class DBFacadeTestBuilding {
         dbf.setCon(fixture.getConnection());
     }
 
-    @Test
-    public void testMain() {
-    }
+    
 
 
 //

@@ -192,7 +192,7 @@ public class DBFacade {
     }
 
     public User loadUser(String username) {
-        return um.getUser(username, getCon());
+        return um.getUser(username, con);
     }
     
     /**
