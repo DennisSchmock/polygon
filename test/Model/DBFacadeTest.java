@@ -43,12 +43,16 @@ public class DBFacadeTest {
 //
     @Test
     public void testValidateUser() {
-        dbf.createUserDBFacade(null);
     }
     
+    /**
+     * Test to see if a user is created the right way.
+     * Also needs to run the load method for loading to check if its right 
+     * 
+     */
     @Test
-    public void createUserDBFacade() {
-        
+    public void testCreateUserDBFacadeAndLoad() {
+        User user = new User("Daniel", "123", 1, null, null, null, null, null);
     }
 //
 //    @Test
@@ -147,8 +151,5 @@ public class DBFacadeTest {
 //    public void testUpdateBuildingDBFacade() {
 //    }
 //
-    @Test
-    public void testLoadUser() {
-    }
     
 }
