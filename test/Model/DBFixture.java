@@ -338,8 +338,6 @@ public class DBFixture {
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Fail in JdbcTest - setup");
             System.out.println(e.getMessage());
-        } finally {
-            getConnection().close();
         }
     }
 
