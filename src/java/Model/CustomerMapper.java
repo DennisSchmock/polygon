@@ -24,7 +24,7 @@ public class CustomerMapper {
      * @param con the connection to the database
      */
     public void addCustomerToDB(Customer cus, Connection con) {
-        String SQLString = "insert into customer (companyname,street,streetnumber,zipcode,phone,email,contactperson) values (?,?,?,?,?,?,?)";
+        String SQLString = "insert into customer (companyname,street,streetnumber,zipcode,phone,email,contactperson,cvr) values (?,?,?,?,?,?,?,?)";
         try (
                 PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
@@ -35,6 +35,7 @@ public class CustomerMapper {
             statement.setString(5, cus.getPhoneNumber());
             statement.setString(6, cus.getCusMail());
             statement.setString(7, cus.getContactPerson());
+            statement.setInt(8, cus.getCusCVR());
 
             //int rowsInserted = statement.executeUpdate();
             //ResultSet rs = statement.getGeneratedKeys();

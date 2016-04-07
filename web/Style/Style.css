@@ -38,8 +38,10 @@ main{
 footer{
     
     width: 100%;
-    float: end;
-    height: 20%;
+    height: 100px;
+    float: bottom;
+    margin-bottom: 0px;
+    
 }
 
 input:focus {

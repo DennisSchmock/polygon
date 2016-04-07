@@ -27,7 +27,7 @@ public class ReportMapper {
             Date date = java.sql.Date.valueOf(r.getDate());  //gets a String value of date and converts it to sql date
             //insert a tuple and set the values
             statement.setDate(1, date);
-            statement.setInt(2, r.getBdgId());
+            statement.setInt(2, r.getBuildingId());
             statement.setInt(3, r.getCategoryConclusion());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
