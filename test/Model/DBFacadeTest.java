@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Domain.*;
+import java.sql.Connection;
 import org.junit.After;
 import org.junit.BeforeClass;
 
@@ -36,10 +37,9 @@ public class DBFacadeTest {
         fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
-        System.out.println(fixture.getConnection()!=null);
-        System.out.println(fixture.getConnection().isClosed());
-        System.out.println(fixture.getConnection());
-        dbf.setCon(fixture.getConnection());
+        Connection con =fixture.getConnection();
+        con.setAutoCommit(true);
+        dbf.setCon(con);
     }
 
     @After
@@ -99,22 +99,22 @@ public class DBFacadeTest {
     /**
      * difference in username
      */
-//    @Test
-//    public void testValidateUser3() {
-//        String username ="HejmedDig";
-//        String password = "HELLo";
-//        
-//        User user = new User(username, password, 1, null, null, null, null, null);
-//        dbf.createUserDBFacade(user);
-//        
-//        
-//        boolean expected = false;
-//        boolean actual = dbf.validateUser("medDig", password);
-//        
-//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-//        
-//    }
-//    
+    @Test
+    public void testValidateUser3() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser("medDig", password);
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
     /**
      * Test with password difference in just a space
      */
@@ -416,4 +416,5 @@ public class DBFacadeTest {
 //    public void testSetCon() {
 //    }
 //    
+
 }
