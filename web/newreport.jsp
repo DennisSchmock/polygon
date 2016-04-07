@@ -15,171 +15,125 @@
 <main>
 
     <h1>New Report</h1>
+    Building Name
+    Adress
+    Zip Code
 
-    <div>
-        <table border="3">
+    ${sessionScope.testBuilding.buildingName}
+    ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}
+    ${sessionScope.testBuilding.zipCode}
 
-            <tbody>
-                <tr>
-                <td>Building Name</td>
-                <td>Adress</td>
-                <td>Zip Code</td>
+    <form action="frontpage" method="post" class="w3-container">
+        <div class="w3-row-padding">
+            <div class="w3-half w3-row-padding">
+                <input type="hidden" name="page" value="newReportSubmit" />
+                <div class="w3-threequarter">
+                    <label class="w3-label w3-text-teal"><b>Date in format of YYYY-MM-DD</b></label>
+                    <input type="date" name="date" required class="w3-input w3-border" >
+                </div>
 
-                </tr>
-                <tr>
-                <td>${sessionScope.testBuilding.buildingName}</td>
-                <td>${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}</td>
-                <td>${sessionScope.testBuilding.zipCode}</td>
+                <div class="w3-threequarter">
+                    <label class="w3-label w3-text-teal"><b>Remarks for roof</b></label>
+                    <input type="text"  name="roof" class="w3-input w3-border">
+                </div>
 
-                </tr>
-            </tbody>
-        </table>
-
-
-
-    </div>
-
-    <div>
-        <form action="frontpage" method="post">
-            <input type="hidden" name="page" value="newReportSubmit" />
-            <table>
+                <div class="w3-threequarter">
+                    <label class="w3-label w3-text-teal"><b>Remarks for outer walls</b></label>
+                    <input type="text"   name="walls"class="w3-input w3-border" >
+                </div>
 
 
-                <tbody>
-                    <tr>
-                    <td>Date in format of YYYY-MM-DD</td>
-                    <td><input type="date" name="date" required></td>
-                    </tr>
-                    <tr>
-                    <td>Remarks for roof</td>
-                    <td><input type="text" name="roof"><br></td>
-                    </tr>
-                    <tr>
-                    <td>Remarks for outer walls</td>
-                    <td><input type="text" name="walls"></td>
-                    </tr>
-                    <tr>
-                    <td>Category</td>
-                    <td><select name="category" required>
-                            <option>0</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                    <td></td>
-                    <td></td>
-                    </tr>
-                    <tr>
-                    </tr>
-            </table>
-
-            <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}" varStatus="count">
-                <select name="roomSelect${count.count}" id="roomSel${count.count}" selected="${buildingRooms[0].roomId}">
-                    <c:forEach items="${buildingRooms}" var="room">
-                        <option value="${room.roomId}">
-                            ${room.roomName}
-                        </option>
-                    </c:forEach>
-                </select>
-                <table border="0" cellspacing="5" cellpadding="5">
-                    <tbody>
-                        <tr>
-                        <td>When (in the form of (YYYY-MM-DD)? </td>
-                        <td><input type="date" name="when${count.count}" value="" /></td>
-                        </tr>
-                        <tr>
-                        <td>Where did the damage occour?</td>
-                        <td><input type="text" name="where${count.count}" value="" /></td>
-
-                        </tr>
-                        <tr>
-                        <td>How did the damage occour?</td>
-                        <td><input type="text" name="how${count.count}" value="" /></td>
-                        </tr>
-                        <tr>
-                        <td>What has been done?</td>
-                        <td><input type="text" name="whatIsDone${count.count}" value="" /></td>
-
-                        </tr>
+                <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Building Category</b></label>
+                    <select name="category" required class="w3-select w3-border">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select></div>
 
 
-                        <tr>
-                        <td>Moist scan:</td>
-                        <td><input type="number" name="moistScan${count.count}" value="" /></td>
+                <c:forEach var="i" begin="0" end="${requestScope.numOfRooms}" varStatus="count">
 
-                        </tr>
-                        <tr>
-                        <td>moistMeasurePoint:</td>
-                        <td><input type="text" name="moistPoint${count.count}" value="" /></td>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Room name</b></label> <select name="roomSelect${count.count}" id="roomSel${count.count}" selected="${buildingRooms[0].roomId}" class="w3-select w3-border">
 
-                        </tr>
-                        <br>
-                        <tr>
-                        <td>Remarks for walls?</td>
-                        <td><input type="text" name="rWalls${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td>Remarks for ceiling?</td>
-                        <td><input type="text" name="rCeil${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td>Remarks for floor?</td>
-                        <td><input type="text" name="rFloor${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td>Remarks for windows/doors?</td>
-                        <td><input type="text" name="rWinDoor${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td><input type="text" name="r1otherLoc" value="*If other type location here*" size="35"/></td>
-                        <td><input type="text" name="r1other${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td><input type="text" name="r2otherLoc" value="*If other type location here*" size="35"/></td>
-                        <td><input type="text" name="r2other${count.count}" value="" /></td>
-                        </tr>
-                        <tr><td></td><td><input type="file" name="" value="" /></td></tr>
-                        <tr>
-                        <td>Recommendations for this room</td>
-                        <td><input type="text" name="recommendation${count.count}" value="" size="35" /></td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                            <c:forEach items="${buildingRooms}" var="room">
+                                <option value="${room.roomId}">
+                                    ${room.roomName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>When (in the form of (YYYY-MM-DD)?</b></label> 
+                        <input type="date" name="when${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Where did the damage occour?</b></label>
+                        <input type="text" name="where${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>How did the damage occour?</b></label>
+                        <input type="text"  name="how${count.count}" value="" class="w3-input w3-border"/></div>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>What has been done?</b></label>
+                        <input type="text"  name="whatIsDone${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Moist scan:</b></label>
+                        <input type="number" name="moistScan${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>moistMeasurePoint:</b></label>
+                        <input type="text"  name="moistPoint${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Remarks for walls?</b></label>
+                        <input type="text"  name="rWalls${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"> <label class="w3-label w3-text-teal">Add picture</label><input type="file" name="" value="" class="w3-input w3-border"></div>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Remarks for ceiling?</b></label>
+                        <input type="text"  name="rCeil${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label><input type="file" name="" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>emarks for floor?</b></label>
+                        <input type="text"  name="rFloor${count.count}" value="" class="w3-input w3-border w3-blue"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label><input type="file" name="" value="" class="w3-input w3-border/></div>
+
+                                                                                                                <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Remarks for windows/doors?</b></label>
+                        <input type="text"  name="rWinDoor${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label> <input type="file" name="" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"> <input type="text"  name="r1otherLoc" value="*If other type location here*" size="35"class="w3-input w3-border"/></div>
+                    <div class="w3-threequarter"><input type="text"  name="r1other${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label> <input type="file" name="" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><input type="text"  name="r2otherLoc" value="*If other type location here*" size="35"class="w3-input w3-border"/></div>
+                    <div class="w3-threequarter"> <input type="text"  name="r2other${count.count}" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label><input type="file" name="" value="" class="w3-input w3-border"/></div>
+
+                    <div class="w3-threequarter"><label class="w3-label w3-text-teal"><b>Recommendations for this room</b></label>
+                        <input type="text"  name="recommendation${count.count}" value="" size="35" class="w3-input w3-border"/></div>
+                </div>
             </c:forEach>
-            <table border="0">
-                <tr>
-                <td></td>
 
-                </tr>
-                <tr>
-                <td><input type="file" name="Image of Building" value="" /></td>
-                <td><input type="hidden" name="page" value="newReportSubmit">
-                    <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
-                    <p><input type="submit" name="submit"></p></td>
+            <div class="w3-threequarter"><label class="w3-label w3-text-teal">Add picture</label><input type="file" name="Image of Building" value="" class="w3-input w3-border"/></div>
+            <input type="hidden" name="page" value="newReportSubmit">
+            <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
+            <div class="w3-threequarter"><input type="submit" name="submit" value="finish report"></div>
 
-                </tr>
+        </div>
 
-                </tbody>
-            </table>       
-        </form>
+    </form>
 
-    </div>
+
+
+
 
     <form action="frontpage?page=newreport" method="POST">
         <input type="hidden" name="command" value="reportAddRoom">
         <input type="hidden" name="numOfRooms" value="${requestScope.numOfRooms}">
-        <input type="submit" value="Add Room" />
+        <input type="submit" value="Add Room" name="command"/>
     </form>
-
-
 </main>
-
-
 <%@include file="Style/Footer.jsp" %>
