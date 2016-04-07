@@ -146,6 +146,10 @@ public class DBFacade {
         cm.saveContact(c, getCon());
     }
     
+    public Contact getContact(int custID){
+        return cm.getContact(custID, con);
+    }
+    
     public void saveReportMoist (ReportRoomMoist rrm){
         rm.saveReportMoist(rrm, getCon());
     
