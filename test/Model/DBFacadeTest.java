@@ -152,12 +152,28 @@ public class DBFacadeTest {
 //    public void testGetListOfRec() {
 //    }
 //
-//    @Test
-//    public void testAddCustomer() {
-//    }
-//
+    @Test
+    public void testAddCustomer() {
+       Customer c=new Customer("CPHBusiness","Miriam Sørensen","ms@cphbusiness.dk","Nørgaardsvej",30,21,3245,"Lyngby","+4553354494");
+       dbf.addCustomer(c);
+       Customer newCust = dbf.getCustomer(2);
+       assertTrue("Get add customer-if null", newCust != null);
+       assertTrue("Get add customer-check name",newCust.getCompanyName().equals("CPHBusiness")); 
+       assertTrue("Get add customer-check contact person",newCust.getContactPerson().equals("Miriam Sørensen")); 
+       assertTrue("Get add customer-check email",newCust.getCusMail().equals("ms@cphbusiness.dk")); 
+       assertTrue("Get add customer-check street",newCust.getStreet().equals("Nørgaardsvej")); 
+       assertTrue("Get add customer-check streetNumber",newCust.getStreetNumber()==30); 
+       assertTrue("Get add customer-check CVR",newCust.getCusCVR()==21); 
+       assertTrue("Get add customer-check zipcode",newCust.getZip()==3245); 
+       assertTrue("Get add customer-check city",newCust.getCity().equals("Lyngby")); 
+       assertTrue("Get add customer-check phone number",newCust.getPhoneNumber().equals("+4553354494")); 
+       
+    }
+
 //    @Test
 //    public void testSaveContact() {
+////        Contact contact =new Contact();
+//        
 //    }
 //
 //    @Test

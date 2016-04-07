@@ -108,8 +108,33 @@ public class CustomerMapper {
 
     }
 
-    Customer getCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Customer getCustomer(int id, Connection con){
+        Customer c=null;
+        String SQLString = "select * from customer where customer_id=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, id);  
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                c = new Customer(
+                rs.getString("companyname"),
+                rs.getString("contactperson"),
+                rs.getString("email"),
+                rs.getString("street"),
+                rs.getInt("streetnumber"),
+                rs.getInt("cvr"),
+                rs.getInt("zipcode"),
+                "city",
+                rs.getString("phone"));
+                return c;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("caught an exception");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return c;
     }
+
 
 }

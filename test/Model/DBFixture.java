@@ -9,9 +9,9 @@ public class DBFixture {
 
     private Connection connection;
     private static String driver = "com.mysql.jdbc.Driver";
-    private static String URL = "jdbc:mysql://localhost:3306/Polytest";
+    private static String URL = "jdbc:mysql://localhost/polytest";
     private static String id = "root";			
-    private static String pw = "";
+    private static String pw = "cjs110292";
 
     public void setUp() throws SQLException {
         try {
