@@ -44,7 +44,7 @@ public class DBFacadeTest {
 
     @After
     public void tearDown() throws Exception {
-        fixture.tearDown();
+        fixture.closeConnection();
     }
 
 //    @Test
@@ -366,14 +366,13 @@ public class DBFacadeTest {
        assertTrue("Get add customer-check streetNumber",newCust.getStreetNumber()==30); 
        assertTrue("Get add customer-check CVR",newCust.getCusCVR()==21); 
        assertTrue("Get add customer-check zipcode",newCust.getZip()==3245); 
-       assertTrue("Get add customer-check city",newCust.getCity().equals("Lyngby")); 
        assertTrue("Get add customer-check phone number",newCust.getPhoneNumber().equals("+4553354494")); 
        
     }
 
 //    @Test
 //    public void testSaveContact() {
-////        Contact contact =new Contact();
+//       Contact contact =new Contact("Cherry Rose", "cjs@polygonproject.dk","+4553354499",2);
 //        
 //    }
 //
