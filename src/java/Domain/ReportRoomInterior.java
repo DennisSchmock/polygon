@@ -34,6 +34,11 @@ public class ReportRoomInterior {
         this.remark = remark;
         this.repRoomId = repRoomId;
     }
+    
+    public ReportRoomInterior(String repRoomIntName, String remark) {
+        this.repRoomIntName = repRoomIntName;
+        this.remark = remark;
+    }
 
     public void setRepRoomIntId(int repRoomIntId) {
         this.repRoomIntId = repRoomIntId;

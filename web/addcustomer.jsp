@@ -16,7 +16,6 @@
 <main>
 
     <h1>Add customer</h1>
-    <div class="w3-col m8 l8">
         <form action="frontpage" method="POST">
             <div class="w3-row-padding">
                 <input type="hidden" name="page" value="submitcustomer" />
@@ -34,7 +33,6 @@
 
             </div>
         </form>
-    </div>
 
 
 </main>

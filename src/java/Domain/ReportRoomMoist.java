@@ -22,6 +22,11 @@ public class ReportRoomMoist {
         this.measurePoint = measurePoint;
         this.reportRoom = reportRoom;
     }
+    
+    public ReportRoomMoist(int moistMeasured, String measurePoint) {
+        this.moistMeasured = moistMeasured;
+        this.measurePoint = measurePoint;
+    }
 
     
     

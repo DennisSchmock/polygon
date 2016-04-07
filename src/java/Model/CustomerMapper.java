@@ -67,7 +67,7 @@ public class CustomerMapper {
             statement.setInt(4,c.getCustID());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-            if (!rs.next()){
+            if (rs.next()){
                 c.setContactID(rs.getInt(1));
             }
         } catch (Exception e) {
@@ -136,6 +136,29 @@ public class CustomerMapper {
         }
         return c;
     }
+
+    public Contact getContact(int custID, Connection con) {
+        Contact c=null;
+        String SQLString = "select * from contact where customerID=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, custID);  
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                c = new Contact(
+                rs.getInt("contactID"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getString("tel"),
+                rs.getInt("customerID"));
+                return c;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("getContact-caught exception");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return c;}
 
 
 }

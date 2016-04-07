@@ -12,6 +12,9 @@ import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
 import Domain.ReportRoomExterior;
+import Domain.ReportRoomInterior;
+import Domain.ReportRoomMoist;
+import Domain.ReportRoomRecommendation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class NewReportHelper extends HttpServlet {
 
     public NewReportHelper() {
         b = new Building("Vaskeriet", "Nørregårdsvej", "28", 2800, 1978, 145.6, "Study facility");
+        b.setBdgId(1);
         r1 = new BuildingRoom(1, "Entrance");
         r2 = new BuildingRoom(2, "Toilets");
         r3 = new BuildingRoom(3, "Main Room");
@@ -120,14 +124,11 @@ public class NewReportHelper extends HttpServlet {
      * @param request
      * @param response
      */
-    public void submitReport(HttpServletRequest request, HttpServletResponse response) {
-        //Add report
-        //Add reportRoom
-        //Add reportRoomDamage
+    public Report submitReport(HttpServletRequest request, HttpServletResponse response) {   
         Report report;
 
         int reportCategory = Integer.parseInt(request.getParameter("category"));
-        int buildingId = 1;
+        int buildingId = b.getBdgId(); //This needs to get pulled from the form...
         String reportDate = request.getParameter("date");
         report = new Report(reportDate, buildingId, reportCategory);
 
@@ -137,14 +138,13 @@ public class NewReportHelper extends HttpServlet {
         }
 
         String roof = request.getParameter("roof"); //Getting description of Roof.
-        String walls = request.getParameter("walls"); //Getting description of Walls
+        String walls = request.getParameter("walls"); //Getting description of Walls.
         report.getListOfRepRoomExt().add(new ReportRoomExterior(roof, 1));//Putting it inside the report object
         report.getListOfRepRoomExt().add(new ReportRoomExterior(walls, 1));
 
         for (int roomCount = 0; roomCount <= numOfRooms; roomCount++) {
             ReportRoom rr;
 
-            //int roomChosen = Integer.parseInt(request.getParameter("roomSelect" + String.valueOf(roomCount + 1)));
             rr = new ReportRoom("roomNameNotHarvested?");//Create a ReportRoom;
             rr.getListOfDamages().add(createReportRoomDamage(request, roomCount));
 
@@ -155,44 +155,18 @@ public class NewReportHelper extends HttpServlet {
                 if (request.getParameter("moistPoint" + String.valueOf(roomCount + 1)) != null) {
                     place = (String) request.getParameter("moistPoint" + String.valueOf(roomCount + 1));
                 }
-                //df.saveReportMoist(moist, place, rrId);
+                rr.setMoist(new ReportRoomMoist(moist, place)); //Adding moist object to room
 
             }
 
-            String rWalls = request.getParameter("rWalls" + String.valueOf(roomCount + 1));
-            String rCeil = request.getParameter("rCeil" + String.valueOf(roomCount + 1));
-            String rFloor = request.getParameter("rFloor" + String.valueOf(roomCount + 1));
-            String rWinDoors = request.getParameter("rWinDoors" + String.valueOf(roomCount + 1));
-            String r1other = request.getParameter("r1other" + String.valueOf(roomCount + 1));
-            String r2other = request.getParameter("r2other" + String.valueOf(roomCount + 1));
-            String r1otherLoc = request.getParameter("r1otherLoc" + String.valueOf(roomCount + 1));
-            String r2otherLoc = request.getParameter("r2otherLoc" + String.valueOf(roomCount + 1));
-
-            if (rWalls != (null)) {
-               // df.saveReportInterior("Walls", rWalls, rrId);
-            }
-            if (rCeil != (null)) {
-                //df.saveReportInterior("Ceiling", rCeil, rrId);
-            }
-            if (rFloor != (null)) {
-                //df.saveReportInterior("Floor", rFloor, rrId);
-            }
-            if (rWinDoors != (null)) {
-                //df.saveReportInterior("Windows and Doors", rWinDoors, rrId);
-            }
-            if (r1other != null && r1otherLoc != (null)) {
-                //df.saveReportInterior("Walls", r1other, rrId);
-            }
-            if (r2other != (null) && r2otherLoc != (null)) {
-                //df.saveReportInterior("Walls", r2other, rrId);
-            }
+            rr.setListOfInt(createInterior(request, roomCount));//Add the list of interior to the Arraylist in the Room
 
             if (request.getParameter("recommendation" + String.valueOf(roomCount + 1)) != null) {
-                //addRecommendations(request.getParameter("recommendation" + String.valueOf(roomCount + 1)), rrId);
+                String recommendation = request.getParameter("recommendation" + String.valueOf(roomCount + 1));
+                rr.getListOfRec().add(new ReportRoomRecommendation(recommendation));                        
             }
         }
-
-        System.out.println("End of submit");
+        return report;
     }
 
     public ReportRoomDamage createReportRoomDamage(HttpServletRequest request, int roomCount) {
@@ -215,7 +189,7 @@ public class NewReportHelper extends HttpServlet {
         if (request.getParameter("whatIsDone" + String.valueOf(roomCount + 1)) != null) {
             whatIsDone = request.getParameter("whatIsDone" + String.valueOf(roomCount + 1));
         }
-        repRoomDam = new ReportRoomDamage(when, where, how, whatIsDone,"add damageType");
+        repRoomDam = new ReportRoomDamage(when, where, how, whatIsDone, "add damageType");
         return repRoomDam;
     }
 
@@ -223,5 +197,41 @@ public class NewReportHelper extends HttpServlet {
 
         df.saveReportRoomRec(recommendation, rrId);
 
+    }
+
+    private ArrayList<ReportRoomInterior> createInterior(HttpServletRequest request, int roomCount) {
+        ArrayList<ReportRoomInterior> interior = new ArrayList<>();
+
+        String rWalls = request.getParameter("rWalls" + String.valueOf(roomCount + 1));
+        String rCeil = request.getParameter("rCeil" + String.valueOf(roomCount + 1));
+        String rFloor = request.getParameter("rFloor" + String.valueOf(roomCount + 1));
+        String rWinDoors = request.getParameter("rWinDoors" + String.valueOf(roomCount + 1));
+        String r1other = request.getParameter("r1other" + String.valueOf(roomCount + 1));
+        String r2other = request.getParameter("r2other" + String.valueOf(roomCount + 1));
+        String r1otherLoc = request.getParameter("r1otherLoc" + String.valueOf(roomCount + 1));
+        String r2otherLoc = request.getParameter("r2otherLoc" + String.valueOf(roomCount + 1));
+
+        if (rWalls != (null)) {
+            interior.add(new ReportRoomInterior("Walls", rWalls));
+        }
+        if (rCeil != (null)) {
+            interior.add(new ReportRoomInterior("Walls", rCeil));
+        }
+        if (rFloor != (null)) {
+            interior.add(new ReportRoomInterior("Floor", rFloor));
+        }
+        if (rWinDoors != (null)) {
+            interior.add(new ReportRoomInterior("Windows and doors", rWinDoors));
+
+        }
+        if (r1other != null && r1otherLoc != (null)) {
+            interior.add(new ReportRoomInterior("Other 1", r1other));
+
+        }
+        if (r2other != (null) && r2otherLoc != (null)) {
+            interior.add(new ReportRoomInterior("Other 2", r2other));
+
+        }
+        return interior;
     }
 }
