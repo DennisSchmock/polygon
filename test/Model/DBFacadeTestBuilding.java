@@ -6,8 +6,11 @@
 package Model;
 
 import Domain.Building;
+import Domain.BuildingRoom;
+import Domain.Report;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,9 +35,6 @@ public class DBFacadeTestBuilding {
         fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
-        System.out.println(fixture.getConnection()!=null);
-        System.out.println(fixture.getConnection().isClosed());
-        System.out.println(fixture.getConnection());
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
         dbf.setCon(con);
@@ -50,7 +50,16 @@ public class DBFacadeTestBuilding {
         
         Building b = new Building("vor Fredfdasflser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
-        
+        BuildingRoom br1 = new BuildingRoom(1,"Et");
+        BuildingRoom br2 = new BuildingRoom(1,"Et");
+        BuildingRoom br3 = new BuildingRoom(1,"Et");
+        BuildingRoom br4 = new BuildingRoom(1,"Et");
+        ArrayList<BuildingRoom> listOfRooms = new ArrayList();
+        listOfRooms.add(br1);
+        listOfRooms.add(br2);
+        listOfRooms.add(br3);
+        listOfRooms.add(br4);
+        b.setListOfRooms(listOfRooms);
         dbf.saveNewBuilding(b);
         Building b2=null;
         List<Building> builds=dbf.getListOfbuildingsDB(1);
@@ -63,7 +72,9 @@ public class DBFacadeTestBuilding {
     public boolean compareBuildings(Building b1, Building b2){
         boolean equals;
         equals = b1.getBuildingName().equals(b2.getBuildingName());
-        if (b1.getBuildingSize()!=b2.getBuildingSize() || b1.getBuildingYear()!= b2.getBuildingYear()){
+        if (    b1.getBuildingSize()!=b2.getBuildingSize() || 
+                b1.getBuildingYear()!= b2.getBuildingYear()||
+                b1.getListOfRooms()!=b2.getListOfRooms()){
             equals=false;
         }
         return equals;

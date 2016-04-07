@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Domain.*;
+import java.sql.Connection;
 import org.junit.After;
 import org.junit.BeforeClass;
 
@@ -36,10 +37,9 @@ public class DBFacadeTest {
         fixture = new DBFixture();
         fixture.setUp();
         dbf = DBFacade.getInstance();
-        System.out.println(fixture.getConnection()!=null);
-        System.out.println(fixture.getConnection().isClosed());
-        System.out.println(fixture.getConnection());
-        dbf.setCon(fixture.getConnection());
+        Connection con =fixture.getConnection();
+        con.setAutoCommit(true);
+        dbf.setCon(con);
     }
 
     @After
@@ -99,22 +99,22 @@ public class DBFacadeTest {
     /**
      * difference in username
      */
-//    @Test
-//    public void testValidateUser3() {
-//        String username ="HejmedDig";
-//        String password = "HELLo";
-//        
-//        User user = new User(username, password, 1, null, null, null, null, null);
-//        dbf.createUserDBFacade(user);
-//        
-//        
-//        boolean expected = false;
-//        boolean actual = dbf.validateUser("medDig", password);
-//        
-//            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
-//        
-//    }
-//    
+    @Test
+    public void testValidateUser3() {
+        String username ="HejmedDig";
+        String password = "HELLo";
+        
+        User user = new User(username, password, 1, null, null, null, null, null);
+        dbf.createUserDBFacade(user);
+        
+        
+        boolean expected = false;
+        boolean actual = dbf.validateUser("medDig", password);
+        
+            assertTrue("Fail, Expected: " + expected + " Found: " + actual, expected == actual);
+        
+    }
+    
     /**
      * Test with password difference in just a space
      */
@@ -353,12 +353,27 @@ public class DBFacadeTest {
 //    public void testGetListOfRec() {
 //    }
 //
-//    @Test
-//    public void testAddCustomer() {
-//    }
-//
+    @Test
+    public void testAddCustomer() {
+       Customer c=new Customer("CPHBusiness","Miriam Sørensen","ms@cphbusiness.dk","Nørgaardsvej",30,21,3245,"Lyngby","+4553354494");
+       dbf.addCustomer(c);
+       Customer newCust = dbf.getCustomer(2);
+       assertTrue("Get add customer-if null", newCust != null);
+       assertTrue("Get add customer-check name",newCust.getCompanyName().equals("CPHBusiness")); 
+       assertTrue("Get add customer-check contact person",newCust.getContactPerson().equals("Miriam Sørensen")); 
+       assertTrue("Get add customer-check email",newCust.getCusMail().equals("ms@cphbusiness.dk")); 
+       assertTrue("Get add customer-check street",newCust.getStreet().equals("Nørgaardsvej")); 
+       assertTrue("Get add customer-check streetNumber",newCust.getStreetNumber()==30); 
+       assertTrue("Get add customer-check CVR",newCust.getCusCVR()==21); 
+       assertTrue("Get add customer-check zipcode",newCust.getZip()==3245); 
+       assertTrue("Get add customer-check phone number",newCust.getPhoneNumber().equals("+4553354494")); 
+       
+    }
+
 //    @Test
 //    public void testSaveContact() {
+//       Contact contact =new Contact("Cherry Rose", "cjs@polygonproject.dk","+4553354499",2);
+//        
 //    }
 //
 //    @Test
@@ -401,4 +416,5 @@ public class DBFacadeTest {
 //    public void testSetCon() {
 //    }
 //    
+
 }
