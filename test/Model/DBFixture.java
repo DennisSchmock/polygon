@@ -13,7 +13,7 @@ public class DBFixture {
     private static String driver = "com.mysql.jdbc.Driver";
     private static String URL = "jdbc:mysql://localhost:3306/polytest";
     private static String id = "root";			
-    private static String pw = "kodeord";
+    private static String pw = "Ospekos_22";
 
     public void setUp() throws SQLException {
         try {
@@ -22,6 +22,7 @@ public class DBFixture {
             Statement st = getConnection().createStatement();
             // start transaction
             getConnection().setAutoCommit(false);
+            System.out.println(connection);
 
  //Test setup start
             st.addBatch("drop table if exists floorplan, report_room_damage, report_room_recommendation, "

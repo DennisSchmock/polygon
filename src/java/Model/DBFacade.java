@@ -217,5 +217,6 @@ public class DBFacade {
      */
     public void setCon(Connection con) {
         this.con = con;
+        System.out.println(con);
     }
 }
