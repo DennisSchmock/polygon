@@ -61,7 +61,7 @@ public class DBFacade {
     }
     
     public Customer getCustomer(int customerid){
-        return cm.getCustomer();
+        return cm.getCustomer(customerid,getCon());
     }
 
     public boolean validateUser(String username, String pwd) {
