@@ -4,29 +4,32 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBFixture {
 
     private Connection connection;
     private static String driver = "com.mysql.jdbc.Driver";
-    private static String URL = "jdbc:mysql://localhost/polytest";
+    private static String URL = "jdbc:mysql://localhost:3306/polytest";
     private static String id = "root";			
-    private static String pw = "cjs110292";
+    private static String pw = "kodeord";
 
     public void setUp() throws SQLException {
         try {
             Class.forName(driver);
-            setConnection(DriverManager.getConnection(URL, id, pw));
+             connection = DriverManager.getConnection(URL, id, pw);
             Statement st = getConnection().createStatement();
             // start transaction
             getConnection().setAutoCommit(false);
 
-// Test setup start            
+ //Test setup start
             st.addBatch("drop table if exists floorplan, report_room_damage, report_room_recommendation, "
                     + "report_room_moist,report_room_interior_pic,\n"
                     + "report_room_interior,report_exterior,report_room,report_pic,report,"
                     + "building_room,order_request,building_documents,building,customer_user,"
                     + "contact,customer,zip_codes,polygon_user;");
+      
 
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`customer` ("
                     + "`customer_id` INT(11) NOT NULL AUTO_INCREMENT,"
@@ -343,7 +346,7 @@ public class DBFixture {
     }
 
     public void tearDown() throws SQLException {
-        getConnection().close();
+        
     }
 
     /**
@@ -352,15 +355,20 @@ public class DBFixture {
     public Connection getConnection() {
         return connection;
     }
+    
+    public void closeConnection(){
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBFixture.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     /**
      * @param connection the connection to set
      */
     public void setConnection(Connection connection) {
         this.connection = connection;
-    }
-
-    void closeConnection() throws SQLException {
-        connection.close();
     }
 }
