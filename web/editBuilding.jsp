@@ -46,9 +46,7 @@
         <br>
 
         <label>Description of building use</label>
-        <textarea name="useOfBuilding" rows="4" cols="20">
-            ${sessionScope.buildingToBeEdited.useOfBuilding}
-        </textarea>
+        <textarea name="useOfBuilding" rows="4" cols="20">${sessionScope.buildingToBeEdited.useOfBuilding}</textarea>
         <br>
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 

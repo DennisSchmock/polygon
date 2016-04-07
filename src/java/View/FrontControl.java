@@ -50,6 +50,7 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
@@ -62,7 +63,8 @@ public class FrontControl extends HttpServlet {
         }
 
         response.setContentType("text/html;charset=UTF-8");
-
+        request.setCharacterEncoding("UTF-8");
+        
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
@@ -201,7 +203,7 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-
+       
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
         session.setAttribute("newbuilding", b);
@@ -265,6 +267,8 @@ public class FrontControl extends HttpServlet {
      * that that we have to change based on the input fields
      */
     private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+        
+        System.out.println(request.getCharacterEncoding());
 
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));

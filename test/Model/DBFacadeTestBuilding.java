@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -73,8 +72,9 @@ public class DBFacadeTestBuilding {
         boolean equals;
         equals = b1.getBuildingName().equals(b2.getBuildingName());
         if (    b1.getBuildingSize()!=b2.getBuildingSize() || 
-                b1.getBuildingYear()!= b2.getBuildingYear()||
-                b1.getListOfRooms()!=b2.getListOfRooms()){
+                b1.getBuildingYear()!= b2.getBuildingYear()//||
+                //b1.getListOfRooms()!=b2.getListOfRooms()
+                ){
             equals=false;
         }
         return equals;
