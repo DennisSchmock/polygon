@@ -45,6 +45,7 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
@@ -252,6 +253,8 @@ public class FrontControl extends HttpServlet {
      * that that we have to change based on the input fields
      */
     private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+        
+        System.out.println(request.getCharacterEncoding());
 
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));

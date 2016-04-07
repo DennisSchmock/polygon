@@ -20,14 +20,14 @@ public class DBconnector {
     public static final String pwd = "Ospekos_22";
 
     private Connection con;
-
+    
     private static DBconnector instance;
 
     private DBconnector() {
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(url, dbuser, pwd);
-
+            
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
