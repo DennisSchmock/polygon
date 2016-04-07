@@ -36,6 +36,10 @@ public class ReportRoom {
         this.roomName = roomName;
         this.reportId = reportId;
     }
+
+    public ReportRoom(String roomName) {
+        this.roomName = roomName;
+    }
     
     public void setRepRoomId(int repRoomId) {
         this.repRoomId = repRoomId;

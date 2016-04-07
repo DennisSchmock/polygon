@@ -34,10 +34,12 @@ public class Report {
         this.categoryConclusion = catCon;
     }
     
-    public Report( String date, int buildingId, int catCon) {
+    public Report(String date, int buildingId, int catCon) {
         this.date = date;
         this.buildingId = buildingId;
         this.categoryConclusion = catCon;
+        this.listOfRepRoom = new ArrayList<>();
+        this.listOfRepRoomExt = new ArrayList<>();
     }
 
     public void setReportId(int reportId) {

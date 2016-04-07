@@ -10,6 +10,7 @@ package Domain;
  * @author CJS
  */
 public class ReportRoomDamage {
+
     private int repRoomDmgId;
     private String damageTime;
     private String place;
@@ -21,12 +22,12 @@ public class ReportRoomDamage {
     /**
      *
      * @param repRoomDmgId report room damage ID
-     * @param damageTime   date when the damage was discovered
-     * @param place        location of the damage
+     * @param damageTime date when the damage was discovered
+     * @param place location of the damage
      * @param whatHappened cause of the damage
-     * @param whatIsRepaired  part that has been repaired
-     * @param damageType    type of damage
-     * @param repRoomId     report room ID
+     * @param whatIsRepaired part that has been repaired
+     * @param damageType type of damage
+     * @param repRoomId report room ID
      */
     public ReportRoomDamage(int repRoomDmgId, String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
         this.repRoomDmgId = repRoomDmgId;
@@ -37,7 +38,7 @@ public class ReportRoomDamage {
         this.repRoomId = repRoomId;
         this.whatIsRepaired = whatIsRepaired;
     }
-    
+
     public ReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
         this.damageTime = damageTime;
         this.place = place;
@@ -47,11 +48,18 @@ public class ReportRoomDamage {
         this.whatIsRepaired = whatIsRepaired;
     }
 
+    public ReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType) {
+        this.damageTime = damageTime;
+        this.place = place;
+        this.whatHappened = whatHappened;
+        this.damageType = damageType;
+        this.whatIsRepaired = whatIsRepaired;
+    }
+
     public void setRepRoomDmgId(int repRoomDmgId) {
         this.repRoomDmgId = repRoomDmgId;
     }
 
-    
     public int getRepRoomDmgId() {
         return repRoomDmgId;
     }
@@ -79,5 +87,5 @@ public class ReportRoomDamage {
     public int getRepRoomId() {
         return repRoomId;
     }
-    
+
 }
