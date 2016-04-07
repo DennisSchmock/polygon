@@ -359,4 +359,8 @@ public class DBFixture {
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
+
+    void closeConnection() throws SQLException {
+        connection.close();
+    }
 }
