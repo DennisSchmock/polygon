@@ -9,7 +9,6 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
-test/Model/DBFixture.java
 
 
 ### Windows ###
