@@ -78,9 +78,7 @@ public class NewReportHelper extends HttpServlet {
         if (command.equals("reportAddRecommendation")) {
             request = AddRecommendation(request, response);
         }
-        if (command.equals("reportSubmit")) {
-            submitReport(request, response);
-        }
+       
         return request;
 
     }
@@ -123,8 +121,9 @@ public class NewReportHelper extends HttpServlet {
      *
      * @param request
      * @param response
+     * @param df
      */
-    public Report submitReport(HttpServletRequest request, HttpServletResponse response) {   
+    public Report submitReport(HttpServletRequest request, HttpServletResponse response,DomainFacade df) {   
         Report report;
 
         int reportCategory = Integer.parseInt(request.getParameter("category"));
@@ -144,19 +143,20 @@ public class NewReportHelper extends HttpServlet {
 
         for (int roomCount = 0; roomCount <= numOfRooms; roomCount++) {
             ReportRoom rr;
+            int roomNumber = Integer.parseInt(request.getParameter("roomSelect" + String.valueOf(roomCount + 1)));
 
-            rr = new ReportRoom("roomNameNotHarvested?");//Create a ReportRoom;
+            rr = new ReportRoom("roomNameNotHarvested?",roomNumber);//Create a ReportRoom;
             rr.getListOfDamages().add(createReportRoomDamage(request, roomCount));
 
             int moist;
             String place = "";
+            //Get the moistlevels from the form.
             if (!request.getParameter("moistScan" + String.valueOf(roomCount + 1)).equals("")) {
                 moist = Integer.parseInt(request.getParameter("moistScan" + String.valueOf(roomCount + 1)));
                 if (request.getParameter("moistPoint" + String.valueOf(roomCount + 1)) != null) {
                     place = (String) request.getParameter("moistPoint" + String.valueOf(roomCount + 1));
                 }
                 rr.setMoist(new ReportRoomMoist(moist, place)); //Adding moist object to room
-
             }
 
             rr.setListOfInt(createInterior(request, roomCount));//Add the list of interior to the Arraylist in the Room
@@ -165,10 +165,18 @@ public class NewReportHelper extends HttpServlet {
                 String recommendation = request.getParameter("recommendation" + String.valueOf(roomCount + 1));
                 rr.getListOfRec().add(new ReportRoomRecommendation(recommendation));                        
             }
+            report.getListOfRepRoom().add(rr);//Add the room to the report
         }
+        df.saveReport(report);
         return report;
     }
 
+    /**
+     * This method creates an object to input.
+     * @param request
+     * @param roomCount
+     * @return
+     */
     public ReportRoomDamage createReportRoomDamage(HttpServletRequest request, int roomCount) {
         ReportRoomDamage repRoomDam;
         String when;
@@ -193,11 +201,7 @@ public class NewReportHelper extends HttpServlet {
         return repRoomDam;
     }
 
-    public void addRecommendations(String recommendation, int rrId) {
-
-        df.saveReportRoomRec(recommendation, rrId);
-
-    }
+   
 
     private ArrayList<ReportRoomInterior> createInterior(HttpServletRequest request, int roomCount) {
         ArrayList<ReportRoomInterior> interior = new ArrayList<>();
@@ -215,7 +219,7 @@ public class NewReportHelper extends HttpServlet {
             interior.add(new ReportRoomInterior("Walls", rWalls));
         }
         if (rCeil != (null)) {
-            interior.add(new ReportRoomInterior("Walls", rCeil));
+            interior.add(new ReportRoomInterior("Ceiling", rCeil));
         }
         if (rFloor != (null)) {
             interior.add(new ReportRoomInterior("Floor", rFloor));

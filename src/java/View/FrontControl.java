@@ -7,6 +7,11 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.Report;
+import Domain.ReportRoom;
+import Domain.ReportRoomDamage;
+import Domain.ReportRoomExterior;
+import Domain.ReportRoomInterior;
 import Domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,6 +52,8 @@ public class FrontControl extends HttpServlet {
             throws ServletException, IOException {
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
+        NewReportHelper nrh = new NewReportHelper();
+
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
         if (df == null) {
@@ -68,9 +75,15 @@ public class FrontControl extends HttpServlet {
             url = "/report.jsp";
             request = rh.process(request, response, df);
         }
+        if (page.equalsIgnoreCase("newreport")) {
+            url = "/newreport.jsp";
+            request = nrh.process(request, response, df);
+        }
 
-        if (page.equalsIgnoreCase("reportSubmit")) {
-            //url = "/report.jsp";
+        if (page.equalsIgnoreCase("newReportSubmit")) {
+            nrh.submitReport(request, response, df);
+            response.sendRedirect("viewreport.jsp");
+            return;
         }
         if (page.equalsIgnoreCase("reportAddRoom")) {
             //url = "/report.jsp";
@@ -267,7 +280,8 @@ public class FrontControl extends HttpServlet {
     }
 
     /**
-     * Method for logging in. 
+     * Method for logging in.
+     *
      * @param df
      * @param request
      * @param response
@@ -286,6 +300,27 @@ public class FrontControl extends HttpServlet {
     }
 
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    }
+
+    private void testReport(Report newReport) {
+        System.out.println(newReport.getDate());
+        System.out.println("Building: " + newReport.getBuildingId());
+        for (ReportRoom reportRoom : newReport.getListOfRepRoom()) {
+            System.out.println("Roomname" + reportRoom.getRoomName());
+            for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
+                System.out.println("roomintname: " + reportRoomInterior.getRepRoomIntName());
+
+            }
+            for (ReportRoomDamage listOfDamage : reportRoom.getListOfDamages()) {
+                System.out.println("Dam: " + listOfDamage.getPlace());
+
+            }
+            for (ReportRoomExterior reportRoomExterior : newReport.getListOfRepRoomExt()) {
+                System.out.println("Ext: " + reportRoomExterior.getRepExtDescription());
+
+            }
+
+        }
     }
 
 }

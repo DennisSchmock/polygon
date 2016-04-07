@@ -17,9 +17,9 @@ public class ReportRoom {
     private int reportId;
     private int buildingRoomId;
     private ReportRoomMoist moist;
-    private ArrayList<ReportRoomDamage> listOfDamages;
-    private ArrayList<ReportRoomInterior> listOfInt;
-    private ArrayList<ReportRoomRecommendation> listOfRec;
+    private ArrayList<ReportRoomDamage> listOfDamages = new ArrayList<>();
+    private ArrayList<ReportRoomInterior> listOfInt  = new ArrayList<>();;
+    private ArrayList<ReportRoomRecommendation> listOfRec  = new ArrayList<>();
 
     /**
      *
@@ -33,9 +33,9 @@ public class ReportRoom {
         this.reportId = reportId;
     }
 
-    public ReportRoom( String roomName, int reportId) {
+    public ReportRoom( String roomName, int roomNumber) {
         this.roomName = roomName;
-        this.reportId = reportId;
+        this.buildingRoomId = roomNumber;
     }
 
     public ReportRoom(String roomName) {

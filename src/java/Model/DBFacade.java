@@ -50,6 +50,7 @@ public class DBFacade {
         cm = new CustomerMapper();
         bm = new BuildingMapper();
         um = new UserMapper();
+        nrm = new NewReportMapper();
 
     }
 
@@ -218,5 +219,11 @@ public class DBFacade {
     public void setCon(Connection con) {
         this.con = con;
         System.out.println(con);
+    }
+
+    
+    public void addReportToDB(Report report) {
+        nrm.reportToDataBase(report, con);
+
     }
 }
