@@ -10,32 +10,36 @@ package Domain;
  * @author CJS
  */
 public class ReportRoomRecommendation {
+
     private int repRoomRecId;
     private String recommendation;
     private int repRoomId;
 
     /**
      *
-     * @param repRoomRecId    report room recommendation ID
-     * @param recommendation  room recommendation
-     * @param repRoomId       report room ID references to the report room
+     * @param repRoomRecId report room recommendation ID
+     * @param recommendation room recommendation
+     * @param repRoomId report room ID references to the report room
      */
     public ReportRoomRecommendation(int repRoomRecId, String recommendation, int repRoomId) {
         this.repRoomRecId = repRoomRecId;
         this.recommendation = recommendation;
         this.repRoomId = repRoomId;
     }
-    
-    public ReportRoomRecommendation( String recommendation, int repRoomId) {
+
+    public ReportRoomRecommendation(String recommendation, int repRoomId) {
         this.recommendation = recommendation;
         this.repRoomId = repRoomId;
+    }
+
+    public ReportRoomRecommendation(String recommendation) {
+        this.recommendation = recommendation;
     }
 
     public void setRepRoomRecId(int repRoomRecId) {
         this.repRoomRecId = repRoomRecId;
     }
 
-    
     public int getRepRoomRecId() {
         return repRoomRecId;
     }
@@ -47,5 +51,5 @@ public class ReportRoomRecommendation {
     public int getRepRoomId() {
         return repRoomId;
     }
-    
+
 }

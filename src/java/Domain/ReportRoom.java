@@ -16,6 +16,7 @@ public class ReportRoom {
     private String roomName;
     private int reportId;
     private int buildingRoomId;
+    private ReportRoomMoist moist;
     private ArrayList<ReportRoomDamage> listOfDamages;
     private ArrayList<ReportRoomInterior> listOfInt;
     private ArrayList<ReportRoomRecommendation> listOfRec;
@@ -88,6 +89,20 @@ public class ReportRoom {
 
     public void setBuildingRoomId(int buildingRoomId) {
         this.buildingRoomId = buildingRoomId;
+    }
+
+    /**
+     * @return the moist
+     */
+    public ReportRoomMoist getMoist() {
+        return moist;
+    }
+
+    /**
+     * @param moist the moist to set
+     */
+    public void setMoist(ReportRoomMoist moist) {
+        this.moist = moist;
     }
     
 }

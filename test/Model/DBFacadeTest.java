@@ -44,7 +44,7 @@ public class DBFacadeTest {
 
     @After
     public void tearDown() throws Exception {
-        fixture.tearDown();
+        fixture.closeConnection();
     }
 
 //    @Test
