@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -51,267 +52,59 @@ public class NewReportMapper {
 
     }
 
-    //saving a new room exterior report in DB-Report_Exterior table
-    public void saveReportExt(ReportRoomExterior re, Connection con) {
-        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, re.getRepExtDescription());
-            statement.setInt(2, re.getRepExtPic());
-            statement.setInt(3, re.getReportId());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                re.setRepExtId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report exterior - saveReportExt");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //saving a new report of a room in DB-Report_Room table
-    public ReportRoom saveReportRoom(ReportRoom rr, Connection con) {
-        String SQLString = "insert into report_room(room_name,report,building_room) values (?,?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, rr.getRoomName());
-            statement.setInt(2, rr.getReportId());
-            statement.setInt(3, rr.getBuildingRoomId());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                rr.setRepRoomId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report room - saveReportRoom");
-            System.out.println(e.getMessage());
-        }
-        return rr;
-    }
-
-    //Saving a new report for damage in a room in DB-Report_Room_Damage table
-    public void saveReportRoomDamage(ReportRoomDamage rrd, Connection con) {
-        String SQLString = "insert into report_room_damage (damage_time,place,what_happened,what_is_repaired,damage_type,report_room)"
-                + " values (?,?,?,?,?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            Date date = java.sql.Date.valueOf(rrd.getDamageTime());
-            statement.setDate(1, date);
-            statement.setString(2, rrd.getPlace());
-            statement.setString(3, rrd.getWhatHappened());
-            statement.setString(4, rrd.getWhatIsRepaired());
-            statement.setString(5, rrd.getDamageType());
-            statement.setInt(6, rrd.getRepRoomId());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                rrd.setRepRoomDmgId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report room damage - saveReportRoomDamage");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //saving a new report for room's interior in DB-Report_Room_Interiour table
-    public void saveReportInterior(ReportRoomInterior ri, Connection con) {
-        String SQLString = "insert into report_room_interior(report_room_interior_name,remark,report_room)"
-                + " values (?,?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, ri.getRepRoomIntName());
-            statement.setString(2, ri.getRemark());
-            statement.setInt(3, ri.getRepRoomId());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (!rs.next()) {
-                ri.setRepRoomIntId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report room interior - saveReportInterior");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //saving a new room moist report in DB-report_room_moist table
-    public void saveReportMoist(ReportRoomMoist rm, Connection con) {
-        String SQLString = "insert into report_room_moist(report_room_moist_measured, report_room_moist_place,report_room_id) values (?,?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, rm.getMoistMeasured());
-            statement.setString(2, rm.getMeasurePoint());
-            statement.setInt(3, rm.getReportRoom());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                rm.setMoistMeasureId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report moist - report_room_moist");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //saving a new room report recommendations in DB-Report_Room_Recommendations table
-    public void saveReportRoomRec(ReportRoomRecommendation rrr, Connection con) {
-        String SQLString = "insert into report_room_recommendation(recommendation,report_room) values (?,?)";
-        try (PreparedStatement statement
-                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, rrr.getRecommendation());
-            statement.setInt(2, rrr.getRepRoomId());
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (!rs.next()) {
-                rrr.setRepRoomRecId(rs.getInt(1));
-            }
-        } catch (Exception e) {
-            System.out.println("Fail in saving report room recommendation - saveReportRecommendation");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //Get a report from the DB
-    public Report getReport(int id, Connection con) {
-
+    public Report getSingleReport(int reportId, Connection con) {
+        Report r;
         String SQLString = "select * from report where report_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
+            statement.setInt(1, reportId);
+            System.out.println("Get here?");
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 return null;
             }
-            Report r = new Report(
-                    rs.getInt("report_id"),
-                    rs.getDate("report_date").toString(),
-                    rs.getInt("building_id"),
-                    rs.getInt("category_conclusion"));
+            String reportDate = rs.getDate("report_date").toString();
+            int buildingId = rs.getInt("building_id");
+            int catagoryConclusion = rs.getInt("category_conclusion");
+
+            r = new Report(reportId, reportDate, buildingId, catagoryConclusion);
+            r.setListOfRepRoom(getReportRooms(reportId, con));
+            r.setListOfRepRoomExt(getReportExterior(reportId, con));
+
             return r;
         } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReport");
+            System.out.println("Fail in NewReportMapper-getReport");
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-    //Get data of a room exterior in db
-    public ReportRoomExterior getReportExt(int id, Connection con) {
-
-        String SQLString = "select * from report_exterior where report_ext_id=?";
+    public ArrayList<Report> getAllReportsBuilding(int buildingId, Connection con) {
+        ArrayList<Report> reports = new ArrayList<>();
+        String SQLString = "select * from report where building_id = ?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
+            statement.setInt(1, buildingId);
             ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
+            while(rs.next()){
+                int reportId = rs.getInt("report_id");
+                reports.add(getSingleReport(reportId, con));
             }
-            ReportRoomExterior re = new ReportRoomExterior(
-                    rs.getInt("report_ext_id"),
-                    rs.getString("report_ext_description"),
-                    rs.getInt("report_ext_pic"),
-                    rs.getInt("report"));
-            return re;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportExt");
+        }
+        catch (Exception e) {
+            System.out.println("Failed to get reports for building");
             System.out.println(e.getMessage());
             return null;
         }
+        return reports;
+
     }
 
-    //get data of reported room from db
-    public ReportRoom getReportRoom(int id, Connection con) {
+    public ArrayList<Report> getAllReports(Connection con) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
-        String SQLString = "select * from report_room where report_room_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            ReportRoom rr = new ReportRoom(
-                    rs.getInt("report_room_id"),
-                    rs.getString("room_name"),
-                    rs.getInt("report"));
-            return rr;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportRoom");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    //get a reported damage from db
-    public ReportRoomDamage getReportDamage(int id, Connection con) {
-
-        String SQLString = "select * from report_room_damage where report_room_damage_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            ReportRoomDamage rd = new ReportRoomDamage(
-                    rs.getInt("report_room_damage_id"),
-                    rs.getDate("damage_time").toString(),
-                    rs.getString("place"),
-                    rs.getString("what_happened"),
-                    rs.getString("what_is_repaired"),
-                    rs.getString("damage_type"),
-                    rs.getInt("report_room"));
-            return rd;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportDamage");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    //get a data of a report interior
-    public ReportRoomInterior getReportInt(int id, Connection con) {
-
-        String SQLString = "select * from report_room_interior where report_room_interior_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            ReportRoomInterior ri = new ReportRoomInterior(
-                    rs.getInt("report_room_interior_id"),
-                    rs.getString("report_room_interior_name"),
-                    rs.getString("remark"),
-                    rs.getInt("report_room"));
-            return ri;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportInt");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    //get a room recommndation from db
-    public ReportRoomRecommendation getReportRec(int id, Connection con) {
-
-        String SQLString = "select * from report_room_recommendation where report_room_recommendation_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            ReportRoomRecommendation rrr = new ReportRoomRecommendation(
-                    rs.getInt("report_room_recommendation_id"),
-                    rs.getString("recommendation"),
-                    rs.getInt("report_room"));
-            return rrr;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportRec");
-            System.out.println(e.getMessage());
-            return null;
-        }
     }
 
     //method that will take all the Report_Exteriour details in a certain Report
-    public ArrayList<ReportRoomExterior> getListOfExt(int id, Connection con) {
+    private ArrayList<ReportRoomExterior> getReportExterior(int id, Connection con) {
         String SQLString = "select * from report_exterior where report=?";
         ArrayList<ReportRoomExterior> listOfExt = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -333,30 +126,8 @@ public class NewReportMapper {
         }
     }
 
-    //take all the listed report rooms of a certain report
-    public ArrayList<ReportRoom> getListOfReportRoom(int id, Connection con) {
-        String SQLString = "select * from report_room where report=?";
-        ArrayList<ReportRoom> listOfRepRm = new ArrayList<>();
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                ReportRoom rr = new ReportRoom(
-                        rs.getInt("report_room_id"),
-                        rs.getString("room_name"),
-                        rs.getInt("report"));
-                listOfRepRm.add(rr);
-            }
-            return listOfRepRm;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getListOfReportRoom");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
     //take all damages of a certain report room
-    public ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) {
+    private ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) {
         String SQLString = "select * from report_room_damage where report_room=?";
         ArrayList<ReportRoomDamage> listOfDmg = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -382,7 +153,7 @@ public class NewReportMapper {
     }
 
     //take all interiors data of a certain room 
-    public ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con) {
+    private ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con) {
         String SQLString = "select * from report_room_interior where report_room=?";
         ArrayList<ReportRoomInterior> listOfInt = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -405,7 +176,7 @@ public class NewReportMapper {
     }
 
     //take all recommendations of a ceratin reported room
-    public ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con) {
+    private ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con) {
         String SQLString = "select * from report_room_recommendation where report_room=?";
         ArrayList<ReportRoomRecommendation> listOfRec = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -543,11 +314,61 @@ public class NewReportMapper {
                 statement.setInt(2, re.getRepExtPic());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
-                
+
             } catch (Exception e) {
                 System.out.println("Fail in saving report exterior - saveReportExt");
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private ArrayList<ReportRoom> getReportRooms(int reportId, Connection con) {
+        ArrayList<ReportRoom> reportRooms = new ArrayList<>();
+
+        String SQLString = "select * from report_room where report=?";
+
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, reportId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int reportRoomId = rs.getInt("report_room_id");
+                String roomName = rs.getString("room_name");
+                ReportRoom reportRoom = new ReportRoom(reportRoomId, roomName, reportId);
+                reportRoom.setListOfInt(getListOfInt(reportRoomId, con));
+                reportRoom.setListOfDamages(getListOfDamages(reportRoomId, con));
+                reportRoom.setListOfRec(getListOfRec(reportRoomId, con));
+                reportRoom.setMoist(getMoist(reportRoomId, con));
+                reportRooms.add(reportRoom);
+
+            }
+            return reportRooms;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getReportRoom");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    
+
+    private ReportRoomMoist getMoist(int reportRoomId, Connection con) {
+        String SQLString = "select * from report_room_moist where report_room_id=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, reportRoomId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            ReportRoomMoist moist; 
+                    String place = rs.getString("report_room_moist_place");
+                    int measured = rs.getInt("report_room_moist_measured");
+                  
+            moist = new ReportRoomMoist(place,measured);
+            return moist;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfDamages");
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
