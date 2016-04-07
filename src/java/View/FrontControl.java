@@ -56,7 +56,8 @@ public class FrontControl extends HttpServlet {
         }
 
         response.setContentType("text/html;charset=UTF-8");
-
+        request.setCharacterEncoding("UTF-8");
+        
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
@@ -189,7 +190,7 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-
+       
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
         session.setAttribute("newbuilding", b);

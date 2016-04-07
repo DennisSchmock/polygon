@@ -84,7 +84,7 @@ public class DBFacadeTest {
     public void testValidateUser2() {
         String username ="HejmedDig";
         String password = "HELLo";
-        
+    
         User user = new User(username, password, 1, null, null, null, null, null);
         dbf.createUserDBFacade(user);
         
@@ -103,7 +103,7 @@ public class DBFacadeTest {
     public void testValidateUser3() {
         String username ="HejmedDig";
         String password = "HELLo";
-        
+    
         User user = new User(username, password, 1, null, null, null, null, null);
         dbf.createUserDBFacade(user);
         
