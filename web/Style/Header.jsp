@@ -20,27 +20,27 @@
             <a href="frontpage?page=index">  
                 <img src="${pageContext.request.contextPath}/images/polygon-logo.svg"/>
             </a>
-                <c:if test="${sessionScope.loggedin==true}">
-            <div class="topbar w3-container">
-                <c:out value="${sessionScope.user.companyName}"/><br> 
-                
-                <c:out value="${sessionScope.user.fName}"/> 
-                <c:out value="${sessionScope.user.lName}"/><br>
-                <a href="?page=logout">log out</a>
-            
-            
-            </div>
-                
+            <c:if test="${sessionScope.loggedin==true}">
+                <div class="topbar w3-container">
+                    <c:out value="${sessionScope.user.companyName}"/><br> 
+
+                    <c:out value="${sessionScope.user.fName}"/> 
+                    <c:out value="${sessionScope.user.lName}"/><br>
+                    <a href="?page=logout">log out</a>
+
+
+                </div>
+
             </c:if>
         </header>
-        
-            <ul class="w3-navbar w3-blue">
-                <li><a href="frontpage?page=report">Report</a></li>
-                <li><a href="frontpage?page=addbuilding">Add building</a></li>
-                <li><a href="frontpage?page=addcustomer">Add customer</a></li>
-                <li><a href="login?page=login">Login</a></li>
-                <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
-                <li><a href="frontpage?page=newreport">Test New Report</a></li>
-                <li><a href="frontpage?page=listreports">List Reports</a></li>
-            </ul>
-        
+
+        <ul class="w3-navbar w3-blue">
+            <li><a href="frontpage?page=addbuilding">Add building</a></li>
+            <li><a href="frontpage?page=addcustomer">Add customer</a></li>
+            <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
+            <li><a href="frontpage?page=newreport">Add Report</a></li>
+            <li><a href="frontpage?page=listreports">List Reports</a></li>
+            <li><a href="login?page=login">Login</a></li>
+
+        </ul>
+
