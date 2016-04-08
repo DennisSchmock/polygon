@@ -15,13 +15,13 @@
 <main>
 
     <h1>New Report</h1>
-    Building Name
-    Adress
-    Zip Code
+    Building Name:     ${sessionScope.testBuilding.buildingName}<br>
 
-    ${sessionScope.testBuilding.buildingName}
-    ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}
-    ${sessionScope.testBuilding.zipCode}
+    Adress: ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}<br>
+    Zip Code: ${sessionScope.testBuilding.zipCode}
+
+
+    
 
     <form action="frontpage" method="post" class="w3-container">
         <div class="w3-row-padding">
@@ -32,12 +32,12 @@
                     <input type="date" name="date" required class="w3-input w3-border" >
                 </div>
 
-                <div class="w3-threequarter">
+                <div class="w3-half">
                     <label class="w3-label w3-text-black"><b>Remarks for roof</b></label>
                     <input type="text"  name="roof" class="w3-input w3-border">
                 </div>
 
-                <div class="w3-threequarter">
+                <div class="w3-half">
                     <label class="w3-label w3-text-black"><b>Remarks for outer walls</b></label>
                     <input type="text"   name="walls"class="w3-input w3-border" >
                 </div>
@@ -67,7 +67,7 @@
 
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>When (in the form of (YYYY-MM-DD)?</b></label> 
-                        <input type="date" name="when${count.count}" value="" class="w3-input w3-border-black"/></div>
+                        <input type="date" name="when${count.count}" value="" class="w3-input w3-border"/></div>
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Where did the damage occour?</b></label>
                         <input type="text" name="where${count.count}" value="" class="w3-input w3-border"/></div>

@@ -19,32 +19,32 @@
     <form name="Building Form" action="frontpage" method="POST">
         <input type="hidden" name="page" value="newbuilding" />
 
-        <label>(An ID so that you can find it)  Building Name</label> 
+       <label class="test">(An ID so that you can find it)  Building Name</label> 
         <input type="text" name="buildingName" />
         <br>
         
 
-        <label>Street Address </label>
+       <label class="test">Street Address </label>
         <input type="text" name="streetAddress" required />
         
         <br>
-        <label>Street Number </label>
+       <label class="test">Street Number </label>
         <input type="text" name="streetNumber" required />
         <br>
         
-        <label>Zip Code </label>
+       <label class="test">Zip Code </label>
         <input type="number" name="zipCode" value="" max="9900" required />
         <br>
         
-        <label>Building Size (m^2) </label>
+       <label class="test">Building Size (m^2) </label>
         <input type="number" step="0.01" name="buildingSize" max="9999"  required />
         <br>
         
-        <label>Building Year </label>
+       <label class="test">Building Year </label>
         <input type="number" name="BuildingYear" max="2016" required />
         <br>
 
-        <label>Description of building use</label>
+       <label class="test">Description of building use</label>
         <textarea name="useOfBuilding" rows="4" cols="20">
         </textarea>
         <br>
