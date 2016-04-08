@@ -260,4 +260,8 @@ public class DBFacade {
         nrm.reportToDataBase(report, con);
 
     }
+
+    public ArrayList<Report> getListOfReports(int buildingId) {
+        return nrm.getAllReportsBuilding(buildingId, con);
+    }
 }

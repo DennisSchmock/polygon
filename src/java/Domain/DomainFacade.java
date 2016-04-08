@@ -6,6 +6,7 @@
 package Domain;
 
 import Model.DBFacade;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,6 +100,10 @@ public class DomainFacade {
         // Find out if the hashmap is empty or not. Otherwise it loads it form 
         // The database.
         return dbFacade.getListOfbuildingsDB(customerID);
+    }
+    
+    public ArrayList<Report> getListOfReports(int buildingId){
+        return dbFacade.getListOfReports(buildingId);
     }
 
     /**

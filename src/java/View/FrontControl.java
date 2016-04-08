@@ -83,7 +83,13 @@ public class FrontControl extends HttpServlet {
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
-            nrh.submitReport(request, response, df);
+            nrh.submitReport(request, response, df);  
+            sessionObj.setAttribute("reports", df.getListOfReports(1));
+            response.sendRedirect("viewreport.jsp");
+            return;
+        }
+        if (page.equalsIgnoreCase("listreports")){
+            sessionObj.setAttribute("reports", df.getListOfReports(1));
             response.sendRedirect("viewreport.jsp");
             return;
         }
