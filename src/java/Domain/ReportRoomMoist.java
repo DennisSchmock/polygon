@@ -28,6 +28,11 @@ public class ReportRoomMoist {
         this.measurePoint = measurePoint;
     }
 
+    public ReportRoomMoist(String place, int measured) {
+        this.moistMeasured = measured;
+        this.measurePoint = place;
+    }
+
     
     
     
