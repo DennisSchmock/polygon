@@ -15,13 +15,13 @@
 <main>
 
     <h1>New Report</h1>
-    Building Name
-    Adress
-    Zip Code
+    Building Name:     ${sessionScope.testBuilding.buildingName}<br>
 
-    ${sessionScope.testBuilding.buildingName}
-    ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}
-    ${sessionScope.testBuilding.zipCode}
+    Adress: ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}<br>
+    Zip Code: ${sessionScope.testBuilding.zipCode}
+
+
+    
 
     <form action="frontpage" method="post" class="w3-container">
         <div class="w3-row-padding">
@@ -32,14 +32,14 @@
                     <input type="date" name="date" required class="w3-input w3-border" >
                 </div>
 
-                <div class="w3-threequarter">
+                <div class="w3-half">
                     <label class="w3-label w3-text-black"><b>Remarks for roof</b></label>
                     <input type="text"  name="roof" class="w3-input w3-border">
                 </div>
 
-                <div class="w3-threequarter">
+                <div class="w3-half">
                     <label class="w3-label w3-text-black"><b>Remarks for outer walls</b></label>
-                    <input type="text"   name="walls"class="w3-input w3-border" >
+                    <input type="text" name="walls"class="w3-input w3-border" >
                 </div>
 
 
@@ -56,7 +56,6 @@
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Room name</b></label> <select name="roomSelect${count.count}" id="roomSel${count.count}" selected="${buildingRooms[0].roomId}" class="w3-select w3-border">
 
-
                             <c:forEach items="${buildingRooms}" var="room">
                                 <option value="${room.roomId}">
                                     ${room.roomName}
@@ -67,7 +66,7 @@
 
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>When (in the form of (YYYY-MM-DD)?</b></label> 
-                        <input type="date" name="when${count.count}" value="" class="w3-input w3-border-black"/></div>
+                        <input type="date" name="when${count.count}" value="" class="w3-input w3-border"/></div>
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Where did the damage occour?</b></label>
                         <input type="text" name="where${count.count}" value="" class="w3-input w3-border"/></div>
@@ -86,21 +85,21 @@
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Remarks for walls?</b></label>
                         <input type="text"  name="rWalls${count.count}" value="" class="w3-input w3-border"/></div>
 
-                    <div class="w3-threequarter"> <label class="w3-label w3-text-black">Add picture</label><input type="file" name="" value="" class="w3-input w3-border"></div>
+                    <div class="w3-threequarter"> <label class="w3-label w3-text-black">Add picture</label><input type="file" name=""  class="w3-input w3-border"></div>
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Remarks for ceiling?</b></label>
                         <input type="text"  name="rCeil${count.count}" value="" class="w3-input w3-border"/></div>
 
-                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label><input type="file" name="" value="" class="w3-input w3-border"/></div>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label><input type="file" name=""  class="w3-input w3-border"/></div>
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>emarks for floor?</b></label>
                         <input type="text"  name="rFloor${count.count}" value="" class="w3-input w3-border w3-blue"/></div>
 
-                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label><input type="file" name="" value="" class="w3-input" w3-border/></div>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label><input type="file" name=""  class="w3-input w3-border"/></div>
 
                     <div class="w3-threequarter"><label class="w3-label w3-text-black"><b>Remarks for windows/doors?</b></label>
                         <input type="text"  name="rWinDoor${count.count}" value="" class="w3-input w3-border"/></div>
 
-                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label> <input type="file" name="" value="" class="w3-input w3-border"/></div>
+                    <div class="w3-threequarter"><label class="w3-label w3-text-black">Add picture</label> <input type="file" name="" class="w3-input w3-border"/></div>
 
                     <div class="w3-threequarter"> <input type="text"  name="r1otherLoc" placeholder="*If other type location here*" size="35"class="w3-input w3-border"/></div>
                     <div class="w3-threequarter"><input type="text"  name="r1other${count.count}" value="" class="w3-input w3-border"/></div>
