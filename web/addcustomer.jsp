@@ -30,7 +30,6 @@
                 <div class="w3-half"><label>Phone</label><input type="text" name="phone" value="" class="w3-input w3-border" required /></div>
                 <div class="w3-half"><input type="submit" value="Create Customer" /></div>
 
-
             </div>
         </form>
 
