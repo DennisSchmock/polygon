@@ -6,6 +6,7 @@
 package Domain;
 
 import Model.DBFacade;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,6 +101,10 @@ public class DomainFacade {
         // The database.
         return dbFacade.getListOfbuildingsDB(customerID);
     }
+    
+    public ArrayList<Report> getListOfReports(int buildingId){
+        return dbFacade.getListOfReports(buildingId);
+    }
 
     /**
      * Take the building object that needs to be saved in the DB, and sends it
@@ -117,6 +122,11 @@ public class DomainFacade {
 
     public User loadUser(String username) {
     return dbFacade.loadUser(username);
+    }
+
+    public void saveReport(Report report) {
+        dbFacade.addReportToDB(report);
+
     }
     
     

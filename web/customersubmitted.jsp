@@ -20,5 +20,4 @@
     
 </main>
 
-
 <%@include file="Style/Footer.jsp" %>

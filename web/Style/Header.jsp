@@ -40,5 +40,7 @@
                 <li><a href="frontpage?page=addcustomer">Add customer</a></li>
                 <li><a href="login?page=login">Login</a></li>
                 <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
+                <li><a href="frontpage?page=newreport">Test New Report</a></li>
+                <li><a href="frontpage?page=listreports">List Reports</a></li>
             </ul>
         
