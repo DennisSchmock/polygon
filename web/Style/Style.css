@@ -61,7 +61,7 @@ textarea{
 }
 
 
-ladbel {
+label.test {
     float: left;
     width: 20%;
     text-align: right;
