@@ -10,16 +10,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <title>Report</title>
-<%@include file="Style/Header.jsp" %>
+<%@include file="/Style/Header.jsp" %>
 
 
-<%@include file="reporttwigs/reportnav.jsp" %>
-<%@include file="reporttwigs/reportheader.jsp" %>
-<%@include file="reporttwigs/reportmain.jsp" %>
+<%@include file="reportnav.jsp" %>
+<%@include file="reportheader.jsp" %>
+<%@include file="reportmain.jsp" %>
 
 
 
 
 
-<%@include file="Style/Footer.jsp" %>
+<%@include file="/Style/Footer.jsp" %>
 

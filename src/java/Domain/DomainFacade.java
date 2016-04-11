@@ -147,7 +147,7 @@ public class DomainFacade {
     }
 
     public Report getReport(int i) {
-        return dbFacade.getReport(i);
+        return dbFacade.getSingleReport(i);
     }
 
     /**

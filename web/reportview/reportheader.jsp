@@ -12,7 +12,7 @@
     <h1> ${sessionScope.testBuilding.buildingName}</h1>
     
     ${sessionScope.report.date}
-    <c:forEach 
+    
     navn på et rum: ${sessionScope.report.listOfRepRoom[0].roomName}<br>
    
     ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}
