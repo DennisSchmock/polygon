@@ -256,8 +256,15 @@ public class DBFacade {
         System.out.println(con);
     }
 
-    public void addReportToDB(Report report) {
-        nrm.reportToDataBase(report, con);
+    /**
+     * Creates the tuble in the database for a Report.
+     * @param report Take the report obejct that is to be created in the database
+     * The report obejct does not have an ID yet, because that is to be created
+     * When the values are inserted to the database
+     * @return The just inserted Report object, that now contains the report ID.
+     */
+    public Report addReportToDB(Report report) {
+       return nrm.createReportTuble(report, con);
 
     }
 
@@ -267,5 +274,21 @@ public class DBFacade {
     
     public Report getSingleReport(int id) {
         return nrm.getSingleReport(id, getCon());
+    }
+
+    /**
+     * Sends the request to the right mapper.
+     * @return Returs an list of All customers in the database
+     */
+    public List<Customer> getAllCustomers() {
+        return cm.getAllCustomersCM(con);
+
+}
+    public User getPolygonUser(String userName) {
+        
+        return um.getPolygonUser(userName, con);
+    }
+    public boolean validatePolygonUser(String userName, String pwd) {
+        return um.validatePolygonUser(userName,pwd,con);
     }
 }

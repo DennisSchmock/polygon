@@ -13,12 +13,13 @@ import java.util.List;
  * @author CJS
  */
 public class Customer {
+    private int customer_id;
     private String companyName;
     private String contactPerson; 
     private String cusMail; 
     private String street;
-    private int streetNumber;
-    private int cusCVR;
+    private String streetNumber;
+    private String cusCVR;
     private int zip;
     private String city;
     private String phoneNumber;
@@ -36,7 +37,7 @@ public class Customer {
      * @param city
      * @param phoneNumber
      */
-    public Customer(String companyName, String contactPerson, String cusMail, String street, int streetNumber, int cusCVR, int zip, String city, String phoneNumber) {
+    public Customer(String companyName, String contactPerson, String cusMail, String street, String streetNumber, String cusCVR, int zip, String city, String phoneNumber) {
         this.companyName = companyName;
         this.contactPerson = contactPerson;
         this.cusMail = cusMail;
@@ -87,14 +88,14 @@ public class Customer {
     /**
      * @return the streetNumber
      */
-    public int getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
     /**
      * @return the cusCVR
      */
-    public int getCusCVR() {
+    public String getCusCVR() {
         return cusCVR;
     }
 
@@ -133,6 +134,15 @@ public class Customer {
         return reports;
     }
 
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
+    
+
     /**
      *
      * @return the list of contacts
@@ -144,5 +154,14 @@ public class Customer {
     public void setListOfUsers(ArrayList<User> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "customer_id=" + customer_id + ", companyName=" + companyName + ", contactPerson=" + contactPerson + ", cusMail=" + cusMail + ", street=" + street + ", streetNumber=" + streetNumber + ", cusCVR=" + cusCVR + ", zip=" + zip + ", city=" + city + ", phoneNumber=" + phoneNumber + ", listOfUsers=" + listOfUsers + ", buildings=" + buildings + ", reports=" + reports + '}';
+    }
+
+   
+    
+    
     
 }

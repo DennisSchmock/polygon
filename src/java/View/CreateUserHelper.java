@@ -19,9 +19,9 @@ class CreateUserHelper {
         String companyName = request.getParameter("companyname");
         String contactPerson = request.getParameter("contactperson");
         String street = request.getParameter("street");
-        int streetNumber = Integer.parseInt(request.getParameter("streetnumber"));
+        String streetNumber = (request.getParameter("streetnumber"));
         String email = request.getParameter("email");
-        int CVR = Integer.parseInt(request.getParameter("cvr"));
+        String CVR = (request.getParameter("cvr"));
         String city = request.getParameter("city");
         String phoneNumber = request.getParameter("phone");
         int zip = Integer.parseInt(request.getParameter("zip"));

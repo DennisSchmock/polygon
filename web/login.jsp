@@ -11,6 +11,10 @@
     <c:if test="${sessionScope.loggedin==null||sessionScope.loggedin==false}">
         <form action="login" method="POST">
             
+          Customer  <input type="radio" name="empOrCus" value="cus" checked="checked" />
+          Employee  <input type="radio" name="empOrCus" value="emp" />
+          <br>
+          
             <input type="hidden" name="page" value="loguserin"/>          
             <label>Username</label><input type="text" name="username" value="" /><br>
             <label>Password </label><input type="password" name="pwd" value="" /><br>
