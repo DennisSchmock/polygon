@@ -268,4 +268,13 @@ public class DBFacade {
     public Report getSingleReport(int id) {
         return nrm.getSingleReport(id, getCon());
     }
+
+    public boolean validatePolygonUser(String userName, String pwd) {
+        return um.validatePolygonUser(userName,pwd,con);
+    }
+
+    public User getPolygonUser(String userName) {
+        
+        return um.getPolygonUser(userName, con);
+    }
 }
