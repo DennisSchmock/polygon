@@ -85,7 +85,7 @@ public class DomainFacade {
 //        Report r = new Report(0,date,buildingId,category); // Fix
 //        dbFacade.saveNewReport(r);
 //    }
-    public void createNewCustomer(String companyName, String contactPerson, String email, String street, int streetnumber, int CVR, int zip, String city, String phonenumber){
+    public void createNewCustomer(String companyName, String contactPerson, String email, String street, String streetnumber, String CVR, int zip, String city, String phonenumber){
         Customer customer = new Customer(companyName, contactPerson, email, street, streetnumber, CVR, zip, city, phonenumber);
         dbFacade.addCustomer(customer);
     }
@@ -138,6 +138,14 @@ public class DomainFacade {
     }
         public Report getReport(int i) {
         return dbFacade.getReport(i);
+    }
+
+    /**
+     * Needs to load all the customers in the database
+     * @return Returs an list of All customers in the database
+     */
+    public List<Customer> loadAllCustomers() {
+        return dbFacade.getAllCustomers();
     }
     
     
