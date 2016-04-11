@@ -48,6 +48,8 @@
         <label>Description of building use</label>
         <textarea name="useOfBuilding" rows="4" cols="20">${sessionScope.buildingToBeEdited.useOfBuilding}</textarea>
         <br>
+        <h2> Image of Building: </h2> 
+        <img src="buildingPic/${sessionScope.newbuilding.buildingPic}" width="100" height="100"/>
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 
     </form>

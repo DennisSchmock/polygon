@@ -37,8 +37,11 @@
     
     <h2> Use of Building: </h2> 
     ${sessionScope.newbuilding.useOfBuilding} <br>
+    <h2> Image of Building: </h2> 
+    <img src="buildingPic/${sessionScope.newbuilding.buildingPic}" width="300" />
+    <br>
     
-    
+
     <br>
     <br>
     

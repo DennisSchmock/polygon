@@ -21,7 +21,7 @@ public class Building implements Serializable {
     private int buildingYear;
     private double buildingSize;
     private String useOfBuilding;
-    private String building_pic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
+    private String buildingPic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
     private ArrayList<Report> listOfReports;
     private ArrayList<BuildingRoom> listOfRooms;
     private int custId;
@@ -34,6 +34,7 @@ public class Building implements Serializable {
         this.buildingYear = buildingYear;
         this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
+        buildingPic="0.png";
     }
     
     public int getBdgId() {
@@ -116,12 +117,12 @@ public class Building implements Serializable {
         this.custId = custId;
     }
 
-    public String getBuilding_pic() {
-        return building_pic;
+    public String getBuildingPic() {
+        return buildingPic;
     }
 
     public void setBuilding_pic(String building_pic) {
-        this.building_pic = building_pic;
+        this.buildingPic = building_pic;
     }
 
     @Override

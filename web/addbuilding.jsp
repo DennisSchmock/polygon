@@ -16,7 +16,7 @@
 
     <h1>Here you can add a building</h1>
 
-    <form name="Building Form" action="frontpage" method="POST">
+    <form name="Building Form" action="frontpage" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="page" value="newbuilding" />
 
        <label class="test">(An ID so that you can find it)  Building Name</label> 

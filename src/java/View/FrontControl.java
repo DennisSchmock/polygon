@@ -13,16 +13,30 @@ import Domain.ReportRoomDamage;
 import Domain.ReportRoomExterior;
 import Domain.ReportRoomInterior;
 import Domain.User;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -35,10 +49,11 @@ import javax.servlet.http.HttpSession;
  * @author dennisschmock
  */
 @WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@MultipartConfig
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,11 +65,17 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Part filePart = null;
+        if (ServletFileUpload.isMultipartContent(request)){
+        filePart = request.getPart("buildingImg");
+        }
+    
         request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
-        UploadHelper uh = new UploadHelper();
+        
+        
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -123,8 +144,17 @@ public class FrontControl extends HttpServlet {
          * database twice
          */
         if (page.equalsIgnoreCase("newbuilding")) {
-            createBuilding(request, df, sessionObj);
-            uh.uploadFile(request, getServletContext().getRealPath(""),"buildingPic");
+            Building b=createBuilding(request, df, sessionObj);
+            
+            if (filePart!=null){
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
+                String extension = fileDotSplit[fileDotSplit.length-1];
+                System.out.println(filePart.getSubmittedFileName());
+                System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                b.setBuilding_pic(filename);
+                uploadFile(filePart,"buildingPic",filename);
+            } 
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
@@ -194,7 +224,12 @@ public class FrontControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+      
+     
         processRequest(request, response);
+
+        
     }
 
     /**
@@ -212,7 +247,7 @@ public class FrontControl extends HttpServlet {
      * Facade. Then it stores the created building object in the session to be
      * displayed.
      */
-    private void createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -227,6 +262,7 @@ public class FrontControl extends HttpServlet {
         
         
         session.setAttribute("newbuilding", b);
+        return b;
     }
 
     private void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session) {
@@ -370,6 +406,26 @@ public class FrontControl extends HttpServlet {
             request.getSession().setAttribute("loggedin", false);
         }
             
+    }
+
+    private void uploadFile(Part filePart, String folder, String filename) {
+        //The Wrong way of doing things (relative path)
+        String uploadFolder = getServletContext().getRealPath("")
+                + File.separator + folder;
+        String[] fileDotSplit = filePart.getName().split("\\.");
+        String extension = fileDotSplit[fileDotSplit.length-1];
+        
+        
+        System.out.println("UploadFile");
+        File uploads = new File(uploadFolder);
+        System.out.println(uploads.getAbsolutePath());
+        File file = new File(uploads, filename);
+
+try (InputStream input = filePart.getInputStream()) {
+    Files.copy(input, file.toPath());
+}       catch (IOException ex) {
+            Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
