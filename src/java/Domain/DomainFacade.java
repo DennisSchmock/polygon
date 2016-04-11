@@ -125,8 +125,14 @@ public class DomainFacade {
         return dbFacade.loadUser(username);
     }
 
-    public void saveReport(Report report) {
-        dbFacade.addReportToDB(report);
+    /**
+     * Sends the report obejct to the DB Facade, and gets the same object with
+     * an uniqe ID in return.
+     * @param report The report object without an uniqe ID jet.
+     * @return Report with an now uniqe ID.
+     */
+    public Report saveReport(Report report) {
+       return  dbFacade.addReportToDB(report);
 
     }
 

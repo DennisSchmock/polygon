@@ -13,6 +13,7 @@ import java.util.List;
  * @author CJS
  */
 public class Customer {
+    private int customer_id;
     private String companyName;
     private String contactPerson; 
     private String cusMail; 
@@ -133,6 +134,15 @@ public class Customer {
         return reports;
     }
 
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
+    
+
     /**
      *
      * @return the list of contacts
@@ -147,8 +157,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "companyName=" + companyName + ", contactPerson=" + contactPerson + ", cusMail=" + cusMail + ", street=" + street + ", streetNumber=" + streetNumber + ", cusCVR=" + cusCVR + ", zip=" + zip + ", city=" + city + ", phoneNumber=" + phoneNumber + ", listOfUsers=" + listOfUsers + ", buildings=" + buildings + ", reports=" + reports + '}';
+        return "Customer{" + "customer_id=" + customer_id + ", companyName=" + companyName + ", contactPerson=" + contactPerson + ", cusMail=" + cusMail + ", street=" + street + ", streetNumber=" + streetNumber + ", cusCVR=" + cusCVR + ", zip=" + zip + ", city=" + city + ", phoneNumber=" + phoneNumber + ", listOfUsers=" + listOfUsers + ", buildings=" + buildings + ", reports=" + reports + '}';
     }
+
+   
     
     
     

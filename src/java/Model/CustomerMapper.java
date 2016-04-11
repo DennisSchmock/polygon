@@ -187,7 +187,7 @@ public class CustomerMapper {
                 rs.getInt("zipcode"), 
                 "NOT IMPLEMETED", //Getting a city based on zip 
                 rs.getString("phone"));
-                System.out.println(temp.toString());
+                temp.setCustomer_id(rs.getInt("customer_id"));
                 allCus.add(temp);
             }
             

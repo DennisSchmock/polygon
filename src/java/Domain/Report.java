@@ -18,12 +18,13 @@ public class Report {
     private ArrayList<ReportRoomExterior> listOfRepRoomExt;
     private int buildingId;
     private int categoryConclusion;
-
+    private String polygonUserName;
+    private boolean finshed;
     /**
      *
      * @param reportId  report number
      * @param date   date
-     * @param bdgId    building's ID
+     * @param buildingId    building's ID
      * @param catCon  category conclusion
      */
     public Report(int reportId, String date, int buildingId, int catCon) {
@@ -40,6 +41,13 @@ public class Report {
         this.listOfRepRoom = new ArrayList<>();
         this.listOfRepRoomExt = new ArrayList<>();
     }
+
+    public Report(int buildingId, String polygonUserID) {
+        this.buildingId = buildingId;
+        this.polygonUserName = polygonUserID;
+    }
+    
+    
 
     public ReportRoom getReportRoom(int id){
         return this.listOfRepRoom.get(id);
@@ -78,6 +86,24 @@ public class Report {
     public int getCategoryConclusion() {
         return categoryConclusion;
     }
+
+    public String getPolygonUserName() {
+        return polygonUserName;
+    }
+
+    public void setPolygonUserName(String polygonUserName) {
+        this.polygonUserName = polygonUserName;
+    }
+
+    public boolean isFinshed() {
+        return finshed;
+    }
+
+    public void setFinshed(boolean finshed) {
+        this.finshed = finshed;
+    }
+    
+    
 
     /**
      * @return the buildingId

@@ -87,7 +87,18 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
+            sessionObj.setAttribute("customerSelcted", false);
             chooseCustomer(sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_cus_choosen")) {
+            url = "/reportJSPs/choosebuilding.jsp";
+            loadCustomersBuildings(request,sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_start")) {
+            url = "/reportJSPs/report_start.jsp";
+            createReport(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -363,6 +374,42 @@ public class FrontControl extends HttpServlet {
     private void chooseCustomer( HttpSession sessionObj, DomainFacade df) {
         List<Customer> allCustomers = df.loadAllCustomers();
         sessionObj.setAttribute("allCustomers", allCustomers);
+    }
+
+    /**
+     * Loads all the customers buildings, based on whitch user 
+     * the empoleyee choose, and sets that in the session obj.
+     * @param sessionObj
+     * @param df
+     */
+    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+        sessionObj.setAttribute("customerSelcted", true);
+        int cusid = Integer.parseInt(request.getParameter("owners"));
+        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
+        sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        
+    }
+
+    /**
+     * Creates the Report based on only the building object.
+     * Method should be called right when the user has chosen which building
+     * to create a report for. At this point, the report object does not
+     * contain any details, but only infomation regarding to building, and the
+     * Employee that creates it.
+     * 
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        int buildingID = Integer.parseInt(request.getParameter("buildings"));
+        User polygonUser = (User) sessionObj.getAttribute("user");
+        String polygonUserID = polygonUser.getUserName();
+        
+        Report report = new Report(buildingID, polygonUserID);
+        report = df.saveReport(report);
+        sessionObj.setAttribute("reportToBeCreated", report);
+        
     }
     
     }
