@@ -135,7 +135,8 @@ public class DomainFacade {
 
     public User loadEmpUser(String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    public Report getReport(int i) {
+    }
+        public Report getReport(int i) {
         return dbFacade.getReport(i);
     }
     
