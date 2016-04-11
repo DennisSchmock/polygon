@@ -275,5 +275,12 @@ public class DBFacade {
      */
     public List<Customer> getAllCustomers() {
         return cm.getAllCustomersCM(con);
+    public boolean validatePolygonUser(String userName, String pwd) {
+        return um.validatePolygonUser(userName,pwd,con);
+    }
+
+    public User getPolygonUser(String userName) {
+        
+        return um.getPolygonUser(userName, con);
     }
 }

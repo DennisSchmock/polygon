@@ -39,6 +39,7 @@ import javax.servlet.http.HttpSession;
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
+    private boolean testing = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,6 +59,7 @@ public class FrontControl extends HttpServlet {
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
+        sessionObj.setAttribute("testing", testing);
         if (df == null) {
             df = DomainFacade.getInstance();
             sessionObj.setAttribute("Controller", df);
@@ -312,6 +314,7 @@ public class FrontControl extends HttpServlet {
 
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
+            request.getSession().setAttribute("userrole", "user");
             User user = df.loadUser(username);
             request.getSession().setAttribute("user", user);
         } else {
@@ -322,26 +325,6 @@ public class FrontControl extends HttpServlet {
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
 
-    private void testReport(Report newReport) {
-        System.out.println(newReport.getDate());
-        System.out.println("Building: " + newReport.getBuildingId());
-        for (ReportRoom reportRoom : newReport.getListOfRepRoom()) {
-            System.out.println("Roomname" + reportRoom.getRoomName());
-            for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
-                System.out.println("roomintname: " + reportRoomInterior.getRepRoomIntName());
-
-            }
-            for (ReportRoomDamage listOfDamage : reportRoom.getListOfDamages()) {
-                System.out.println("Dam: " + listOfDamage.getPlace());
-
-            }
-            for (ReportRoomExterior reportRoomExterior : newReport.getListOfRepRoomExt()) {
-                System.out.println("Ext: " + reportRoomExterior.getRepExtDescription());
-
-            }
-
-        }
-    }
 
     /**
      * Method for logging an user in. Question: The cus login set a session
@@ -360,8 +343,10 @@ public class FrontControl extends HttpServlet {
         
         if(df.logEmpUserIn(username, pwd)) { // not implemented!
             request.getSession().setAttribute("loggedin", true);
+            
             User user = df.loadEmpUser(username); // not implemented!
             request.getSession().setAttribute("user", user);
+            
         } else {
             request.getSession().setAttribute("loggedin", false);
         }
