@@ -264,4 +264,8 @@ public class DBFacade {
     public ArrayList<Report> getListOfReports(int buildingId) {
         return nrm.getAllReportsBuilding(buildingId, con);
     }
+    
+    public Report getSingleReport(int id) {
+        return nrm.getSingleReport(id, getCon());
+    }
 }

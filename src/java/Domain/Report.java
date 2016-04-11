@@ -41,6 +41,9 @@ public class Report {
         this.listOfRepRoomExt = new ArrayList<>();
     }
 
+    public ReportRoom getReportRoom(int id){
+        return this.listOfRepRoom.get(id);
+    }
     public void setReportId(int reportId) {
         this.reportId = reportId;
     }
@@ -48,6 +51,8 @@ public class Report {
     public int getReportId() {
         return reportId;
     }
+    
+    
 
     public String getDate() {
         return date;
