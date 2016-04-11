@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
@@ -86,8 +87,13 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("reports", df.getReport(4));
         }
         if (page.equalsIgnoreCase("newreport")) {
-            url = "/newreport.jsp";
-            request = nrh.process(request, response, df);
+            url = "/reportJSPs/choosebuilding.jsp";
+            chooseCustomer(sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_cus_choosen")) {
+            url = "/reportJSPs/choosebuilding.jsp";
+            loadCustomersBuildings(sessionObj, df );
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -351,6 +357,28 @@ public class FrontControl extends HttpServlet {
             request.getSession().setAttribute("loggedin", false);
         }
             
+    }
+
+    /**
+     * Method that sets up, for the emp whitch building he has to create
+     * an report for. Needs to load all the customers.
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    private void chooseCustomer( HttpSession sessionObj, DomainFacade df) {
+        List<Customer> allCustomers = df.loadAllCustomers();
+        sessionObj.setAttribute("allCustomers", allCustomers);
+    }
+
+    /**
+     * Loads all the customers buildings, based on whitch user 
+     * the empoleyee choose.
+     * @param sessionObj
+     * @param df
+     */
+    public void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {
+        
     }
     
     }

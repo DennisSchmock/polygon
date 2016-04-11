@@ -25,7 +25,7 @@ public class NewReportMapper {
 
     //Saving a new report in DB-Report Table
     public void reportToDataBase(Report r, Connection con) {
-        String SQLString = "insert into report(report_date,building_id,category_conclusion) values (?,?,?)";
+        String SQLString = "insert into report(report_date,building_id,category_conclusion, report_finished) values (?,?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             Date date = java.sql.Date.valueOf(r.getDate());  //gets a String value of date and converts it to sql date. May break!
@@ -33,6 +33,7 @@ public class NewReportMapper {
             statement.setDate(1, date);
             statement.setInt(2, r.getBuildingId());
             statement.setInt(3, r.getCategoryConclusion());
+            statement.setInt(4,0);                               // This sets the report state to be not finished.
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
 

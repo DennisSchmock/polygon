@@ -269,12 +269,19 @@ public class DBFacade {
         return nrm.getSingleReport(id, getCon());
     }
 
-    public boolean validatePolygonUser(String userName, String pwd) {
-        return um.validatePolygonUser(userName,pwd,con);
-    }
+    /**
+     * Sends the request to the right mapper.
+     * @return Returs an list of All customers in the database
+     */
+    public List<Customer> getAllCustomers() {
+        return cm.getAllCustomersCM(con);
 
+}
     public User getPolygonUser(String userName) {
         
         return um.getPolygonUser(userName, con);
+    }
+    public boolean validatePolygonUser(String userName, String pwd) {
+        return um.validatePolygonUser(userName,pwd,con);
     }
 }
