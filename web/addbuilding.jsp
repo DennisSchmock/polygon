@@ -40,6 +40,10 @@
         <input type="number" step="0.01" name="buildingSize" max="9999"  required />
         <br>
         
+        <label class="test">Building Image</label>
+        <input type="file" name="buildingImg" id="fileChooser"/><br/><br/>
+        
+        
        <label class="test">Building Year </label>
         <input type="number" name="BuildingYear" max="2016" required />
         <br>

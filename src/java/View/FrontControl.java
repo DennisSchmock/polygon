@@ -54,6 +54,7 @@ public class FrontControl extends HttpServlet {
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
+        UploadHelper uh = new UploadHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -123,6 +124,7 @@ public class FrontControl extends HttpServlet {
          */
         if (page.equalsIgnoreCase("newbuilding")) {
             createBuilding(request, df, sessionObj);
+            uh.uploadFile(request, getServletContext().getRealPath(""),"buildingPic");
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
@@ -218,9 +220,12 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
+        
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
+        
+        
         session.setAttribute("newbuilding", b);
     }
 
@@ -366,6 +371,7 @@ public class FrontControl extends HttpServlet {
         }
             
     }
+    
     
     }
 
