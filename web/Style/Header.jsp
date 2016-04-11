@@ -41,6 +41,7 @@
             <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
             <li><a href="frontpage?page=newreport">Add Report</a></li>
             <li><a href="frontpage?page=listreports">List Reports</a></li>
+            <li><a href="frontpage?page=report">Report</a></li>
             <li><a href="login?page=login">Login</a></li>
 
         </ul>
