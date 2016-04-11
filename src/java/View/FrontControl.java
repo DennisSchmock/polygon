@@ -80,7 +80,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
             request = rh.process(request, response, df);
-            sessionObj.setAttribute("reports", df.getReport(4));
+            sessionObj.setAttribute("report", df.getReport(21));
         }
         if (page.equalsIgnoreCase("newreport")) {
             url = "/newreport.jsp";

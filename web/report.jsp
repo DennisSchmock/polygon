@@ -12,11 +12,11 @@
 <title>Report</title>
 <%@include file="Style/Header.jsp" %>
 
-   
-    <%@include file="reporttwigs/reportnav.jsp" %>
-    <%@include file="reporttwigs/reportheader.jsp" %>
-    <%@include file="reporttwigs/reportmain.jsp" %>
-    
+
+<%@include file="reporttwigs/reportnav.jsp" %>
+<%@include file="reporttwigs/reportheader.jsp" %>
+<%@include file="reporttwigs/reportmain.jsp" %>
+
 
 
 
