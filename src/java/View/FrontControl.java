@@ -89,6 +89,11 @@ public class FrontControl extends HttpServlet {
             url = "/reportJSPs/choosebuilding.jsp";
             chooseCustomer(sessionObj, df );
         }
+        
+        if (page.equalsIgnoreCase("report_cus_choosen")) {
+            url = "/reportJSPs/choosebuilding.jsp";
+            loadCustomersBuildings(sessionObj, df );
+        }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
             nrh.submitReport(request, response, df);
@@ -363,6 +368,16 @@ public class FrontControl extends HttpServlet {
     private void chooseCustomer( HttpSession sessionObj, DomainFacade df) {
         List<Customer> allCustomers = df.loadAllCustomers();
         sessionObj.setAttribute("allCustomers", allCustomers);
+    }
+
+    /**
+     * Loads all the customers buildings, based on whitch user 
+     * the empoleyee choose.
+     * @param sessionObj
+     * @param df
+     */
+    public void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {
+        
     }
     
     }

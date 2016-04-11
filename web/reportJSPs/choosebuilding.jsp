@@ -23,13 +23,20 @@
     
         Choose the Owner of the building:<br>
         
+            <form name="chooseUser" action="frontpage" method="POST">
+                 <input type="hidden" name="page" value="report_cus_choosen" />
         <select name="owners">
             <c:forEach items="${sessionScope.allCustomers}" var="cus">    
             <option>${cus.companyName} - ${cus.contactPerson}</option>
             </c:forEach>
+            
         </select>
-        
-        
+            </form>
+        <c:if test="${sessionScope.customerSelcted}" >
+            
+            
+            
+        </c:if>
     
     
     
