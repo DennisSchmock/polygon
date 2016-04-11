@@ -55,6 +55,7 @@ public class FrontControl extends HttpServlet {
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
+        AddFloorsAndRoomsHelper frh = new AddFloorsAndRoomsHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
