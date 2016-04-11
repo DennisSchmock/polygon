@@ -129,7 +129,14 @@ public class DomainFacade {
 
     }
 
-    public Report getReport(int i) {
+    public boolean logEmpUserIn(String username, String pwd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public User loadEmpUser(String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+        public Report getReport(int i) {
         return dbFacade.getReport(i);
     }
     
