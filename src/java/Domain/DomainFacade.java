@@ -128,6 +128,10 @@ public class DomainFacade {
         dbFacade.addReportToDB(report);
 
     }
+
+    public Report getReport(int i) {
+        return dbFacade.getReport(i);
+    }
     
     
 
