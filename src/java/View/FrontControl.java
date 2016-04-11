@@ -64,7 +64,7 @@ public class FrontControl extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        
+
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
@@ -83,12 +83,12 @@ public class FrontControl extends HttpServlet {
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
-            nrh.submitReport(request, response, df);  
+            nrh.submitReport(request, response, df);
             sessionObj.setAttribute("reports", df.getListOfReports(1));
             response.sendRedirect("viewreport.jsp");
             return;
         }
-        if (page.equalsIgnoreCase("listreports")){
+        if (page.equalsIgnoreCase("listreports")) {
             sessionObj.setAttribute("reports", df.getListOfReports(1));
             response.sendRedirect("viewreport.jsp");
             return;
@@ -143,7 +143,11 @@ public class FrontControl extends HttpServlet {
 
         }
         if (page.equalsIgnoreCase("loguserin")) {
-            login(df, request, response);
+            if (request.getParameter("empOrCus").equals("emp")) {
+                emplogin(df, request, response);
+            } else {
+                login(df, request, response);
+            }
             url = "/login.jsp";
         }
         if (page.equalsIgnoreCase("logout")) {
@@ -209,7 +213,7 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-       
+
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
         session.setAttribute("newbuilding", b);
@@ -273,7 +277,7 @@ public class FrontControl extends HttpServlet {
      * that that we have to change based on the input fields
      */
     private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
-        
+
         System.out.println(request.getCharacterEncoding());
 
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
@@ -333,4 +337,31 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-}
+    /**
+     * Method for logging an user in. Question: The cus login set a session
+     * parameter that is called "user" This method could just use that aswell,
+     * to store the object Or have a different parameter. Also we need to find
+     * out if the loggedin should be an int. 0 = not logged in, 1= cus_loggedin,
+     * 2= emp_loggedin
+     *
+     * @param df
+     * @param request
+     * @param response
+     */
+    private void emplogin(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
+        String username = (String) request.getParameter("username");
+        String pwd = (String) request.getParameter("pwd");
+        
+        if(df.logEmpUserIn(username, pwd)) { // not implemented!
+            request.getSession().setAttribute("loggedin", true);
+            User user = df.loadEmpUser(username); // not implemented!
+            request.getSession().setAttribute("user", user);
+        } else {
+            request.getSession().setAttribute("loggedin", false);
+        }
+            
+    }
+    
+    }
+
+
