@@ -73,10 +73,7 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "/index.jsp";
         }
-        if (page.equalsIgnoreCase("report")) {
-            url = "/report.jsp";
-            request = rh.process(request, response, df);
-        }
+      
         if (page.equalsIgnoreCase("newreport")) {
             url = "/newreport.jsp";
             request = nrh.process(request, response, df);
@@ -312,25 +309,5 @@ public class FrontControl extends HttpServlet {
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
 
-    private void testReport(Report newReport) {
-        System.out.println(newReport.getDate());
-        System.out.println("Building: " + newReport.getBuildingId());
-        for (ReportRoom reportRoom : newReport.getListOfRepRoom()) {
-            System.out.println("Roomname" + reportRoom.getRoomName());
-            for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
-                System.out.println("roomintname: " + reportRoomInterior.getRepRoomIntName());
-
-            }
-            for (ReportRoomDamage listOfDamage : reportRoom.getListOfDamages()) {
-                System.out.println("Dam: " + listOfDamage.getPlace());
-
-            }
-            for (ReportRoomExterior reportRoomExterior : newReport.getListOfRepRoomExt()) {
-                System.out.println("Ext: " + reportRoomExterior.getRepExtDescription());
-
-            }
-
-        }
-    }
 
 }
