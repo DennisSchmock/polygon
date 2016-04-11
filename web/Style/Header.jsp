@@ -36,15 +36,17 @@
         </header>
 
         <ul class="w3-navbar w3-blue">
-            
-                <%-- The check to see if the user is logged in. Remove the if
-                  to delte it--%>
-            <li><a href="frontpage?page=addbuilding">Add building</a></li>
-            <li><a href="frontpage?page=addcustomer">Add customer</a></li>
-            <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
-            <li><a href="frontpage?page=newreport">Add Report</a></li>
-            <li><a href="frontpage?page=listreports">List Reports</a></li>
-            <li><a href="login?page=login">Login</a></li>
+
+           
+            <c:if test="${sessionScope.loggedin||sessionScope.testing==true}">
+                <li><a href="frontpage?page=addbuilding">Add building</a></li>
+                <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=addcustomer">Add customer</a></li></c:if>
+                    <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
+                <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=newreport">Add Report</a></li></c:if>
+                <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=listreports">List Reports</a></li></c:if>
+                <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=report">Report</a></li></c:if>
+
+            </c:if>
+                <c:if test="${sessionScope.loggedin==null}"><li><a href="login?page=login">Login</a></li></c:if>
 
         </ul>
-
