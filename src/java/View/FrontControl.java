@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.BuildingFloor;
 import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -151,7 +152,19 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
+        
+        if (page.equalsIgnoreCase("addfloor")) {
+            addFloors(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
 
+        if (page.equalsIgnoreCase("selBdg")) {
+            selectBuilding(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
 
@@ -377,10 +390,42 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    public void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {  
+        int cusID=1;
+        List<Building> buildingsList = df.getListOfBuildings(cusID);
+        sessionObj.setAttribute("buildingsList", buildingsList);
+                
+    }
+
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         
+//        String floorNum = (String)request.getParameter("floornumber");
+//        String floorSize =(String)request.getParameter("floorsize");
+//        String totalRooms =(String)request.getParameter("totalrooms");
+//        String bdgId= (String) sessionObj.getAttribute("buildingId");
+//        int n = Integer.parseInt(floorNum);
+//        double s = Double.parseDouble(floorSize);
+//        int r = Integer.parseInt(totalRooms);
+//        int b = Integer.parseInt(bdgId);
+//        BuildingFloor bf = new BuildingFloor(n,s,r,b);
+////        df.addFloors(bf);
+//        sessionObj.setAttribute("newFloor", bf);
     }
     
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
+        
+        String buildingName = (String) request.getParameter("buildings");
+        List<Building> buildingsList = df.getListOfBuildings(1);
+        for (Building building : buildingsList) {
+            if(building.getBuildingName().equals(buildingName)){
+                sessionObj.setAttribute("buildingId", building.getBdgId());
+                sessionObj.setAttribute("buildingName", buildingName);
+                sessionObj.setAttribute("streetAddress", building.getStreetAddress());
+                sessionObj.setAttribute("streetNumber", building.getStreetNumber());
+                sessionObj.setAttribute("zipcode", building.getZipCode());
+            }
+        }
+    }
     }
 
 

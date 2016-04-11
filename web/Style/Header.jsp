@@ -45,6 +45,7 @@
             <li><a href="frontpage?page=newreport">Add Report</a></li>
             <li><a href="frontpage?page=listreports">List Reports</a></li>
             <li><a href="login?page=login">Login</a></li>
+            <li><a href="frontpage?page=addfloor">Add Floor</a></li>
 
         </ul>
 

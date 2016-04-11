@@ -153,4 +153,12 @@ public class DomainFacade {
         return dbFacade.getAllCustomers();
     }
 
+    public void addFloors(int floorNum, double floorSize, int totalRooms, int bdgId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void addFloors(BuildingFloor bf) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
