@@ -9,8 +9,12 @@ import Domain.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,12 +34,12 @@ public class CustomerMapper {
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, cus.getCompanyName());
             statement.setString(2, cus.getStreet());
-            statement.setInt(3, cus.getStreetNumber());
+            statement.setString(3, cus.getStreetNumber());
             statement.setInt(4, cus.getZip());
             statement.setString(5, cus.getPhoneNumber());
             statement.setString(6, cus.getCusMail());
             statement.setString(7, cus.getContactPerson());
-            statement.setInt(8, cus.getCusCVR());
+            statement.setString(8, cus.getCusCVR());
 
             //int rowsInserted = statement.executeUpdate();
             //ResultSet rs = statement.getGeneratedKeys();
@@ -121,8 +125,8 @@ public class CustomerMapper {
                 rs.getString("contactperson"),
                 rs.getString("email"),
                 rs.getString("street"),
-                rs.getInt("streetnumber"),
-                rs.getInt("cvr"),
+                rs.getString("streetnumber"),
+                rs.getString("cvr"),
                 rs.getInt("zipcode"),
                 "city",
                 rs.getString("phone"));
@@ -159,6 +163,40 @@ public class CustomerMapper {
             return null;
         }
         return c;}
+
+    /**
+     * Retrives the list of all the Customers in the database Polygon
+     * @param con Connection to database
+     * @return Returs an list of All customers in the database
+     */
+    public List<Customer> getAllCustomersCM(Connection con) {
+        String sql = "select * from customer";
+        List<Customer> allCus = new ArrayList<>();
+        try {
+            PreparedStatement statment = con.prepareStatement(sql);
+            ResultSet rs = statment.executeQuery();
+            
+            while(rs.next()){
+                Customer temp = new Customer
+                (rs.getString("companyname"),
+                rs.getString("contactperson"),
+                rs.getString("email"),
+                rs.getString("street"),
+                rs.getString("streetnumber"),
+                rs.getString("cvr"),
+                rs.getInt("zipcode"), 
+                "NOT IMPLEMETED", //Getting a city based on zip 
+                rs.getString("phone"));
+                temp.setCustomer_id(rs.getInt("customer_id"));
+                allCus.add(temp);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL CustomerMapper " + ex);
+        }
+       
+        return allCus;
+    }
 
 
 }

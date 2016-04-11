@@ -113,4 +113,54 @@ public class UserMapper {
         }
         return user;
     }
+
+    boolean validatePolygonUser(String userName, String pwd, Connection con) {
+        try {
+
+            String sqlString = "select pwd from polygon_user where username = ?;";
+            PreparedStatement stmt = con.prepareStatement(sqlString);
+
+            stmt.setString(1, userName);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(rs.getString("pwd"));
+                boolean validated = rs.getString("pwd").equals(pwd);
+                return validated;
+            }
+
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    User getPolygonUser(String userName, Connection con) {
+        User user = null;
+
+        try {
+
+            String sqlString = "SELECT * FROM Polygon.polygon_user where username = ?;";
+            PreparedStatement stmt = con.prepareStatement(sqlString);
+
+            stmt.setString(1, userName);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String companyname = "Polygon";
+                String name = rs.getString("username");
+                String fName = rs.getString("fname");
+                String pwd = rs.getString("pwd");
+                String lName = rs.getString("lname");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String role = rs.getString("role");
+                System.out.println("Role is: " + role);
+                user = new User(userName, pwd, fName, lName, email, phone, companyname,role);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
 }

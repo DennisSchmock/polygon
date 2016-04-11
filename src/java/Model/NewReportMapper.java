@@ -11,11 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +28,7 @@ public class NewReportMapper {
 
     //Saving a new report in DB-Report Table
     public void reportToDataBase(Report r, Connection con) {
-        String SQLString = "insert into report(report_date,building_id,category_conclusion) values (?,?,?)";
+        String SQLString = "insert into report(report_date,building_id,category_conclusion, report_finished) values (?,?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
             Date date = java.sql.Date.valueOf(r.getDate());  //gets a String value of date and converts it to sql date. May break!
@@ -33,6 +36,7 @@ public class NewReportMapper {
             statement.setDate(1, date);
             statement.setInt(2, r.getBuildingId());
             statement.setInt(3, r.getCategoryConclusion());
+            statement.setInt(4,0);                               // This sets the report state to be not finished.
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
 
@@ -50,6 +54,33 @@ public class NewReportMapper {
             System.out.println(e.getMessage());
         }
 
+    }
+    
+    /**
+     * Saves an NON finished Report object in the database. It
+     * Assumes that so far the report object only contains building_id 
+     * and Polygonuser. The rest is to be inserted.
+     * @param report Report only containing values of the building and polygonuser.
+     * @param con Connection to the database
+     * @return Returns the updated Report object that now has a Report_id
+     */
+    public Report createReportTuble(Report report, Connection con){
+        String sql = "insert into report(building_id, polygonuser, report_finished) values (?,?,?)";
+        
+        try {
+            PreparedStatement statment = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statment.setInt(1, report.getBuildingId());
+            statment.setString(2, report.getPolygonUserName());
+            statment.setInt(3, 0); // means that the report statues is set to not finished
+            statment.executeUpdate();
+            ResultSet rs = statment.getGeneratedKeys();
+            if(rs.next()){
+                report.setReportId(rs.getInt(1));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error in inserting Report Tuble " + ex );
+        }
+        return report;
     }
 
     public Report getSingleReport(int reportId, Connection con) {

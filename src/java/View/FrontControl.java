@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
@@ -53,7 +54,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
-    
+    private boolean testing = true;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -79,6 +81,7 @@ public class FrontControl extends HttpServlet {
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
+        sessionObj.setAttribute("testing", testing);
         if (df == null) {
             df = DomainFacade.getInstance();
             sessionObj.setAttribute("Controller", df);
@@ -105,8 +108,19 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("reports", df.getReport(4));
         }
         if (page.equalsIgnoreCase("newreport")) {
-            url = "/newreport.jsp";
-            request = nrh.process(request, response, df);
+            url = "/reportJSPs/choosebuilding.jsp";
+            sessionObj.setAttribute("customerSelcted", false);
+            chooseCustomer(sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_cus_choosen")) {
+            url = "/reportJSPs/choosebuilding.jsp";
+            loadCustomersBuildings(request,sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_start")) {
+            url = "/reportJSPs/report_start.jsp";
+            createReport(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -352,6 +366,7 @@ public class FrontControl extends HttpServlet {
 
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
+            request.getSession().setAttribute("userrole", "user");
             User user = df.loadUser(username);
             request.getSession().setAttribute("user", user);
         } else {
@@ -362,26 +377,6 @@ public class FrontControl extends HttpServlet {
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
 
-    private void testReport(Report newReport) {
-        System.out.println(newReport.getDate());
-        System.out.println("Building: " + newReport.getBuildingId());
-        for (ReportRoom reportRoom : newReport.getListOfRepRoom()) {
-            System.out.println("Roomname" + reportRoom.getRoomName());
-            for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
-                System.out.println("roomintname: " + reportRoomInterior.getRepRoomIntName());
-
-            }
-            for (ReportRoomDamage listOfDamage : reportRoom.getListOfDamages()) {
-                System.out.println("Dam: " + listOfDamage.getPlace());
-
-            }
-            for (ReportRoomExterior reportRoomExterior : newReport.getListOfRepRoomExt()) {
-                System.out.println("Ext: " + reportRoomExterior.getRepExtDescription());
-
-            }
-
-        }
-    }
 
     /**
      * Method for logging an user in. Question: The cus login set a session
@@ -400,14 +395,63 @@ public class FrontControl extends HttpServlet {
         
         if(df.logEmpUserIn(username, pwd)) { // not implemented!
             request.getSession().setAttribute("loggedin", true);
+            
             User user = df.loadEmpUser(username); // not implemented!
             request.getSession().setAttribute("user", user);
+            
         } else {
             request.getSession().setAttribute("loggedin", false);
         }
             
     }
 
+    /**
+     * Method that sets up, for the emp whitch building he has to create
+     * an report for. Needs to load all the customers.
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    private void chooseCustomer( HttpSession sessionObj, DomainFacade df) {
+        List<Customer> allCustomers = df.loadAllCustomers();
+        sessionObj.setAttribute("allCustomers", allCustomers);
+    }
+
+    /**
+     * Loads all the customers buildings, based on whitch user 
+     * the empoleyee choose, and sets that in the session obj.
+     * @param sessionObj
+     * @param df
+     */
+    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+        sessionObj.setAttribute("customerSelcted", true);
+        int cusid = Integer.parseInt(request.getParameter("owners"));
+        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
+        sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        
+    }
+
+    /**
+     * Creates the Report based on only the building object.
+     * Method should be called right when the user has chosen which building
+     * to create a report for. At this point, the report object does not
+     * contain any details, but only infomation regarding to building, and the
+     * Employee that creates it.
+     * 
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        int buildingID = Integer.parseInt(request.getParameter("buildings"));
+        User polygonUser = (User) sessionObj.getAttribute("user");
+        String polygonUserID = polygonUser.getUserName();
+        
+        Report report = new Report(buildingID, polygonUserID);
+        report = df.saveReport(report);
+        sessionObj.setAttribute("reportToBeCreated", report);
+        
+    }
     private void uploadFile(Part filePart, String folder, String filename) {
         //The Wrong way of doing things (relative path)
         String uploadFolder = getServletContext().getRealPath("")

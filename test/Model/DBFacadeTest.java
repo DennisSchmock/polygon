@@ -355,7 +355,7 @@ public class DBFacadeTest {
 //
     @Test
     public void testAddCustomer() {
-       Customer c=new Customer("CPHBusiness","Miriam Sørensen","ms@cphbusiness.dk","Nørgaardsvej",30,21,3245,"Lyngby","+4553354494");
+       Customer c=new Customer("CPHBusiness","Miriam Sørensen","ms@cphbusiness.dk","Nørgaardsvej","30","21",3245,"Lyngby","+4553354494");
        dbf.addCustomer(c);
        Customer newCust = dbf.getCustomer(2);
        assertTrue("TestAddCustomer-if null", newCust != null);
@@ -363,8 +363,8 @@ public class DBFacadeTest {
        assertTrue("TestAddCustomer-check contact person",newCust.getContactPerson().equals("Miriam Sørensen")); 
        assertTrue("TestAddCustomer-check email",newCust.getCusMail().equals("ms@cphbusiness.dk")); 
        assertTrue("TestAddCustomer-check street",newCust.getStreet().equals("Nørgaardsvej")); 
-       assertTrue("TestAddCustomer-check streetNumber",newCust.getStreetNumber()==30); 
-       assertTrue("TestAddCustomer-check CVR",newCust.getCusCVR()==21); 
+       assertTrue("TestAddCustomer-check streetNumber",newCust.getStreetNumber().equals("30")); 
+       assertTrue("TestAddCustomer-check CVR",newCust.getCusCVR().equals("21")); 
        assertTrue("TestAddCustomer-check zipcode",newCust.getZip()==3245); 
        assertTrue("TestAddCustomer-check phone number",newCust.getPhoneNumber().equals("+4553354494")); 
        

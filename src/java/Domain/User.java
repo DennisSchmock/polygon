@@ -22,13 +22,36 @@ public class User {
     private String phone;
     private String role;
     private String companyName;
+
+    /**
+     *The purpose of this constructor is to create a user object for Polygon employees
+     * @param userName
+     * @param pwd
+     * @param fName
+     * @param lName
+     * @param email
+     * @param phone
+     * @param companyname
+     * @param role
+     */
+    public User(String userName, String pwd, String fName, String lName, String email, String phone, String companyname, String role) {
+        this.companyName = companyname;
+        this.userName = userName;
+        this.password = pwd;
+        this.fName = fName;
+        this.lName = lName;
+        this.phone = phone;
+        this.role = role;
+        this.email = email;
+
+    }
    
     public void setCustomerid(int customerid) {
         this.customerid = customerid;
     }
 
     /**
-     *
+     * The purpose of this constructor is to create a object for customer users
      * @param userName
      * @param password
      * @param customerid
