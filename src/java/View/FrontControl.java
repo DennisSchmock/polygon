@@ -50,7 +50,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login","/viewreport"})
 @MultipartConfig
 public class FrontControl extends HttpServlet {
 

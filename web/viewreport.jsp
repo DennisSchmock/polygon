@@ -16,6 +16,7 @@
 <%@include file="reportview/reportnav.jsp" %>
 <%@include file="reportview/reportheader.jsp" %>
 <%@include file="reportview/reportmain.jsp" %>
+<%@include file="reportview/reportroom.jsp" %>
 
 
 
