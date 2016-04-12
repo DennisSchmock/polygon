@@ -126,13 +126,13 @@ public class FrontControl extends HttpServlet {
 
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
-            setUpForRoomInspection(request, sessionObj);
+            setUpForRoomInspection(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
-            setUpForRoomInspection(request, sessionObj);
+            setUpForRoomInspection(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -663,7 +663,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
             
@@ -700,7 +700,10 @@ public class FrontControl extends HttpServlet {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         
         ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(), report.getReportId(), buildingRoomid);
-        reportRoom.setRoomFloor(buildingRoom.getFloorid() + "");
+        
+   
+        BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
+        reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
     }
 }
