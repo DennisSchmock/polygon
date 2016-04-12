@@ -409,6 +409,7 @@ public class FrontControl extends HttpServlet {
         Report report = new Report(buildingID, polygonUserID);
         report = df.saveReport(report);
         sessionObj.setAttribute("reportToBeCreated", report);
+        Building b = df.getBuilding(buildingID);
         
     }
     
