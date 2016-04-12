@@ -30,12 +30,15 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
-        NewReportMapper nm = new NewReportMapper();
-        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
-        for (Report report : reports) {
-            System.out.println(report.getReportId());
-        }
+//        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
+//        NewReportMapper nm = new NewReportMapper();
+//        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
+//        for (Report report : reports) {
+//            System.out.println(report.getReportId());
+//        }
+        
+        Building b = facade.getBuilding(1);
+        System.out.println(b.getBdgId() + b.getBuildingName());
 //        Report report = nm.getSingleReport(21, facade.getCon());
 //        System.out.println(report);
 //        System.out.println(report.getDate());
@@ -256,8 +259,15 @@ public class DBFacade {
         System.out.println(con);
     }
 
-    public void addReportToDB(Report report) {
-        nrm.reportToDataBase(report, con);
+    /**
+     * Creates the tuble in the database for a Report.
+     * @param report Take the report obejct that is to be created in the database
+     * The report obejct does not have an ID yet, because that is to be created
+     * When the values are inserted to the database
+     * @return The just inserted Report object, that now contains the report ID.
+     */
+    public Report addReportToDB(Report report) {
+       return nrm.createReportTuble(report, con);
 
     }
 
@@ -283,5 +293,13 @@ public class DBFacade {
     }
     public boolean validatePolygonUser(String userName, String pwd) {
         return um.validatePolygonUser(userName,pwd,con);
+    }
+    
+    public Building getBuilding(int bdgId){
+        return bm.getBuilding(bdgId, con);
+    }
+
+    public void addFloor(BuildingFloor bf) {
+        bm.addFloor(bf,con);
     }
 }

@@ -85,16 +85,22 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
             request = rh.process(request, response, df);
-            sessionObj.setAttribute("reports", df.getReport(4));
+            sessionObj.setAttribute("report", df.getReport(21));
         }
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
+            sessionObj.setAttribute("customerSelcted", false);
             chooseCustomer(sessionObj, df );
         }
         
         if (page.equalsIgnoreCase("report_cus_choosen")) {
             url = "/reportJSPs/choosebuilding.jsp";
-            loadCustomersBuildings(sessionObj, df );
+            loadCustomersBuildings(request,sessionObj, df );
+        }
+        
+        if (page.equalsIgnoreCase("report_start")) {
+            url = "/reportJSPs/report_start.jsp";
+            createReport(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -386,10 +392,11 @@ public class FrontControl extends HttpServlet {
 
     /**
      * Loads all the customers buildings, based on whitch user 
-     * the empoleyee choose.
+     * the empoleyee choose, and sets that in the session obj.
      * @param sessionObj
      * @param df
      */
+
     private void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {  
         int cusID=1;
         List<Building> buildingsList = df.getListOfBuildings(cusID);
@@ -398,34 +405,61 @@ public class FrontControl extends HttpServlet {
     }
 
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+        String floorNum = (String)request.getParameter("floornumber");
+        String floorSize =(String)request.getParameter("floorsize");
+        String totalRooms =(String)request.getParameter("totalrooms");
+        String bdgId= (String) sessionObj.getAttribute("buildingId");
+        int n = Integer.parseInt(floorNum);
+        double s = Double.parseDouble(floorSize);
+        int r = Integer.parseInt(totalRooms);
+        int b = Integer.parseInt(bdgId);
+        BuildingFloor bf = new BuildingFloor(n,s,r,b);
+        df.addFloors(bf);
+        sessionObj.setAttribute("newFloor", bf);
+    }
+
+    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+        sessionObj.setAttribute("customerSelcted", true);
+        int cusid = Integer.parseInt(request.getParameter("owners"));
+        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
+        sessionObj.setAttribute("customersBuildings", listOfBuildings);
         
-//        String floorNum = (String)request.getParameter("floornumber");
-//        String floorSize =(String)request.getParameter("floorsize");
-//        String totalRooms =(String)request.getParameter("totalrooms");
-//        String bdgId= (String) sessionObj.getAttribute("buildingId");
-//        int n = Integer.parseInt(floorNum);
-//        double s = Double.parseDouble(floorSize);
-//        int r = Integer.parseInt(totalRooms);
-//        int b = Integer.parseInt(bdgId);
-//        BuildingFloor bf = new BuildingFloor(n,s,r,b);
-////        df.addFloors(bf);
-//        sessionObj.setAttribute("newFloor", bf);
+    }
+
+    /**
+     * Creates the Report based on only the building object.
+     * Method should be called right when the user has chosen which building
+     * to create a report for. At this point, the report object does not
+     * contain any details, but only infomation regarding to building, and the
+     * Employee that creates it.
+     * 
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        int buildingID = Integer.parseInt(request.getParameter("buildings"));
+        User polygonUser = (User) sessionObj.getAttribute("user");
+        String polygonUserID = polygonUser.getUserName();
+        
+        Report report = new Report(buildingID, polygonUserID);
+        report = df.saveReport(report);
+        sessionObj.setAttribute("reportToBeCreated", report);
+
     }
     
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
         
         String buildingName = (String) request.getParameter("buildings");
         List<Building> buildingsList = df.getListOfBuildings(1);
+        int bdgId=0;
         for (Building building : buildingsList) {
             if(building.getBuildingName().equals(buildingName)){
-                sessionObj.setAttribute("buildingId", building.getBdgId());
-                sessionObj.setAttribute("buildingName", buildingName);
-                sessionObj.setAttribute("streetAddress", building.getStreetAddress());
-                sessionObj.setAttribute("streetNumber", building.getStreetNumber());
-                sessionObj.setAttribute("zipcode", building.getZipCode());
+                bdgId = building.getBdgId();
             }
         }
+        Building b=df.getBuilding(bdgId);
+        sessionObj.setAttribute("selectedBuilding", b);
     }
-    }
-
+}
 

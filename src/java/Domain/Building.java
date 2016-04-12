@@ -35,6 +35,21 @@ public class Building implements Serializable {
         this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
     }
+
+    public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode,   int building_pic,String useOfBuilding, int custId) {
+        this.bdgId = bdgId;
+        this.buildingName = buildingName;
+        this.streetAddress = streetAddress;
+        this.streetNumber = streetNumber;
+        this.zipCode = zipCode;
+        this.buildingYear = buildingYear;
+        this.buildingSize = buildingSize;
+        this.useOfBuilding = useOfBuilding;
+        this.building_pic = building_pic;
+        this.custId = custId;
+    }
+
+    
     
     public int getBdgId() {
         return bdgId;

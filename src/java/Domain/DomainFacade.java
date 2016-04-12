@@ -125,8 +125,14 @@ public class DomainFacade {
         return dbFacade.loadUser(username);
     }
 
-    public void saveReport(Report report) {
-        dbFacade.addReportToDB(report);
+    /**
+     * Sends the report obejct to the DB Facade, and gets the same object with
+     * an uniqe ID in return.
+     * @param report The report object without an uniqe ID jet.
+     * @return Report with an now uniqe ID.
+     */
+    public Report saveReport(Report report) {
+       return  dbFacade.addReportToDB(report);
 
     }
 
@@ -153,12 +159,12 @@ public class DomainFacade {
         return dbFacade.getAllCustomers();
     }
 
-    public void addFloors(int floorNum, double floorSize, int totalRooms, int bdgId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Building getBuilding(int id) {
+        return dbFacade.getBuilding(id);
     }
 
     public void addFloors(BuildingFloor bf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dbFacade.addFloor(bf);
     }
 
 }

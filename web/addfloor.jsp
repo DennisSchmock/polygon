@@ -15,16 +15,16 @@
     <div class="w3-row-padding">
     <label>Select building:</label>
     <select name="buildings">
-        <c:forEach items="${sessionScope.buildingsList}" var="building">
+        <c:forEach items="${sessionScope.customersBuildings}" var="building">
             <option>${building.buildingName}</option>
         </c:forEach>  </select>
         <input name="selBdg" type="submit" value="GO" /></div>    
   
     
     <div class="w3-row-padding">
-     <p>Building Name:  ${sessionScope.buildingName}<br>
-        Address: ${sessionScope.streetAddress} ${sessionScope.streetNumber}<br>
-        Zip Code: ${sessionScope.zipcode}</p>
+     <p>Building Name:  ${sessionScope.selectedBuilding.buildingName}<br>
+        Address: ${sessionScope.selectedBuilding.streetAddress} ${sessionScope.selectedBuilding.streetNumber}<br>
+        Zip Code: ${sessionScope.selectedBuilding.zipcode}</p>
     </div>
     
     </form>
