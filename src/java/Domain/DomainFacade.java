@@ -173,6 +173,11 @@ public String saveBuildingPic(int buildId, String ext){
     public Building getBuilding(int buildingID) {
         return dbFacade.getBuilding(buildingID);
     }
+    
+    public String getLatestBuildingImage(int buildingId){
+        return dbFacade.getLatestBuildingImage(buildingId);
+        
+    }
 
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);

@@ -10,10 +10,10 @@ import java.util.List;
 
 /**
  *
- * @author CJS
+ * @author Dennis Schmock
  */
 public class Customer {
-    private int customer_id;
+    private int customerId;
     private String companyName;
     private String contactPerson; 
     private String cusMail; 
@@ -24,6 +24,7 @@ public class Customer {
     private String city;
     private String phoneNumber;
     private ArrayList<User> listOfUsers;
+    private ArrayList<Building> buildings;
 
     /**
      *
@@ -49,13 +50,16 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     *
+     * @param companyName
+     * @param contactPerson
+     */
     public Customer(String companyName, String contactPerson) {
         this.companyName = companyName;
         this.contactPerson = contactPerson;
     }
     
-    private List<Building> buildings;
-    private List<Report> reports;
 
     /**
      * @return the companyName
@@ -128,18 +132,19 @@ public class Customer {
     }
 
     /**
-     * @return the reports
+     *
+     * @return
      */
-    public List<Report> getReports() {
-        return reports;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
-    }
-
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
+    /**
+     *
+     * @param customerId
+     */
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
     
 
@@ -151,13 +156,83 @@ public class Customer {
         return listOfUsers;
     }
 
+    /**
+     *
+     * @param listOfUsers
+     */
     public void setListOfUsers(ArrayList<User> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" + "customer_id=" + customer_id + ", companyName=" + companyName + ", contactPerson=" + contactPerson + ", cusMail=" + cusMail + ", street=" + street + ", streetNumber=" + streetNumber + ", cusCVR=" + cusCVR + ", zip=" + zip + ", city=" + city + ", phoneNumber=" + phoneNumber + ", listOfUsers=" + listOfUsers + ", buildings=" + buildings + ", reports=" + reports + '}';
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    /**
+     * @param contactPerson the contactPerson to set
+     */
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    /**
+     * @param cusMail the cusMail to set
+     */
+    public void setCusMail(String cusMail) {
+        this.cusMail = cusMail;
+    }
+
+    /**
+     * @param street the street to set
+     */
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    /**
+     * @param streetNumber the streetNumber to set
+     */
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    /**
+     * @param cusCVR the cusCVR to set
+     */
+    public void setCusCVR(String cusCVR) {
+        this.cusCVR = cusCVR;
+    }
+
+    /**
+     * @param zip the zip to set
+     */
+    public void setZip(int zip) {
+        this.zip = zip;
+    }
+
+    /**
+     * @param city the city to set
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * @param phoneNumber the phoneNumber to set
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * @param buildings the buildings to set
+     */
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
     }
 
    

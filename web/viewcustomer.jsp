@@ -1,7 +1,7 @@
 <%-- 
-    Document   : reportroom
-    Created on : 10-04-2016, 22:04:19
-    Author     : Dennis
+    Document   : viewcustomer
+    Created on : 12-04-2016, 14:00:20
+    Author     : dennisschmock
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Here is a room, called room: </h1>
+        <h1>Hello World!</h1>
     </body>
 </html>

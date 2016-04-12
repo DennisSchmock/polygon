@@ -52,7 +52,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login", "/viewreport"})
 @MultipartConfig
 public class FrontControl extends HttpServlet {
 
@@ -71,17 +71,17 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = null;
-        if (ServletFileUpload.isMultipartContent(request)){
-        filePart = request.getPart("buildingImg");
+        request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
+        Part filePart = null;                                   //Used in case of fileuploads
+        if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
+        filePart = request.getPart("buildingImg");              //Extracts the part of the form that is the file
         }
     
-        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
 
-        DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
+        DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
         sessionObj.setAttribute("testing", testing);
         if (df == null) {
@@ -89,13 +89,10 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("Controller", df);
         }
 
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
-        System.out.println(page);
+        if (testing) System.out.println(page);
         
        
 
@@ -110,14 +107,14 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
             sessionObj.setAttribute("customerSelcted", false);
-            chooseCustomer(sessionObj, df );
+            chooseCustomer(sessionObj, df);
         }
-        
+
         if (page.equalsIgnoreCase("report_cus_choosen")) {
             url = "/reportJSPs/choosebuilding.jsp";
-            loadCustomersBuildings(request,sessionObj, df );
+            loadCustomersBuildings(request, sessionObj, df);
         }
-        
+
         if (page.equalsIgnoreCase("report_start")) {
             url = "/reportJSPs/report_start.jsp";
             createReport(request, sessionObj, df);
@@ -126,18 +123,18 @@ public class FrontControl extends HttpServlet {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj);
         }
-        
+
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             setUpForRoomInspection(request, sessionObj);
         }
-        
+
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
             setUpForRoomInspection(request, sessionObj);
         }
-        
+
         if (page.equalsIgnoreCase("newReportSubmit")) {
             nrh.submitReport(request, response, df);
             sessionObj.setAttribute("reports", df.getListOfReports(1));
@@ -163,17 +160,24 @@ public class FrontControl extends HttpServlet {
             url = "/viewlistofbuildings.jsp";
         }
         if (page.equalsIgnoreCase("editBuilding")) {
-            findBuildingToBeEdit(request, sessionObj);
+            findBuildingToBeEdit(request, sessionObj, df);
             response.sendRedirect("editBuilding.jsp");
             return;
         }
-        if (page.equalsIgnoreCase("viewreport")){
+        if (page.equalsIgnoreCase("viewreport")) {
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
-           
+
             sessionObj.setAttribute("report", report);
             response.sendRedirect("viewreport.jsp");
             return;
+        }
+        if (page.equalsIgnoreCase("viewcustomers")) {
+            List<Customer> customers = df.loadAllCustomers();
+            sessionObj.setAttribute("customers", customers);
+            response.sendRedirect("viewcustomers.jsp");
+            return;
+
         }
 
         /**
@@ -181,30 +185,42 @@ public class FrontControl extends HttpServlet {
          * database twice
          */
         if (page.equalsIgnoreCase("newbuilding")) {
+            
             Building b=createBuilding(request, df, sessionObj);
             
             if (filePart!=null){
-                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
-                String extension = fileDotSplit[fileDotSplit.length-1];
-                System.out.println(filePart.getSubmittedFileName());
-                System.out.println(extension);
-                String filename = df.saveBuildingPic(b.getBdgId(), extension);
-                b.setBuilding_pic(filename);
-                uploadFile(filePart,"buildingPic",filename);
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
+                String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
+                if (testing)System.out.println(filePart.getSubmittedFileName());
+                if (testing)System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
+                b.setBuilding_pic(filename);                                          //Add the path for building img to building
+                uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
+                sessionObj.setAttribute("newbuilding", b);                            //Update the active building in the session
             } 
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             Building b =updateBuilding(request, df, sessionObj);
+            
+            //This part deals with uploading image for building IF one was submitted
             if (filePart!=null){
                 String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
-                String extension = fileDotSplit[fileDotSplit.length-1];
+                if (fileDotSplit.length>1){                                             //If the was a dot in the filepart ie xyz.jpg
+                String extension = fileDotSplit[fileDotSplit.length-1];                 //Set extension to be what comes after the last dot
+                System.out.println("SubmittedFileName");
                 System.out.println(filePart.getSubmittedFileName());
                 System.out.println(extension);
+                // Save buildingpic info in db (not the image itself but information)
+                // Gets the filename back made from the info
                 String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                System.out.println("Filename");
+                System.out.println(filename);
                 b.setBuilding_pic(filename);
+                // Do the actual upload
                 uploadFile(filePart,"buildingPic",filename);
+                }
             }
             response.sendRedirect("viewnewbuilding.jsp");
             return;
@@ -220,7 +236,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("addfloor")) {
             addFloors(request, df, sessionObj);
             response.sendRedirect("addfloor.jsp");
@@ -232,7 +248,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("addfloor.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
 
@@ -282,12 +298,9 @@ public class FrontControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-      
-     
+
         processRequest(request, response);
 
-        
     }
 
     /**
@@ -313,12 +326,9 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-        
-
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
-        
-        
+
         session.setAttribute("newbuilding", b);
         return b;
     }
@@ -360,12 +370,13 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj The session object holds the list of the buildings for
      * that customer.
      */
-    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj) {
+    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
 
         for (Building building : listofbuildings) {
             if (building.getBdgId() == buildingID) {
+                building.setBuilding_pic(df.getLatestBuildingImage(building.getBdgId()));  //Call db to see if there is an Img for the building and add the latest to the object
                 sessionObj.setAttribute("buildingToBeEdited", building);
             }
         }
@@ -394,6 +405,7 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
 
         df.Updatebuilding(buildingToBeEdited);
+        
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
     }
@@ -422,7 +434,6 @@ public class FrontControl extends HttpServlet {
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
 
-
     /**
      * Method for logging an user in. Question: The cus login set a session
      * parameter that is called "user" This method could just use that aswell,
@@ -437,227 +448,183 @@ public class FrontControl extends HttpServlet {
     private void emplogin(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
         String username = (String) request.getParameter("username");
         String pwd = (String) request.getParameter("pwd");
-        
-        if(df.logEmpUserIn(username, pwd)) { // not implemented!
+
+        if (df.logEmpUserIn(username, pwd)) { // not implemented!
             request.getSession().setAttribute("loggedin", true);
-            
+
             User user = df.loadEmpUser(username); // not implemented!
             request.getSession().setAttribute("user", user);
-            
+
         } else {
             request.getSession().setAttribute("loggedin", false);
         }
-            
+
     }
 
     /**
-     * Method that sets up, for the emp whitch building he has to create
-     * an report for. Needs to load all the customers.
+     * Method that sets up, for the emp whitch building he has to create an
+     * report for. Needs to load all the customers.
+     *
      * @param request
      * @param sessionObj
      * @param df
      */
-    private void chooseCustomer( HttpSession sessionObj, DomainFacade df) {
+    private void chooseCustomer(HttpSession sessionObj, DomainFacade df) {
         List<Customer> allCustomers = df.loadAllCustomers();
         sessionObj.setAttribute("allCustomers", allCustomers);
     }
 
     /**
-     * Loads all the customers buildings, based on whitch user 
-     * the empoleyee choose, and sets that in the session obj.
+     * Loads all the customers buildings, based on whitch user the empoleyee
+     * choose, and sets that in the session obj.
+     *
      * @param sessionObj
      * @param df
      */
-    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+    public void loadCustomersBuildings(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         sessionObj.setAttribute("customerSelcted", true);
         int cusid = Integer.parseInt(request.getParameter("owners"));
         List<Building> listOfBuildings = df.getListOfBuildings(cusid);
         sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        
+
     }
 
     /**
-     * Creates the Report based on only the building object.
-     * Method should be called right when the user has chosen which building
-     * to create a report for. At this point, the report object does not
-     * contain any details, but only infomation regarding to building, and the
-     * Employee that creates it. Also loads the building object 
-     * of the building to be created an stores it in the session.
-     * 
+     * Creates the Report based on only the building object. Method should be
+     * called right when the user has chosen which building to create a report
+     * for. At this point, the report object does not contain any details, but
+     * only infomation regarding to building, and the Employee that creates it.
+     * Also loads the building object of the building to be created an stores it
+     * in the session.
+     *
      * @param request
      * @param sessionObj
      * @param df
      */
-    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int buildingID = Integer.parseInt(request.getParameter("buildings"));
         User polygonUser = (User) sessionObj.getAttribute("user");
         String polygonUserID = polygonUser.getUserName();
-        
+
         Report report = new Report(buildingID, polygonUserID);
         report = df.saveReport(report);
         sessionObj.setAttribute("reportToBeCreated", report);
         Building b = df.getBuilding(buildingID);
         sessionObj.setAttribute("reportBuilding", b);
-        
+
     }
 
     /**
-     * Takes the ellements form the request and saves it,
-     * all that is needed for creating the exterior decription in the report.
-     * Also saves the new infomation in the report object. 
-     * OBS: DOES NOT HANDLE PICTURES!!!!!!!!!!!!!!!!!!
+     * Takes the ellements form the request and saves it, all that is needed for
+     * creating the exterior decription in the report. Also saves the new
+     * infomation in the report object. OBS: DOES NOT HANDLE
+     * PICTURES!!!!!!!!!!!!!!!!!!
+     *
      * @param request Holds the fields, the user have inserted.
      * @param sessionObj Holds obejcts like report, and building for report
      */
-    private void saveReportExterior(HttpServletRequest request, HttpSession sessionObj) {
-        String remarksOnRoof  = request.getParameter("remarksOnRoof");
+    public void saveReportExterior(HttpServletRequest request, HttpSession sessionObj) {
+        String remarksOnRoof = request.getParameter("remarksOnRoof");
         String remarksOnWalls = request.getParameter("remarksOnWall");
 
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
-        
-        ReportExterior roofEx = new ReportExterior("Roof", remarksOnRoof,report.getReportId());
-        ReportExterior wallEx = new ReportExterior("Wall", remarksOnWalls,report.getReportId());
-        
-        if(report.getListOfRepExt() == null){
+
+        ReportExterior roofEx = new ReportExterior("Roof", remarksOnRoof, report.getReportId());
+        ReportExterior wallEx = new ReportExterior("Wall", remarksOnWalls, report.getReportId());
+
+        if (report.getListOfRepExt() == null) {
             ArrayList<ReportExterior> listOfExt = new ArrayList<>();
             listOfExt.add(wallEx);
             listOfExt.add(roofEx);
             report.setListOfRepExt(listOfExt);
-        }
-        else{
+        } else {
             ArrayList<ReportExterior> listOfExt = report.getListOfRepExt();
             listOfExt.add(wallEx);
             listOfExt.add(roofEx);
             report.setListOfRepExt(listOfExt);
         }
-        
+
         sessionObj.setAttribute("reportToBeCreated", report);
-     
-        
+
     }
+    
+    /**
+     * Uploads a file to the server. Helper method for any fileUpload
+     * @param filePart the Part that holds the file
+     * @param folder the subfolder it should go into (has to exist beforehand, uses relative path!)
+     * @param filename the full name of the file.
+     */
     private void uploadFile(Part filePart, String folder, String filename) {
-        //The Wrong way of doing things (relative path)
+        // The Wrong way of doing things according to several sources (relative path)
+        // Deliberate in this case for the purpose of being able to implement across multiple systems
         String uploadFolder = getServletContext().getRealPath("")
                 + File.separator ;
-        String[] fileDotSplit = filePart.getName().split("\\.");
-        String extension = fileDotSplit[fileDotSplit.length-1];
         
-        
-        System.out.println("UploadFile");
+        if (testing) System.out.println("UploadFile");
         File uploads = new File(uploadFolder);
         uploads = new File (uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
-        System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
+        if (testing) System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
         File file = new File(uploads, filename);
 
-try (InputStream input = filePart.getInputStream()) {
-    Files.copy(input, file.toPath());
-}       catch (IOException ex) {
+        try (InputStream input = filePart.getInputStream()) {
+            Files.copy(input, file.toPath());
+        } catch (IOException ex) {
             Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
 
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
-        String floorNum = (String)request.getParameter("floornumber");
-        String floorSize =(String)request.getParameter("floorsize");
-        String totalRooms =(String)request.getParameter("totalrooms");
+        String floorNum = (String) request.getParameter("floornumber");
+        String floorSize = (String) request.getParameter("floorsize");
+        String totalRooms = (String) request.getParameter("totalrooms");
 //        String bdgId= (String) sessionObj.getAttribute("buildingId");
-        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
-            int n = (int)Integer.parseInt(floorNum);
+        System.out.println("values:" + floorNum + floorSize + totalRooms + bdgId);
+        if (floorNum != null) {
+            int n = (int) Integer.parseInt(floorNum);
             System.out.println("..." + n);
-            double s = (double)Double.parseDouble(floorSize);
-            int r = (int)Integer.parseInt(totalRooms);
+            double s = (double) Double.parseDouble(floorSize);
+            int r = (int) Integer.parseInt(totalRooms);
 //            int b = (int)Integer.parseInt(bdgId);
-            
-            BuildingFloor bf = new BuildingFloor(n,s,r,1);
+
+            BuildingFloor bf = new BuildingFloor(n, s, r, 1);
             df.addFloors(bf);
             sessionObj.setAttribute("newFloor", bf);
-       
-        
-        
-        
+        }
+
     }
- 
-    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
-        
+
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+
         String buildingName = (String) request.getParameter("buildings");
         List<Building> buildingsList = df.getListOfBuildings(1);
-        
+
         for (Building building : buildingsList) {
-            if(building.getBuildingName().equals(buildingName)){
+            if (building.getBuildingName().equals(buildingName)) {
                 bdgId = building.getBdgId();
             }
         }
-        Building b=df.getBuilding(bdgId);
+        Building b = df.getBuilding(bdgId);
         sessionObj.setAttribute("selectedBuilding", b);
     }
 
     /**
      * Based on the fields in the request object, this method creates an new
-     * building_Room in the database. Also sets the newly created id for the
-     * BUILDING ROOM, as a Attribute in the request object.
+     * building_Room in the database
+     *
      * @param request Holds the requied fields to create an new room
      * @param sessionObj Holds the buildingID
-     * @param df Connection to the domain level
+     * @param df
      */
-    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    public void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         String roomName = request.getParameter("RoomName");
         int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
-        
+
         BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
         newRoom = df.addBuildingRoom(newRoom);
-        request.setAttribute("RoomSelected", newRoom.getRoomId());
-        
+
     }
 
-    /**
-     * This method can be accesses in two ways.
-     * Either the user has selected an already existing room to inspected
-     * or the user has just created an new BUILDING room, that the user now wants
-     * to inspect.
-     * @param request Holds the Fields to Create the Report_ROOM
-     * @param sessionObj
-     */
     private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
-        int buildingRoomid;
-        if(request.getParameter("RoomSelected") != null){
-            
-            /*
-            This means that the user has selected an already existing room
-            to inspected. Therefore it is the parameter that is to be used!
-            */
-            buildingRoomid = Integer.parseInt(request.getParameter("RoomSelected"));
-            
-        }
-        else{
-            /*
-            This means that the user has just created an room
-            to inspected. Therefore it is the attribute is used
-            */
-            
-             buildingRoomid = (int) (request.getAttribute("RoomSelected"));
-        }
-        
-        Building temp = (Building) sessionObj.getAttribute("reportBuilding"); // finds the building object from session
-        BuildingRoom buildingRoom= null;
-
-        // Loops through all the rooms for the building 
-        // To find the one the user has selected.
-        for (BuildingFloor floor : temp.getListOfFloors()) {
-            for (BuildingRoom Room : floor.getListOfRooms() ) {
-              
-             if(Room.getRoomId() == buildingRoomid){
-                 buildingRoom = Room;
-             }   
-            }
-            
-        }
-        Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
-        
-        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(), report.getReportId(), buildingRoomid);
-        reportRoom.setRoomFloor(buildingRoom.getFloorid() + "");
-        sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
-

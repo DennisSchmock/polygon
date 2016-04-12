@@ -48,6 +48,7 @@ public class Building {
         this.useOfBuilding = useOfBuilding;
         //this.buildingPic = buildingPic;
         this.custId = custId;
+        buildingPic="0.png";
     }
 
     
