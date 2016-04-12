@@ -211,7 +211,6 @@ public class BuildingMapper {
             String houseNumber = rs.getString("building_housenumber");
             int yr = rs.getInt("building_buildyear");
             int zip = rs.getInt("building_zip");
-            //int pic = rs.getInt("building_pic");
             String use = rs.getString("building_use");
             int cusId = rs.getInt("customer_id");
 
@@ -307,6 +306,34 @@ public class BuildingMapper {
         }
         return roomList;
     }
+        
+
+    public String getLatestBuildingImage(int buildingId, Connection con) {
+        String imgString=null;
+        System.out.println("getLatestBuildingImage");
+        String SQLString = "select * from building_pic where building_id=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, buildingId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            while (rs.next()){
+            int imgId = rs.getInt("building_pic_id");
+            String extension = rs.getString("building_pic_extension");
+            imgString=imgId+"."+extension;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Fail in NewBuildingMapper-getLatestBuildingPic");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        
+        
+        return imgString;
+    }
+    
 }
 
 

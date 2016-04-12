@@ -303,7 +303,15 @@ public class DBFacade {
     }
     
     public Building getBuilding(int bdgId){
-        return bm.getBuilding(bdgId, con);
+        Building b=bm.getBuilding(bdgId, con);
+        String imgPath = bm.getLatestBuildingImage(bdgId, con);
+        b.setBuilding_pic(imgPath);
+        return b;
+    }
+    
+    public String getLatestBuildingImage(int buildingId){
+        return bm.getLatestBuildingImage(buildingId, con);
+        
     }
 
     public void addFloor(BuildingFloor bf) {
