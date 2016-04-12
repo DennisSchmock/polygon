@@ -465,14 +465,15 @@ public class FrontControl extends HttpServlet {
     private void uploadFile(Part filePart, String folder, String filename) {
         //The Wrong way of doing things (relative path)
         String uploadFolder = getServletContext().getRealPath("")
-                + File.separator + folder;
+                + File.separator ;
         String[] fileDotSplit = filePart.getName().split("\\.");
         String extension = fileDotSplit[fileDotSplit.length-1];
         
         
         System.out.println("UploadFile");
         File uploads = new File(uploadFolder);
-        System.out.println(uploads.getAbsolutePath());
+        uploads = new File (uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
+        System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
         File file = new File(uploads, filename);
 
 try (InputStream input = filePart.getInputStream()) {
