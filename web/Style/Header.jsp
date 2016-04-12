@@ -1,7 +1,7 @@
 <%-- 
     Document   : Header
     Created on : 21-Mar-2016, 15:10:46
-    Author     : Daniel
+    Author     : Dennis Schmock
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
@@ -44,7 +44,6 @@
                     <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
                 <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=newreport">Add Report</a></li></c:if>
                 <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=listreports">List Reports</a></li></c:if>
-                <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=report">Report</a></li></c:if>
 
             </c:if>
                 <c:if test="${sessionScope.loggedin==null}"><li><a href="login?page=login">Login</a></li></c:if>

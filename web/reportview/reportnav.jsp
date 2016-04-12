@@ -7,7 +7,7 @@
         <div class="w3-accordion">
             <a onclick="myAccFunc(<c:out value="${i}"/>)" href="#">Floor: <c:out value="${i}"/></a>
             
-            <div id="demoAcc<c:out value="${i}"/>" class="w3-accordion-content w3-white w3-card-4">
+            <div id="room<c:out value="${i}"/>" class="w3-accordion-content w3-white w3-card-4">
                 
                  <c:forEach items="${sessionScope.report.listOfRepRoom}" var="room">
                      <a href="#">Room 1</a>
@@ -21,7 +21,7 @@
 </nav>
 <script>
     function myAccFunc(i) {
-        var x = document.getElementById("demoAcc" + i);
+        var x = document.getElementById("room" + i);
         if (x.className.indexOf("w3-show") == -1) {
             x.className += " w3-show";
             x.previousElementSibling.className += " w3-green";
