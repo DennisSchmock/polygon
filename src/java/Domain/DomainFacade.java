@@ -147,7 +147,7 @@ public class DomainFacade {
     }
 
     public Report getReport(int i) {
-        return dbFacade.getReport(i);
+        return dbFacade.getSingleReport(i);
     }
 
     /**
@@ -166,5 +166,6 @@ public class DomainFacade {
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);
     }
+ 
 
 }

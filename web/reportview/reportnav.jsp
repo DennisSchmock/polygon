@@ -6,10 +6,13 @@
     <c:forEach var="i" begin="1" end="5">
         <div class="w3-accordion">
             <a onclick="myAccFunc(<c:out value="${i}"/>)" href="#">Floor: <c:out value="${i}"/></a>
+            
             <div id="demoAcc<c:out value="${i}"/>" class="w3-accordion-content w3-white w3-card-4">
-                <a href="#">Room 1</a>
-                <a href="#">Room 2</a>
-                <a href="#">Room 3</a>
+                
+                 <c:forEach items="${sessionScope.report.listOfRepRoom}" var="room">
+                     <a href="#">Room 1</a>
+                 </c:forEach>
+               
             </div>
         </div>
 

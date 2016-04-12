@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login","/viewreport"})
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
@@ -112,7 +112,7 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("listreports")) {
             sessionObj.setAttribute("reports", df.getListOfReports(1));
-            response.sendRedirect("viewreport.jsp");
+            response.sendRedirect("viewreports.jsp");
             return;
         }
         if (page.equalsIgnoreCase("reportAddRoom")) {
@@ -131,6 +131,14 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("editBuilding")) {
             findBuildingToBeEdit(request, sessionObj);
             response.sendRedirect("editBuilding.jsp");
+            return;
+        }
+        if (page.equalsIgnoreCase("viewreport")){
+            int reportId = Integer.parseInt(request.getParameter("reportid"));
+            Report report = df.getReport(reportId);
+           
+            sessionObj.setAttribute("report", report);
+            response.sendRedirect("viewreport.jsp");
             return;
         }
 
@@ -398,12 +406,32 @@ public class FrontControl extends HttpServlet {
      * @param df
      */
 
-    private void loadCustomersBuildings(HttpSession sessionObj, DomainFacade df) {  
-        int cusID=1;
-        List<Building> buildingsList = df.getListOfBuildings(cusID);
-        sessionObj.setAttribute("buildingsList", buildingsList);
-                
+ 
+
+    /**
+     * Creates the Report based on only the building object.
+     * Method should be called right when the user has chosen which building
+     * to create a report for. At this point, the report object does not
+     * contain any details, but only infomation regarding to building, and the
+     * Employee that creates it.
+     * 
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        int buildingID = Integer.parseInt(request.getParameter("buildings"));
+        User polygonUser = (User) sessionObj.getAttribute("user");
+        String polygonUserID = polygonUser.getUserName();
+        
+        Report report = new Report(buildingID, polygonUserID);
+        report = df.saveReport(report);
+        sessionObj.setAttribute("reportToBeCreated", report);
+        Building b = df.getBuilding(buildingID);
+        
     }
+
+    
 
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         String floorNum = (String)request.getParameter("floornumber");
@@ -434,28 +462,7 @@ public class FrontControl extends HttpServlet {
         
     }
 
-    /**
-     * Creates the Report based on only the building object.
-     * Method should be called right when the user has chosen which building
-     * to create a report for. At this point, the report object does not
-     * contain any details, but only infomation regarding to building, and the
-     * Employee that creates it.
-     * 
-     * @param request
-     * @param sessionObj
-     * @param df
-     */
-    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
-        int buildingID = Integer.parseInt(request.getParameter("buildings"));
-        User polygonUser = (User) sessionObj.getAttribute("user");
-        String polygonUserID = polygonUser.getUserName();
-        
-        Report report = new Report(buildingID, polygonUserID);
-        report = df.saveReport(report);
-        sessionObj.setAttribute("reportToBeCreated", report);
-
-    }
-    
+ 
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
         
         String buildingName = (String) request.getParameter("buildings");

@@ -19,6 +19,11 @@
     <h1> ID for the report to be Created: ${sessionScope.reportToBeCreated.reportId}</h1>
     
     
+    Next things to do:
+    
+    * Create in the mapper, an method that updates all of the fields related to report
+
+    
     
 </main>
 
