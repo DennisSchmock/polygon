@@ -27,7 +27,7 @@
                  <input type="hidden" name="page" value="report_cus_choosen" />
         <select name="owners">
             <c:forEach items="${sessionScope.allCustomers}" var="cus">    
-                <option value="${cus.customer_id}">${cus.companyName} - ${cus.contactPerson}</option>
+                <option value="${cus.customerId}">${cus.companyName} - ${cus.contactPerson}</option>
             </c:forEach>
             
         </select>
