@@ -159,13 +159,13 @@ public class DomainFacade {
         return dbFacade.getAllCustomers();
     }
 
-    /**
-     * Loads an building in the database
-     * @param buildingID Id for the building to be loaded
-     * @return An objet of the the Building that has been loaded
-     */
-    public Building getBuilding(int buildingID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Building getBuilding(int id) {
+        return dbFacade.getBuilding(id);
     }
+
+    public void addFloors(BuildingFloor bf) {
+        dbFacade.addFloor(bf);
+    }
+ 
 
 }

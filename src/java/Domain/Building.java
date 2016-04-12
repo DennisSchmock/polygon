@@ -23,6 +23,7 @@ public class Building {
     private String useOfBuilding;
     private int building_pic;
     private ArrayList<Report> listOfReports;
+    private ArrayList<BuildingFloor> listOfFloors;
     private ArrayList<BuildingRoom> listOfRooms;
     private int custId;
 
@@ -35,6 +36,21 @@ public class Building {
         this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
     }
+
+    public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode,   int building_pic,String useOfBuilding, int custId) {
+        this.bdgId = bdgId;
+        this.buildingName = buildingName;
+        this.streetAddress = streetAddress;
+        this.streetNumber = streetNumber;
+        this.zipCode = zipCode;
+        this.buildingYear = buildingYear;
+        this.buildingSize = buildingSize;
+        this.useOfBuilding = useOfBuilding;
+        this.building_pic = building_pic;
+        this.custId = custId;
+    }
+
+    
     
     public int getBdgId() {
         return bdgId;
@@ -129,6 +145,14 @@ public class Building {
         return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
     }
 
+    public ArrayList<BuildingFloor> getListOfFloors() {
+        return listOfFloors;
+    }
+
+    public void setListOfFloors(ArrayList<BuildingFloor> listOfFloors) {
+        this.listOfFloors = listOfFloors;
+    }
+
     public ArrayList<BuildingRoom> getListOfRooms() {
         return listOfRooms;
     }
@@ -136,4 +160,6 @@ public class Building {
     public void setListOfRooms(ArrayList<BuildingRoom> listOfRooms) {
         this.listOfRooms = listOfRooms;
     }
+    
+    
 }

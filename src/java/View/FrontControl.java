@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.BuildingFloor;
 import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -40,6 +41,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private boolean testing = true;
+    int bdgId;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,6 +58,7 @@ public class FrontControl extends HttpServlet {
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
+        AddFloorsAndRoomsHelper frh = new AddFloorsAndRoomsHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -73,9 +76,7 @@ public class FrontControl extends HttpServlet {
         String page = request.getParameter("page");
         System.out.println(page);
         
-        if (page=="viewReportTest"){
-            
-        }
+       
 
         if (page == null) {
             page = "/index.jsp";
@@ -164,7 +165,19 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
+        
+        if (page.equalsIgnoreCase("addfloor")) {
+            addFloors(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
 
+        if (page.equalsIgnoreCase("selBdg")) {
+            selectBuilding(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
 
@@ -420,7 +433,45 @@ public class FrontControl extends HttpServlet {
         Building b = df.getBuilding(buildingID);
         
     }
+
     
+
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+        String floorNum = (String)request.getParameter("floornumber");
+        String floorSize =(String)request.getParameter("floorsize");
+        String totalRooms =(String)request.getParameter("totalrooms");
+//        String bdgId= (String) sessionObj.getAttribute("buildingId");
+        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
+            int n = (int)Integer.parseInt(floorNum);
+            System.out.println("..." + n);
+            double s = (double)Double.parseDouble(floorSize);
+            int r = (int)Integer.parseInt(totalRooms);
+//            int b = (int)Integer.parseInt(bdgId);
+            
+            BuildingFloor bf = new BuildingFloor(n,s,r,1);
+            df.addFloors(bf);
+            sessionObj.setAttribute("newFloor", bf);
+       
+        
+        
+        
     }
 
+   
+
+ 
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
+        
+        String buildingName = (String) request.getParameter("buildings");
+        List<Building> buildingsList = df.getListOfBuildings(1);
+        
+        for (Building building : buildingsList) {
+            if(building.getBuildingName().equals(buildingName)){
+                bdgId = building.getBdgId();
+            }
+        }
+        Building b=df.getBuilding(bdgId);
+        sessionObj.setAttribute("selectedBuilding", b);
+    }
+}
 
