@@ -179,6 +179,23 @@ public class FrontControl extends HttpServlet {
             return;
 
         }
+        if (page.equalsIgnoreCase("viewcustomer")) {
+            int custId = Integer.parseInt(request.getParameter("customerid"));
+            List<Building> buildings = df.getListOfBuildings(custId);
+            
+            sessionObj.setAttribute("buildings", buildings);
+            response.sendRedirect("viewcustomer.jsp");
+            return;
+
+        }
+        if (page.equalsIgnoreCase("viewbuildingadmin")) {
+            int buildId = Integer.parseInt(request.getParameter("buildingid"));
+            Building b=df.getBuilding(buildId);
+            sessionObj.setAttribute("building", b);
+            response.sendRedirect("viewbuildingadmin.jsp");
+            return;
+
+        }
 
         /**
          * sending a rediret is better, because a forward will add to the
