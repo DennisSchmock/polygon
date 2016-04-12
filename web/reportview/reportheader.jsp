@@ -11,8 +11,9 @@
 <div class="w3-container" style="margin-left:120px">
     <h1> ${sessionScope.testBuilding.buildingName}</h1>
     
+    ${sessionScope.report.date}
     
-    ${report.listOfRepRoom[0].roomName}
+    navn på et rum: ${sessionScope.report.listOfRepRoom[0].roomName}<br>
    
     ${sessionScope.testBuilding.streetAddress} ${sessionScope.testBuilding.streetNumber}
     ${sessionScope.testBuilding.zipCode}

@@ -88,7 +88,6 @@ public class NewReportMapper {
         String SQLString = "select * from report where report_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, reportId);
-            System.out.println("Get here?");
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 return null;
@@ -99,6 +98,7 @@ public class NewReportMapper {
 
             r = new Report(reportId, reportDate, buildingId, catagoryConclusion);
             r.setListOfRepRoom(getReportRooms(reportId, con));
+            System.out.println("AddedRoom!!!");
             r.setListOfRepRoomExt(getReportExterior(reportId, con));
 
             return r;

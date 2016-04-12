@@ -21,7 +21,7 @@
             <input type="submit" value="Login" /><br>
         </form>
          <c:if test="${sessionScope.loggedin!=null&&sessionScope.loggedin==false}">
-                Wrong user name or password!
+                Wrong username or password!
             </c:if>
     </c:if>
     <c:if test="${sessionScope.loggedin==true}">

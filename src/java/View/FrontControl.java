@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login","/viewreport"})
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
@@ -83,7 +83,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("report")) {
             url = "/report.jsp";
             request = rh.process(request, response, df);
-            sessionObj.setAttribute("reports", df.getReport(4));
+            sessionObj.setAttribute("report", df.getReport(21));
         }
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
@@ -109,7 +109,7 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("listreports")) {
             sessionObj.setAttribute("reports", df.getListOfReports(1));
-            response.sendRedirect("viewreport.jsp");
+            response.sendRedirect("viewreports.jsp");
             return;
         }
         if (page.equalsIgnoreCase("reportAddRoom")) {
@@ -128,6 +128,14 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("editBuilding")) {
             findBuildingToBeEdit(request, sessionObj);
             response.sendRedirect("editBuilding.jsp");
+            return;
+        }
+        if (page.equalsIgnoreCase("viewreport")){
+            int reportId = Integer.parseInt(request.getParameter("reportid"));
+            Report report = df.getReport(reportId);
+           
+            sessionObj.setAttribute("report", report);
+            response.sendRedirect("viewreport.jsp");
             return;
         }
 
