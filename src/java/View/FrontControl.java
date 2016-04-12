@@ -173,7 +173,16 @@ public class FrontControl extends HttpServlet {
             return;
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
-            updateBuilding(request, df, sessionObj);
+            Building b =updateBuilding(request, df, sessionObj);
+            if (filePart!=null){
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
+                String extension = fileDotSplit[fileDotSplit.length-1];
+                System.out.println(filePart.getSubmittedFileName());
+                System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                b.setBuilding_pic(filename);
+                uploadFile(filePart,"buildingPic",filename);
+            }
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
@@ -336,7 +345,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the buildingToBeEdited object,
      * that that we have to change based on the input fields
      */
-    private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
 
         System.out.println(request.getCharacterEncoding());
 
@@ -351,6 +360,7 @@ public class FrontControl extends HttpServlet {
 
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
+        return buildingToBeEdited;
     }
 
     /**
