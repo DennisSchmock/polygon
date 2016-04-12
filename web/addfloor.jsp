@@ -19,17 +19,17 @@
             <option>${building.buildingName}</option>
         </c:forEach>  </select>
         <input name="selBdg" type="submit" value="GO" /></div>    
-  
+    
     
     <div class="w3-row-padding">
      <p>Building Name:  ${sessionScope.selectedBuilding.buildingName}<br>
         Address: ${sessionScope.selectedBuilding.streetAddress} ${sessionScope.selectedBuilding.streetNumber}<br>
-        Zip Code: ${sessionScope.selectedBuilding.zipcode}</p>
+        Zip Code: ${sessionScope.selectedBuilding.zipCode}</p>
     </div>
     
     </form>
-    
-    
+
+   
     <form action="frontpage" method="POST">
             <div class="w3-row-padding">
                 <input type="hidden" name="page" value="addFloor" />

@@ -41,6 +41,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private boolean testing = true;
+    int bdgId;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -408,14 +409,21 @@ public class FrontControl extends HttpServlet {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
         String totalRooms =(String)request.getParameter("totalrooms");
-        String bdgId= (String) sessionObj.getAttribute("buildingId");
-        int n = Integer.parseInt(floorNum);
-        double s = Double.parseDouble(floorSize);
-        int r = Integer.parseInt(totalRooms);
-        int b = Integer.parseInt(bdgId);
-        BuildingFloor bf = new BuildingFloor(n,s,r,b);
-        df.addFloors(bf);
-        sessionObj.setAttribute("newFloor", bf);
+//        String bdgId= (String) sessionObj.getAttribute("buildingId");
+        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
+            int n = (int)Integer.parseInt(floorNum);
+            System.out.println("..." + n);
+            double s = (double)Double.parseDouble(floorSize);
+            int r = (int)Integer.parseInt(totalRooms);
+//            int b = (int)Integer.parseInt(bdgId);
+            
+            BuildingFloor bf = new BuildingFloor(n,s,r,1);
+            df.addFloors(bf);
+            sessionObj.setAttribute("newFloor", bf);
+       
+        
+        
+        
     }
 
     public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
@@ -452,7 +460,7 @@ public class FrontControl extends HttpServlet {
         
         String buildingName = (String) request.getParameter("buildings");
         List<Building> buildingsList = df.getListOfBuildings(1);
-        int bdgId=0;
+        
         for (Building building : buildingsList) {
             if(building.getBuildingName().equals(buildingName)){
                 bdgId = building.getBdgId();
