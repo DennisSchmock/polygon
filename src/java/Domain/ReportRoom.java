@@ -15,6 +15,7 @@ public class ReportRoom {
     private int repRoomId;
     private String roomName;
     private int reportId;
+    private String roomFloor;
     private int buildingRoomId;
     private ReportRoomMoist moist;
     private ArrayList<ReportRoomDamage> listOfDamages = new ArrayList<>();
@@ -32,6 +33,20 @@ public class ReportRoom {
         this.roomName = roomName;
         this.reportId = reportId;
     }
+
+    /**
+     * This one is to be used in the setUpForRoomInspection
+     * @param roomName
+     * @param reportId
+     * @param buildingRoomId
+     */
+    public ReportRoom(String roomName, int reportId, int buildingRoomId) {
+        this.roomName = roomName;
+        this.reportId = reportId;
+        this.buildingRoomId = buildingRoomId;
+    }
+    
+    
 
     public ReportRoom( String roomName, int roomNumber) {
         this.roomName = roomName;
@@ -104,5 +119,12 @@ public class ReportRoom {
     public void setMoist(ReportRoomMoist moist) {
         this.moist = moist;
     }
-    
+
+    public String getRoomFloor() {
+        return roomFloor;
+    }
+
+    public void setRoomFloor(String roomFloor) {
+        this.roomFloor = roomFloor;
+    }
 }

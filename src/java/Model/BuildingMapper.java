@@ -333,6 +333,33 @@ public class BuildingMapper {
         
         return imgString;
     }
+
+    /**
+     * Saves the buildingRoom object in the database and returns it
+     * with an Unique ID.
+     * @param newRoom The building object to be inserted.
+     * @param con Connection to the database
+     * @return The newly inserted building object
+     */
+    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom, Connection con) {
+        String sql = "insert into building_room (room_name,floor_id) values = (?,?) ";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, newRoom.getRoomName());
+            statement.setInt(2, newRoom.getFloorid());
+            statement.executeUpdate();
+            
+           ResultSet rs = statement.getGeneratedKeys();
+           
+           if(rs.next()){
+               newRoom.setRoomId(rs.getInt(1));
+           }
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL SavebuildingRoom " + ex );
+        }
+        
+        return newRoom;
+    }
     
 }
 

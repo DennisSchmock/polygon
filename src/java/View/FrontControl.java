@@ -179,6 +179,7 @@ public class FrontControl extends HttpServlet {
             return;
 
         }
+        
         if (page.equalsIgnoreCase("viewcustomer")) {
             int custId = Integer.parseInt(request.getParameter("customerid"));
             List<Building> buildings = df.getListOfBuildings(custId);
@@ -316,8 +317,11 @@ public class FrontControl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+      
+     
         processRequest(request, response);
 
+        
     }
 
     /**
@@ -343,9 +347,12 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
+        
+
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
 
+        
         session.setAttribute("newbuilding", b);
         return b;
     }
@@ -422,7 +429,6 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
 
         df.Updatebuilding(buildingToBeEdited);
-        
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
     }
@@ -450,6 +456,7 @@ public class FrontControl extends HttpServlet {
 
     private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
     }
+
 
     /**
      * Method for logging an user in. Question: The cus login set a session
@@ -498,7 +505,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    public void loadCustomersBuildings(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
         sessionObj.setAttribute("customerSelcted", true);
         int cusid = Integer.parseInt(request.getParameter("owners"));
         List<Building> listOfBuildings = df.getListOfBuildings(cusid);
@@ -518,7 +525,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    public void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int buildingID = Integer.parseInt(request.getParameter("buildings"));
         User polygonUser = (User) sessionObj.getAttribute("user");
         String polygonUserID = polygonUser.getUserName();
@@ -563,6 +570,7 @@ public class FrontControl extends HttpServlet {
 
         sessionObj.setAttribute("reportToBeCreated", report);
 
+        
     }
     
     /**
@@ -590,6 +598,8 @@ public class FrontControl extends HttpServlet {
         }
     }
 
+    
+
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         String floorNum = (String) request.getParameter("floornumber");
         String floorSize = (String) request.getParameter("floorsize");
@@ -608,6 +618,9 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("newFloor", bf);
         }
 
+        
+        
+        
     }
 
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
@@ -626,22 +639,69 @@ public class FrontControl extends HttpServlet {
 
     /**
      * Based on the fields in the request object, this method creates an new
-     * building_Room in the database
-     *
+     * building_Room in the database. Also sets the newly created id for the
+     * BUILDING ROOM, as a Attribute in the request object.
      * @param request Holds the requied fields to create an new room
      * @param sessionObj Holds the buildingID
-     * @param df
+     * @param df Connection to the domain level
      */
-    public void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         String roomName = request.getParameter("RoomName");
         int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
 
         BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
         newRoom = df.addBuildingRoom(newRoom);
+        request.setAttribute("RoomSelected", newRoom.getRoomId());
 
     }
 
+    /**
+     * This method can be accesses in two ways.
+     * Either the user has selected an already existing room to inspected
+     * or the user has just created an new BUILDING room, that the user now wants
+     * to inspect.
+     * @param request Holds the Fields to Create the Report_ROOM
+     * @param sessionObj
+     */
     private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int buildingRoomid;
+        if(request.getParameter("RoomSelected") != null){
+            
+            /*
+            This means that the user has selected an already existing room
+            to inspected. Therefore it is the parameter that is to be used!
+            */
+            buildingRoomid = Integer.parseInt(request.getParameter("RoomSelected"));
+            
+    }
+        else{
+            /*
+            This means that the user has just created an room
+            to inspected. Therefore it is the attribute is used
+            */
+            
+             buildingRoomid = (int) (request.getAttribute("RoomSelected"));
+}
+        
+        Building temp = (Building) sessionObj.getAttribute("reportBuilding"); // finds the building object from session
+        BuildingRoom buildingRoom= null;
+
+        // Loops through all the rooms for the building 
+        // To find the one the user has selected.
+        for (BuildingFloor floor : temp.getListOfFloors()) {
+            for (BuildingRoom Room : floor.getListOfRooms() ) {
+              
+             if(Room.getRoomId() == buildingRoomid){
+                 buildingRoom = Room;
+             }   
+            }
+            
+        }
+        Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
+        
+        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(), report.getReportId(), buildingRoomid);
+        reportRoom.setRoomFloor(buildingRoom.getFloorid() + "");
+        sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
     }
 }
+
