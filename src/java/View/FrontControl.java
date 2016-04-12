@@ -57,7 +57,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
-    private boolean testing = true;
+    private boolean testing = false;
     int bdgId;
 
     /**
@@ -182,6 +182,7 @@ public class FrontControl extends HttpServlet {
         
         if (page.equalsIgnoreCase("viewcustomer")) {
             int custId = Integer.parseInt(request.getParameter("customerid"));
+            sessionObj.setAttribute("customer_id",custId);
             List<Building> buildings = df.getListOfBuildings(custId);
             
             sessionObj.setAttribute("buildings", buildings);
@@ -347,12 +348,22 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
+        User userLoggedIn = (User)session.getAttribute("user");
         
+        int custId=userLoggedIn.getCustomerid();
+        System.out.println("CustId");
+        System.out.println(custId);
+        if (custId==0 && request.getParameter("customerId")!=null){
+            custId=Integer.parseInt(request.getParameter("customerId"));
+        
+        }
+        System.out.println(custId);
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
-                buildingsize, buildingYear, useOfBuilding);
-
+                buildingsize, buildingYear, useOfBuilding,custId);
         
+
+        b.setCustId(custId);
         session.setAttribute("newbuilding", b);
         return b;
     }
@@ -382,6 +393,7 @@ public class FrontControl extends HttpServlet {
          * This is just for testing. I have set the customerID by hardcode to 1
          */
         int customerID = 1;
+        if (sessionObj.getAttribute("customer_id")!=null) customerID=(Integer)(sessionObj.getAttribute("customer_id"));
         List<Building> buildingList = df.getListOfBuildings(customerID);
         sessionObj.setAttribute("listOfBuildings", buildingList);
     }
@@ -395,8 +407,11 @@ public class FrontControl extends HttpServlet {
      * that customer.
      */
     private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        if (sessionObj.getAttribute("listOfBuildings")==null)findListOfBuilding(request, df, sessionObj);   // Added for the sake of Admin editing building
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
+        System.out.println("Building Id in findBuilding");
+        System.out.println(buildingID);
 
         for (Building building : listofbuildings) {
             if (building.getBdgId() == buildingID) {

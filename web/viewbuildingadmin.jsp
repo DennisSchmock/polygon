@@ -44,7 +44,12 @@
     <br>
     
 
-    <br>
+    <br><form action="frontpage" method="POST">
+        <input type="hidden" name="buildingidEdit" value="${sessionScope.building.bdgId}" />
+        <input type="hidden" name="page" value="editBuilding" />
+        <input type="text" name="customer_id" value="${sessionScope.building.bdgId}" />
+    <input type="submit" value="Edit building" />
+    </form>
     <br>
     
     

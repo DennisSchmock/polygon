@@ -311,17 +311,21 @@ public class BuildingMapper {
     public String getLatestBuildingImage(int buildingId, Connection con) {
         String imgString=null;
         System.out.println("getLatestBuildingImage");
+        System.out.println(buildingId);
         String SQLString = "select * from building_pic where building_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            System.out.println("statement prepared");
             statement.setInt(1, buildingId);
             ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
+            System.out.println("query executed");
+
             while (rs.next()){
+                System.out.println("There is a next");
             int imgId = rs.getInt("building_pic_id");
             String extension = rs.getString("building_pic_extension");
             imgString=imgId+"."+extension;
+                System.out.println(imgString);
+                
             }
             
         } catch (Exception e) {

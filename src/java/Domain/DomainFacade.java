@@ -34,9 +34,9 @@ public class DomainFacade {
      * @see All the fields needed to create an building object Creates the
      * building object and sends it to the DBFacade
      */
-    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
+    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
-        b.setCustId(1); // this is hardcoded! Should load the userloged in!
+        b.setCustId(custId); // this is hardcoded! Should load the userloged in!
         b=dbFacade.saveNewBuilding(b);
         return b;
     } 
