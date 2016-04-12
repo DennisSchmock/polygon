@@ -1,17 +1,33 @@
 <%-- 
-    Document   : viewcustomer
-    Created on : 12-04-2016, 14:00:20
-    Author     : dennisschmock
+    Document   : jsptemplate
+    Created on : 
+    Author     : 
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<title>Customer Dashboard</title>
+<%@include file="Style/Header.jsp" %>
+
+<main>
+    
+    <h1>Buildings associated with ${customer.companyName}</h1>
+    <ul class="w3-ul w3-card-4">
+                
+                <c:forEach items="${sessionScope.buildings}" var="building">
+
+
+                    <li><a href="frontpage?page=viewbuildingadmin&buildingid=${building.bdgId}">Building: ${building.buildingName} Adress: ${building.streetAddress} ${building.streetNumber}</a> 
+                    </li>
+
+                </c:forEach>
+            </ul>
+    
+    
+</main>
+
+
+<%@include file="Style/Footer.jsp" %>

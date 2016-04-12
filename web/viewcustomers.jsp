@@ -22,11 +22,12 @@
 
 
             <ul class="w3-ul w3-card-4">
+                
                 <c:forEach items="${sessionScope.customers}" var="customer">
 
 
-                    <li><a href="?page=viewcustomers&customerid=${customer.customerId}">Company Name: ${customer.companyName} Adress: ${customer.street}</a> 
-                       </li>
+                    <li><a href="frontpage?page=viewcustomer&customerid=${customer.customerId}">Company Name: ${customer.companyName} Adress: ${customer.street}</a> 
+                    </li>
 
                 </c:forEach>
             </ul>
