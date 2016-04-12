@@ -313,4 +313,13 @@ public class DBFacade {
     public ArrayList<BuildingFloor> getListOfFloors(int bdgId){
         return bm.getFloorsList(bdgId, con);
     }
+
+    /**
+     * Sends the request to the right mapper
+     * @param newRoom Room the be created in the Database 
+     * @return The new buildingRoom with an uniqe ID.
+     */
+    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) {
+        return bm.saveBuildingRoom(newRoom, con);
+    }
 }

@@ -35,7 +35,7 @@
      <input type="hidden" name="page" value="inspectRoom" />    
         
     Room 
-    <select name="Floors">
+    <select name="RoomSelected">
         <c:forEach items = "${sessionScope.reportBuilding.listOfFloors}" var = "floor">
             <c:forEach items="${floor.listOfRooms}" var = "Room">
                 
@@ -59,10 +59,10 @@
         <br>
         <form name="floorselect" action="frontpage" method="POST">
              <input type="hidden" name="page" value="inspectRoomjustCreated" />  
-         
+         OnFloor:    
             <select name="Floorselect2">
         <c:forEach items = "${sessionScope.reportBuilding.listOfFloors}" var = "floor">
-            <option value="${floor.floorId}">$floor.floorNumber</option>
+            <option value="${floor.floorId}">${floor.floorNumber}</option>
         </c:forEach> 
                 
             </select>

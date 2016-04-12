@@ -44,21 +44,15 @@ function yesnoCheck() {
     <br>
     
     
-    
-    Choose whitch Room
-        
-        
-        Name of Room: <input type="text" name="" value="" />
-        
-        On Witch Floor : <select name="">
-            <option>First floor</option>
-            <option> Second Floor</option>
-        </select> <a href="addfloors.jsp">
-            <input type="button" value="Add new floor" />
-        </a>
-        <br>
+    <br>
+   Inspection of This Room:
+   
+   <br>
+   Room Name: ${sessionScope.reportRoomToBeCreated.roomName}   Room Floor: ${sessionScope.reportRoomToBeCreated.roomFloor} 
+  
         <br>
         
+        <br>
         Remarks:
   <form action="">
       <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"> NO Remarks

@@ -187,8 +187,7 @@ public String saveBuildingPic(int buildId, String ext){
      * an ID!
      */
     public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    
+        return dbFacade.saveBuildingRoom(newRoom);
 }
     public ArrayList<BuildingFloor> listOfFloors(int bdgId){
         return dbFacade.getListOfFloors(bdgId);

@@ -62,4 +62,8 @@ public class BuildingRoom implements Serializable{
         this.floorid = floorid;
     }
 
+    public int getFloorid() {
+        return floorid;
+    }
+
 }
