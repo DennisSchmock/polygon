@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="w3-container" style="margin-left:120px">
     
-    Her kommer formularerne ind. ${sessionScope.report.date}
+   Show room: ${sessionScope.report.date}
+   
+   <br>Test room: ${requestScope.room}<br><br>
     <c:forEach items="${sessionScope.report.listOfRepRoom}" var="room">
                      <a href="#">Room 1</a>
                  </c:forEach>

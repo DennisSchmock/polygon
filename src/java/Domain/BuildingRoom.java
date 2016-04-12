@@ -14,7 +14,7 @@ import java.util.List;
 public class BuildingRoom implements Serializable{
     private int roomId;
     private String roomName;
-    private int bdgId;
+    private int floorid;
     
     
     // Do we keep info about damages in the object here as well?
@@ -25,11 +25,18 @@ public class BuildingRoom implements Serializable{
         this.roomName = roomName;
     }
     
-    public BuildingRoom(int roomId, String roomName, int bdgId){
+    public BuildingRoom(int roomId, String roomName, int floorid){
         this.roomId = roomId;
         this.roomName = roomName;
-        this.bdgId = bdgId;
+        this.floorid = floorid;
     }
+
+    public BuildingRoom(String roomName, int floorid) {
+        this.roomName = roomName;
+        this.floorid = floorid;
+    }
+    
+    
 
     public String getRoomName() {
         return roomName;
@@ -48,11 +55,11 @@ public class BuildingRoom implements Serializable{
     }
 
     public int getBdgId() {
-        return bdgId;
+        return floorid;
     }
 
-    public void setBdgId(int bdgId) {
-        this.bdgId = bdgId;
+    public void setfloorid(int floorid) {
+        this.floorid = floorid;
     }
 
 }

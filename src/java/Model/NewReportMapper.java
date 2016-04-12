@@ -47,7 +47,7 @@ public class NewReportMapper {
             }
 
             saveRoomsToDatabase(r, reportId, con);
-            saveExteriorToDB(r, reportId, con);
+//            saveExteriorToDB(r, reportId, con);
 
         } catch (Exception e) {
             System.out.println("Fail in saving new report - saveNewReport");
@@ -99,7 +99,7 @@ public class NewReportMapper {
             r = new Report(reportId, reportDate, buildingId, catagoryConclusion);
             r.setListOfRepRoom(getReportRooms(reportId, con));
             System.out.println("AddedRoom!!!");
-            r.setListOfRepRoomExt(getReportExterior(reportId, con));
+//            r.setListOfRepRoomExt(getReportExterior(reportId, con));
 
             return r;
         } catch (Exception e) {
@@ -135,27 +135,27 @@ public class NewReportMapper {
     }
 
     //method that will take all the Report_Exteriour details in a certain Report
-    private ArrayList<ReportRoomExterior> getReportExterior(int id, Connection con) {
-        String SQLString = "select * from report_exterior where report=?";
-        ArrayList<ReportRoomExterior> listOfExt = new ArrayList<>();
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                ReportRoomExterior re = new ReportRoomExterior(
-                        rs.getInt("report_ext_id"),
-                        rs.getString("report_ext_description"),
-                        rs.getInt("report_ext_pic"),
-                        rs.getInt("report"));
-                listOfExt.add(re);
-            }
-            return listOfExt;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getListOfExt");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+//    private ArrayList<ReportExterior> getReportExterior(int id, Connection con) {
+//        String SQLString = "select * from report_exterior where report=?";
+//        ArrayList<ReportExterior> listOfExt = new ArrayList<>();
+//        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+//            statement.setInt(1, id);
+//            ResultSet rs = statement.executeQuery();
+//            while (rs.next()) {
+//                ReportExterior re = new ReportExterior(
+//                        rs.getInt("report_ext_id"),
+//                        rs.getString("report_ext_description"),
+//                        rs.getInt("report_ext_pic"),
+//                        rs.getInt("report"));
+//                listOfExt.add(re);
+//            }
+//            return listOfExt;
+//        } catch (Exception e) {
+//            System.out.println("Fail in ReportMapper-getListOfExt");
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
 
     //take all damages of a certain report room
     private ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) {
@@ -334,24 +334,24 @@ public class NewReportMapper {
         }
     }
 
-    private void saveExteriorToDB(Report r, int reportId, Connection con) {
-
-        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
-        for (ReportRoomExterior re : r.getListOfRepRoomExt()) {
-
-            try (PreparedStatement statement
-                    = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, re.getRepExtDescription());
-                statement.setInt(2, re.getRepExtPic());
-                statement.setInt(3, reportId);
-                statement.executeUpdate();
-
-            } catch (Exception e) {
-                System.out.println("Fail in saving report exterior - saveReportExt");
-                System.out.println(e.getMessage());
-            }
-        }
-    }
+//    private void saveExteriorToDB(Report r, int reportId, Connection con) {
+//
+//        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
+//        for (ReportExterior re : r.getListOfRepRoomExt()) {
+//
+//            try (PreparedStatement statement
+//                    = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
+//                statement.setString(1, re.getRepExtDescription());
+//                statement.setInt(2, re.getRepExtPic());
+//                statement.setInt(3, reportId);
+//                statement.executeUpdate();
+//
+//            } catch (Exception e) {
+//                System.out.println("Fail in saving report exterior - saveReportExt");
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//    }
 
     private ArrayList<ReportRoom> getReportRooms(int reportId, Connection con) {
         ArrayList<ReportRoom> reportRooms = new ArrayList<>();

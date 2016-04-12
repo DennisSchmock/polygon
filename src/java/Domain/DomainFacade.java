@@ -72,8 +72,8 @@ public String saveBuildingPic(int buildId, String ext){
     }
 
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId) {
-        ReportRoomExterior r = new ReportRoomExterior(0, repExtDescription, repExtPic, reportId); // Fix
-        dbFacade.saveReportExt(r);
+//        ReportExterior r = new ReportExterior(0, repExtDescription, repExtPic, reportId); // Fix
+//        dbFacade.saveReportExt(r);
     }
 
     public void saveReportRoomRec(String recommendation, int repRoomId) {
@@ -165,8 +165,13 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getAllCustomers();
     }
 
-    public Building getBuilding(int id) {
-        return dbFacade.getBuilding(id);
+    /**
+     * Loads an building in the database
+     * @param buildingID Id for the building to be loaded
+     * @return An objet of the the Building that has been loaded
+     */
+    public Building getBuilding(int buildingID) {
+        return dbFacade.getBuilding(buildingID);
     }
     
     public String getLatestBuildingImage(int buildingId){
@@ -176,6 +181,22 @@ public String saveBuildingPic(int buildId, String ext){
 
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);
+    }
+
+    /**
+     * Method for creating a BUILDING ROOM.
+     * Something that belongs to the FLOOR, that Belongs to the builing.
+     * Not something in the report
+     * @param newRoom A BuildingRoom object that is to be created. 
+     * @return  The newly created building object in the database with the 
+     * an ID!
+     */
+    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+}
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId){
+        return dbFacade.getListOfFloors(bdgId);
     }
  
 

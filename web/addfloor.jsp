@@ -40,18 +40,22 @@
 
             </div>
     
-    
-     <div class="w3-row-padding">
-                <ul class="w3-ul w3-card-4">
+        <table class="w3-table w3-striped">
+            <tr>
+            <th>Floor Number</th>
+            <th>Size</th>
+            <th>Number of Rooms</th>
+            </tr>
                     <c:forEach items="${sessionScope.newFloor}" var="floor">
-                        <li>
-                            Floors ${floor.floorNum} 
-                            Size ${floor.floorSize}
-                            Number of Rooms ${floor.totalRooms}<br>
-                        </li>                                                                       
+                     
+                        <tr>
+                        <td>${floor.floorNumber} </td>
+                        <td>${floor.floorSize}</td>
+                        <td>${floor.totalRooms}<br></td>
+                        </tr>                                                                   
                     </c:forEach>
-                </ul>
-    </div>
+    
+            </table>
     </form>    
      <form action="frontpage" method="POST">   
          <input type="hidden" name="page" value="continue" />

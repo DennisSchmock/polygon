@@ -48,7 +48,7 @@ public class ReportHelper extends HttpServlet {
         listOfRooms.add(r1);
         listOfRooms.add(r2);
         listOfRooms.add(r3);
-        b.setListOfRooms(listOfRooms);
+//        b.setListOfRooms(listOfRooms);
     }
 
     public HttpServletRequest process(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
@@ -60,7 +60,7 @@ public class ReportHelper extends HttpServlet {
         }
         request.setAttribute("numOfRooms", numOfRooms);
         session.setAttribute("testBuilding", b); //Using a mock-instance of building until we can create from DB
-        session.setAttribute("buildingRooms", b.getListOfRooms());
+//        session.setAttribute("buildingRooms", b.getListOfRooms());
         String command = (String) request.getParameter("command");
         if (command == null) {
             command = "";

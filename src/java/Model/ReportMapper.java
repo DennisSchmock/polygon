@@ -43,7 +43,7 @@ public class ReportMapper {
     }
 
     //saving a new room exterior report in DB-Report_Exterior table
-    public void saveReportExt(ReportRoomExterior re, Connection con) {
+    public void saveReportExt(ReportExterior re, Connection con) {
         String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
@@ -163,50 +163,50 @@ public class ReportMapper {
     }
     
     //Get a report from the DB
-    public Report getReport(int id, Connection con) {
-
-        String SQLString = "select * from report where report_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            Report r = new Report(
-                    rs.getInt("report_id"),
-                    rs.getDate("report_date").toString(),
-                    rs.getInt("building_id"),
-                    rs.getInt("category_conclusion"));
-            return r;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReport");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-    
-    //Get data of a room exterior in db
-    public ReportRoomExterior getReportExt(int id, Connection con) {
-
-        String SQLString = "select * from report_exterior where report_ext_id=?";
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
-            ReportRoomExterior re = new ReportRoomExterior(
-                    rs.getInt("report_ext_id"),
-                    rs.getString("report_ext_description"),
-                    rs.getInt("report_ext_pic"),
-                    rs.getInt("report"));
-            return re;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getReportExt");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+//    public Report getReport(int id, Connection con) {
+//
+//        String SQLString = "select * from report where report_id=?";
+//        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+//            statement.setInt(1, id);
+//            ResultSet rs = statement.executeQuery();
+//            if (!rs.next()) {
+//                return null;
+//            }
+//            Report r = new Report(
+//                    rs.getInt("report_id"),
+//                    rs.getDate("report_date").toString(),
+//                    rs.getInt("building_id"),
+//                    rs.getInt("category_conclusion"));
+//            return r;
+//        } catch (Exception e) {
+//            System.out.println("Fail in ReportMapper-getReport");
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
+//    
+//    //Get data of a room exterior in db
+//    public ReportExterior getReportExt(int id, Connection con) {
+//
+//        String SQLString = "select * from report_exterior where report_ext_id=?";
+//        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+//            statement.setInt(1, id);
+//            ResultSet rs = statement.executeQuery();
+//            if (!rs.next()) {
+//                return null;
+//            }
+////            ReportExterior re = new ReportExterior(
+////                    rs.getInt("report_ext_id"),
+////                    rs.getString("report_ext_description"),
+////                    rs.getInt("report_ext_pic"),
+////                    rs.getInt("report"));
+////            return re;
+//        } catch (Exception e) {
+//            System.out.println("Fail in ReportMapper-getReportExt");
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
     
     //get data of reported room from db
     public ReportRoom getReportRoom(int id, Connection con) {
@@ -302,27 +302,27 @@ public class ReportMapper {
     }
 
     //method that will take all the Report_Exteriour details in a certain Report
-    public ArrayList<ReportRoomExterior> getListOfExt(int id, Connection con) {
-        String SQLString = "select * from report_exterior where report=?";
-        ArrayList<ReportRoomExterior> listOfExt = new ArrayList<>();
-        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                ReportRoomExterior re = new ReportRoomExterior(
-                        rs.getInt("report_ext_id"),
-                        rs.getString("report_ext_description"),
-                        rs.getInt("report_ext_pic"),
-                        rs.getInt("report"));
-                listOfExt.add(re);
-            }
-            return listOfExt;
-        } catch (Exception e) {
-            System.out.println("Fail in ReportMapper-getListOfExt");
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+//    public ArrayList<ReportExterior> getListOfExt(int id, Connection con) {
+//        String SQLString = "select * from report_exterior where report=?";
+//        ArrayList<ReportExterior> listOfExt = new ArrayList<>();
+//        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+//            statement.setInt(1, id);
+//            ResultSet rs = statement.executeQuery();
+//            while (rs.next()) {
+//                ReportExterior re = new ReportExterior(
+//                        rs.getInt("report_ext_id"),
+//                        rs.getString("report_ext_description"),
+//                        rs.getInt("report_ext_pic"),
+//                        rs.getInt("report"));
+//                listOfExt.add(re);
+//            }
+//            return listOfExt;
+//        } catch (Exception e) {
+//            System.out.println("Fail in ReportMapper-getListOfExt");
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
     
     //take all the listed report rooms of a certain report
     public ArrayList<ReportRoom> getListOfReportRoom(int id, Connection con){
