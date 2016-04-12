@@ -30,12 +30,15 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
-        NewReportMapper nm = new NewReportMapper();
-        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
-        for (Report report : reports) {
-            System.out.println(report.getReportId());
-        }
+//        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
+//        NewReportMapper nm = new NewReportMapper();
+//        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
+//        for (Report report : reports) {
+//            System.out.println(report.getReportId());
+//        }
+        
+        Building b = facade.getBuilding(1);
+        System.out.println(b.getBdgId() + b.getBuildingName());
 //        Report report = nm.getSingleReport(21, facade.getCon());
 //        System.out.println(report);
 //        System.out.println(report.getDate());
@@ -297,5 +300,13 @@ public class DBFacade {
     }
     public boolean validatePolygonUser(String userName, String pwd) {
         return um.validatePolygonUser(userName,pwd,con);
+    }
+    
+    public Building getBuilding(int bdgId){
+        return bm.getBuilding(bdgId, con);
+    }
+
+    public void addFloor(BuildingFloor bf) {
+        bm.addFloor(bf,con);
     }
 }

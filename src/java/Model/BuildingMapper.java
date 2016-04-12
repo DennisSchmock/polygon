@@ -6,6 +6,7 @@
 package Model;
 
 import Domain.Building;
+import Domain.BuildingFloor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -150,5 +151,56 @@ public class BuildingMapper {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
         }
     }
+    
+    public Building getBuilding(int bdgId, Connection con) {
+        Building b;
+        String SQLString = "select * from building where idbuilding=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, bdgId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            int buildingId = rs.getInt("idbuilding");
+            String name = rs.getString("building_name");
+            double size = rs.getDouble("building_m2");
+            String address = rs.getString("building_adress");
+            String houseNumber = rs.getString("building_housenumber");
+            int yr = rs.getInt("building_buildyear");
+            int zip = rs.getInt("building_zip");
+            //int pic = rs.getInt("building_pic");
+            String use = rs.getString("building_use");
+            int cusId = rs.getInt("customer_id");
+            
+            b = new Building(buildingId,name,size,address,houseNumber,yr,zip,use,cusId);
+//            b.setListOfRooms(getRoomsList(buildingId, con));
+
+            return b;
+        } catch (Exception e) {
+            System.out.println("Fail in NewBuildingMapper-getBuilding");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void addFloor(BuildingFloor bf, Connection con) {
+        String SQLString = "insert into building_floor(floor_number,floor_size,total_rooms,idbuilding) values (?,?,?,?)";
+        try (PreparedStatement statement
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
+            //insert a tuple and set the values
+            statement.setInt(1, bf.getFloorNumber());
+            statement.setDouble(2, bf.getFloorSize());
+            statement.setInt(3, bf.getTotalRooms());
+            statement.setInt(4, bf.getBuildingId());
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+
+            if (rs.next()) { 
+                bf.setFloorId(rs.getInt(1));
+            }
+        } catch (Exception e) {
+            System.out.println("Fail in saving new floor - addFloor");
+            System.out.println(e.getMessage());
+        }}
     
 }

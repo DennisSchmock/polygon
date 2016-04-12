@@ -23,6 +23,7 @@ public class Building implements Serializable {
     private String useOfBuilding;
     private String buildingPic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
     private ArrayList<Report> listOfReports;
+    private ArrayList<BuildingFloor> listOfFloors;
     private ArrayList<BuildingRoom> listOfRooms;
     private int custId;
 
@@ -36,6 +37,21 @@ public class Building implements Serializable {
         this.useOfBuilding = useOfBuilding;
         buildingPic="0.png";
     }
+
+    public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode, String useOfBuilding, int custId) {
+        this.bdgId = bdgId;
+        this.buildingName = buildingName;
+        this.streetAddress = streetAddress;
+        this.streetNumber = streetNumber;
+        this.zipCode = zipCode;
+        this.buildingYear = buildingYear;
+        this.buildingSize = buildingSize;
+        this.useOfBuilding = useOfBuilding;
+        //this.buildingPic = buildingPic;
+        this.custId = custId;
+    }
+
+    
     
     public int getBdgId() {
         return bdgId;
@@ -130,6 +146,14 @@ public class Building implements Serializable {
         return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
     }
 
+    public ArrayList<BuildingFloor> getListOfFloors() {
+        return listOfFloors;
+    }
+
+    public void setListOfFloors(ArrayList<BuildingFloor> listOfFloors) {
+        this.listOfFloors = listOfFloors;
+    }
+
     public ArrayList<BuildingRoom> getListOfRooms() {
         return listOfRooms;
     }
@@ -137,4 +161,6 @@ public class Building implements Serializable {
     public void setListOfRooms(ArrayList<BuildingRoom> listOfRooms) {
         this.listOfRooms = listOfRooms;
     }
+    
+    
 }

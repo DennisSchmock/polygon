@@ -41,6 +41,12 @@ public class DomainFacade {
         return b;
     } 
 
+
+public String saveBuildingPic(int buildId, String ext){
+        return dbFacade.saveBuildingPic(buildId, ext);
+        
+    }
+
     public Report saveNewReport(String date, int buildingId, int category) {
         Report r = new Report(0, date, buildingId, category); // Fix
         r = dbFacade.saveNewReport(r);
@@ -116,11 +122,6 @@ public class DomainFacade {
     public void Updatebuilding(Building buildingToBeEdited) {
         dbFacade.updateBuildingDBFacade(buildingToBeEdited);
     }
-    
-    public String saveBuildingPic(int buildId, String ext){
-        return dbFacade.saveBuildingPic(buildId, ext);
-        
-    }
 
     public boolean logUserIn(String userName, String pwd) {
         return dbFacade.validateUser(userName, pwd);
@@ -152,7 +153,7 @@ public class DomainFacade {
     }
 
     public Report getReport(int i) {
-        return dbFacade.getReport(i);
+        return dbFacade.getSingleReport(i);
     }
 
     /**
@@ -163,5 +164,14 @@ public class DomainFacade {
     public List<Customer> loadAllCustomers() {
         return dbFacade.getAllCustomers();
     }
+
+    public Building getBuilding(int id) {
+        return dbFacade.getBuilding(id);
+    }
+
+    public void addFloors(BuildingFloor bf) {
+        dbFacade.addFloor(bf);
+    }
+ 
 
 }
