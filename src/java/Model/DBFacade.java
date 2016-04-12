@@ -330,4 +330,14 @@ public class DBFacade {
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) {
         return bm.saveBuildingRoom(newRoom, con);
     }
+
+    /**
+     * Sends the request to the right mapper.
+     * 
+     * @param floorid The ID of the BuildingFloor to be loaded.
+     * @return An object of the building that has been loaded
+     */
+    public BuildingFloor getBuildingFloor(int floorid) {
+        return bm.getBuildingFloorBM(floorid, con);
+    }
 }
