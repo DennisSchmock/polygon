@@ -302,4 +302,8 @@ public class DBFacade {
     public void addFloor(BuildingFloor bf) {
         bm.addFloor(bf,con);
     }
+    
+    public ArrayList<BuildingFloor> getListOfFloors(int bdgId){
+        return bm.getFloorsList(bdgId, con);
+    }
 }

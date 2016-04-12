@@ -142,7 +142,7 @@ public class BuildingMapper {
             int cusId = rs.getInt("customer_id");
             
             b = new Building(buildingId,name,size,address,houseNumber,yr,zip,pic,use,cusId);
-//            b.setListOfRooms(getRoomsList(buildingId, con));
+            b.setListOfFloors(getFloorsList(buildingId, con));
 
             return b;
         } catch (Exception e) {
@@ -171,5 +171,28 @@ public class BuildingMapper {
             System.out.println("Fail in saving new floor - addFloor");
             System.out.println(e.getMessage());
         }}
+
+    public ArrayList<BuildingFloor> getFloorsList(int buildingId, Connection con) {
+      ArrayList<BuildingFloor> floorsList = new ArrayList();
+      String sqlString = "SELECT * FROM building_floor where idbuilding=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, buildingId);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                BuildingFloor temp = new BuildingFloor(
+                        rs.getInt("floor_id"), 
+                        rs.getInt("floor_number"), 
+                        rs.getDouble("floor_size"), 
+                        rs.getInt("total_rooms"), 
+                        rs.getInt("idbuilding"));
+                floorsList.add(temp);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception in BUILDINGMAPPER: " + ex);
+        }
+         return floorsList;
+    }
     
 }

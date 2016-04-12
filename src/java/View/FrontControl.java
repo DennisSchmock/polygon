@@ -17,6 +17,7 @@ import Domain.ReportRoomInterior;
 import Domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,7 +59,6 @@ public class FrontControl extends HttpServlet {
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
-        AddFloorsAndRoomsHelper frh = new AddFloorsAndRoomsHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -405,7 +405,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+    public void loadCustomersBuildings(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         sessionObj.setAttribute("customerSelcted", true);
         int cusid = Integer.parseInt(request.getParameter("owners"));
         List<Building> listOfBuildings = df.getListOfBuildings(cusid);
@@ -442,21 +442,17 @@ public class FrontControl extends HttpServlet {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
         String totalRooms =(String)request.getParameter("totalrooms");
-//        String bdgId= (String) sessionObj.getAttribute("buildingId");
-        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
-            int n = (int)Integer.parseInt(floorNum);
-            System.out.println("..." + n);
-            double s = (double)Double.parseDouble(floorSize);
-            int r = (int)Integer.parseInt(totalRooms);
-//            int b = (int)Integer.parseInt(bdgId);
-            
-            BuildingFloor bf = new BuildingFloor(n,s,r,1);
+        BuildingFloor bf = null;
+        if (floorNum != null) {
+            int n = (int) Integer.parseInt(floorNum);
+            double s = (double) Double.parseDouble(floorSize);
+            int r = (int) Integer.parseInt(totalRooms);
+            bf = new BuildingFloor(n, s, r, 1);
             df.addFloors(bf);
-            sessionObj.setAttribute("newFloor", bf);
-       
-        
-        
-        
+            ArrayList<BuildingFloor> bfList = df.listOfFloors(1);
+            sessionObj.setAttribute("newFloor", bfList);
+        }
+      
     }
 
    

@@ -166,6 +166,10 @@ public class DomainFacade {
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);
     }
+    
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId){
+        return dbFacade.getListOfFloors(bdgId);
+    }
  
 
 }
