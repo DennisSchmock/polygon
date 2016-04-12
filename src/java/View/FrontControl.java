@@ -8,6 +8,7 @@ package View;
 import Domain.DomainFacade;
 import Domain.Building;
 import Domain.BuildingFloor;
+import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -125,6 +126,17 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj);
+        }
+        
+        if (page.equalsIgnoreCase("inspectRoom")) {
+            url = "/reportJSPs/reportaddaroom.jsp";
+            setUpForRoomInspection(request, sessionObj);
+        }
+        
+        if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
+            url = "/reportJSPs/reportaddaroom.jsp";
+            createNewRoom(request, sessionObj);
+            setUpForRoomInspection(request, sessionObj);
         }
         
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -580,6 +592,23 @@ try (InputStream input = filePart.getInputStream()) {
         }
         Building b=df.getBuilding(bdgId);
         sessionObj.setAttribute("selectedBuilding", b);
+    }
+
+    /**
+     * Based on the fields in the request object, this method creates an new
+     * building_Room in the database
+     * @param request Holds the requied fields to create an new room
+     * @param sessionObj Holds the buildingID
+     * @param df
+     */
+    public void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        String roomName = request.getParameter("RoomName");
+        int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
+        
+        BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
+        newRoom = df.addBuildingRoom(newRoom);
+        
+        
     }
 }
 
