@@ -22,6 +22,14 @@ public class BuildingFloor {
         this.buildingId = buildingId;
     }
 
+    public BuildingFloor(int floorId, int floorNumber, double floorSize, int totalRooms, int buildingId) {
+        this.floorId = floorId;
+        this.floorNumber = floorNumber;
+        this.floorSize = floorSize;
+        this.totalRooms = totalRooms;
+        this.buildingId = buildingId;
+    }
+
   
 
     public int getFloorId() {

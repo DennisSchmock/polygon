@@ -58,7 +58,7 @@ public class DBFacadeTestBuilding {
         listOfRooms.add(br2);
         listOfRooms.add(br3);
         listOfRooms.add(br4);
-        b.setListOfRooms(listOfRooms);
+//        b.setListOfRooms(listOfRooms);
         dbf.saveNewBuilding(b);
         Building b2=null;
         List<Building> builds=dbf.getListOfbuildingsDB(1);

@@ -72,8 +72,8 @@ public String saveBuildingPic(int buildId, String ext){
     }
 
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId) {
-        ReportRoomExterior r = new ReportRoomExterior(0, repExtDescription, repExtPic, reportId); // Fix
-        dbFacade.saveReportExt(r);
+//        ReportExterior r = new ReportExterior(0, repExtDescription, repExtPic, reportId); // Fix
+//        dbFacade.saveReportExt(r);
     }
 
     public void saveReportRoomRec(String recommendation, int repRoomId) {
@@ -165,12 +165,21 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getAllCustomers();
     }
 
-    public Building getBuilding(int id) {
-        return dbFacade.getBuilding(id);
+    /**
+     * Loads an building in the database
+     * @param buildingID Id for the building to be loaded
+     * @return An objet of the the Building that has been loaded
+     */
+    public Building getBuilding(int buildingID) {
+        return dbFacade.getBuilding(buildingID);
     }
 
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);
+    }
+    
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId){
+        return dbFacade.getListOfFloors(bdgId);
     }
  
 

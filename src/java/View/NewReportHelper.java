@@ -11,7 +11,7 @@ import Domain.DomainFacade;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
-import Domain.ReportRoomExterior;
+import Domain.ReportExterior;
 import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
@@ -45,7 +45,7 @@ public class NewReportHelper extends HttpServlet {
         listOfRooms.add(r1);
         listOfRooms.add(r2);
         listOfRooms.add(r3);
-        b.setListOfRooms(listOfRooms);
+//        b.setListOfRooms(listOfRooms);
     }
 
     public HttpServletRequest process(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
@@ -57,7 +57,7 @@ public class NewReportHelper extends HttpServlet {
         }
         request.setAttribute("numOfRooms", numOfRooms);
         session.setAttribute("testBuilding", b); //Using a mock-instance of building until we can create from DB
-        session.setAttribute("buildingRooms", b.getListOfRooms());
+//        session.setAttribute("buildingRooms", b.getListOfRooms());
         String command = (String) request.getParameter("command");
         if (command == null) {
             command = "";
@@ -129,8 +129,8 @@ public class NewReportHelper extends HttpServlet {
 
         String roof = request.getParameter("roof"); //Getting description of Roof.
         String walls = request.getParameter("walls"); //Getting description of Walls.
-        report.getListOfRepRoomExt().add(new ReportRoomExterior(roof, 1));//Putting it inside the report object
-        report.getListOfRepRoomExt().add(new ReportRoomExterior(walls, 1));
+        report.getListOfRepExt().add(new ReportExterior(roof, 1));//Putting it inside the report object
+        report.getListOfRepExt().add(new ReportExterior(walls, 1));
 
         for (int roomCount = 0; roomCount <= numOfRooms; roomCount++) {
             ReportRoom rr;

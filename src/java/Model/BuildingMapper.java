@@ -151,6 +151,39 @@ public class BuildingMapper {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
         }
     }
+
+    /**
+     * Loads info from tuble with the buildingID in the table building.
+     * Creates a building object based on that, an returns that.
+     * @param buildingID BuildingID for the requested tuble
+     * @param con Connection to the Database
+     * @return An object of the building
+     */
+    public Building getBuildingBM(int buildingID, Connection con) {
+        
+        String sqlString = "SELECT * FROM building where customer_id=?";
+        Building temp= null;
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                 temp = new Building(
+                        rs.getString("building_name"), 
+                        rs.getString("building_adress"), 
+                        rs.getString("building_housenumber"), 
+                        rs.getInt("building_zip"), 
+                        rs.getInt("building_buildyear"), 
+                        rs.getDouble("building_m2"), 
+                        rs.getString("building_use"));
+                temp.setCustId(rs.getInt("customer_id"));
+                temp.setBdgId(rs.getInt("idbuilding"));
+            }
+            } catch (SQLException ex) {
+            System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
+            }
+        return temp;
+    }
     
     public Building getBuilding(int bdgId, Connection con) {
         Building b;
@@ -173,7 +206,7 @@ public class BuildingMapper {
             int cusId = rs.getInt("customer_id");
             
             b = new Building(buildingId,name,size,address,houseNumber,yr,zip,use,cusId);
-//            b.setListOfRooms(getRoomsList(buildingId, con));
+            b.setListOfFloors(getFloorsList(buildingId, con));
 
             return b;
         } catch (Exception e) {
@@ -202,5 +235,28 @@ public class BuildingMapper {
             System.out.println("Fail in saving new floor - addFloor");
             System.out.println(e.getMessage());
         }}
+
+    public ArrayList<BuildingFloor> getFloorsList(int buildingId, Connection con) {
+      ArrayList<BuildingFloor> floorsList = new ArrayList();
+      String sqlString = "SELECT * FROM building_floor where idbuilding=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, buildingId);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                BuildingFloor temp = new BuildingFloor(
+                        rs.getInt("floor_id"), 
+                        rs.getInt("floor_number"), 
+                        rs.getDouble("floor_size"), 
+                        rs.getInt("total_rooms"), 
+                        rs.getInt("idbuilding"));
+                floorsList.add(temp);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception in BUILDINGMAPPER: " + ex);
+        }
+         return floorsList;
+    }
     
 }
