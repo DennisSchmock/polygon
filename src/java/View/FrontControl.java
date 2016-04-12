@@ -405,8 +405,13 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-
- 
+    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+        sessionObj.setAttribute("customerSelcted", true);
+        int cusid = Integer.parseInt(request.getParameter("owners"));
+        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
+        sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        
+    }
 
     /**
      * Creates the Report based on only the building object.
@@ -454,13 +459,7 @@ public class FrontControl extends HttpServlet {
         
     }
 
-    public void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
-        sessionObj.setAttribute("customerSelcted", true);
-        int cusid = Integer.parseInt(request.getParameter("owners"));
-        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
-        sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        
-    }
+   
 
  
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
