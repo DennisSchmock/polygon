@@ -43,7 +43,7 @@ public class DBFacade {
 //        for (ReportRoom reportroom : report.getListOfRepRoom()) {
 //            System.out.println("**** int in room: " + reportroom.getRoomName());
 //            
-//            for (ReportRoomExterior rre : report.getListOfRepRoomExt()) {
+//            for (ReportExterior rre : report.getListOfRepRoomExt()) {
 //                System.out.println("Exteriorname: " + rre.getRepExtDescription());
 //            }
 //            for (ReportRoomInterior reportint : reportroom.getListOfInt()) {
@@ -111,7 +111,7 @@ public class DBFacade {
         return rr;
     }
 
-    public void saveReportExt(ReportRoomExterior re) {
+    public void saveReportExt(ReportExterior re) {
         rm.saveReportExt(re, getCon());
     }
 
@@ -127,13 +127,13 @@ public class DBFacade {
         rm.saveReportRoomRec(rrr, getCon());
     }
 
-    public Report getReport(int id) {
-        return rm.getReport(id, getCon());
-    }
+//    public Report getReport(int id) {
+////        return rm.getReport(id, getCon());
+//    }
 
-    public ReportRoomExterior getReportExt(int id) {
-        return rm.getReportExt(id, getCon());
-    }
+//    public ReportExterior getReportExt(int id) {
+////        return rm.getReportExt(id, getCon());
+//    }
 
     public ReportRoom getReportRoom(int id) {
         return rm.getReportRoom(id, getCon());
@@ -151,9 +151,9 @@ public class DBFacade {
         return rm.getReportRec(id, getCon());
     }
 
-    public ArrayList<ReportRoomExterior> getListOfExt(int id) {
-        return rm.getListOfExt(id, getCon());
-    }
+//    public ArrayList<ReportExterior> getListOfExt(int id) {
+//        return rm.getListOfExt(id, getCon());
+//    }
 
     public ArrayList<ReportRoom> getListOfReportRoom(int id) {
         return rm.getListOfReportRoom(id, getCon());
@@ -290,5 +290,14 @@ public class DBFacade {
     }
     public boolean validatePolygonUser(String userName, String pwd) {
         return um.validatePolygonUser(userName,pwd,con);
+    }
+
+    /**
+     * Sends the request to the right mapper.
+     * @param buildingID The ID of the building that is to be loaded
+     * @return The loaded Building objet
+     */
+    public Building getbuilding(int buildingID) {
+      return  bm.getBuildingBM(buildingID, con);
     }
 }

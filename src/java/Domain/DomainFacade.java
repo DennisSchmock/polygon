@@ -66,8 +66,8 @@ public class DomainFacade {
     }
 
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId) {
-        ReportRoomExterior r = new ReportRoomExterior(0, repExtDescription, repExtPic, reportId); // Fix
-        dbFacade.saveReportExt(r);
+//        ReportExterior r = new ReportExterior(0, repExtDescription, repExtPic, reportId); // Fix
+//        dbFacade.saveReportExt(r);
     }
 
     public void saveReportRoomRec(String recommendation, int repRoomId) {
@@ -165,7 +165,7 @@ public class DomainFacade {
      * @return An objet of the the Building that has been loaded
      */
     public Building getBuilding(int buildingID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dbFacade.getbuilding(buildingID);
     }
 
 }

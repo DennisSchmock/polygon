@@ -118,5 +118,38 @@ public class BuildingMapper {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
         }
     }
+
+    /**
+     * Loads info from tuble with the buildingID in the table building.
+     * Creates a building object based on that, an returns that.
+     * @param buildingID BuildingID for the requested tuble
+     * @param con Connection to the Database
+     * @return An object of the building
+     */
+    public Building getBuildingBM(int buildingID, Connection con) {
+        
+        String sqlString = "SELECT * FROM building where customer_id=?";
+        Building temp= null;
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                 temp = new Building(
+                        rs.getString("building_name"), 
+                        rs.getString("building_adress"), 
+                        rs.getString("building_housenumber"), 
+                        rs.getInt("building_zip"), 
+                        rs.getInt("building_buildyear"), 
+                        rs.getDouble("building_m2"), 
+                        rs.getString("building_use"));
+                temp.setCustId(rs.getInt("customer_id"));
+                temp.setBdgId(rs.getInt("idbuilding"));
+            }
+            } catch (SQLException ex) {
+            System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
+            }
+        return temp;
+    }
     
 }

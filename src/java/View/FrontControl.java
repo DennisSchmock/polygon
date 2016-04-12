@@ -11,11 +11,12 @@ import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
-import Domain.ReportRoomExterior;
+import Domain.ReportExterior;
 import Domain.ReportRoomInterior;
 import Domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,7 +53,6 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
@@ -99,6 +99,10 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("report_start")) {
             url = "/reportJSPs/report_start.jsp";
             createReport(request, sessionObj, df);
+        }
+        if (page.equalsIgnoreCase("AddaRoom")) {
+            url = "/reportJSPs/reportaddaroom.jsp";
+            saveReportExterior(request, sessionObj);
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -403,7 +407,8 @@ public class FrontControl extends HttpServlet {
      * Method should be called right when the user has chosen which building
      * to create a report for. At this point, the report object does not
      * contain any details, but only infomation regarding to building, and the
-     * Employee that creates it.
+     * Employee that creates it. Also loads the building object 
+     * of the building to be created an stores it in the session.
      * 
      * @param request
      * @param sessionObj
@@ -418,6 +423,42 @@ public class FrontControl extends HttpServlet {
         report = df.saveReport(report);
         sessionObj.setAttribute("reportToBeCreated", report);
         Building b = df.getBuilding(buildingID);
+        sessionObj.setAttribute("reportBuilding", b);
+        
+    }
+
+    /**
+     * Takes the ellements form the request and saves it,
+     * all that is needed for creating the exterior decription in the report.
+     * Also saves the new infomation in the report object. 
+     * OBS: DOES NOT HANDLE PICTURES!!!!!!!!!!!!!!!!!!
+     * @param request Holds the fields, the user have inserted.
+     * @param sessionObj Holds obejcts like report, and building for report
+     */
+    public void saveReportExterior(HttpServletRequest request, HttpSession sessionObj) {
+        String remarksOnRoof  = request.getParameter("remarksOnRoof");
+        String remarksOnWalls = request.getParameter("remarksOnWall");
+
+        Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
+        
+        ReportExterior roofEx = new ReportExterior("Roof", remarksOnRoof,report.getReportId());
+        ReportExterior wallEx = new ReportExterior("Wall", remarksOnWalls,report.getReportId());
+        
+        if(report.getListOfRepExt() == null){
+            ArrayList<ReportExterior> listOfExt = new ArrayList<>();
+            listOfExt.add(wallEx);
+            listOfExt.add(roofEx);
+            report.setListOfRepExt(listOfExt);
+        }
+        else{
+            ArrayList<ReportExterior> listOfExt = report.getListOfRepExt();
+            listOfExt.add(wallEx);
+            listOfExt.add(roofEx);
+            report.setListOfRepExt(listOfExt);
+        }
+        
+        sessionObj.setAttribute("reportToBeCreated", report);
+     
         
     }
     
