@@ -171,7 +171,7 @@ public String saveBuildingPic(int buildId, String ext){
      * @return An objet of the the Building that has been loaded
      */
     public Building getBuilding(int buildingID) {
-        return dbFacade.getbuilding(buildingID);
+        return dbFacade.getBuilding(buildingID);
     }
 
     public void addFloors(BuildingFloor bf) {
