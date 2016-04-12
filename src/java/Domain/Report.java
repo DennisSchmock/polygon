@@ -15,7 +15,7 @@ public class Report {
     private int reportId;
     private String date;
     private ArrayList<ReportRoom> listOfRepRoom;
-    private ArrayList<ReportRoomExterior> listOfRepRoomExt;
+    private ArrayList<ReportExterior> listOfRepExt;
     private int buildingId;
     private int categoryConclusion;
     private String polygonUserName;
@@ -39,7 +39,7 @@ public class Report {
         this.buildingId = buildingId;
         this.categoryConclusion = catCon;
         this.listOfRepRoom = new ArrayList<>();
-        this.listOfRepRoomExt = new ArrayList<>();
+        this.listOfRepExt = new ArrayList<>();
     }
 
     public Report(int buildingId, String polygonUserID) {
@@ -70,12 +70,12 @@ public class Report {
         return listOfRepRoom;
     }
 
-    public ArrayList<ReportRoomExterior> getListOfRepRoomExt() {
-        return listOfRepRoomExt;
+    public ArrayList<ReportExterior> getListOfRepExt() {
+        return listOfRepExt;
     }
 
-    public void setListOfRepRoomExt(ArrayList<ReportRoomExterior> listOfRepRoomExt) {
-        this.listOfRepRoomExt = listOfRepRoomExt;
+    public void setListOfRepExt(ArrayList<ReportExterior> listOfRepRoomExt) {
+        this.listOfRepExt = listOfRepRoomExt;
     }
 
   

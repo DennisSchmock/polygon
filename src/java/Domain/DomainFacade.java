@@ -37,8 +37,14 @@ public class DomainFacade {
     public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
         b.setCustId(1); // this is hardcoded! Should load the userloged in!
-        dbFacade.saveNewBuilding(b);
+        b=dbFacade.saveNewBuilding(b);
         return b;
+    } 
+
+
+public String saveBuildingPic(int buildId, String ext){
+        return dbFacade.saveBuildingPic(buildId, ext);
+        
     }
 
     public Report saveNewReport(String date, int buildingId, int category) {
@@ -66,8 +72,8 @@ public class DomainFacade {
     }
 
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId) {
-        ReportRoomExterior r = new ReportRoomExterior(0, repExtDescription, repExtPic, reportId); // Fix
-        dbFacade.saveReportExt(r);
+//        ReportExterior r = new ReportExterior(0, repExtDescription, repExtPic, reportId); // Fix
+//        dbFacade.saveReportExt(r);
     }
 
     public void saveReportRoomRec(String recommendation, int repRoomId) {
@@ -159,8 +165,13 @@ public class DomainFacade {
         return dbFacade.getAllCustomers();
     }
 
-    public Building getBuilding(int id) {
-        return dbFacade.getBuilding(id);
+    /**
+     * Loads an building in the database
+     * @param buildingID Id for the building to be loaded
+     * @return An objet of the the Building that has been loaded
+     */
+    public Building getBuilding(int buildingID) {
+        return dbFacade.getBuilding(buildingID);
     }
 
     public void addFloors(BuildingFloor bf) {

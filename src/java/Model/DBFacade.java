@@ -46,7 +46,7 @@ public class DBFacade {
 //        for (ReportRoom reportroom : report.getListOfRepRoom()) {
 //            System.out.println("**** int in room: " + reportroom.getRoomName());
 //            
-//            for (ReportRoomExterior rre : report.getListOfRepRoomExt()) {
+//            for (ReportExterior rre : report.getListOfRepRoomExt()) {
 //                System.out.println("Exteriorname: " + rre.getRepExtDescription());
 //            }
 //            for (ReportRoomInterior reportint : reportroom.getListOfInt()) {
@@ -114,7 +114,7 @@ public class DBFacade {
         return rr;
     }
 
-    public void saveReportExt(ReportRoomExterior re) {
+    public void saveReportExt(ReportExterior re) {
         rm.saveReportExt(re, getCon());
     }
 
@@ -130,13 +130,13 @@ public class DBFacade {
         rm.saveReportRoomRec(rrr, getCon());
     }
 
-    public Report getReport(int id) {
-        return rm.getReport(id, getCon());
-    }
+//    public Report getReport(int id) {
+////        return rm.getReport(id, getCon());
+//    }
 
-    public ReportRoomExterior getReportExt(int id) {
-        return rm.getReportExt(id, getCon());
-    }
+//    public ReportExterior getReportExt(int id) {
+////        return rm.getReportExt(id, getCon());
+//    }
 
     public ReportRoom getReportRoom(int id) {
         return rm.getReportRoom(id, getCon());
@@ -154,9 +154,9 @@ public class DBFacade {
         return rm.getReportRec(id, getCon());
     }
 
-    public ArrayList<ReportRoomExterior> getListOfExt(int id) {
-        return rm.getListOfExt(id, getCon());
-    }
+//    public ArrayList<ReportExterior> getListOfExt(int id) {
+//        return rm.getListOfExt(id, getCon());
+//    }
 
     public ArrayList<ReportRoom> getListOfReportRoom(int id) {
         return rm.getListOfReportRoom(id, getCon());
@@ -199,10 +199,17 @@ public class DBFacade {
      * Sends the building object to be saved to the mapper
      *
      * @param b A Building object that is to be saved in the database
+     * @return The created building with it's ID set
      */
-    public void saveNewBuilding(Building b) {
-        bm.saveNewBuildingDB(b, con);
+    public Building saveNewBuilding(Building b) {
+        b=bm.saveNewBuildingDB(b, con);
         System.out.println("Saved building");
+        return b;
+    }
+    
+    public String saveBuildingPic(int buildId, String ext) {
+        return bm.saveBuildingPic(buildId, ext, con);
+        //System.out.println("Saved buildingPic");
     }
 
     /**
