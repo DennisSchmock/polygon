@@ -206,7 +206,7 @@ public class BuildingMapper {
             int cusId = rs.getInt("customer_id");
             
             b = new Building(buildingId,name,size,address,houseNumber,yr,zip,use,cusId);
-//            b.setListOfRooms(getRoomsList(buildingId, con));
+//            b.setListOfFloors(getRoomsList(buildingId, con));
 
             return b;
         } catch (Exception e) {

@@ -122,11 +122,11 @@ public class FrontControl extends HttpServlet {
             url = "/reportJSPs/report_start.jsp";
             createReport(request, sessionObj, df);
         }
-        if (page.equalsIgnoreCase("AddaRoom")) {
-            url = "/reportJSPs/reportaddaroom.jsp";
+        if (page.equalsIgnoreCase("ChooseRoom")) {
+            url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj);
         }
-
+        
         if (page.equalsIgnoreCase("newReportSubmit")) {
             nrh.submitReport(request, response, df);
             sessionObj.setAttribute("reports", df.getListOfReports(1));
@@ -567,9 +567,6 @@ try (InputStream input = filePart.getInputStream()) {
         
         
     }
-
-   
-
  
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
         

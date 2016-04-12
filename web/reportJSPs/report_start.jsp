@@ -34,7 +34,7 @@
     <br>
     
     <form name="exterior" action="frontpage" method="POST">
-    <input type="hidden" name="page" value="AddaRoom" /> 
+    <input type="hidden" name="page" value="ChooseRoom" /> 
    
     <h2>Remarks on Roof:</h2>
     <textarea name="remarksOnRoof" rows="4" cols="20">
