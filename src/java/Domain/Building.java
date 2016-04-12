@@ -24,7 +24,6 @@ public class Building {
     private String buildingPic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
     private ArrayList<Report> listOfReports;
     private ArrayList<BuildingFloor> listOfFloors;
-    private ArrayList<BuildingRoom> listOfRooms;
     private int custId;
 
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
@@ -154,13 +153,7 @@ public class Building {
         this.listOfFloors = listOfFloors;
     }
 
-    public ArrayList<BuildingRoom> getListOfRooms() {
-        return listOfRooms;
-    }
-
-    public void setListOfRooms(ArrayList<BuildingRoom> listOfRooms) {
-        this.listOfRooms = listOfRooms;
-    }
+    
     
     
 }
