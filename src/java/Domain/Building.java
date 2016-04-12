@@ -21,7 +21,7 @@ public class Building {
     private int buildingYear;
     private double buildingSize;
     private String useOfBuilding;
-    private int building_pic;
+    private String buildingPic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
     private ArrayList<Report> listOfReports;
     private ArrayList<BuildingFloor> listOfFloors;
     private ArrayList<BuildingRoom> listOfRooms;
@@ -35,9 +35,10 @@ public class Building {
         this.buildingYear = buildingYear;
         this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
+        buildingPic="0.png";
     }
 
-    public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode,   int building_pic,String useOfBuilding, int custId) {
+    public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode, String useOfBuilding, int custId) {
         this.bdgId = bdgId;
         this.buildingName = buildingName;
         this.streetAddress = streetAddress;
@@ -46,7 +47,7 @@ public class Building {
         this.buildingYear = buildingYear;
         this.buildingSize = buildingSize;
         this.useOfBuilding = useOfBuilding;
-        this.building_pic = building_pic;
+        //this.buildingPic = buildingPic;
         this.custId = custId;
     }
 
@@ -132,12 +133,12 @@ public class Building {
         this.custId = custId;
     }
 
-    public int getBuilding_pic() {
-        return building_pic;
+    public String getBuildingPic() {
+        return buildingPic;
     }
 
-    public void setBuilding_pic(int building_pic) {
-        this.building_pic = building_pic;
+    public void setBuilding_pic(String building_pic) {
+        this.buildingPic = building_pic;
     }
 
     @Override

@@ -29,26 +29,56 @@ public class BuildingMapper {
      * @param b building to be added to database
      * @param con connection to database
      */
-    public void saveNewBuildingDB(Building b, Connection con) {
+    public Building saveNewBuildingDB(Building b, Connection con) {
             String sqlString = "insert into building(building_name, building_m2, "
                     + "building_adress, building_housenumber, building_zip, "
-                    + "building_pic, building_use, building_buildyear,customer_id) values(?,?,?,?,?,?,?,?,?) ";
+                    + "building_use, building_buildyear,customer_id) values(?,?,?,?,?,?,?,?) ";
         try {
-            PreparedStatement statement = con.prepareStatement(sqlString);
+            PreparedStatement statement = con.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, b.getBuildingName());
             statement.setDouble(2, b.getBuildingSize());
             statement.setString(3, b.getStreetAddress());
             statement.setString(4, b.getStreetNumber());
             statement.setInt(5, b.getZipCode());
-            statement.setInt(6, b.getBuilding_pic());
-            statement.setString(7, b.getUseOfBuilding());
-            statement.setInt(8, b.getBuildingYear());
-            statement.setInt(9, b.getCustId());
+            statement.setString(6, b.getUseOfBuilding());
+            statement.setInt(7, b.getBuildingYear());
+            statement.setInt(8, b.getCustId());
             statement.execute();
+            
+            ResultSet rs = statement.getGeneratedKeys();
+
+            if (rs.next()) {   // Changed from !rs.next() as this didn't return the key
+                b.setBdgId(rs.getInt(1));
+            }
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN SaveNewBuildingDB " +ex.getMessage());
         }
+        return b;
+    }
+    
+    public String saveBuildingPic(int buildId, String ext, Connection con){
+        int imgId=0;
+        System.out.println("build id");
+        System.out.println(buildId);
         
+        try {
+            String sqlString = "insert into building_pic(building_pic_extension,building_id) values(?,?)";
+            PreparedStatement statement = con.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
+            
+            statement.setString(1, ext);
+            statement.setInt(2, buildId);
+            statement.executeUpdate();
+            
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {   // Changed from !rs.next() as this didn't return the key
+                imgId=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BuildingMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String filePath = imgId+"."+ext;
+        System.out.println(filePath);
+        return filePath;
     }
 
     /**
@@ -98,7 +128,6 @@ public class BuildingMapper {
                 + " building_housenumber=?, "
                 + " building_buildyear=?, "
                 + " building_zip=?, "
-                + " building_pic=?, "
                 + " building_use=?, "
                 + " customer_id=? "
                 + "where idbuilding=?;";
@@ -110,12 +139,14 @@ public class BuildingMapper {
             statement.setString(4, updatedBuildObj.getStreetNumber());
             statement.setInt(5, updatedBuildObj.getBuildingYear());
             statement.setInt(6, updatedBuildObj.getZipCode());
-            statement.setInt(7, updatedBuildObj.getBuilding_pic());
-            statement.setString(8, updatedBuildObj.getUseOfBuilding());
-            statement.setInt(9, updatedBuildObj.getCustId());
-            statement.setInt(10, updatedBuildObj.getBdgId());
+            statement.setString(7, updatedBuildObj.getUseOfBuilding());
+            statement.setInt(8, updatedBuildObj.getCustId());
+            statement.setInt(9, updatedBuildObj.getBdgId());
             System.out.println(statement.toString());
             statement.execute();
+            
+            
+            
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
         }
@@ -137,11 +168,11 @@ public class BuildingMapper {
             String houseNumber = rs.getString("building_housenumber");
             int yr = rs.getInt("building_buildyear");
             int zip = rs.getInt("building_zip");
-            int pic = rs.getInt("building_pic");
+            //int pic = rs.getInt("building_pic");
             String use = rs.getString("building_use");
             int cusId = rs.getInt("customer_id");
             
-            b = new Building(buildingId,name,size,address,houseNumber,yr,zip,pic,use,cusId);
+            b = new Building(buildingId,name,size,address,houseNumber,yr,zip,use,cusId);
 //            b.setListOfRooms(getRoomsList(buildingId, con));
 
             return b;

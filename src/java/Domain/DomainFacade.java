@@ -37,8 +37,14 @@ public class DomainFacade {
     public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
         b.setCustId(1); // this is hardcoded! Should load the userloged in!
-        dbFacade.saveNewBuilding(b);
+        b=dbFacade.saveNewBuilding(b);
         return b;
+    } 
+
+
+public String saveBuildingPic(int buildId, String ext){
+        return dbFacade.saveBuildingPic(buildId, ext);
+        
     }
 
     public Report saveNewReport(String date, int buildingId, int category) {

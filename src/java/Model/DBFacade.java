@@ -199,10 +199,17 @@ public class DBFacade {
      * Sends the building object to be saved to the mapper
      *
      * @param b A Building object that is to be saved in the database
+     * @return The created building with it's ID set
      */
-    public void saveNewBuilding(Building b) {
-        bm.saveNewBuildingDB(b, con);
+    public Building saveNewBuilding(Building b) {
+        b=bm.saveNewBuildingDB(b, con);
         System.out.println("Saved building");
+        return b;
+    }
+    
+    public String saveBuildingPic(int buildId, String ext) {
+        return bm.saveBuildingPic(buildId, ext, con);
+        //System.out.println("Saved buildingPic");
     }
 
     /**
