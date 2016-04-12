@@ -30,12 +30,15 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
-        NewReportMapper nm = new NewReportMapper();
-        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
-        for (Report report : reports) {
-            System.out.println(report.getReportId());
-        }
+//        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
+//        NewReportMapper nm = new NewReportMapper();
+//        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
+//        for (Report report : reports) {
+//            System.out.println(report.getReportId());
+//        }
+        
+        Building b = facade.getBuilding(1);
+        System.out.println(b.getBdgId() + b.getBuildingName());
 //        Report report = nm.getSingleReport(21, facade.getCon());
 //        System.out.println(report);
 //        System.out.println(report.getDate());
@@ -196,10 +199,17 @@ public class DBFacade {
      * Sends the building object to be saved to the mapper
      *
      * @param b A Building object that is to be saved in the database
+     * @return The created building with it's ID set
      */
-    public void saveNewBuilding(Building b) {
-        bm.saveNewBuildingDB(b, con);
+    public Building saveNewBuilding(Building b) {
+        b=bm.saveNewBuildingDB(b, con);
         System.out.println("Saved building");
+        return b;
+    }
+    
+    public String saveBuildingPic(int buildId, String ext) {
+        return bm.saveBuildingPic(buildId, ext, con);
+        //System.out.println("Saved buildingPic");
     }
 
     /**
@@ -291,13 +301,12 @@ public class DBFacade {
     public boolean validatePolygonUser(String userName, String pwd) {
         return um.validatePolygonUser(userName,pwd,con);
     }
+    
+    public Building getBuilding(int bdgId){
+        return bm.getBuilding(bdgId, con);
+    }
 
-    /**
-     * Sends the request to the right mapper.
-     * @param buildingID The ID of the building that is to be loaded
-     * @return The loaded Building objet
-     */
-    public Building getbuilding(int buildingID) {
-      return  bm.getBuildingBM(buildingID, con);
+    public void addFloor(BuildingFloor bf) {
+        bm.addFloor(bf,con);
     }
 }

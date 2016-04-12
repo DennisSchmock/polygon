@@ -16,7 +16,7 @@
     
     <h1>Edit Building: ${sessionScope.buildingToBeEdited.buildingName}</h1>
     
-    <form name="Building Form" action="frontpage" method="POST">
+    <form name="Building Form" action="frontpage" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="page" value="vieweditedbuilding" />
 
         <label>(An ID so that you can find it)  Building Name</label> 
@@ -48,6 +48,12 @@
         <label>Description of building use</label>
         <textarea name="useOfBuilding" rows="4" cols="20">${sessionScope.buildingToBeEdited.useOfBuilding}</textarea>
         <br>
+        <label>Image of Building:</label>
+        <br>
+        <label class="test">Add Image</label>
+        
+        <input type="file" name="buildingImg" id="fileChooser"/><br/>
+        <img src="buildingPic/${sessionScope.buildingToBeEdited.buildingPic}"  height="300"/>
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 
     </form>

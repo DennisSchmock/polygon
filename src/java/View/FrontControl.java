@@ -7,6 +7,7 @@ package View;
 
 import Domain.DomainFacade;
 import Domain.Building;
+import Domain.BuildingFloor;
 import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -14,17 +15,31 @@ import Domain.ReportRoomDamage;
 import Domain.ReportExterior;
 import Domain.ReportRoomInterior;
 import Domain.User;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -36,11 +51,13 @@ import javax.servlet.http.HttpSession;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login","/viewreport"})
+@WebServlet(name = "FrontControl", urlPatterns = {"/frontpage", "/Style/frontpage", "/login"})
+@MultipartConfig
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private boolean testing = true;
+    int bdgId;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,9 +70,16 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Part filePart = null;
+        if (ServletFileUpload.isMultipartContent(request)){
+        filePart = request.getPart("buildingImg");
+        }
+    
+        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
+        AddFloorsAndRoomsHelper frh = new AddFloorsAndRoomsHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -73,9 +97,7 @@ public class FrontControl extends HttpServlet {
         String page = request.getParameter("page");
         System.out.println(page);
         
-        if (page=="viewReportTest"){
-            
-        }
+       
 
         if (page == null) {
             page = "/index.jsp";
@@ -148,12 +170,31 @@ public class FrontControl extends HttpServlet {
          * database twice
          */
         if (page.equalsIgnoreCase("newbuilding")) {
-            createBuilding(request, df, sessionObj);
+            Building b=createBuilding(request, df, sessionObj);
+            
+            if (filePart!=null){
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
+                String extension = fileDotSplit[fileDotSplit.length-1];
+                System.out.println(filePart.getSubmittedFileName());
+                System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                b.setBuilding_pic(filename);
+                uploadFile(filePart,"buildingPic",filename);
+            } 
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
-            updateBuilding(request, df, sessionObj);
+            Building b =updateBuilding(request, df, sessionObj);
+            if (filePart!=null){
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
+                String extension = fileDotSplit[fileDotSplit.length-1];
+                System.out.println(filePart.getSubmittedFileName());
+                System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                b.setBuilding_pic(filename);
+                uploadFile(filePart,"buildingPic",filename);
+            }
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
@@ -168,7 +209,19 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
+        
+        if (page.equalsIgnoreCase("addfloor")) {
+            addFloors(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
 
+        if (page.equalsIgnoreCase("selBdg")) {
+            selectBuilding(request, df, sessionObj);
+            response.sendRedirect("addfloor.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
 
@@ -218,7 +271,12 @@ public class FrontControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+      
+     
         processRequest(request, response);
+
+        
     }
 
     /**
@@ -236,7 +294,7 @@ public class FrontControl extends HttpServlet {
      * Facade. Then it stores the created building object in the session to be
      * displayed.
      */
-    private void createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -244,10 +302,14 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
+        
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
+        
+        
         session.setAttribute("newbuilding", b);
+        return b;
     }
 
     private void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session) {
@@ -307,7 +369,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the buildingToBeEdited object,
      * that that we have to change based on the input fields
      */
-    private void updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
 
         System.out.println(request.getCharacterEncoding());
 
@@ -322,6 +384,7 @@ public class FrontControl extends HttpServlet {
 
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
+        return buildingToBeEdited;
     }
 
     /**
@@ -461,7 +524,65 @@ public class FrontControl extends HttpServlet {
      
         
     }
+    private void uploadFile(Part filePart, String folder, String filename) {
+        //The Wrong way of doing things (relative path)
+        String uploadFolder = getServletContext().getRealPath("")
+                + File.separator ;
+        String[] fileDotSplit = filePart.getName().split("\\.");
+        String extension = fileDotSplit[fileDotSplit.length-1];
+        
+        
+        System.out.println("UploadFile");
+        File uploads = new File(uploadFolder);
+        uploads = new File (uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
+        System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
+        File file = new File(uploads, filename);
+
+try (InputStream input = filePart.getInputStream()) {
+    Files.copy(input, file.toPath());
+}       catch (IOException ex) {
+            Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
+    
+
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+        String floorNum = (String)request.getParameter("floornumber");
+        String floorSize =(String)request.getParameter("floorsize");
+        String totalRooms =(String)request.getParameter("totalrooms");
+//        String bdgId= (String) sessionObj.getAttribute("buildingId");
+        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
+            int n = (int)Integer.parseInt(floorNum);
+            System.out.println("..." + n);
+            double s = (double)Double.parseDouble(floorSize);
+            int r = (int)Integer.parseInt(totalRooms);
+//            int b = (int)Integer.parseInt(bdgId);
+            
+            BuildingFloor bf = new BuildingFloor(n,s,r,1);
+            df.addFloors(bf);
+            sessionObj.setAttribute("newFloor", bf);
+       
+        
+        
+        
     }
 
+   
+
+ 
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
+        
+        String buildingName = (String) request.getParameter("buildings");
+        List<Building> buildingsList = df.getListOfBuildings(1);
+        
+        for (Building building : buildingsList) {
+            if(building.getBuildingName().equals(buildingName)){
+                bdgId = building.getBdgId();
+            }
+        }
+        Building b=df.getBuilding(bdgId);
+        sessionObj.setAttribute("selectedBuilding", b);
+    }
+}
 
