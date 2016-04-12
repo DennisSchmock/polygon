@@ -6,6 +6,7 @@
 package Domain;
 
 import Model.DBFacade;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -197,6 +198,15 @@ public String saveBuildingPic(int buildId, String ext){
     public ArrayList<BuildingFloor> listOfFloors(int bdgId){
         return dbFacade.getListOfFloors(bdgId);
     }
- 
 
+    /**
+     * Method that needs to load an Building Floor based on a floorod-
+     * @param floorid the ID for the floor to be loaded
+     * @return An object of the infomation for the floor.
+     */
+    public BuildingFloor getBuildingFloor(int floorid) {
+        return dbFacade.getBuildingFloor(floorid);
+    }
+
+ 
 }
