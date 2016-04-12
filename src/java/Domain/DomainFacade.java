@@ -177,7 +177,19 @@ public String saveBuildingPic(int buildId, String ext){
     public void addFloors(BuildingFloor bf) {
         dbFacade.addFloor(bf);
     }
+
+    /**
+     * Method for creating a BUILDING ROOM.
+     * Something that belongs to the FLOOR, that Belongs to the builing.
+     * Not something in the report
+     * @param newRoom A BuildingRoom object that is to be created. 
+     * @return  The newly created building object in the database with the 
+     * an ID!
+     */
+    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     
+}
     public ArrayList<BuildingFloor> listOfFloors(int bdgId){
         return dbFacade.getListOfFloors(bdgId);
     }

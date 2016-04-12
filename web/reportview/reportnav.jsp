@@ -11,7 +11,7 @@
             <div id="room<c:out value="${i}"/>" class="w3-accordion-content w3-white w3-card-4">
                 
                  <c:forEach items="${sessionScope.report.listOfRepRoom}" var="room">
-                     <a href="?page=viewroom&viewroom=${i}">Room ${i}</a>
+                     <a href="viewreport1?page=viewroom&viewroom=${i}">Room ${i}</a>
                  </c:forEach>
                
             </div>

@@ -31,6 +31,13 @@ public class BuildingRoom implements Serializable{
         this.floorid = floorid;
     }
 
+    public BuildingRoom(String roomName, int floorid) {
+        this.roomName = roomName;
+        this.floorid = floorid;
+    }
+    
+    
+
     public String getRoomName() {
         return roomName;
     }

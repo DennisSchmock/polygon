@@ -34,7 +34,7 @@ public class ReportController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "viewreport.jsp";
+        String url = "/viewreport.jsp";
         String page = "";
         page = request.getParameter("page");
         if (page.equalsIgnoreCase("viewroom")) {

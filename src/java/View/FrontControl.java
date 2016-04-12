@@ -8,6 +8,7 @@ package View;
 import Domain.DomainFacade;
 import Domain.Building;
 import Domain.BuildingFloor;
+import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -124,6 +125,17 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj);
+        }
+        
+        if (page.equalsIgnoreCase("inspectRoom")) {
+            url = "/reportJSPs/reportaddaroom.jsp";
+            setUpForRoomInspection(request, sessionObj);
+        }
+        
+        if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
+            url = "/reportJSPs/reportaddaroom.jsp";
+            createNewRoom(request, sessionObj, df);
+            setUpForRoomInspection(request, sessionObj);
         }
         
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -546,25 +558,26 @@ try (InputStream input = filePart.getInputStream()) {
     
     
 
-        private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
         String totalRooms =(String)request.getParameter("totalrooms");
-        BuildingFloor bf = null;
-        if (floorNum != null) {
-            int n = (int) Integer.parseInt(floorNum);
-            double s = (double) Double.parseDouble(floorSize);
-            int r = (int) Integer.parseInt(totalRooms);
-            bf = new BuildingFloor(n, s, r, 1);
+//        String bdgId= (String) sessionObj.getAttribute("buildingId");
+        System.out.println("values:" + floorNum+floorSize+totalRooms+bdgId);
+            int n = (int)Integer.parseInt(floorNum);
+            System.out.println("..." + n);
+            double s = (double)Double.parseDouble(floorSize);
+            int r = (int)Integer.parseInt(totalRooms);
+//            int b = (int)Integer.parseInt(bdgId);
+            
+            BuildingFloor bf = new BuildingFloor(n,s,r,1);
             df.addFloors(bf);
-            ArrayList<BuildingFloor> bfList = df.listOfFloors(1);
-            sessionObj.setAttribute("newFloor", bfList);
-        }
-      
+            sessionObj.setAttribute("newFloor", bf);
+       
+        
+        
+        
     }
-
-   
-
  
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj){
         
@@ -578,6 +591,27 @@ try (InputStream input = filePart.getInputStream()) {
         }
         Building b=df.getBuilding(bdgId);
         sessionObj.setAttribute("selectedBuilding", b);
+    }
+
+    /**
+     * Based on the fields in the request object, this method creates an new
+     * building_Room in the database
+     * @param request Holds the requied fields to create an new room
+     * @param sessionObj Holds the buildingID
+     * @param df
+     */
+    public void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        String roomName = request.getParameter("RoomName");
+        int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
+        
+        BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
+        newRoom = df.addBuildingRoom(newRoom);
+        
+        
+    }
+
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 
