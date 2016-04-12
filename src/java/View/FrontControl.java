@@ -69,18 +69,18 @@ public class FrontControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = null;
-        if (ServletFileUpload.isMultipartContent(request)){
-        filePart = request.getPart("buildingImg");
+        request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
+        Part filePart = null;                                   //Used in case of fileuploads
+        if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
+        filePart = request.getPart("buildingImg");              //Extracts the part of the form that is the file
         }
     
-        request.setCharacterEncoding("UTF-8");
         HttpSession sessionObj = request.getSession(); //Get the session
         ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
         AddFloorsAndRoomsHelper frh = new AddFloorsAndRoomsHelper();
 
-        DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller"); //Get the DomainFacede
+        DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
         sessionObj.setAttribute("testing", testing);
         if (df == null) {
@@ -88,13 +88,10 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("Controller", df);
         }
 
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
-        System.out.println(page);
+        if (testing) System.out.println(page);
         
         if (page=="viewReportTest"){
             
@@ -149,7 +146,7 @@ public class FrontControl extends HttpServlet {
             url = "/viewlistofbuildings.jsp";
         }
         if (page.equalsIgnoreCase("editBuilding")) {
-            findBuildingToBeEdit(request, sessionObj);
+            findBuildingToBeEdit(request, sessionObj, df);
             response.sendRedirect("editBuilding.jsp");
             return;
         }
@@ -167,30 +164,42 @@ public class FrontControl extends HttpServlet {
          * database twice
          */
         if (page.equalsIgnoreCase("newbuilding")) {
+            
             Building b=createBuilding(request, df, sessionObj);
             
             if (filePart!=null){
-                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
-                String extension = fileDotSplit[fileDotSplit.length-1];
-                System.out.println(filePart.getSubmittedFileName());
-                System.out.println(extension);
-                String filename = df.saveBuildingPic(b.getBdgId(), extension);
-                b.setBuilding_pic(filename);
-                uploadFile(filePart,"buildingPic",filename);
+                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
+                String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
+                if (testing)System.out.println(filePart.getSubmittedFileName());
+                if (testing)System.out.println(extension);
+                String filename = df.saveBuildingPic(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
+                b.setBuilding_pic(filename);                                          //Add the path for building img to building
+                uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
+                sessionObj.setAttribute("newbuilding", b);                            //Update the active building in the session
             } 
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             Building b =updateBuilding(request, df, sessionObj);
+            
+            //This part deals with uploading image for building IF one was submitted
             if (filePart!=null){
                 String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
-                String extension = fileDotSplit[fileDotSplit.length-1];
+                if (fileDotSplit.length>1){                                             //If the was a dot in the filepart ie xyz.jpg
+                String extension = fileDotSplit[fileDotSplit.length-1];                 //Set extension to be what comes after the last dot
+                System.out.println("SubmittedFileName");
                 System.out.println(filePart.getSubmittedFileName());
                 System.out.println(extension);
+                // Save buildingpic info in db (not the image itself but information)
+                // Gets the filename back made from the info
                 String filename = df.saveBuildingPic(b.getBdgId(), extension);
+                System.out.println("Filename");
+                System.out.println(filename);
                 b.setBuilding_pic(filename);
+                // Do the actual upload
                 uploadFile(filePart,"buildingPic",filename);
+                }
             }
             response.sendRedirect("viewnewbuilding.jsp");
             return;
@@ -299,8 +308,6 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
-        
-
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding);
         
@@ -346,12 +353,13 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj The session object holds the list of the buildings for
      * that customer.
      */
-    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj) {
+    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
 
         for (Building building : listofbuildings) {
             if (building.getBdgId() == buildingID) {
+                building.setBuilding_pic(df.getLatestBuildingImage(building.getBdgId()));  //Call db to see if there is an Img for the building and add the latest to the object
                 sessionObj.setAttribute("buildingToBeEdited", building);
             }
         }
@@ -380,6 +388,7 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
 
         df.Updatebuilding(buildingToBeEdited);
+        
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
     }
@@ -484,18 +493,23 @@ public class FrontControl extends HttpServlet {
         Building b = df.getBuilding(buildingID);
         
     }
+    
+    /**
+     * Uploads a file to the server. Helper method for any fileUpload
+     * @param filePart the Part that holds the file
+     * @param folder the subfolder it should go into (has to exist beforehand, uses relative path!)
+     * @param filename the full name of the file.
+     */
     private void uploadFile(Part filePart, String folder, String filename) {
-        //The Wrong way of doing things (relative path)
+        // The Wrong way of doing things according to several sources (relative path)
+        // Deliberate in this case for the purpose of being able to implement across multiple systems
         String uploadFolder = getServletContext().getRealPath("")
                 + File.separator ;
-        String[] fileDotSplit = filePart.getName().split("\\.");
-        String extension = fileDotSplit[fileDotSplit.length-1];
         
-        
-        System.out.println("UploadFile");
+        if (testing) System.out.println("UploadFile");
         File uploads = new File(uploadFolder);
         uploads = new File (uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
-        System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
+        if (testing) System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
         File file = new File(uploads, filename);
 
 try (InputStream input = filePart.getInputStream()) {
