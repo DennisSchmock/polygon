@@ -44,7 +44,7 @@
                     <li><a href="frontpage?page=viewlistofbuildings">View Buildings</a></li>
                 <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=newreport">Add Report</a></li></c:if>
                 <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"><li><a href="frontpage?page=listreports">List Reports</a></li></c:if>
-
+                    <li><a href="frontpage?page=addfloor">Add Floor</a></li>
             </c:if>
                 <c:if test="${sessionScope.loggedin==null}"><li><a href="login?page=login">Login</a></li></c:if>
 
