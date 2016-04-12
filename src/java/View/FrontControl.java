@@ -135,7 +135,7 @@ public class FrontControl extends HttpServlet {
         
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
-            createNewRoom(request, sessionObj);
+            createNewRoom(request, sessionObj, df);
             setUpForRoomInspection(request, sessionObj);
         }
         
@@ -609,6 +609,10 @@ try (InputStream input = filePart.getInputStream()) {
         newRoom = df.addBuildingRoom(newRoom);
         
         
+    }
+
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 
