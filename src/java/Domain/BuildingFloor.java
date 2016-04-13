@@ -1,6 +1,7 @@
 
 package Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author CJS
  */
-public class BuildingFloor {
+public class BuildingFloor implements Serializable{
     private int floorId;
     private int floorNumber;
     private double floorSize;

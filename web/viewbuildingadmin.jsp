@@ -1,7 +1,7 @@
 <%-- 
     Document   : Building added
     Created on : 30.03.2016
-    Author     : Daniel
+    Author     : Daniel Grønbjerg
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
