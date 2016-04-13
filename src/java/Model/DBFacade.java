@@ -325,10 +325,19 @@ public class DBFacade {
         
     }
 
+    /**
+     * redirects to the BuildingMapper
+     * @param bf the BuildingFloor object will be added to the database
+     */
     public void addFloor(BuildingFloor bf) {
         bm.addFloor(bf,con);
     }
     
+    /**
+     * redirects to the BuildingMapper
+     * @param bdgId building Id
+     * @return a list of floors from the database based on the building ID
+     */
     public ArrayList<BuildingFloor> getListOfFloors(int bdgId){
         return bm.getFloorsList(bdgId, con);
     }
@@ -342,6 +351,11 @@ public class DBFacade {
         return bm.saveBuildingRoom(newRoom, con);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public BuildingFloor getFloor(int id){
         return bm.getFloor(id, con);
     }

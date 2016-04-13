@@ -361,7 +361,12 @@ public class BuildingMapper {
         return newRoom;
     }
     
-    
+    /**
+     * Get the floor data from the database reference from the floor ID
+     * @param flrId floor ID
+     * @param con
+     * @return BuildingFloor object of a certain floor in a building
+     */
     public BuildingFloor getFloor(int flrId, Connection con) {
         BuildingFloor bf = null;
         String sqlString = "SELECT * FROM building_floor where floor_id=?";
@@ -385,7 +390,12 @@ public class BuildingMapper {
         return bf;
     }
     
-    
+    /**
+     * Update the floor's total number of rooms in the building_floor table based it's floor ID
+     * @param flrId floor ID
+     * @param con
+     * @param newTotalRooms new number of Rooms to be changed in the database
+     */
     public void updateFloor(int flrId, Connection con, int newTotalRooms) {
        
         String SQLString

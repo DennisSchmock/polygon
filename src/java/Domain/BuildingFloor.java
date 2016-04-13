@@ -16,6 +16,13 @@ public class BuildingFloor {
     private int buildingId;
     private ArrayList<BuildingRoom> listOfRooms;
 
+    /**
+     *
+     * @param floorNumber floor number 
+     * @param floorSize size of the floor in m2
+     * @param totalRooms total number of rooms in a certain floor
+     * @param buildingId ID reference to the building
+     */
     public BuildingFloor(int floorNumber, double floorSize, int totalRooms, int buildingId) {
         this.floorNumber = floorNumber;
         this.floorSize = floorSize;

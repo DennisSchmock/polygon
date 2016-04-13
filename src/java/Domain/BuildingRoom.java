@@ -18,13 +18,19 @@ public class BuildingRoom implements Serializable{
     
     
     // Do we keep info about damages in the object here as well?
-    
+
     
     public BuildingRoom(int roomId, String roomName){
         this.roomId = roomId;
         this.roomName = roomName;
     }
     
+    /**
+     *
+     * @param roomId room ID
+     * @param roomName name of the room
+     * @param floorid floor ID reference to which floor
+     */
     public BuildingRoom(int roomId, String roomName, int floorid){
         this.roomId = roomId;
         this.roomName = roomName;
