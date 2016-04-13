@@ -6,6 +6,7 @@
 package Domain;
 
 import Model.DBFacade;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +35,9 @@ public class DomainFacade {
      * @see All the fields needed to create an building object Creates the
      * building object and sends it to the DBFacade
      */
-    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding) {
+    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
-        b.setCustId(1); // this is hardcoded! Should load the userloged in!
+        b.setCustId(custId); // this is hardcoded! Should load the userloged in!
         b=dbFacade.saveNewBuilding(b);
         return b;
     } 
@@ -202,9 +203,6 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getCustomer(cusid);
     }
 
-    public BuildingFloor getFloor(int flrId) {
-        return dbFacade.getFloor(flrId);
-    }
     
     public ArrayList<BuildingRoom> getListOfRooms(int flrId){
         return dbFacade.getRoomList(flrId);
@@ -219,4 +217,14 @@ public String saveBuildingPic(int buildId, String ext){
     }
  
 
+    /**
+     * Method that needs to load an Building Floor based on a floorod-
+     * @param floorid the ID for the floor to be loaded
+     * @return An object of the infomation for the floor.
+     */
+    public BuildingFloor getBuildingFloor(int floorid) {
+        return dbFacade.getFloor(floorid);
+    }
+
+ 
 }

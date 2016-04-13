@@ -129,13 +129,13 @@ public class FrontControl extends HttpServlet {
 
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
-            setUpForRoomInspection(request, sessionObj);
+            setUpForRoomInspection(request, sessionObj, df);
         }
 
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
-            setUpForRoomInspection(request, sessionObj);
+            setUpForRoomInspection(request, sessionObj, df );
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -179,6 +179,25 @@ public class FrontControl extends HttpServlet {
             List<Customer> customers = df.loadAllCustomers();
             sessionObj.setAttribute("customers", customers);
             response.sendRedirect("viewcustomers.jsp");
+            return;
+
+        }
+        
+        if (page.equalsIgnoreCase("viewcustomer")) {
+            int custId = Integer.parseInt(request.getParameter("customerid"));
+            sessionObj.setAttribute("customer_id",custId);
+            List<Building> buildings = df.getListOfBuildings(custId);
+            
+            sessionObj.setAttribute("buildings", buildings);
+            response.sendRedirect("viewcustomer.jsp");
+            return;
+
+        }
+        if (page.equalsIgnoreCase("viewbuildingadmin")) {
+            int buildId = Integer.parseInt(request.getParameter("buildingid"));
+            Building b=df.getBuilding(buildId);
+            sessionObj.setAttribute("building", b);
+            response.sendRedirect("viewbuildingadmin.jsp");
             return;
 
         }
@@ -374,12 +393,22 @@ public class FrontControl extends HttpServlet {
         double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
+        User userLoggedIn = (User)session.getAttribute("user");
         
+        int custId=userLoggedIn.getCustomerid();
+        System.out.println("CustId");
+        System.out.println(custId);
+        if (custId==0 && request.getParameter("customerId")!=null){
+            custId=Integer.parseInt(request.getParameter("customerId"));
+        
+        }
+        System.out.println(custId);
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
-                buildingsize, buildingYear, useOfBuilding);
-
+                buildingsize, buildingYear, useOfBuilding,custId);
         
+
+        b.setCustId(custId);
         session.setAttribute("newbuilding", b);
         return b;
     }
@@ -409,6 +438,7 @@ public class FrontControl extends HttpServlet {
          * This is just for testing. I have set the customerID by hardcode to 1
          */
         int customerID = 1;
+        if (sessionObj.getAttribute("customer_id")!=null) customerID=(Integer)(sessionObj.getAttribute("customer_id"));
         List<Building> buildingList = df.getListOfBuildings(customerID);
         sessionObj.setAttribute("listOfBuildings", buildingList);
     }
@@ -422,8 +452,11 @@ public class FrontControl extends HttpServlet {
      * that customer.
      */
     private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+        if (sessionObj.getAttribute("listOfBuildings")==null)findListOfBuilding(request, df, sessionObj);   // Added for the sake of Admin editing building
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
+        System.out.println("Building Id in findBuilding");
+        System.out.println(buildingID);
 
         for (Building building : listofbuildings) {
             if (building.getBdgId() == buildingID) {
@@ -691,7 +724,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
             
@@ -728,13 +761,14 @@ public class FrontControl extends HttpServlet {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         
         ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(), report.getReportId(), buildingRoomid);
-        reportRoom.setRoomFloor(buildingRoom.getFloorid() + "");
+        BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
+        reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
     }
 
     private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int id = Integer.parseInt(request.getParameter("floors"));
-        bf = df.getFloor(id);
+        bf = df.getBuildingFloor(id);
         sessionObj.setAttribute("selectedFloor", bf);
     }
 

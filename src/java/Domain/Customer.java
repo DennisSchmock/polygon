@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Dennis Schmock
  */
-public class Customer {
+public class Customer implements Serializable{
     private int customerId;
     private String companyName;
     private String contactPerson; 

@@ -272,6 +272,7 @@ public class BuildingMapper {
                         rs.getDouble("floor_size"),
                         rs.getInt("total_rooms"),
                         rs.getInt("idbuilding"));
+                temp.setListOfRooms(getRoomList(temp.getFloorId(), con));
                 floorsList.add(temp);
             }
         } catch (SQLException ex) {
@@ -311,17 +312,21 @@ public class BuildingMapper {
     public String getLatestBuildingImage(int buildingId, Connection con) {
         String imgString=null;
         System.out.println("getLatestBuildingImage");
+        System.out.println(buildingId);
         String SQLString = "select * from building_pic where building_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            System.out.println("statement prepared");
             statement.setInt(1, buildingId);
             ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
-            }
+            System.out.println("query executed");
+
             while (rs.next()){
+                System.out.println("There is a next");
             int imgId = rs.getInt("building_pic_id");
             String extension = rs.getString("building_pic_extension");
             imgString=imgId+"."+extension;
+                System.out.println(imgString);
+                
             }
             
         } catch (Exception e) {
@@ -342,7 +347,7 @@ public class BuildingMapper {
      * @return The newly inserted building object
      */
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom, Connection con) {
-        String sql = "insert into building_room (room_name,floor_id) values (?,?) "; // change from values = (?,?) (invalid syntax)
+        String sql = "insert into building_room (room_name,floor_id) values  (?,?) ";
         try {
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, newRoom.getRoomName());
@@ -359,6 +364,35 @@ public class BuildingMapper {
         }
         
         return newRoom;
+    }
+
+    /**
+     * Loads an BuildingFloor based on the ID in the parameter.
+     * Creates an object of BuildingFloor and returns it.
+     * @param floorid For the building to be loaded
+     * @param con Connection to Database
+     * @return  Loaded Buildingfloor object
+     */
+    public BuildingFloor getBuildingFloorBM(int floorid, Connection con) {
+        String sql = "Select * from building_floor where floor_id=? ";
+        BuildingFloor bf = null;
+        try {
+            PreparedStatement statement =  con.prepareStatement(sql);
+            statement.setInt(1, floorid);
+            ResultSet rs = statement.executeQuery();
+            
+            if(rs.next()){
+                bf = new BuildingFloor
+               (rs.getInt("floor_number"), 
+                rs.getDouble("floor_size"), 
+                rs.getInt("total_rooms"), 
+                rs.getInt("idbuilding"));
+                bf.setFloorId(floorid);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error in Get Building Floor BM: " + ex);
+        }
+        return bf;
     }
     
     /**

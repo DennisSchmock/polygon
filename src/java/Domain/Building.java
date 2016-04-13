@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author dennisschmock
  */
-public class Building {
+public class Building implements Serializable{
     private int bdgId;
     private String buildingName;
     private String streetAddress;

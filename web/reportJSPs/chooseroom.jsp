@@ -39,7 +39,7 @@
         <c:forEach items = "${sessionScope.reportBuilding.listOfFloors}" var = "floor">
             <c:forEach items="${floor.listOfRooms}" var = "Room">
                 
-        <option value="${Room.roomId}">${Room.floorid} - ${Room.roomName}</option>
+        <option value="${Room.roomId}">${floor.floorNumber} - ${Room.roomName}</option>
             </c:forEach>   
         </c:forEach>
     </select>
