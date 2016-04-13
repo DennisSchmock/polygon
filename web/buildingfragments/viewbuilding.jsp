@@ -8,36 +8,40 @@
 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-    
 
 
-    
-    <h1></h1>
-    
-    <h2> Building Name: </h2> 
-    ${sessionScope.building.buildingName} <br>
-    
-    <h2>Address </h2> 
-    ${sessionScope.building.streetAddress} <br>
-    
-    <h2> Street Number:</h2> 
-    ${sessionScope.building.streetNumber} <br>
-    
-    <h2> Zip Code:</h2> 
-    ${sessionScope.building.zipCode} <br>
-    
-    <h2> Building Year:</h2> 
-    ${sessionScope.building.buildingYear} <br>
-    
-    <h2> Building Size: </h2> 
-    ${sessionScope.building.buildingSize} <br>
-    
-    <h2> Use of Building: </h2> 
-    ${sessionScope.building.useOfBuilding} <br>
-    
-    
-    <h2> Image of Building: </h2> 
-    <img src="${pageContext.request.contextPath}/buildingPic/${sessionScope.building.buildingPic}"/>
-    
 
-    
+
+<div class="w3-row-padding">
+    <div class="w3-half">
+        <table class="w3-table w3-striped w3-bordered w3-border w3-xlarge">
+            <tr><td> Building Name:</td><td>  
+                ${sessionScope.building.buildingName} </td></tr>
+
+            <tr><td>Address  </td><td>
+                ${sessionScope.building.streetAddress} </td></tr>
+
+            <tr><td> Street Number: </td><td>
+                ${sessionScope.building.streetNumber} </td></tr>
+
+            <tr><td> Zip Code: </td><td>
+                ${sessionScope.building.zipCode} </td></tr>
+
+            <tr><td> Building Year: </td><td>
+                ${sessionScope.building.buildingYear} </td></tr>
+
+            <tr><td> Building Size:  </td><td>
+                ${sessionScope.building.buildingSize} </td></tr>
+
+            <tr><td> Use of Building: </td><td> 
+                ${sessionScope.building.useOfBuilding} </td></tr>
+        </table>
+    </div>
+    <div class="w3-rest">
+
+            <img class="w3-round" src="${pageContext.request.contextPath}/buildingPic/${sessionScope.building.buildingPic}"/>
+            <br><br></div>
+   
+
+</div>
+

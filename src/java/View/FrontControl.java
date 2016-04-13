@@ -538,7 +538,7 @@ public class FrontControl extends HttpServlet {
 
         System.out.println(request.getCharacterEncoding());
 
-        Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
+        Building buildingToBeEdited = (Building) session.getAttribute("building");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));
         buildingToBeEdited.setStreetAddress(request.getParameter("streetAddress"));
         buildingToBeEdited.setStreetNumber(request.getParameter("streetNumber"));
