@@ -53,13 +53,15 @@ function yesnoCheck() {
         <br>
         
         <br>
-        Remarks:
-  <form action="">
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"> NO Remarks
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck"> Yes
+        Remarks: <br>
+        
+            
+      <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno1" id="noCheck"> NO Remarks
+      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno1" id="yesCheck"> Yes
+        
       
        <br>
-</form>
+
         
         <br>
         <br>
@@ -72,25 +74,21 @@ function yesnoCheck() {
  <br>
 
        Remarks to floor:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
        <br>
      
       Remarks to Roof:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
       
       <br>
       
        Remarks to Celling:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
        
        <br>
        
         Remarks to windows:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
         
         <br>
         Upload pictures:
@@ -111,39 +109,38 @@ function yesnoCheck() {
         
         
         Has there been any damage:
+        <br>
         
- <form action="">
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"> NO Remarks
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck1"> Yes
+        
+            
+      <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno2" id="noCheck"> NO Remarks
+      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno2" id="yesCheck1"> Yes
       
+        
        <br>
-</form>
+
         <br>
         <div id="ifYes1" style="display:none">
             
  -----------------------------------------------------------------------------    
  <BR>
      When has the damage happend:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
      
      <br>
      
      Where
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
      
      <br>
      
      What has happend:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
      
      <br>
      
      What is fixed:
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="" rows="2" cols="20"></textarea>
      
      <br>
      
@@ -165,10 +162,13 @@ function yesnoCheck() {
      <br>
         
           MoistScan:
-  <form action="">
-  <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"> NO Remarks
-   <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck2"> Yes
-</form>
+          <br>
+          
+              
+  <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno3" id="noCheck"> NO Remarks
+   <input type="radio" onclick="javascript:yesnoCheck();" name="yesno3" id="yesCheck2"> Yes
+          
+
           <div id="ifYes2" style="display:none">
               
           <br>
@@ -179,14 +179,12 @@ function yesnoCheck() {
         Moist scan Result:
         
         
-        <textarea name="" rows="2" cols="20">
-     </textarea>
+        <textarea name="" rows="2" cols="20"></textarea>
         
         <br>
         Moist  scan Area:
         
-        <textarea name="" rows="2" cols="20">
-     </textarea>
+        <textarea name="" rows="2" cols="20"></textarea>
         
         <br>
         ---------------------------------------------------------------------------------
