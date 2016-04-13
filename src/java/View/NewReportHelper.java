@@ -139,11 +139,11 @@ public class NewReportHelper extends HttpServlet {
             rr = new ReportRoom("roomNameNotHarvested?",roomNumber);//Create a ReportRoom;
             rr.getListOfDamages().add(createReportRoomDamage(request, roomCount));
 
-            int moist;
+            String moist;
             String place = "";
             //Get the moistlevels from the form.
             if (!request.getParameter("moistScan" + String.valueOf(roomCount + 1)).equals("")) {
-                moist = Integer.parseInt(request.getParameter("moistScan" + String.valueOf(roomCount + 1)));
+                moist = (request.getParameter("moistScan" + String.valueOf(roomCount + 1)));
                 if (request.getParameter("moistPoint" + String.valueOf(roomCount + 1)) != null) {
                     place = (String) request.getParameter("moistPoint" + String.valueOf(roomCount + 1));
                 }

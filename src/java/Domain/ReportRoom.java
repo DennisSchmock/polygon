@@ -46,16 +46,17 @@ public class ReportRoom {
         this.buildingRoomId = buildingRoomId;
     }
     
-    
-
+    /**
+     * Used in the frontController to create the object
+     * based on field from JSP.
+     * @param roomName
+     * @param roomNumber
+     */
     public ReportRoom( String roomName, int roomNumber) {
         this.roomName = roomName;
         this.buildingRoomId = roomNumber;
     }
 
-    public ReportRoom(String roomName) {
-        this.roomName = roomName;
-    }
     
     public void setRepRoomId(int repRoomId) {
         this.repRoomId = repRoomId;
@@ -115,7 +116,7 @@ public class ReportRoom {
 
     /**
      * @param moist the moist to set
-     */
+     */ 
     public void setMoist(ReportRoomMoist moist) {
         this.moist = moist;
     }
@@ -127,4 +128,40 @@ public class ReportRoom {
     public void setRoomFloor(String roomFloor) {
         this.roomFloor = roomFloor;
     }
+
+    @Override
+    public String toString() {
+        return "ReportRoom{" + "repRoomId=" + repRoomId + ", roomName=" + roomName + ", reportId=" + reportId + ", roomFloor=" + roomFloor + ", buildingRoomId=" + buildingRoomId + ", moist=" + moist + '}'
+                + roomDamages() + roomInterior() + roomRec();
+    }
+
+    private String roomDamages() {
+        String damageString="\n";
+        for (ReportRoomDamage damage : listOfDamages) {
+            damageString += damage.toString() + "\n";
+        }
+        return damageString;
+    }
+
+    private String roomInterior() {
+        String InteriorString="\n";
+        for (ReportRoomInterior interior : listOfInt) {
+            InteriorString += interior.toString() + "\n";
+        }
+        return InteriorString;
+    }
+
+    private String roomRec() {
+        String RecomendationString="\n";
+        for (ReportRoomRecommendation recommendation : listOfRec) {
+            RecomendationString += recommendation.toString() + "\n";
+        }
+        return RecomendationString;
+    }
+
+    
+    
+    
+    
+    
 }

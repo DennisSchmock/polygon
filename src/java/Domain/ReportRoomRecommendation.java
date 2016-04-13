@@ -52,4 +52,11 @@ public class ReportRoomRecommendation {
         return repRoomId;
     }
 
+    @Override
+    public String toString() {
+        return "ReportRoomRecommendation{" + "repRoomRecId=" + repRoomRecId + ", recommendation=" + recommendation + ", repRoomId=" + repRoomId + '}';
+    }
+    
+    
+
 }

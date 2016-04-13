@@ -12,26 +12,28 @@ package Domain;
 public class ReportRoomMoist {
     
     private int moistMeasureId;
-    private int moistMeasured;
+    private String moistMeasured;
     private String measurePoint;
     private int reportRoom;
 
-    public ReportRoomMoist(int moistMeasureId, int moistMeasured, String measurePoint, int reportRoom) {
+    public ReportRoomMoist(int moistMeasureId, String moistMeasured, String measurePoint, int reportRoom) {
         this.moistMeasureId = moistMeasureId;
         this.moistMeasured = moistMeasured;
         this.measurePoint = measurePoint;
         this.reportRoom = reportRoom;
     }
     
-    public ReportRoomMoist(int moistMeasured, String measurePoint) {
+    /**
+     * This is the one to be used in the frontcontroller
+     * to create an object based on the fields in the jsp!
+     * @param moistMeasured
+     * @param measurePoint
+     */
+    public ReportRoomMoist(String moistMeasured, String measurePoint) {
         this.moistMeasured = moistMeasured;
         this.measurePoint = measurePoint;
     }
 
-    public ReportRoomMoist(String place, int measured) {
-        this.moistMeasured = measured;
-        this.measurePoint = place;
-    }
 
     
     
@@ -44,11 +46,11 @@ public class ReportRoomMoist {
         this.moistMeasureId = moistMeasureId;
     }
 
-    public int getMoistMeasured() {
+    public String getMoistMeasured() {
         return moistMeasured;
     }
 
-    public void setMoistMeasured(int moistMeasured) {
+    public void setMoistMeasured(String moistMeasured) {
         this.moistMeasured = moistMeasured;
     }
 
@@ -66,6 +68,11 @@ public class ReportRoomMoist {
 
     public void setReportRoom(int reportRoom) {
         this.reportRoom = reportRoom;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportRoomMoist{" + "moistMeasureId=" + moistMeasureId + ", moistMeasured=" + moistMeasured + ", measurePoint=" + measurePoint + ", reportRoom=" + reportRoom + '}';
     }
     
     

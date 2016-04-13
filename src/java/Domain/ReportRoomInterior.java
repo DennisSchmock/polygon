@@ -34,7 +34,12 @@ public class ReportRoomInterior {
         this.remark = remark;
         this.repRoomId = repRoomId;
     }
-    
+    /**
+     * This is the one that is used to create an object based on the
+     * user input in the jsp.
+     * @param repRoomIntName Examined part of the Room
+     * @param remark The remark the user put in.
+     */
     public ReportRoomInterior(String repRoomIntName, String remark) {
         this.repRoomIntName = repRoomIntName;
         this.remark = remark;
@@ -60,5 +65,11 @@ public class ReportRoomInterior {
     public int getRepRoomId() {
         return repRoomId;
     }
+
+    @Override
+    public String toString() {
+        return "ReportRoomInterior{" + "repRoomIntId=" + repRoomIntId + ", repRoomIntName=" + repRoomIntName + ", remark=" + remark + ", repRoomId=" + repRoomId + '}';
+    }
+    
     
 }
