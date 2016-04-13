@@ -27,6 +27,7 @@ import java.sql.Date;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,7 +63,8 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private boolean testing = true;
-    Customer c;
+    //store objects since get parameter values resets
+    Customer c; 
     Building bdg;
     BuildingFloor bf;
     BuildingRoom br;
@@ -80,8 +82,18 @@ public class FrontControl extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
         Part filePart = null;                                   //Used in case of fileuploads
+        List<Part> fileParts = new ArrayList();
+        //filePart = request.getPart("buildingImg");
         if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
-        filePart = request.getPart("buildingImg");              //Extracts the part of the form that is the file
+                      //Extracts the part of the form that is the file
+        Collection<Part> parts = request.getParts();
+        
+            for (Part part : parts) {
+                //filePart = request.getPart("buildingImg");
+                if (part.getName().equals("buildingImg")) fileParts.add(part);
+                System.out.println("part.getName()");
+                System.out.println(part.getName());
+            }
         }
     
         HttpSession sessionObj = request.getSession(); //Get the session
@@ -99,6 +111,7 @@ public class FrontControl extends HttpServlet {
         //Set base url
         String url = "/index.jsp";
         String page = request.getParameter("page");
+        if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
         
        
@@ -209,7 +222,10 @@ public class FrontControl extends HttpServlet {
             int custId = Integer.parseInt(request.getParameter("customerid"));
             sessionObj.setAttribute("customer_id",custId);
             List<Building> buildings = df.getListOfBuildings(custId);
-            
+            List<Customer> customers = df.loadAllCustomers();
+            for (Customer customer : customers) {
+                if (customer.getCustomerId()==custId) sessionObj.setAttribute("customer", customer);
+            }
             sessionObj.setAttribute("buildings", buildings);
             response.sendRedirect("viewcustomer.jsp");
             return;
@@ -232,7 +248,10 @@ public class FrontControl extends HttpServlet {
             
             Building b=createBuilding(request, df, sessionObj);
             
-            if (filePart!=null){
+            if (!fileParts.isEmpty()){
+                System.out.println("FileParts Size");
+                System.out.println(fileParts.size());
+                filePart=fileParts.get(0);
                 String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
                 String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
                 if (testing)System.out.println(filePart.getSubmittedFileName());
@@ -386,7 +405,46 @@ public class FrontControl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-      
+      if (false){
+          System.out.println("Running Files Upload");
+          boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        if (!isMultipart) {
+            System.out.println("Not multipart");
+        } else {
+            System.out.println("Is multipart");
+            FileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List items = null;
+            try {
+                System.out.println("upload.parseRequest(request)");
+                //Part p = request.getPart("buildingImg");
+                //System.out.println(p.getContentType());
+                items = upload.parseRequest(request);
+                
+                } catch (FileUploadException e) {
+                    e.printStackTrace();
+                }
+            Iterator itr = items.iterator();
+            System.out.println("Before hasnext");
+            while (itr.hasNext()) {
+                System.out.println("hasNextLoop");
+                FileItem item = (FileItem) itr.next();
+                if (item.isFormField()) {
+                    System.out.println(item.getFieldName());
+                    
+                } else {
+                    try {
+                    String itemName = item.getName();
+                    File savedFile = new File("C:\\Img\\"+itemName);
+                    item.write(savedFile);  
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+      }
      
         processRequest(request, response);
 
@@ -502,7 +560,7 @@ public class FrontControl extends HttpServlet {
 
         System.out.println(request.getCharacterEncoding());
 
-        Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");
+        Building buildingToBeEdited = (Building) session.getAttribute("building");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));
         buildingToBeEdited.setStreetAddress(request.getParameter("streetAddress"));
         buildingToBeEdited.setStreetNumber(request.getParameter("streetNumber"));
@@ -658,6 +716,10 @@ public class FrontControl extends HttpServlet {
         
     }
     
+    public void uploadMultipleFiles(Part filePart, String folder){
+        
+    }
+    
     /**
      * Uploads a file to the server. Helper method for any fileUpload
      * @param filePart the Part that holds the file
@@ -683,8 +745,12 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-    
-
+    /**
+     * This method adds a new floor, then set to BuildingFloor object and session with the list of floors 
+     * @param request
+     * @param df
+     * @param sessionObj
+     */
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
@@ -693,11 +759,8 @@ public class FrontControl extends HttpServlet {
             int n = (int) Integer.parseInt(floorNum);
             double s = (double) Double.parseDouble(floorSize);
             int r = (int) Integer.parseInt(totalRooms);
-            bf.setBuildingId(bdg.getBdgId());
-            bf.setFloorNumber(n);
-            bf.setFloorSize(s);
-            bf.setTotalRooms(r);
-            df.addFloors(bf);
+            bf = new BuildingFloor(n,s,r,bdg.getBdgId());
+            df.addFloors(bf);//new building floor will be added
             //for updating the view of floors list added
             ArrayList<BuildingFloor> bfList = df.listOfFloors(bf.getBuildingId());
             bdg.setListOfFloors(bfList);
@@ -707,12 +770,24 @@ public class FrontControl extends HttpServlet {
         
     }
     
+    /**
+     * This method load the floors in a certain building and sets to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         ArrayList<BuildingFloor> bfList = df.listOfFloors(bdg.getBdgId());
         bdg.setListOfFloors(bfList);
         sessionObj.setAttribute("floorsList", bfList);
     }
 
+    /**
+     * This method gets the building data and sets to a session
+     * @param request
+     * @param df
+     * @param sessionObj
+     */
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
 
         int id = Integer.parseInt(request.getParameter("buildings"));
@@ -793,18 +868,36 @@ public class FrontControl extends HttpServlet {
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
     }
 
+    /**
+     * This method gets the selected floor and sets to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int id = Integer.parseInt(request.getParameter("floors"));
         bf = df.getBuildingFloor(id);
         sessionObj.setAttribute("selectedFloor", bf);
     }
 
+    /**
+     * This method loads the list of rooms and sets it to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         ArrayList<BuildingRoom> roomsList = df.getListOfRooms(bf.getFloorId());
         bf.setListOfRooms(roomsList);
         sessionObj.setAttribute("roomsList", roomsList);
     }
 
+    /**
+     * This method adds a new room and updates the session of rooms list
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         String roomName = (String)request.getParameter("roomname");
         if (roomName != null) {

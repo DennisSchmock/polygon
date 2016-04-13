@@ -32,7 +32,7 @@ public class NewReportMapper {
      * @param r Report object
      * @param con Connection to the database
      */
-    public void reportToDataBase(Report r, Connection con) throws SQLException {
+    public void reportToDataBase(Report r, Connection con) {
         String SQLString = "insert into report(report_date,building_id, polygonuser, customer_user, category_conclusion, report_finished) values (?,?,?,?,?,?)";
         try {
            con.setAutoCommit(false);
@@ -61,9 +61,13 @@ public class NewReportMapper {
             System.out.println("Report Saved in database Succes - Yeah 8)");
 
         } catch (Exception e) {
-            con.rollback();
-            System.out.println("Fail in saving new report - saveNewReport");
-            System.out.println(e.getMessage());
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Failed at rollingback" + ex );
+            }
+            System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
+            System.out.println(e);
         }
 
     }

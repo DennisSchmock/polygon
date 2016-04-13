@@ -246,11 +246,7 @@ public class DBFacade {
 
     //Sending the report as a whole to DB - new method
     public void newReportToDB(Report R) {
-        try {
             nrm.reportToDataBase(R, con);
-        } catch (SQLException ex) {
-            System.out.println("Error in creating a report, No changes in the database" + ex);
-        }
     }
 
     public User loadUser(String username) {
@@ -287,12 +283,7 @@ public class DBFacade {
      * @param report Report to be saved in the database
      */
     public void reportToDataBase(Report report) {
-        try {
             nrm.reportToDataBase(report, con);
-        } catch (SQLException ex) {
-            System.out.println("Error in creating a report, No changes in the database" + ex);
-        }
-
     }
 
     public ArrayList<Report> getListOfReports(int buildingId) {
@@ -358,18 +349,28 @@ public class DBFacade {
     }
     
     /**
-     *
-     * @param id
-     * @return
+     * redirects to BuildingMapper
+     * @param id floor ID
+     * @return BuildingFloor object based on the floor ID
      */
     public BuildingFloor getFloor(int id){
         return bm.getFloor(id, con);
     }
     
+    /**
+     * redirects to BuildingMapper
+     * @param id floorID
+     * @param totalRooms new number of rooms to be updated in the database
+     */
     public void updateFloor(int id, int totalRooms){
         bm.updateFloor(id, con, totalRooms);
     }
     
+    /**
+     * redirects to BuildingMapper
+     * @param flrId floor ID
+     * @return a list of Building Rooms based on the floor ID
+     */
     public ArrayList<BuildingRoom> getRoomList(int flrId){
         return bm.getRoomList(flrId, con);
     }
