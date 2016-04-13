@@ -713,6 +713,11 @@ public class FrontControl extends HttpServlet {
 
         BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
         newRoom = df.addBuildingRoom(newRoom);
+          
+        // After we have added a room to the database we need to reload the session att
+       // For the reportBuilding.
+        Building b = (Building) sessionObj.getAttribute("reportBuilding");
+       sessionObj.setAttribute("reportBuilding", df.getBuilding(b.getBdgId()));
         request.setAttribute("RoomSelected", newRoom.getRoomId());
 
     }
