@@ -28,6 +28,11 @@ function yesnoCheck() {
         document.getElementById('ifYes2').style.display = 'block';
     }
     else document.getElementById('ifYes2').style.display = 'none';
+    
+    if (document.getElementById('yesCheck3').checked) {
+        document.getElementById('ifYes3').style.display = 'block';
+    }
+    else document.getElementById('ifYes3').style.display = 'none';
 
 }
 
@@ -43,7 +48,9 @@ function yesnoCheck() {
     
     <br>
     
-    
+    <form name="ReportRoomForm" action="frontpage" method="POST">
+         <input type="hidden" name="page" value="submittedRoom" />   
+        
     <br>
    Inspection of This Room:
    
@@ -53,11 +60,11 @@ function yesnoCheck() {
         <br>
         
         <br>
-        Remarks: <br>
+        Examination of Room: <br>
         
             
-      <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno1" id="noCheck"> NO Remarks
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno1" id="yesCheck"> Yes
+      <input type="radio" value="NORemarks" checked="checked" onclick="javascript:yesnoCheck();" name="Examination" id="noCheck"> NO Remarks
+      <input type="radio" value="Remarks" onclick="javascript:yesnoCheck();" name="Examination" id="yesCheck"> Yes
         
       
        <br>
@@ -66,41 +73,31 @@ function yesnoCheck() {
         <br>
         <br>
 <div id="ifYes" style="display:none">
--------------------------------------------------------------------------------- 
     
 <br>
 <br>
- Remarks:
+ Examination of Room:
  <br>
 
        Remarks to floor:
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="Floor" rows="2" cols="20"></textarea>
        <br>
      
-      Remarks to Roof:
-     <textarea name="" rows="2" cols="20"></textarea>
+      Remarks to Windows:
+     <textarea name="Window" rows="2" cols="20"></textarea>
       
       <br>
       
        Remarks to Celling:
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="Celling" rows="2" cols="20"></textarea>
        
        <br>
        
-        Remarks to windows:
-     <textarea name="" rows="2" cols="20"></textarea>
+        Other Remarks:
+     <textarea name="Other" rows="2" cols="20"></textarea>
         
-        <br>
-        Upload pictures:
-        <input type="file" name="Upload Pictures"  />
-        Discprition: 
-     <textarea name="" rows="2" cols="20">
-     </textarea>
         
-        <br>
-        <br>
-        
-  --------------------------------------------------------------------------------------------      
+           
 </div>
   <br>
   <br>
@@ -113,8 +110,8 @@ function yesnoCheck() {
         
         
             
-      <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno2" id="noCheck"> NO Remarks
-      <input type="radio" onclick="javascript:yesnoCheck();" name="yesno2" id="yesCheck1"> Yes
+      <input type="radio" value="NODamages" checked="checked" onclick="javascript:yesnoCheck();" name="damage" id="noCheck"> NO Damage
+      <input type="radio" value="Damage" onclick="javascript:yesnoCheck();" name="damage" id="yesCheck1"> Yes
       
         
        <br>
@@ -122,38 +119,32 @@ function yesnoCheck() {
         <br>
         <div id="ifYes1" style="display:none">
             
- -----------------------------------------------------------------------------    
  <BR>
      When has the damage happend:
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="damageTime" rows="2" cols="20"></textarea>
      
      <br>
      
      Where
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="damagePlace" rows="2" cols="20"></textarea>
      
      <br>
      
      What has happend:
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="damageHappend" rows="2" cols="20"></textarea>
      
      <br>
      
      What is fixed:
-     <textarea name="" rows="2" cols="20"></textarea>
+     <textarea name="damageReparied" rows="2" cols="20"></textarea>
      
      <br>
      
      What kind of damage
-     <select name="">
-         <option>Moist</option>
-         <option>Fire</option>
-         <option>Other</option>
-     </select>
+     <input type="text" name="damageType" />
      
      <br>
      
-     -----------------------------------------------------------------------------
         </div>
      <br>
      
@@ -165,35 +156,58 @@ function yesnoCheck() {
           <br>
           
               
-  <input type="radio" checked="checked" onclick="javascript:yesnoCheck();" name="yesno3" id="noCheck"> NO Remarks
-   <input type="radio" onclick="javascript:yesnoCheck();" name="yesno3" id="yesCheck2"> Yes
+  <input type="radio" value="NoMoist" checked="checked" onclick="javascript:yesnoCheck();" name="Moist" id="noCheck"> No Moist Scan
+   <input type="radio" value="Moist" onclick="javascript:yesnoCheck();" name="Moist" id="yesCheck2"> Yes
           
 
           <div id="ifYes2" style="display:none">
               
           <br>
-          ------------------------------------------------------------------------
         
           <br>
           
         Moist scan Result:
         
         
-        <textarea name="" rows="2" cols="20"></textarea>
+        <textarea name="moistScanResult" rows="2" cols="20"></textarea>
         
         <br>
         Moist  scan Area:
         
-        <textarea name="" rows="2" cols="20"></textarea>
+        <textarea name="moistScanArea" rows="2" cols="20"></textarea>
         
         <br>
-        ---------------------------------------------------------------------------------
       </div>
         <br>
+        <br>
+        <br>
         
+        
+        Add Recomendation for  Room:
+        <br>
+    <input type="radio" value="NoRecommendation" checked="checked" onclick="javascript:yesnoCheck();" name="Recommendation" id="noCheck"> NO Recomendation
+   <input type="radio" value="Recommendation" onclick="javascript:yesnoCheck();" name="Recommendation" id="yesCheck3"> Yes
     
-    
-    
+   <div id="ifYes3" style="display: none">
+       
+       
+       Recomendation: <textarea name="recomendation" rows="4" cols="20"></textarea>
+       
+       
+   </div>
+   
+   <br>
+        Upload pictures:
+        <input type="file" name="Upload Pictures"  />
+        Discprition: 
+     <textarea name="" rows="2" cols="20">
+     </textarea>
+        
+        <br>
+        <br>
+        
+        <input type="submit" value="Next" name="NextButton" />
+    </form>
 </main>
 
 

@@ -24,9 +24,8 @@ public class ReportMapper {
         String SQLString = "insert into report(report_date,building_id,category_conclusion) values (?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            Date date = java.sql.Date.valueOf(r.getDate());  //gets a String value of date and converts it to sql date
             //insert a tuple and set the values
-            statement.setDate(1, date);
+            statement.setDate(1, r.getDate());
             statement.setInt(2, r.getBuildingId());
             statement.setInt(3, r.getCategoryConclusion());
             statement.executeUpdate();
@@ -130,7 +129,7 @@ public class ReportMapper {
         String SQLString = "insert into report_room_moist(report_room_moist_measured, report_room_moist_place,report_room_id) values (?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, rm.getMoistMeasured());
+            statement.setString(1, rm.getMoistMeasured());
             statement.setString(2, rm.getMeasurePoint());
             statement.setInt(3, rm.getReportRoom());
             statement.executeUpdate();

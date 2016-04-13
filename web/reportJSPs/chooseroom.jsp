@@ -21,9 +21,8 @@
 
 <main>
     
-    <h1> Hello from Report Choose Room</h1>
+    <h1> Report Choose Room</h1>
     
-    <h1> ID for the report to be Created: ${sessionScope.reportToBeCreated.reportId}</h1>
     
     Report for Buidling: ${sessionScope.reportBuilding.buildingName} <br>
     With Address: ${sessionScope.reportBuilding.streetAddress}
@@ -76,7 +75,14 @@
         
     </div>
     
+    <br>
+    <br>
     
+    <%-- This can just be a link be cant get it to work--%>
+    <form name="floorselect" action="frontpage" method="POST">
+        <input type="hidden" name="page" value="toFinishReport" />  
+        <input type="submit" value="Finish Report" name="Report Finish" />
+    </form>
     
     
     

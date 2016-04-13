@@ -48,6 +48,15 @@ public class ReportRoomDamage {
         this.whatIsRepaired = whatIsRepaired;
     }
 
+    /**
+     * This is the constructor to be used in the frontcontrol to create the object
+     * based on the field in the jsp.
+     * @param damageTime
+     * @param place
+     * @param whatHappened
+     * @param whatIsRepaired
+     * @param damageType
+     */
     public ReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType) {
         this.damageTime = damageTime;
         this.place = place;
@@ -88,4 +97,10 @@ public class ReportRoomDamage {
         return repRoomId;
     }
 
+    @Override
+    public String toString() {
+        return "ReportRoomDamage{" + "repRoomDmgId=" + repRoomDmgId + ", damageTime=" + damageTime + ", place=" + place + ", whatHappened=" + whatHappened + ", whatIsRepaired=" + whatIsRepaired + ", damageType=" + damageType + ", repRoomId=" + repRoomId + '}';
+    }
+
+    
 }

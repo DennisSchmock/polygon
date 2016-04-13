@@ -7,6 +7,7 @@ package Model;
 
 import Domain.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -245,7 +246,11 @@ public class DBFacade {
 
     //Sending the report as a whole to DB - new method
     public void newReportToDB(Report R) {
-        nrm.reportToDataBase(R, con);
+        try {
+            nrm.reportToDataBase(R, con);
+        } catch (SQLException ex) {
+            System.out.println("Error in creating a report, No changes in the database" + ex);
+        }
     }
 
     public User loadUser(String username) {
@@ -279,13 +284,14 @@ public class DBFacade {
 
     /**
      * Creates the tuble in the database for a Report.
-     * @param report Take the report obejct that is to be created in the database
-     * The report obejct does not have an ID yet, because that is to be created
-     * When the values are inserted to the database
-     * @return The just inserted Report object, that now contains the report ID.
+     * @param report Report to be saved in the database
      */
-    public Report addReportToDB(Report report) {
-       return nrm.createReportTuble(report, con);
+    public void reportToDataBase(Report report) {
+        try {
+            nrm.reportToDataBase(report, con);
+        } catch (SQLException ex) {
+            System.out.println("Error in creating a report, No changes in the database" + ex);
+        }
 
     }
 

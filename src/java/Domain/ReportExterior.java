@@ -18,16 +18,32 @@ public class ReportExterior {
     private int reportId;
 
     /**
-     *
+     * Used in the Frontcontroller to create, based on fields in JSP.
      * @param repExtInspectedArea The area that is inspected: Walls, Roof exc.
      * @param repExtDescription The concreate decription
-     * @param reportId The report ID that the Exterior decription belongs to.
      */
-    public ReportExterior(String repExtInspectedArea, String repExtDescription, int reportId) {
+    public ReportExterior(String repExtInspectedArea, String repExtDescription) {
         this.repExtInspectedArea = repExtInspectedArea;
         this.repExtDescription = repExtDescription;
+    }
+
+    /**
+     * Used in the database
+     * @param repExtId
+     * @param repExtInspectedArea
+     * @param repExtDescription
+     * @param repExtPic
+     * @param reportId
+     */
+    public ReportExterior(int repExtId, String repExtInspectedArea, String repExtDescription, int repExtPic, int reportId) {
+        this.repExtId = repExtId;
+        this.repExtInspectedArea = repExtInspectedArea;
+        this.repExtDescription = repExtDescription;
+        this.repExtPic = repExtPic;
         this.reportId = reportId;
     }
+    
+    
 
     
     
@@ -81,6 +97,11 @@ public class ReportExterior {
 
     public void setReportId(int reportId) {
         this.reportId = reportId;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportExterior{" + "repExtId=" + repExtId + ", repExtInspectedArea=" + repExtInspectedArea + ", repExtDescription=" + repExtDescription + ", repExtPic=" + repExtPic + ", reportId=" + reportId + '}';
     }
     
     

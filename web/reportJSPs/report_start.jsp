@@ -23,7 +23,6 @@
     
     <h1> Hello from Report Start</h1>
     
-    <h1> ID for the report to be Created: ${sessionScope.reportToBeCreated.reportId}</h1>
     
     Report for Buidling: ${sessionScope.reportBuilding.buildingName} <br>
     With Address: ${sessionScope.reportBuilding.streetAddress}

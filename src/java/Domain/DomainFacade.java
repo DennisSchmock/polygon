@@ -7,6 +7,7 @@ package Domain;
 
 import Model.DBFacade;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public String saveBuildingPic(int buildId, String ext){
         
     }
 
-    public Report saveNewReport(String date, int buildingId, int category) {
+    public Report saveNewReport(Date date, int buildingId, int category) {
         Report r = new Report(0, date, buildingId, category); // Fix
         r = dbFacade.saveNewReport(r);
         return r;
@@ -61,7 +62,7 @@ public String saveBuildingPic(int buildId, String ext){
         return rr;
     }
 
-    public void saveReportMoist(int moistMeasured, String measurePoint, int reportRoom) {
+    public void saveReportMoist(String moistMeasured, String measurePoint, int reportRoom) {
         ReportRoomMoist rrm = new ReportRoomMoist(0, moistMeasured, measurePoint, reportRoom);
 
         dbFacade.saveReportMoist(rrm);
@@ -133,13 +134,11 @@ public String saveBuildingPic(int buildId, String ext){
     }
 
     /**
-     * Sends the report obejct to the DB Facade, and gets the same object with
-     * an uniqe ID in return.
+     * Sends the report obejct to the DB Facade
      * @param report The report object without an uniqe ID jet.
-     * @return Report with an now uniqe ID.
      */
-    public Report saveReport(Report report) {
-       return  dbFacade.addReportToDB(report);
+    public void saveReport(Report report) {
+         dbFacade.reportToDataBase(report);
 
     }
 

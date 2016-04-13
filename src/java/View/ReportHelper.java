@@ -12,6 +12,7 @@ import Domain.Report;
 import Domain.ReportRoom;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -131,10 +132,10 @@ public class ReportHelper extends HttpServlet {
         
         else System.out.println("numOfRooms is null");
 
-        String reportDate = request.getParameter("date");
+        Date d = new Date(14);
         int reportBuildingId = 1; //some bookkeeping to be done with ID
         int reportCategory = Integer.parseInt(request.getParameter("category"));
-        Report r = df.saveNewReport(reportDate, reportBuildingId, reportCategory);
+        Report r = df.saveNewReport(d, reportBuildingId, reportCategory);
         System.out.println("Report ID");
         System.out.println(r.getReportId());
         int reportId = r.getReportId();
@@ -177,10 +178,10 @@ public class ReportHelper extends HttpServlet {
 
             df.saveReportRoomDamage(when, where, how, whatIsDone, "Add dmgType", rrId);
 
-            int moist;
+            String moist;
             String place = "";
             if (!request.getParameter("moistScan" + String.valueOf(roomCount + 1)).equals("")) {
-                moist = Integer.parseInt(request.getParameter("moistScan" + String.valueOf(roomCount + 1)));
+                moist = (request.getParameter("moistScan" + String.valueOf(roomCount + 1)));
                 if (request.getParameter("moistPoint" + String.valueOf(roomCount + 1)) != null) {
                     place = (String) request.getParameter("moistPoint" + String.valueOf(roomCount + 1));
                 }
