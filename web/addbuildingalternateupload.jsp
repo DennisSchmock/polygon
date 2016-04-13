@@ -20,7 +20,7 @@
         <input type="hidden" name="page" value="newbuilding" />
 
        <label class="test">Building Name</label> 
-        <input type="text" name="buildingName" />
+       <input type="text" name="buildingName" value="${sessionScope.building.buildingName}" />
         <br>
         
 
@@ -54,6 +54,9 @@
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 
     </form>
+    
+    ${sessionScope.building.buildingPic}
+
     
     <form class="w3-container" action="upload" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="page" value="newbuilding" />

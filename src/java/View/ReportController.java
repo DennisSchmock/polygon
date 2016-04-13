@@ -50,6 +50,7 @@ public class ReportController extends HttpServlet {
         }
         if (page.equalsIgnoreCase("newbuilding")) {
             url = "/addbuildingalternateupload.jsp";
+           
         }
         System.out.println(request.getMethod());
 
@@ -105,7 +106,7 @@ public class ReportController extends HttpServlet {
         if (action.equalsIgnoreCase("addBuilding")) {
             Building b = new Building();
             b.setBuildingName("tempname");
-            request.setAttribute("building", b);
+            request.getSession().setAttribute("building", b);
 
         }
 

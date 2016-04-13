@@ -5,6 +5,7 @@
  */
 package View;
 
+import Domain.Building;
 import Domain.DomainFacade;
 import java.io.File;
 import java.io.IOException;
@@ -50,13 +51,42 @@ public class upload extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = "";
 
+        String page = request.getParameter("page");
+
+        String command = request.getParameter("command");
+        if (command == null) {
+            command = "";
+        }
+        if (page == null) {
+            page = "";
+        }
+        System.out.println(command);
+
+        if (page.equalsIgnoreCase(page)) {
+            url = "/addbuildingalternateupload.jsp";
+        }
+
+        if (command.equalsIgnoreCase("addpicture")) {
+            List<Part> fileParts = prepareForUpload(request);
+
+            String filename = savePictureBuilding(request, fileParts);
+            Building b = (Building) request.getSession().getAttribute("building");
+            b.setBuilding_pic(filename);
+        }
+
+        RequestDispatcher dispatcher
+                = getServletContext().getRequestDispatcher(url);
+        dispatcher.forward(request, response);
+
+    }
+
+    private List<Part> prepareForUpload(HttpServletRequest request) {
         Part filePart = null;                                   //Used in case of fileuploads
         List<Part> fileParts = new ArrayList();
-
         //filePart = request.getPart("buildingImg");
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
-                
+
                 //Checks if the form might(!?) contain a file for upload
                 //Extracts the part of the form that is the file
                 Collection<Part> parts = request.getParts();
@@ -74,33 +104,10 @@ public class upload extends HttpServlet {
                 Logger.getLogger(upload.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        String page = request.getParameter("page");
-
-        String command = request.getParameter("command");
-        if (command == null) {
-            command = "";
-        }
-        if (page == null) {
-            page = "";
-        }
-        System.out.println(command);
-
-        if (page.equalsIgnoreCase(page)) {
-            url = "/addbuildingalternateupload.jsp";
-        }
-
-        if (command.equalsIgnoreCase("addpicture")) {
-            System.out.println("GOt here!");
-            savePictureBuilding(request, fileParts);
-        }
-
-        RequestDispatcher dispatcher
-                = getServletContext().getRequestDispatcher(url);
-        dispatcher.forward(request, response);
-
+        return fileParts;
     }
 
-    public void savePictureBuilding(HttpServletRequest request, List<Part> fileParts) {
+    public String savePictureBuilding(HttpServletRequest request, List<Part> fileParts) {
         Part filePart = null;
         if (!fileParts.isEmpty()) {
             System.out.println("FileParts Size");
@@ -111,9 +118,12 @@ public class upload extends HttpServlet {
             System.out.println(filePart.getSubmittedFileName());
 
             String filename = nextSessionId(); //Make random filename and upload to folder.
-            filename = filename +"."+ extension;  //+ extension
-            uploadFile(filePart, "buildingPic", filename);                         //Upload the file in buildingPicFolder
+            filename = filename + "." + extension;  //+ extension
+            uploadFile(filePart, "buildingPic", filename);   
+            return filename; //Upload the file in buildingPicFolder
         }
+        return "";
+        
     }
 
     /**
