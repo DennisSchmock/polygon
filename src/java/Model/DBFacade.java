@@ -30,6 +30,17 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
+//        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
+//        facade.saveBuildingRoom(newRoom);
+//        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
+//        for (BuildingRoom br : rl) {
+//            System.out.println("floor:" + br.getRoomName());
+//        }
+        
+//        ArrayList<BuildingRoom> br=facade.getRoomList(1);
+//        System.out.println(".."+ br.get(0).getRoomId());
+//        System.out.println(".."+ br.get(1).getRoomId());
+//        System.out.println(".."+ br.get(2).getRoomId());
 //        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
 //        NewReportMapper nm = new NewReportMapper();
 //        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
@@ -329,5 +340,17 @@ public class DBFacade {
      */
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) {
         return bm.saveBuildingRoom(newRoom, con);
+    }
+    
+    public BuildingFloor getFloor(int id){
+        return bm.getFloor(id, con);
+    }
+    
+    public void updateFloor(int id, int totalRooms){
+        bm.updateFloor(id, con, totalRooms);
+    }
+    
+    public ArrayList<BuildingRoom> getRoomList(int flrId){
+        return bm.getRoomList(flrId, con);
     }
 }

@@ -342,7 +342,7 @@ public class BuildingMapper {
      * @return The newly inserted building object
      */
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom, Connection con) {
-        String sql = "insert into building_room (room_name,floor_id) values = (?,?) ";
+        String sql = "insert into building_room (room_name,floor_id) values (?,?) "; // change from values = (?,?) (invalid syntax)
         try {
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, newRoom.getRoomName());
@@ -361,6 +361,46 @@ public class BuildingMapper {
         return newRoom;
     }
     
+    
+    public BuildingFloor getFloor(int flrId, Connection con) {
+        BuildingFloor bf = null;
+        String sqlString = "SELECT * FROM building_floor where floor_id=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, flrId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                bf = new BuildingFloor(
+                        rs.getInt("floor_id"),
+                        rs.getInt("floor_number"),
+                        rs.getDouble("floor_size"),
+                        rs.getInt("total_rooms"),
+                        rs.getInt("idbuilding"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception in BUILDINGMAPPER/get floor: " + ex);
+            return null;
+        }
+        return bf;
+    }
+    
+    
+    public void updateFloor(int flrId, Connection con, int newTotalRooms) {
+       
+        String SQLString
+                = "update building_floor set total_rooms = ? where floor_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, newTotalRooms);
+            statement.setInt(2, flrId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateFloor");
+            System.out.println(e.getMessage());
+        } 
+    }
 }
 
 

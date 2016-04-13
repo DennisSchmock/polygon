@@ -197,6 +197,26 @@ public String saveBuildingPic(int buildId, String ext){
     public ArrayList<BuildingFloor> listOfFloors(int bdgId){
         return dbFacade.getListOfFloors(bdgId);
     }
+
+    public Customer getCustomer(int cusid) {
+        return dbFacade.getCustomer(cusid);
+    }
+
+    public BuildingFloor getFloor(int flrId) {
+        return dbFacade.getFloor(flrId);
+    }
+    
+    public ArrayList<BuildingRoom> getListOfRooms(int flrId){
+        return dbFacade.getRoomList(flrId);
+    }
+
+    public void addRoom(BuildingRoom br) {
+        dbFacade.saveBuildingRoom(br);
+    }
+    
+    public void updateFloor(int id, int newNumRooms){
+        dbFacade.updateFloor(id, newNumRooms);
+    }
  
 
 }
