@@ -9,27 +9,15 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
-import Domain.User;
-import static Model.DBconnector.url;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -51,11 +39,17 @@ public class ReportController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = "/viewbuildingadmin.jsp";
-        String action = "";
 
-        action = request.getParameter("action");
+        String page = request.getParameter("page");
+        String action = request.getParameter("action");
         if (action == null) {
             action = "";
+        }
+        if (page == null) {
+            page = "";
+        }
+        if (page.equalsIgnoreCase("newbuilding")) {
+            url = "/addbuildingalternateupload.jsp";
         }
         System.out.println(request.getMethod());
 
@@ -103,11 +97,15 @@ public class ReportController extends HttpServlet {
             request.setAttribute("showBuilding", true);
 
         }
-        if (action.equalsIgnoreCase("newbuilding")) {
-            Building b = createBuilding(request, df);
-            b = df.getBuilding(b.getBdgId());
-            request.getSession().setAttribute("building", b);
+        if (action.equalsIgnoreCase("showBuilding")) {
             request.setAttribute("showBuilding", true);
+
+        }
+       
+        if (action.equalsIgnoreCase("addBuilding")) {
+            Building b = new Building();
+            b.setBuildingName("tempname");
+            request.setAttribute("building", b);
 
         }
 
@@ -141,89 +139,6 @@ public class ReportController extends HttpServlet {
             request.getSession().setAttribute("building", b);
         }
 
-    }
-
-    private Building createBuilding(HttpServletRequest request, DomainFacade df) {
-        String buildingName = request.getParameter("buildingName");
-        String StreetAddress = request.getParameter("streetAddress");
-        String StreetNumber = request.getParameter("streetNumber");
-        int zipcode = Integer.parseInt(request.getParameter("zipCode"));
-        double buildingsize = Double.parseDouble(request.getParameter("buildingSize"));
-        int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
-        String useOfBuilding = request.getParameter("useOfBuilding");
-        User userLoggedIn = (User) request.getSession().getAttribute("user");
-
-        int custId = userLoggedIn.getCustomerid();
-        if (custId == 0 && request.getParameter("customerId") != null) {
-            custId = Integer.parseInt(request.getParameter("customerId"));
-
-        }
-
-        Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
-                buildingsize, buildingYear, useOfBuilding, custId);
-        int buildingId = b.getBdgId();
-
-        savePictureBuilding(request, df, buildingId);
-        return b;
-
-    }
-
-    public void savePictureBuilding(HttpServletRequest request, DomainFacade df, int buildingId) {
-        Part filePart = null;                                   //Used in case of fileuploads
-        List<Part> fileParts = new ArrayList();
-        //filePart = request.getPart("buildingImg");
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
-                //Checks if the form might(!?) contain a file for upload
-                //Extracts the part of the form that is the file
-                Collection<Part> parts = request.getParts();
-
-                for (Part part : parts) {
-                    //filePart = request.getPart("buildingImg");
-                    if (part.getName().equals("buildingImg")) {
-                        fileParts.add(part);
-                    }
-                }
-            } catch (IOException | ServletException ex) {
-                Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (!fileParts.isEmpty()) {
-            System.out.println("FileParts Size");
-            System.out.println(fileParts.size());
-            filePart = fileParts.get(0);
-            String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
-            String extension = fileDotSplit[fileDotSplit.length - 1];               //Take last part of filename(the extension)
-            System.out.println(filePart.getSubmittedFileName());
-
-            String filename = df.saveBuildingPic(buildingId, extension);        //Upload the image details in db, get a filename back
-            uploadFile(filePart, "buildingPic", filename);                          //Upload the file in buildingPicFolder
-        }
-    }
-
-    /**
-     * Uploads a file to the server. Helper method for any fileUpload
-     *
-     * @param filePart the Part that holds the file
-     * @param folder the subfolder it should go into (has to exist beforehand,
-     * uses relative path!)
-     * @param filename the full name of the file.
-     */
-    private void uploadFile(Part filePart, String folder, String filename) {
-        // The Wrong way of doing things according to several sources (relative path)
-        // Deliberate in this case for the purpose of being able to implement across multiple systems
-        String uploadFolder = getServletContext().getRealPath("")
-                + File.separator;
-
-        File uploads = new File(uploadFolder);
-        uploads = new File(uploads.getParentFile().getParent() + File.separator + "web" + File.separator + folder);
-        File file = new File(uploads, filename);
-
-        try (InputStream input = filePart.getInputStream()) {
-            Files.copy(input, file.toPath());
-        } catch (IOException ex) {
-            Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -52,6 +52,9 @@ public class Building implements Serializable{
         buildingPic="0.png";
     }
 
+    public Building() {
+    }
+
     
     
     public int getBdgId() {

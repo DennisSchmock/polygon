@@ -47,6 +47,7 @@
                         <a href="#">Admin</a>
                         <div class="w3-dropdown-content w3-white w3-card-4">
                             <a href="frontpage?page=addbuilding">Add building</a>
+                            <a href="viewreport1?page=newbuilding&action=addbuilding">Add building alternate</a>
 
                             <a href="frontpage?page=viewcustomers">View Customers</a>
                             <a href="frontpage?page=listreports">View Reports</a>

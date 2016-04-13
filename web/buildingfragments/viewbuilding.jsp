@@ -39,7 +39,7 @@
     </div>
     <div class="w3-rest">
 
-            <img class="w3-round" src="${pageContext.request.contextPath}/buildingPic/${sessionScope.building.buildingPic}"/>
+            <img class="w3-round" style="width: 300px" src="${pageContext.request.contextPath}/buildingPic/${sessionScope.building.buildingPic}"/>
             <br><br></div>
    
 
