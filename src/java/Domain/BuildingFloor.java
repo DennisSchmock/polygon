@@ -29,6 +29,12 @@ public class BuildingFloor {
         this.totalRooms = totalRooms;
         this.buildingId = buildingId;
     }
+    
+     public BuildingFloor(int floorNumber, double floorSize, int buildingId) {
+        this.floorNumber = floorNumber;
+        this.floorSize = floorSize;
+        this.buildingId = buildingId;
+    }
 
     public BuildingFloor(int floorId, int floorNumber, double floorSize, int totalRooms, int buildingId) {
         this.floorId = floorId;
@@ -88,5 +94,13 @@ public class BuildingFloor {
         this.listOfRooms = listOfRooms;
     }
     
+    public BuildingRoom getARoom(int roomId){
+        for (BuildingRoom room : listOfRooms) {
+            if(room.getRoomId()==roomId){
+                return room; 
+            }
+        }
+            return null;
+    }
     
 }

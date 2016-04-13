@@ -27,7 +27,7 @@
 
                     <c:out value="${sessionScope.user.fName}"/> 
                     <c:out value="${sessionScope.user.lName}"/><br>
-                    <a href="?page=logout">log out</a>
+                    <a href="login?page=logout">log out</a>
 
 
                 </div>
