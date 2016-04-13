@@ -58,17 +58,18 @@
     
         <table class="w3-table w3-striped">
             <tr>
-            <th>Room ID</th>
             <th>Room Name</th>
+            
             </tr>
+             
                     <c:forEach items="${sessionScope.roomsList}" var="room">
-                     
+                      
                         <tr>
-                        <td>${room.roomId} </td>
-                        <td>${room.roomName}</td><br>
-                        </tr>                                                                   
+                        <td><ol> ${room.roomName}</ol></td><br>
+                        </tr>    
+                        
                     </c:forEach>
-    
+             
             </table>
     </form>    
 </main>

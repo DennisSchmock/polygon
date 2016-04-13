@@ -59,7 +59,8 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private boolean testing = true;
-    Customer c;
+    //store objects since get parameter values resets
+    Customer c; 
     Building bdg;
     BuildingFloor bf;
     BuildingRoom br;
@@ -347,6 +348,7 @@ public class FrontControl extends HttpServlet {
             request.setAttribute("user", null);
             request.setAttribute("loggedin", false);
             request.getSession().invalidate();
+            url="/index.jsp";
         }
 
         RequestDispatcher dispatcher
@@ -722,8 +724,12 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-    
-
+    /**
+     * This method adds a new floor, then set to BuildingFloor object and session with the list of floors 
+     * @param request
+     * @param df
+     * @param sessionObj
+     */
     private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
@@ -732,11 +738,8 @@ public class FrontControl extends HttpServlet {
             int n = (int) Integer.parseInt(floorNum);
             double s = (double) Double.parseDouble(floorSize);
             int r = (int) Integer.parseInt(totalRooms);
-            bf.setBuildingId(bdg.getBdgId());
-            bf.setFloorNumber(n);
-            bf.setFloorSize(s);
-            bf.setTotalRooms(r);
-            df.addFloors(bf);
+            bf = new BuildingFloor(n,s,r,bdg.getBdgId());
+            df.addFloors(bf);//new building floor will be added
             //for updating the view of floors list added
             ArrayList<BuildingFloor> bfList = df.listOfFloors(bf.getBuildingId());
             bdg.setListOfFloors(bfList);
@@ -746,12 +749,24 @@ public class FrontControl extends HttpServlet {
         
     }
     
+    /**
+     * This method load the floors in a certain building and sets to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         ArrayList<BuildingFloor> bfList = df.listOfFloors(bdg.getBdgId());
         bdg.setListOfFloors(bfList);
         sessionObj.setAttribute("floorsList", bfList);
     }
 
+    /**
+     * This method gets the building data and sets to a session
+     * @param request
+     * @param df
+     * @param sessionObj
+     */
     private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
 
         int id = Integer.parseInt(request.getParameter("buildings"));
@@ -773,6 +788,11 @@ public class FrontControl extends HttpServlet {
 
         BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
         newRoom = df.addBuildingRoom(newRoom);
+          
+        // After we have added a room to the database we need to reload the session att
+       // For the reportBuilding.
+        Building b = (Building) sessionObj.getAttribute("reportBuilding");
+       sessionObj.setAttribute("reportBuilding", df.getBuilding(b.getBdgId()));
         request.setAttribute("RoomSelected", newRoom.getRoomId());
 
     }
@@ -827,18 +847,36 @@ public class FrontControl extends HttpServlet {
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
     }
 
+    /**
+     * This method gets the selected floor and sets to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         int id = Integer.parseInt(request.getParameter("floors"));
         bf = df.getBuildingFloor(id);
         sessionObj.setAttribute("selectedFloor", bf);
     }
 
+    /**
+     * This method loads the list of rooms and sets it to a session
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         ArrayList<BuildingRoom> roomsList = df.getListOfRooms(bf.getFloorId());
         bf.setListOfRooms(roomsList);
         sessionObj.setAttribute("roomsList", roomsList);
     }
 
+    /**
+     * This method adds a new room and updates the session of rooms list
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
     private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
         String roomName = (String)request.getParameter("roomname");
         if (roomName != null) {
