@@ -329,6 +329,7 @@ public class FrontControl extends HttpServlet {
             request.setAttribute("user", null);
             request.setAttribute("loggedin", false);
             request.getSession().invalidate();
+            url="/index.jsp";
         }
 
         RequestDispatcher dispatcher
