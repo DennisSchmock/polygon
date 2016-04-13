@@ -30,6 +30,17 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
+//        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
+//        facade.saveBuildingRoom(newRoom);
+//        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
+//        for (BuildingRoom br : rl) {
+//            System.out.println("floor:" + br.getRoomName());
+//        }
+        
+//        ArrayList<BuildingRoom> br=facade.getRoomList(1);
+//        System.out.println(".."+ br.get(0).getRoomId());
+//        System.out.println(".."+ br.get(1).getRoomId());
+//        System.out.println(".."+ br.get(2).getRoomId());
 //        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
 //        NewReportMapper nm = new NewReportMapper();
 //        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
@@ -314,10 +325,19 @@ public class DBFacade {
         
     }
 
+    /**
+     * redirects to the BuildingMapper
+     * @param bf the BuildingFloor object will be added to the database
+     */
     public void addFloor(BuildingFloor bf) {
         bm.addFloor(bf,con);
     }
     
+    /**
+     * redirects to the BuildingMapper
+     * @param bdgId building Id
+     * @return a list of floors from the database based on the building ID
+     */
     public ArrayList<BuildingFloor> getListOfFloors(int bdgId){
         return bm.getFloorsList(bdgId, con);
     }
@@ -330,14 +350,21 @@ public class DBFacade {
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) {
         return bm.saveBuildingRoom(newRoom, con);
     }
-
+    
     /**
-     * Sends the request to the right mapper.
-     * 
-     * @param floorid The ID of the BuildingFloor to be loaded.
-     * @return An object of the building that has been loaded
+     *
+     * @param id
+     * @return
      */
-    public BuildingFloor getBuildingFloor(int floorid) {
-        return bm.getBuildingFloorBM(floorid, con);
+    public BuildingFloor getFloor(int id){
+        return bm.getFloor(id, con);
+    }
+    
+    public void updateFloor(int id, int totalRooms){
+        bm.updateFloor(id, con, totalRooms);
+    }
+    
+    public ArrayList<BuildingRoom> getRoomList(int flrId){
+        return bm.getRoomList(flrId, con);
     }
 }
