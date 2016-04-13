@@ -352,18 +352,28 @@ public class DBFacade {
     }
     
     /**
-     *
-     * @param id
-     * @return
+     * redirects to BuildingMapper
+     * @param id floor ID
+     * @return BuildingFloor object based on the floor ID
      */
     public BuildingFloor getFloor(int id){
         return bm.getFloor(id, con);
     }
     
+    /**
+     * redirects to BuildingMapper
+     * @param id floorID
+     * @param totalRooms new number of rooms to be updated in the database
+     */
     public void updateFloor(int id, int totalRooms){
         bm.updateFloor(id, con, totalRooms);
     }
     
+    /**
+     * redirects to BuildingMapper
+     * @param flrId floor ID
+     * @return a list of Building Rooms based on the floor ID
+     */
     public ArrayList<BuildingRoom> getRoomList(int flrId){
         return bm.getRoomList(flrId, con);
     }
