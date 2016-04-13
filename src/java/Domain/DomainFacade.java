@@ -199,13 +199,31 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getListOfFloors(bdgId);
     }
 
+    public Customer getCustomer(int cusid) {
+        return dbFacade.getCustomer(cusid);
+    }
+
+    
+    public ArrayList<BuildingRoom> getListOfRooms(int flrId){
+        return dbFacade.getRoomList(flrId);
+    }
+
+    public void addRoom(BuildingRoom br) {
+        dbFacade.saveBuildingRoom(br);
+    }
+    
+    public void updateFloor(int id, int newNumRooms){
+        dbFacade.updateFloor(id, newNumRooms);
+    }
+ 
+
     /**
      * Method that needs to load an Building Floor based on a floorod-
      * @param floorid the ID for the floor to be loaded
      * @return An object of the infomation for the floor.
      */
     public BuildingFloor getBuildingFloor(int floorid) {
-        return dbFacade.getBuildingFloor(floorid);
+        return dbFacade.getFloor(floorid);
     }
 
  

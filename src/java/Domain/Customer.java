@@ -25,7 +25,7 @@ public class Customer implements Serializable{
     private String city;
     private String phoneNumber;
     private ArrayList<User> listOfUsers;
-    private ArrayList<Building> buildings;
+    private List<Building> buildings;
 
     /**
      *
@@ -232,7 +232,7 @@ public class Customer implements Serializable{
     /**
      * @param buildings the buildings to set
      */
-    public void setBuildings(ArrayList<Building> buildings) {
+    public void setBuildings(List<Building> buildings) {
         this.buildings = buildings;
     }
 

@@ -1,6 +1,7 @@
 
 package Domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +14,15 @@ public class BuildingFloor {
     private double floorSize;
     private int totalRooms;
     private int buildingId;
-    private List<BuildingRoom> listOfRooms;
+    private ArrayList<BuildingRoom> listOfRooms;
 
+    /**
+     *
+     * @param floorNumber floor number 
+     * @param floorSize size of the floor in m2
+     * @param totalRooms total number of rooms in a certain floor
+     * @param buildingId ID reference to the building
+     */
     public BuildingFloor(int floorNumber, double floorSize, int totalRooms, int buildingId) {
         this.floorNumber = floorNumber;
         this.floorSize = floorSize;
@@ -72,11 +80,11 @@ public class BuildingFloor {
         this.buildingId = buildingId;
     }
 
-    public List<BuildingRoom> getListOfRooms() {
+    public ArrayList<BuildingRoom> getListOfRooms() {
         return listOfRooms;
     }
 
-    public void setListOfRooms(List<BuildingRoom> listOfRooms) {
+    public void setListOfRooms(ArrayList<BuildingRoom> listOfRooms) {
         this.listOfRooms = listOfRooms;
     }
     

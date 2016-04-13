@@ -395,6 +395,56 @@ public class BuildingMapper {
         return bf;
     }
     
+    /**
+     * Get the floor data from the database reference from the floor ID
+     * @param flrId floor ID
+     * @param con
+     * @return BuildingFloor object of a certain floor in a building
+     */
+    public BuildingFloor getFloor(int flrId, Connection con) {
+        BuildingFloor bf = null;
+        String sqlString = "SELECT * FROM building_floor where floor_id=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, flrId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                bf = new BuildingFloor(
+                        rs.getInt("floor_id"),
+                        rs.getInt("floor_number"),
+                        rs.getDouble("floor_size"),
+                        rs.getInt("total_rooms"),
+                        rs.getInt("idbuilding"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception in BUILDINGMAPPER/get floor: " + ex);
+            return null;
+        }
+        return bf;
+    }
+    
+    /**
+     * Update the floor's total number of rooms in the building_floor table based it's floor ID
+     * @param flrId floor ID
+     * @param con
+     * @param newTotalRooms new number of Rooms to be changed in the database
+     */
+    public void updateFloor(int flrId, Connection con, int newTotalRooms) {
+       
+        String SQLString
+                = "update building_floor set total_rooms = ? where floor_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, newTotalRooms);
+            statement.setInt(2, flrId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateFloor");
+            System.out.println(e.getMessage());
+        } 
+    }
 }
 
 
