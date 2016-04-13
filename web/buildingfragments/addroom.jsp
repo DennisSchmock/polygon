@@ -1,16 +1,6 @@
-<%-- 
-    Document   : addroom
-    Created on : Apr 12, 2016, 7:55:40 PM
-    Author     : CJS
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-    <title>Add Floors</title>
-    <%@include file="Style/Header.jsp" %>
-<main>
     <div class="w3-row-padding">
      <p>
         Customer:${sessionScope.selectedCustomer.companyName}<br>
@@ -58,21 +48,17 @@
     
         <table class="w3-table w3-striped">
             <tr>
+            <th>Room ID</th>
             <th>Room Name</th>
-            
             </tr>
-             
                     <c:forEach items="${sessionScope.roomsList}" var="room">
-                      
+                     
                         <tr>
-                        <td><ol> ${room.roomName}</ol></td><br>
-                        </tr>    
-                        
+                        <td>${room.roomId} </td>
+                        <td>${room.roomName}</td><br>
+                        </tr>                                                                   
                     </c:forEach>
-             
+    
             </table>
     </form>    
 </main>
-
-<%@include file="Style/Footer.jsp" %>
-

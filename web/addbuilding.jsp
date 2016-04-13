@@ -19,7 +19,7 @@
     <form name="Building Form" action="frontpage" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="page" value="newbuilding" />
 
-       <label class="test">(An ID so that you can find it)  Building Name</label> 
+       <label class="test">Building Name</label> 
         <input type="text" name="buildingName" />
         <br>
         
@@ -33,15 +33,15 @@
         <br>
         
        <label class="test">Zip Code </label>
-        <input type="number" name="zipCode" value="" max="9900" required />
+        <input type="number" name="zipCode" value="" max="9999" required />
         <br>
         
        <label class="test">Building Size (m^2) </label>
-        <input type="number" step="0.01" name="buildingSize" max="9999"  required />
+        <input type="number" step="0.01" name="buildingSize"  required />
         <br>
         
         <label class="test">Building Image</label>
-        <input type="file" name="buildingImg" id="fileChooser"/><br/><br/>
+        <input type="file" name="buildingImg" id="fileChooser" multiple="multiple"/><br/><br/>
         
         
        <label class="test">Building Year </label>

@@ -720,6 +720,10 @@ public class FrontControl extends HttpServlet {
         
     }
     
+    public void uploadMultipleFiles(Part filePart, String folder){
+        
+    }
+    
     /**
      * Uploads a file to the server. Helper method for any fileUpload
      * @param filePart the Part that holds the file
