@@ -677,10 +677,7 @@ public class FrontControl extends HttpServlet {
             int n = (int) Integer.parseInt(floorNum);
             double s = (double) Double.parseDouble(floorSize);
             int r = (int) Integer.parseInt(totalRooms);
-            bf.setBuildingId(bdg.getBdgId());
-            bf.setFloorNumber(n);
-            bf.setFloorSize(s);
-            bf.setTotalRooms(r);
+            bf = new BuildingFloor(n,s,r,bdg.getBdgId());
             df.addFloors(bf);//new building floor will be added
             //for updating the view of floors list added
             ArrayList<BuildingFloor> bfList = df.listOfFloors(bf.getBuildingId());
