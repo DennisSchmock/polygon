@@ -5,11 +5,13 @@
  */
 package Domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author CJS
  */
-public class ReportRoomRecommendation {
+public class ReportRoomRecommendation implements Serializable{
 
     private int repRoomRecId;
     private String recommendation;

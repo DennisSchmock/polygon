@@ -57,6 +57,7 @@ public class NewReportMapper {
             saveRoomsToDatabase(r, reportId, con);
             saveExteriorToDB(r, reportId, con);
             
+            
             con.commit();
             System.out.println("Report Saved in database Succes - Yeah 8)");
 
@@ -264,6 +265,7 @@ public class NewReportMapper {
                 saveRoomInterior(reportRoom, roomId, con);
                 saveRoomRecommendations(reportRoom, roomId, con);
                 saveRoomMoist(reportRoom, roomId, con);
+                saveRoomPics(reportRoom,roomId,con);
         }
 
     }
@@ -341,7 +343,7 @@ public class NewReportMapper {
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
-                statement.setInt(2, re.getRepExtPic());
+                statement.setString(2, r.getListOfExtPics().get(0).getFilename());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
         }
@@ -396,5 +398,21 @@ public class NewReportMapper {
             return null;
         }
     }
+
+    private void saveRoomPics(ReportRoom reportRoom, int roomId, Connection con) throws Exception{
+        String SQLString = "insert into report_room_pic(description, filename,reportroom) values (?,?,?)";
+        for (ReportPic  rrPic : reportRoom.getRrPic()) {
+            
+        
+        PreparedStatement statement
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, rrPic.getDescription());
+            statement.setString(2, rrPic.getFilename());
+            statement.setInt(3, roomId);
+            statement.executeUpdate();
+        }
+    }
+
+    
 
 }

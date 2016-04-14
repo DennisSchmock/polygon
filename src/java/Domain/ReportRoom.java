@@ -5,13 +5,14 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author CJS
  */
-public class ReportRoom {
+public class ReportRoom implements Serializable{
     private int repRoomId;
     private String roomName;
     private int reportId;

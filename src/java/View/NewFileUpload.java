@@ -6,6 +6,7 @@
 package View;
 
 import Domain.Building;
+import Domain.ReportPic;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,14 +78,35 @@ public class NewFileUpload {
         
     }
     
-    public String saveRoomPicture(String parentFolder, Collection<Part> parts) {
+    public ArrayList<ReportPic> addReportRoomPics(String parentFolder, String description, Collection<Part> parts){
+        System.out.println("AddRepRoomPics");
+        ArrayList<ReportPic> rrPic=null;
+        if (parts!=null){
+            System.out.println("Parts not null");
+        List<Part> fileParts = getAllParts(parts);
+        String filename;
+        rrPic= new ArrayList();
+        if (fileParts!=null){
+            for (Part filePart : fileParts) {
+                filename=saveRoomPicture(parentFolder,filePart);
+                rrPic.add(new ReportPic(filename,description));
+                System.out.println(filename);
+            }
+            
+        }
+        }
+        
+        return rrPic;
+    }
+    
+    public String saveRoomPicture(String parentFolder, Part part) {
         
         System.out.println("Inside nfu saveRoomPic");
         
-        Part filePart = getSinglePart(parts);
-        if (filePart!=null) {
-            String filename=getNewFileName(filePart);
-            uploadFile(filePart, parentFolder,"ReportRoomPic", filename);
+        
+        if (part!=null) {
+            String filename=getNewFileName(part);
+            uploadFile(part, parentFolder,"ReportRoomPic", filename);
             System.out.println(filename);
             return filename; //Upload the file in buildingPicFolder
         }

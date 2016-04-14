@@ -90,6 +90,8 @@ public class FrontControl extends HttpServlet {
         if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
                       //Extracts the part of the form that is the file
         parts = request.getParts();
+            System.out.println("multipart");
+            if(parts!=null)System.out.println(parts.size());;
             
         }
     
@@ -144,12 +146,12 @@ public class FrontControl extends HttpServlet {
 
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
-            setUpForRoomInspection(request, sessionObj, df);
+            setUpForRoomInspection(request, sessionObj, df, parts);
         }
         
         if (page.equalsIgnoreCase("submittedRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
-            createReportRoomElements(request,sessionObj);
+            createReportRoomElements(request,sessionObj, parts);
         }
         
         if (page.equalsIgnoreCase("saveFinishedReport")) {
@@ -168,7 +170,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
-            setUpForRoomInspection(request, sessionObj, df );
+            setUpForRoomInspection(request, sessionObj, df, parts );
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -635,6 +637,7 @@ public class FrontControl extends HttpServlet {
         String filepath = nfu.saveExtPicture(getServletContext().getRealPath(""),parts);
         String description = request.getParameter("decriptionOfPicture");
         extPic.add(new ReportPic(filepath,description));
+        
         report.setListOfExtPics(extPic);
 
         if (report.getListOfRepExt() == null) {
@@ -654,28 +657,7 @@ public class FrontControl extends HttpServlet {
         
     }
     
-    /**
-     * Method for uploading the Exterior Pic (Single upload if it contains more it will take the last)
-     * @param fileParts a list of Parts that each hold a file to be uploaded
-     */
-    public void uploadExteriorPic(List<Part> fileParts){
-        if (false)System.out.println("FileParts Size");
-                if (testing)System.out.println(fileParts.size());
-                Part pic=null;
-                for (Part filePart : fileParts) {
-                    if (filePart.getName().equals("fileUpload")) pic=filePart;
-                }
-                
-                String[] fileDotSplit = pic.getSubmittedFileName().split("\\."); //Split by dot
-                String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
-                if (testing)System.out.println(pic.getSubmittedFileName());
-                if (testing)System.out.println(extension);
-                //String filename = df.save(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
-//                b.setBuilding_pic(filename);                                          //Add the path for building img to building
-//                uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
-//                sessionObj.setAttribute("newbuilding", b); 
-    }
-    
+ 
     /**
      * Uploads a file to the server. Helper method for any fileUpload
      * @param filePart the Part that holds the file
@@ -764,7 +746,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
             
@@ -803,7 +785,9 @@ public class FrontControl extends HttpServlet {
         ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),temp.getBdgId());
         BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
         reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
+
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
+      
     }
 
     /**
@@ -861,7 +845,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the Report object that needs to
      * be updated.
      */
-    private void createReportRoomElements(HttpServletRequest request, HttpSession sessionObj) {
+    private void createReportRoomElements(HttpServletRequest request, HttpSession sessionObj, Collection<Part> parts) {
         
         //For the interior / Examination:
         if(request.getParameter("Examination").equalsIgnoreCase("Remarks")){
@@ -938,12 +922,22 @@ public class FrontControl extends HttpServlet {
             
         }
         
+         // Stuff for adding reportRoomPics
+        ArrayList<ReportPic> rrPic = new ArrayList();
+        String description = request.getParameter("roompicdescrip");
+        if (description==null) description="";
+        System.out.println("Size of parts in reportroom");
+        if (parts!=null) System.out.println(parts.size());
+        rrPic=nfu.addReportRoomPics(getServletContext().getRealPath(""), description, parts);
+        
         // After all of the elemets has been added to the report_Room
         // The report_Room, should be saved in the Report att.
         // And then be removed, since there now needs to be an new object inserted
         
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
+        reportRoom.setRrPic(rrPic);
+        System.out.println(rrPic.size());
         if(report.getListOfRepRoom() == null){
             // means that the report does not contain any rooms yet
             ArrayList<ReportRoom> roomList = new ArrayList();
