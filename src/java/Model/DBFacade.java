@@ -176,8 +176,8 @@ public class DBFacade {
      * Creates the tuble in the database for a Report.
      * @param report Report to be saved in the database
      */
-    public void reportToDataBase(Report report) {
-            nrm.reportToDataBase(report, con);
+    public int reportToDataBase(Report report) {
+           return nrm.reportToDataBase(report, con);
     }
 
     public ArrayList<Report> getListOfReports(int buildingId) {

@@ -31,8 +31,9 @@ public class NewReportMapper {
      * with all of the Lists going to the right places.
      * @param r Report object
      * @param con Connection to the database
+     * @return 
      */
-    public void reportToDataBase(Report r, Connection con) {
+    public int reportToDataBase(Report r, Connection con) {
         String SQLString = "insert into report(report_date,building_id, polygonuser, customer_user, category_conclusion, report_finished) values (?,?,?,?,?,?)";
         try {
            con.setAutoCommit(false);
@@ -60,6 +61,7 @@ public class NewReportMapper {
             
             con.commit();
             System.out.println("Report Saved in database Succes - Yeah 8)");
+            return reportId;
 
         } catch (Exception e) {
             try {
@@ -70,6 +72,7 @@ public class NewReportMapper {
             System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
             System.out.println(e);
         }
+        return 0;
 
     }
     
