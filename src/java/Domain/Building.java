@@ -25,6 +25,7 @@ public class Building implements Serializable{
     private ArrayList<Report> listOfReports;
     private ArrayList<BuildingFloor> listOfFloors;
     private int custId;
+    
 
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
         this.buildingName = buildingName;
@@ -49,6 +50,9 @@ public class Building implements Serializable{
         //this.buildingPic = buildingPic;
         this.custId = custId;
         buildingPic="0.png";
+    }
+
+    public Building() {
     }
 
     
@@ -153,7 +157,18 @@ public class Building implements Serializable{
     public void setListOfFloors(ArrayList<BuildingFloor> listOfFloors) {
         this.listOfFloors = listOfFloors;
     }
-
+    
+   public BuildingRoom returnARoom(int RoomId){
+       for (BuildingFloor floor : listOfFloors) {
+           for (BuildingRoom room : floor.getListOfRooms()) {
+               if (RoomId==room.getRoomId()){
+                   return room;
+               }
+           }
+           
+       }
+       return null;
+   }
     
     
     

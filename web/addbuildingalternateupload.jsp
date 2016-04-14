@@ -20,7 +20,7 @@
         <input type="hidden" name="page" value="newbuilding" />
 
        <label class="test">Building Name</label> 
-        <input type="text" name="buildingName" />
+       <input type="text" name="buildingName" value="${sessionScope.building.buildingName}" />
         <br>
         
 
@@ -40,8 +40,7 @@
         <input type="number" step="0.01" name="buildingSize"  required />
         <br>
         
-        <label class="test">Building Image</label>
-        <input type="file" name="uploadFile" id="fileChooser" multiple="multiple"/><br/><br/>
+       
         
         
        <label class="test">Building Year </label>
@@ -55,7 +54,17 @@
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 
     </form>
+    
+    ${sessionScope.building.buildingPic}
 
+    
+    <form class="w3-container" action="upload" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="page" value="newbuilding" />
+        <input type="hidden" name="command" value="addpicture" />
+        <label class="test">Building Image</label>
+        <input type="file" name="buildingImg" id="fileChooser" multiple="multiple"/>
+        <input type="submit" value="Send picture" />
+    </form>
 
 </main>
 

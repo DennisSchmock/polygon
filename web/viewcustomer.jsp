@@ -20,7 +20,7 @@
                 <c:forEach items="${sessionScope.buildings}" var="building">
 
 
-                    <li><a href="frontpage?page=viewbuildingadmin&buildingid=${building.bdgId}">Building: ${building.buildingName} Adress: ${building.streetAddress} ${building.streetNumber}</a> 
+                    <li><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}">Building: ${building.buildingName} Adress: ${building.streetAddress} ${building.streetNumber}</a> 
                     </li>
 
                 </c:forEach>
