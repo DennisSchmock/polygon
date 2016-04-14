@@ -14,9 +14,9 @@
 <nav class="w3-sidenav w3-light-grey" style="width:150px;float: left">
     <a href="getreport?action=showreport&reportid=${sessionScope.report.reportId}">View main info</a> 
     <a href="#">Print Report*</a>
-    
+
     <a class="w3-grey" href="#"></a>
-    
+
     <c:forEach items="${sessionScope.report.reportFloors}" var="floor" varStatus="count">
 
         <c:if test="${!empty floor.reportRooms}">
@@ -41,11 +41,13 @@
 
 
 <main style="margin-left: 150px; margin-right: 100px;">
+    <h1>Report for ${sessionScope.report.buildingName}</h1>
 
-<c:if test="${requestScope.showroom==true}"><%@include file="reportview/reportroom.jsp" %></c:if>
-    
-<%@include file="reportview/reportmain.jsp" %>
+    <c:if test="${requestScope.showroom==true}"><%@include file="reportview/reportroom.jsp" %></c:if>
+
+    <c:if test="${requestScope.showroom==null}"><%@include file="reportview/reportmain.jsp" %></c:if>
 </main>
+    <%--This javascript is used for making the accordion in the menu. It was found on w3school.com, and is part of the W3.css --%>
 <script>
     function myAccFunc(i) {
         var x = document.getElementById("room" + i);

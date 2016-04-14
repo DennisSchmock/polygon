@@ -114,7 +114,9 @@ public class ReportController extends HttpServlet {
         if (action.equalsIgnoreCase("showreport")) {
            
             int reportId = Integer.parseInt(request.getParameter("reportid"));
-            Report report = df.getReport(reportId);                   
+            Report report = df.getReport(reportId);
+            Building b = df.getBuilding(report.getBuildingId());
+            report.setBuildingName(b.getBuildingName());
 //
             request.getSession().setAttribute("report", report);
 

@@ -135,7 +135,7 @@ public class NewReportMapper {
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
             System.out.println("AddedRoom!!!");
-//            r.setListOfRepRoomExt(getReportExterior(reportId, con));
+            r.setListOfRepExt(getReportExterior(reportId, con));
 
             return r;
         } catch (Exception e) {
@@ -185,7 +185,7 @@ public class NewReportMapper {
                         rs.getInt("report_ext_id"),
                         rs.getString("rep_ext_inspected_area"),
                         rs.getString("report_ext_description"),
-                        rs.getInt("report_ext_pic"),
+                        rs.getString("report_ext_pic"),
                         rs.getInt("report"));
                 listOfExt.add(re);
             }
@@ -359,13 +359,14 @@ public class NewReportMapper {
 
     private void saveExteriorToDB(Report r, int reportId, Connection con) throws Exception {
 
-        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
+        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area) values (?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
 
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
                 statement.setString(2, r.getListOfExtPics().get(0).getFilename());
+                statement.setString(4, re.getRepExtInspectedArea());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
         }

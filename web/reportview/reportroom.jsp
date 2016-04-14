@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="w3-row-padding">
     <div class="w3-container w3-threequarter">
-        <h1>${requestScope.reportroom.roomName}</h1>
+        <h1>Room: ${requestScope.reportroom.roomName}</h1>
     </div>
     <div class="w3-threequarter">
         <table class="w3-table w3-striped w3-bordered w3-border w3-large">
@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                 <th >Name</th>
-                <th class="w3-leftbar">Remark</th>
+                <th class="w3-leftbar">Remarks</th>
                 </tr>
             </thead>
             <c:forEach items="${requestScope.reportroom.rrPic}" var="pictures" >
@@ -91,5 +91,4 @@
             </c:forEach>
         </table>
     </div>
-
 </div>
