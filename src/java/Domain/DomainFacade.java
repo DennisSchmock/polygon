@@ -43,9 +43,10 @@ public class DomainFacade {
         return b;
     }
 
-    public String saveBuildingPic(int buildId, String ext) {
-        return dbFacade.saveBuildingPic(buildId, ext);
 
+public String saveBuildingPic(int buildId, String filename){
+        return dbFacade.saveBuildingPic(buildId, filename);
+        
     }
 
 //    public Report saveNewReport(Date date, int buildingId, int category) {

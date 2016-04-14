@@ -5,13 +5,14 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author CJS
  */
-public class ReportRoom {
+public class ReportRoom implements Serializable{
     private int repRoomId;
     private String roomName;
     private int reportId;
@@ -21,6 +22,7 @@ public class ReportRoom {
     private ArrayList<ReportRoomDamage> listOfDamages = new ArrayList<>();
     private ArrayList<ReportRoomInterior> listOfInt  = new ArrayList<>();;
     private ArrayList<ReportRoomRecommendation> listOfRec  = new ArrayList<>();
+    private ArrayList<ReportPic> rrPic = new ArrayList();
 
     /**
      *
@@ -157,6 +159,14 @@ public class ReportRoom {
             RecomendationString += recommendation.toString() + "\n";
         }
         return RecomendationString;
+    }
+
+    public ArrayList<ReportPic> getRrPic() {
+        return rrPic;
+    }
+
+    public void setRrPic(ArrayList<ReportPic> rrPic) {
+        this.rrPic = rrPic;
     }
 
     

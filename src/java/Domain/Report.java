@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author CJS
  */
-public class Report {
+public class Report implements Serializable{
     private int reportId;
     private Date date;
     private ArrayList<ReportFloor> reportFloors;
@@ -23,7 +24,7 @@ public class Report {
     private String polygonUserName;
     private String customerAccountable;
     private boolean finshed;
-    
+    private ArrayList<ReportPic> listOfExtPics;
     /**
      *This constructer is for loading an object from the mapper.
      * @param reportId  report number
@@ -186,6 +187,14 @@ public class Report {
         return reportExtString;
     }
 
+    public ArrayList<ReportPic> getListOfExtPics() {
+        return listOfExtPics;
+    }
+
+    public void setListOfExtPics(ArrayList<ReportPic> listOfExtPics) {
+        this.listOfExtPics = listOfExtPics;
+    }
+    
     /**
      * @return the reportFloors
      */

@@ -57,6 +57,7 @@ public class NewReportMapper {
             saveRoomsToDatabase(r, reportId, con);
             saveExteriorToDB(r, reportId, con);
             
+            
             con.commit();
             System.out.println("Report Saved in database Succes - Yeah 8)");
 
@@ -121,9 +122,16 @@ public class NewReportMapper {
             int catagoryConclusion = rs.getInt("category_conclusion");
             String polygonUser = rs.getString("polygonuser");
             String customerUser = rs.getString("customer_user");
+            //String extPicPath = rs.getString("report_ext_pic");
+            //String extPicDesc = rs.getString("report_ext_description");
             
+            //ReportPic extPic = new ReportPic(extPicPath,extPicDesc);
+            //ArrayList<ReportPic> extPics = new ArrayList();
+            //extPics.add(extPic);
 
             r = new Report(reportId, reportDate, buildingId, catagoryConclusion,polygonUser,customerUser);
+            //r.setListOfExtPics(extPics);
+            
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
             System.out.println("AddedRoom!!!");
@@ -279,6 +287,7 @@ public class NewReportMapper {
                 saveRoomInterior(reportRoom, roomId, con);
                 saveRoomRecommendations(reportRoom, roomId, con);
                 saveRoomMoist(reportRoom, roomId, con);
+                saveRoomPics(reportRoom,roomId,con);
         }
 
     }
@@ -356,7 +365,7 @@ public class NewReportMapper {
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
-                statement.setInt(2, re.getRepExtPic());
+                statement.setString(2, r.getListOfExtPics().get(0).getFilename());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
         }
@@ -378,7 +387,11 @@ public class NewReportMapper {
                 reportRoom.setListOfDamages(getListOfDamages(reportRoomId, con));
                 reportRoom.setListOfRec(getListOfRec(reportRoomId, con));
                 reportRoom.setMoist(getMoist(reportRoomId, con));
+                reportRoom.setRrPic(getListOfRoomPics(reportRoomId, con));
                 reportRooms.add(reportRoom);
+                
+                
+                
 
             }
             return reportRooms;
@@ -456,6 +469,7 @@ public class NewReportMapper {
                 reportRoom.setListOfDamages(getListOfDamages(reportRoomId, con));
                 reportRoom.setListOfRec(getListOfRec(reportRoomId, con));
                 reportRoom.setMoist(getMoist(reportRoomId, con));
+                reportRoom.setRrPic(getListOfRoomPics(reportRoomId,con));
                 reportRooms.add(reportRoom);
 
             }
@@ -486,5 +500,42 @@ public class NewReportMapper {
             return null;
         }
     }
+    private void saveRoomPics(ReportRoom reportRoom, int roomId, Connection con) throws Exception{
+        String SQLString = "insert into report_room_pic(description, filename,reportroom) values (?,?,?)";
+        for (ReportPic  rrPic : reportRoom.getRrPic()) {
+            
+        
+        PreparedStatement statement
+                = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, rrPic.getDescription());
+            statement.setString(2, rrPic.getFilename());
+            statement.setInt(3, roomId);
+            statement.executeUpdate();
+        }
+    }
+
+    private ArrayList<ReportPic> getListOfRoomPics(int reportRoomId, Connection con) {
+        String SQLString = "select * from report_room_pic where reportroom=?";
+        ArrayList<ReportPic> listOfRooms = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, reportRoomId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                ReportPic rPic = new ReportPic(
+                        
+                        rs.getString("filename"),
+                        rs.getString("description"));
+                listOfRooms.add(rPic);
+            }
+            return listOfRooms;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfRoomPics");
+            System.out.println(e.getMessage());
+            return null;
+        }}
+
+   
+
+    
 
 }

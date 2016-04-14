@@ -32,12 +32,16 @@
                 <th class="w3-leftbar">Remark</th>
                 </tr>
             </thead>
+            <c:forEach items="${requestScope.reportroom.rrPic}" var="pictures" >
 
             <tr>
-            <td width="150px">Picture here</td>
+            <td width="150px">
+                <img class="w3-round" style="width: 300px" src="${pageContext.request.contextPath}/ReportRoomPic/${pictures.filename}" />
+               </td>
 
-            <td class="w3-leftbar">Description here</td>
+            <td class="w3-leftbar">${pictures.description}</td>
             </tr>
+            </c:forEach>
         </table>
     </div>
 

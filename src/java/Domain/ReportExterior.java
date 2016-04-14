@@ -5,12 +5,14 @@
  */
 package Domain;
 
+import java.io.Serializable;
+
 /**
  * Class that can elements to create exterior decription of the building.
  * Does contain few decriptions of the building.
  * @author  CJS
  */
-public class ReportExterior {
+public class ReportExterior implements Serializable{
     private int repExtId;
     private String repExtInspectedArea;
     private String repExtDescription;

@@ -48,7 +48,7 @@ function yesnoCheck() {
     
     <br>
     
-    <form name="ReportRoomForm" action="frontpage" method="POST">
+    <form name="ReportRoomForm" action="frontpage" method="POST" enctype="multipart/form-data">
          <input type="hidden" name="page" value="submittedRoom" />   
         
     <br>
@@ -198,10 +198,9 @@ function yesnoCheck() {
    
    <br>
         Upload pictures:
-        <input type="file" name="Upload Pictures"  />
+        <input type="file" name="uploadFile"  multiple="multiple"/>
         Discprition: 
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="roompicdescrip" rows="2" cols="20"></textarea>
         
         <br>
         <br>

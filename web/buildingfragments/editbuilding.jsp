@@ -44,7 +44,7 @@
         <br>
         <label class="test">Add Image</label>
         
-        <input type="file" name="buildingImg" id="fileChooser"/><br/>
+        <input type="file" name="uploadFile" id="fileChooser"/><br/>
         <img src="buildingPic/${sessionScope.building.buildingPic}"  height="300"/>
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
 
