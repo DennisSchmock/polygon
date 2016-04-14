@@ -41,7 +41,7 @@
         <br>
         
         <label class="test">Building Image</label>
-        <input type="file" name="buildingImg" id="fileChooser" multiple="multiple"/><br/><br/>
+        <input type="file" name="uploadFile" id="fileChooser" multiple="multiple"/><br/><br/>
         
         
        <label class="test">Building Year </label>

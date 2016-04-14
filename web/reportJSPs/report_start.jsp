@@ -33,7 +33,7 @@
     
     <br>
     
-    <form name="exterior" action="frontpage" method="POST">
+    <form name="exterior" action="frontpage" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="page" value="ChooseRoom" /> 
    
     <h2>Remarks on Roof:</h2>
@@ -56,7 +56,7 @@
     <div id="pictureForm" style="display: none">
     
     Upload Pictures:
-    <input type="file" name="outsidePictures" />
+    <input type="file" name="uploadFile" />
     
     <h1>Decription of Pictures:</h1>
     <textarea name="decriptionOfPicture" rows="4" cols="20">

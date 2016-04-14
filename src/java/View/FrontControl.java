@@ -86,7 +86,7 @@ public class FrontControl extends HttpServlet {
         
             for (Part part : parts) {
                 //filePart = request.getPart("buildingImg");
-                if (part.getName().equals("buildingImg")) fileParts.add(part);
+                if (part.getName().equals("uploadFile")) fileParts.add(part);
                 System.out.println("part.getName()");
                 System.out.println(part.getName());
             }
@@ -138,6 +138,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj);
+            uploadExteriorPic(fileParts);
         }
 
         if (page.equalsIgnoreCase("inspectRoom")) {
@@ -689,14 +690,32 @@ public class FrontControl extends HttpServlet {
             listOfExt.add(roofEx);
             report.setListOfRepExt(listOfExt);
         }
-
+        
         sessionObj.setAttribute("reportToBeCreated", report);
 
         
     }
     
-    public void uploadMultipleFiles(Part filePart, String folder){
-        
+    /**
+     * Method for uploading the Exterior Pic (Single upload if it contains more it will take the last)
+     * @param fileParts a list of Parts that each hold a file to be uploaded
+     */
+    public void uploadExteriorPic(List<Part> fileParts){
+        if (testing)System.out.println("FileParts Size");
+                if (testing)System.out.println(fileParts.size());
+                Part pic=null;
+                for (Part filePart : fileParts) {
+                    if (filePart.getName().equals("fileUpload")) pic=filePart;
+                }
+                
+                String[] fileDotSplit = pic.getSubmittedFileName().split("\\."); //Split by dot
+                String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
+                if (testing)System.out.println(pic.getSubmittedFileName());
+                if (testing)System.out.println(extension);
+                //String filename = df.save(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
+//                b.setBuilding_pic(filename);                                          //Add the path for building img to building
+//                uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
+//                sessionObj.setAttribute("newbuilding", b); 
     }
     
     /**
