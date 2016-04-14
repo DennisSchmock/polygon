@@ -310,7 +310,7 @@ public class BuildingMapper {
         
 
     public String getLatestBuildingImage(int buildingId, Connection con) {
-        String imgString=null;
+        String filename = null;
         System.out.println("getLatestBuildingImage");
         System.out.println(buildingId);
         String SQLString = "select * from building_pic where building_id=?";
@@ -321,12 +321,7 @@ public class BuildingMapper {
             System.out.println("query executed");
 
             while (rs.next()){
-                System.out.println("There is a next");
-            int imgId = rs.getInt("building_pic_id");
-            String extension = rs.getString("building_pic_extension");
-            imgString=imgId+"."+extension;
-                System.out.println(imgString);
-                
+            filename = rs.getString("filename");
             }
             
         } catch (Exception e) {
@@ -336,7 +331,7 @@ public class BuildingMapper {
         }
         
         
-        return imgString;
+        return filename;
     }
 
     /**
