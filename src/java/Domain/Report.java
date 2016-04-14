@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Report implements Serializable{
     private int reportId;
     private Date date;
+    private ArrayList<ReportFloor> reportFloors;
     private ArrayList<ReportRoom> listOfRepRoom;
     private ArrayList<ReportExterior> listOfRepExt;
     private int buildingId;
@@ -25,17 +26,19 @@ public class Report implements Serializable{
     private boolean finshed;
     private ArrayList<ReportPic> listOfExtPics;
     /**
-     *
+     *This constructer is for loading an object from the mapper.
      * @param reportId  report number
      * @param date   date
      * @param buildingId    building's ID
      * @param catCon  category conclusion
      */
-    public Report(int reportId, Date date, int buildingId, int catCon) {
+    public Report(int reportId, Date date, int buildingId, int catCon, String polygonUser, String customerName) {
         this.reportId = reportId;
         this.date = date;
         this.buildingId = buildingId;
         this.categoryConclusion = catCon;
+        this.polygonUserName = polygonUser;
+        this.customerAccountable = customerName;
     }
     
     public Report(String Date, int buildingId, int catCon) {
@@ -50,11 +53,28 @@ public class Report implements Serializable{
         this.buildingId = buildingId;
         this.polygonUserName = polygonUserID;
     }
+
+    public Report() {
+    }
+
     
     
 
     public ReportRoom getReportRoom(int id){
         return this.listOfRepRoom.get(id);
+    }
+    
+    public ReportRoom getReportRoomFromReportFloor(int reportRoomId){
+        for (ReportFloor reportFloor : reportFloors) {
+            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
+                if(reportRoom.getRepRoomId()==reportRoomId){
+                    return reportRoom;
+                }
+                
+            }
+            
+        }
+        return null;
     }
     public void setReportId(int reportId) {
         this.reportId = reportId;
@@ -175,6 +195,19 @@ public class Report implements Serializable{
         this.listOfExtPics = listOfExtPics;
     }
     
+    /**
+     * @return the reportFloors
+     */
+    public ArrayList<ReportFloor> getReportFloors() {
+        return reportFloors;
+    }
+
+    /**
+     * @param reportFloors the reportFloors to set
+     */
+    public void setReportFloors(ArrayList<ReportFloor> reportFloors) {
+        this.reportFloors = reportFloors;
+    }
     
     
     

@@ -9,6 +9,7 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
+import Domain.Report;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dennisschmock
  */
-@WebServlet(name = "ReportController", urlPatterns = {"/viewreport1"})
+@WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1"})
 public class ReportController extends HttpServlet {
 
     /**
@@ -50,8 +51,16 @@ public class ReportController extends HttpServlet {
         }
         if (page.equalsIgnoreCase("newbuilding")) {
             url = "/addbuildingalternateupload.jsp";
-           
+
         }
+
+        if (request.getServletPath().equalsIgnoreCase("/viewreports")) {
+            url = "/viewreports.jsp";
+        }
+        if (request.getServletPath().equalsIgnoreCase("/getreport")) {
+            url = "/viewreport.jsp";
+        }
+        System.out.println(request.getServletPath());
         System.out.println(request.getMethod());
 
         DomainFacade df = (DomainFacade) request.getSession().getAttribute("Controller");
@@ -85,6 +94,9 @@ public class ReportController extends HttpServlet {
             request.setAttribute("addFloor", true);
 
         }
+        if (action.equalsIgnoreCase("listreports")) {
+            request.getSession().setAttribute("reports", df.getSimpleListOfReports());
+        }
 
         if (action.equalsIgnoreCase("addfloorsubmit")) {
             addFloors(request, df);
@@ -102,10 +114,32 @@ public class ReportController extends HttpServlet {
             request.setAttribute("showBuilding", true);
 
         }
-       
+        if (action.equalsIgnoreCase("showreport")) {
+           // url = "/viewreport.jsp";
+            int reportId = Integer.parseInt(request.getParameter("reportid"));
+            Report report = df.getReport(reportId);
+            System.out.println("Test: " + report.getDate());
+            System.out.println("Are we having fun or not?");
+//
+            request.getSession().setAttribute("report", report);
+
+        }
+//        if(action.equalsIgnoreCase("reportroom")){
+//            Report report = (Report) request.getSession().getAttribute("report");
+//            int roomId = Integer.parseInt(request.getParameter("reportid"));
+//            request.setAttribute("showReportRoom", true);
+//            request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+//        }
+//       
         if (action.equalsIgnoreCase("addBuilding")) {
             Building b = new Building();
             b.setBuildingName("tempname");
+            request.getSession().setAttribute("building", b);
+
+        }
+        if (action.equalsIgnoreCase("viewbuildingadmin")) {
+            int buildId = Integer.parseInt(request.getParameter("buildingid"));
+            Building b = df.getBuilding(buildId);
             request.getSession().setAttribute("building", b);
 
         }

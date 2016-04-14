@@ -16,7 +16,8 @@
 <%@include file="reportview/reportnav.jsp" %>
 <%@include file="reportview/reportheader.jsp" %>
 <c:if test="${requestScope.room!=null}"><%@include file="reportview/reportroom.jsp" %></c:if>
-<%@include file="reportview/reportmain.jsp" %>
+    
+<c:if test="${requestScope.viewreport==true}"><%@include file="reportview/reportmain.jsp" %></c:if>
 
 
 

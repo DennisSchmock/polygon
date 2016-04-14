@@ -50,7 +50,7 @@
                             <a href="viewreport1?page=newbuilding&action=addbuilding">Add building alternate</a>
 
                             <a href="frontpage?page=viewcustomers">View Customers</a>
-                            <a href="frontpage?page=listreports">View Reports</a>
+                            <a href="viewreports?action=listreports">View Reports</a>
                             <a href="#">View Buildings</a>
                         </div>
                     </li>

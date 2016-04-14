@@ -53,7 +53,7 @@
     
     <div id="roomForm" style="display: none">
         
-        Add an room:
+        Add a room:
         
         <br>
         <form name="floorselect" action="frontpage" method="POST">
@@ -71,7 +71,7 @@
             <input type="submit" value="Add Room" />
         </form>
         
-        Add an Floor not there:  <input type="submit" value="Not IMPLEMENTED!" name="Floor" />
+        Add a Floor not there:  <input type="submit" value="Not IMPLEMENTED!" name="Floor" />
         
     </div>
     

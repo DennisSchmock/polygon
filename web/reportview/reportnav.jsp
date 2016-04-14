@@ -4,18 +4,22 @@
 <nav class="w3-sidenav w3-light-grey" style="width:120px">
     <a href="#">View exterior</a> 
     <a href="#">View conclusion</a> 
-    <c:forEach var="i" begin="1" end="5">
-        <div class="w3-accordion">
-            <a onclick="myAccFunc(<c:out value="${i}"/>)" href="#">Floor: <c:out value="${i}"/></a>
-            
-            <div id="room<c:out value="${i}"/>" class="w3-accordion-content w3-white w3-card-4">
-                
-                 <c:forEach items="${sessionScope.report.listOfRepRoom}" var="room">
-                     <a href="viewreport1?page=viewroom&viewroom=${i}">Room ${i}</a>
-                 </c:forEach>
-               
+    <c:forEach items="${sessionScope.report.reportFloors}" var="floor" varStatus="count">
+
+        <c:if test="${!empty floor.reportRooms}">
+            <div class="w3-accordion">
+
+                <a onclick="myAccFunc(<c:out value="${count.count}"/>)" href="#">Floor: ${floor.floorNumber}</a>
+
+                <div id="room${count.count}" class="w3-accordion-content w3-white w3-card-4">
+
+                    <c:forEach items="${floor.reportRooms}" var="room">
+                        <a href="getreport?action=reportroom&viewroom=${room.repRoomId}">${room.roomName}</a>
+                    </c:forEach>
+
+                </div>
             </div>
-        </div>
+        </c:if>
 
     </c:forEach>
 
