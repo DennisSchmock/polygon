@@ -27,7 +27,7 @@ public class DBFixture {
             st.addBatch("drop table if exists floorplan, report_room_damage, report_room_recommendation, "
                     + "report_room_moist,report_room_interior_pic,\n"
                     + "report_room_interior,report_exterior,report_room,report_pic,report,"
-                    + "building_room,order_request,building_documents,building,customer_user,"
+                    + "building_room, building_floor,order_request,building_documents,building,customer_user,"
                     + "contact,customer,zip_codes,polygon_user;");
       
 
@@ -76,17 +76,31 @@ public class DBFixture {
                     + "  FOREIGN KEY (`building_id`)"
                     + "  REFERENCES `Polytest`.`building` (`idbuilding`))");
 
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_floor` ");
+            
+            st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building_floor` ("
+                    + "`floor_id` int(20) NOT NULL AUTO_INCREMENT,"
+                    + "`floor_number` int(10) DEFAULT NULL,"
+                    +"`floor_size` double NOT NULL,"
+                    +" `total_rooms` int(100) DEFAULT NULL,"
+                    +" `idbuilding` int(10) DEFAULT NULL,"
+                    + "  PRIMARY KEY (`floor_id`),"
+                    + " CONSTRAINT `building_floor_ibfk_1`"
+                    +" FOREIGN KEY (`idbuilding`) "
+                    + "REFERENCES `Polytest`.`building` (`idbuilding`))");
+            
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_room` ");
 
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building_room` ("
                     + "`room_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`room_name` VARCHAR(40) NULL DEFAULT NULL,"
-                    + "`building_id` INT(10) NULL DEFAULT NULL,"
+                    + "`floor_id` int(11) DEFAULT NULL,"
                     + "PRIMARY KEY (`room_id`),"
-                    + "INDEX `building_id` (`building_id` ASC),"
                     + "CONSTRAINT `building_room_ibfk_1`"
-                    + "  FOREIGN KEY (`building_id`)"
-                    + "  REFERENCES `Polytest`.`building` (`idbuilding`))");
+                    + "  FOREIGN KEY (`floor_id`)"
+                    + "  REFERENCES `Polytest`.`building_floor` (`floor_id`))");
+            
+                  
 
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`contact` ");
 
@@ -337,6 +351,16 @@ public class DBFixture {
             // insert
             st.addBatch("insert into customer (companyname,street)"
             +"values ('CPH-Business','Nørregårsvej')");
+            st.addBatch("INSERT INTO `polytest`.`building` (`idbuilding`, `building_name`, `building_m2`, `building_adress`, `building_housenumber`, `building_buildyear`, `building_zip`, `building_pic`, `building_use`, `customer_id`) "
+                    + "VALUES ('1', 'TestBuilding', '201', 'Sverige', '281', '1921', '2812', '0', 'Nothing', '1')");
+            st.addBatch("INSERT INTO `polytest`.`polygon_user` (`username`, `pwd`, `fname`, `lname`, `email`, `phone`, `role`) "
+                    + "VALUES ('emp1', 'hej', 'daniel', 'test', 'ingen', '272', 'employee');");
+            st.addBatch("INSERT INTO `polytest`.`building_floor` (`floor_id`, `floor_number`, `floor_size`, `total_rooms`, `idbuilding`) "
+                    + "VALUES ('1', '2', '28', '21', '1');");
+            st.addBatch("INSERT INTO `polytest`.`building_room` (`room_name`, `floor_id`) "
+                    + "VALUES ('Toilet', '1');");
+            st.addBatch("INSERT INTO `polytest`.`building_room` (`room_id`, `room_name`, `floor_id`) "
+                    + "VALUES ('2', 'Hallway', '1');");
             
             int[] updateCounts = st.executeBatch();
 
