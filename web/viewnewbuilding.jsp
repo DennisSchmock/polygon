@@ -1,51 +1,25 @@
 <%-- 
-    Document   : Building added
-    Created on : 30.03.2016
-    Author     : Daniel
+    Document   : jsptemplate
+    Created on : 
+    Author     : 
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<meta http-equiv="Refresh" content="5;url=viewnewbuildingfinished.jsp">
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<link rel="stylesheet" type="text/css" href="Style/Style.css">
 
-<title>New Building added</title>
+<title>Custom Title</title>
 <%@include file="Style/Header.jsp" %>
 
 <main>
     
-    <h1>Building Added successfully</h1>
-    
-    <h2> Building Name: </h2> 
-    ${sessionScope.newbuilding.buildingName} <br>
-    
-    <h2> Building Name: </h2> 
-    ${sessionScope.newbuilding.streetAddress} <br>
-    
-    <h2> Street Number:</h2> 
-    ${sessionScope.newbuilding.streetNumber} <br>
-    
-    <h2> Zip Code:</h2> 
-    ${sessionScope.newbuilding.zipCode} <br>
-    
-    <h2> Building Year:</h2> 
-    ${sessionScope.newbuilding.buildingYear} <br>
-    
-    <h2> Building Size: </h2> 
-    ${sessionScope.newbuilding.buildingSize} <br>
-    
-    <h2> Use of Building: </h2> 
-    ${sessionScope.newbuilding.useOfBuilding} <br>
-    
-    
-    <h2> Image of Building: </h2> 
-    <img src="${pageContext.request.contextPath}/buildingPic/${sessionScope.newbuilding.buildingPic}" width="300"/>
+    <h1>Preparing your new building!</h1>
     <br>
+    <h4>Please wait a moment!</h4>
+    <h4>Remember to upload a floorplan</h4>
     
-
-    <br>
-    <br>
+    
     
     
 </main>
