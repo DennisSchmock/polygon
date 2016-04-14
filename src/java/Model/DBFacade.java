@@ -31,6 +31,7 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
+        facade.deleteBuilding(22);
 //        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
 //        facade.saveBuildingRoom(newRoom);
 //        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
@@ -373,5 +374,37 @@ public class DBFacade {
      */
     public ArrayList<BuildingRoom> getRoomList(int flrId){
         return bm.getRoomList(flrId, con);
+    }
+    
+    /**
+     *redirects to the buildingMapper
+     * @param bdgId buildingId of the building that has to be deleted
+     */
+    public void deleteBuilding(int bdgId){
+        bm.deleteBuilding(bdgId, con);
+    }
+    
+    /**
+     *redirects to the buildingMapper
+     * @param br new BuildingRoom that holds the changes
+     */
+    public void updateRoom(BuildingRoom br){
+        bm.updateRoom(br, con);
+    }
+    
+    /**
+     * redirects to the BuildingMapper
+     * @param bf new BuildingFloor that holds the changes
+     */
+    public void updateFloor(BuildingFloor bf){
+        bm.updateFloor(bf, con);
+    }
+    
+    /**
+     * redirects to the BuildingMapper
+     * @param b new Building that holds the changes
+     */
+    public void updateBuilding(Building b){
+        bm.updateBuilding(b, con);
     }
 }

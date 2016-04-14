@@ -440,6 +440,154 @@ public class BuildingMapper {
             System.out.println(e.getMessage());
         } 
     }
+    
+    /**
+     * This method will update data of a building in the database based on the building ID
+     * @param b new Building object that holds the changes
+     * @param con
+     */
+    public void updateBuilding(Building b, Connection con){
+        String SQLString
+                = "update building "
+                + "set building_name = ?,"
+                + "set building_m2 = ?,"
+                + "set building_adress = ?,"
+                + "set building_housenumber = ?,"
+                + "set building_buildyear = ?,"
+                + "set building_zip = ?,"
+//                + "set building_pic = ?,"
+                + "set building_use = ?,"
+                + " where idbuilding = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setString(1, b.getBuildingName());
+            statement.setDouble(2, b.getBuildingSize());
+            statement.setString(3, b.getStreetAddress());
+            statement.setString(4, b.getStreetNumber());
+            statement.setInt(5, b.getBuildingYear());
+            statement.setInt(6, b.getZipCode());
+//            statement.setString(7, b.getBuildingPic()); //has to be changed in the database
+            statement.setString(8, b.getUseOfBuilding());
+            statement.setInt(10, b.getBdgId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateBuilding");
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    /**
+     * This method will update the building_floor in the database
+     * @param bf new BuildingFloor that holds the changes
+     * @param con
+     */
+    public void updateFloor(BuildingFloor bf, Connection con){
+        String SQLString
+                = "update building_floor "
+                + "set floor_size = ? "
+                + "set total_rooms = ? "
+                + "where floor_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setDouble(1, bf.getFloorSize());
+            statement.setInt(2, bf.getTotalRooms());
+            statement.setInt(3, bf.getFloorId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateFloor");
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    
+    /**
+     * This method will update the building_room in the database
+     * @param br new BuildingRoom that holds the changes
+     * @param con
+     */
+    public void updateRoom(BuildingRoom br, Connection con){
+        String SQLString
+                = "update building_room "
+                + "set room_name = ? "
+                + "where room_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setString(1, br.getRoomName());
+            statement.setInt(2, br.getRoomId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateRoom");
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    /**
+     *This method will delete tuples in the building_rooms table based on the floor ID
+     * @param floorId floor ID
+     * @param con
+     * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     */
+    public void deleteAllRooms(int floorId, Connection con){
+        String SQLString
+                = "delete from building_room where floor_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, floorId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in deleteBuildingRooms ");
+            System.out.println(e.getMessage());
+        } 
+    }
+    /**
+     *This method will delete tuples in the building_floors table based on the building ID
+     * @param bdgId building ID
+     * @param con
+     * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     */
+    public void deleteAllFloors(int bdgId, Connection con){
+        String SQLString
+                = "delete from building_floor where idbuilding = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, bdgId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in deleteBuildingFloors ");
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    /**
+     *This method will delete a tuple in the building table based on the building ID
+     * @param bdgId building ID
+     * @param con
+     * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     */
+    public void deleteBuilding(int bdgId, Connection con){
+        ArrayList<BuildingFloor> floorsInTheBuilding = getFloorsList(bdgId, con);
+        for (BuildingFloor buildingFloor : floorsInTheBuilding) {
+           deleteAllRooms(buildingFloor.getFloorId(), con); //it has to delete all the rooms on each floor
+        }
+        deleteAllFloors(bdgId, con);
+        
+        String SQLString
+                = "delete from building where idbuilding = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, bdgId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in deleteBuilding ");
+            System.out.println(e.getMessage());
+        } 
+    }
 }
 
 
