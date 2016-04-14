@@ -122,9 +122,16 @@ public class NewReportMapper {
             int catagoryConclusion = rs.getInt("category_conclusion");
             String polygonUser = rs.getString("polygonuser");
             String customerUser = rs.getString("customer_user");
+            String extPicPath = rs.getString("report_ext_pic");
+            String extPicDesc = rs.getString("report_ext_description");
             
+            ReportPic extPic = new ReportPic(extPicPath,extPicDesc);
+            ArrayList<ReportPic> extPics = new ArrayList();
+            extPics.add(extPic);
 
             r = new Report(reportId, reportDate, buildingId, catagoryConclusion,polygonUser,customerUser);
+            r.setListOfExtPics(extPics);
+            
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
             System.out.println("AddedRoom!!!");
@@ -380,7 +387,11 @@ public class NewReportMapper {
                 reportRoom.setListOfDamages(getListOfDamages(reportRoomId, con));
                 reportRoom.setListOfRec(getListOfRec(reportRoomId, con));
                 reportRoom.setMoist(getMoist(reportRoomId, con));
+                reportRoom.setRrPic(getListOfRoomPics(reportRoomId, con));
                 reportRooms.add(reportRoom);
+                
+                
+                
 
             }
             return reportRooms;
@@ -501,6 +512,26 @@ public class NewReportMapper {
             statement.executeUpdate();
         }
     }
+
+    private ArrayList<ReportPic> getListOfRoomPics(int reportRoomId, Connection con) {
+        String SQLString = "select * from report_room_pic where reportroom=?";
+        ArrayList<ReportPic> listOfRooms = new ArrayList<>();
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, reportRoomId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                ReportPic rPic = new ReportPic(
+                        
+                        rs.getString("filename"),
+                        rs.getString("description"));
+                listOfRooms.add(rPic);
+            }
+            return listOfRooms;
+        } catch (Exception e) {
+            System.out.println("Fail in ReportMapper-getListOfRoomPics");
+            System.out.println(e.getMessage());
+            return null;
+        }}
 
     
 

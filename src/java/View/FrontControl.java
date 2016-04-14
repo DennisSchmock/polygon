@@ -490,6 +490,7 @@ public class FrontControl extends HttpServlet {
         System.out.println(request.getCharacterEncoding());
 
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");  // Had been edited to "building"?! gave crash
+        if (buildingToBeEdited==null)buildingToBeEdited = (Building)session.getAttribute("building");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));
         buildingToBeEdited.setStreetAddress(request.getParameter("streetAddress"));
         buildingToBeEdited.setStreetNumber(request.getParameter("streetNumber"));
@@ -498,7 +499,9 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
         buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
-
+        
+        System.out.println("BuildingPic");
+        System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
