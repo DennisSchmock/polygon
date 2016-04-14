@@ -44,8 +44,8 @@ public class DomainFacade {
     } 
 
 
-public String saveBuildingPic(int buildId, String ext){
-        return dbFacade.saveBuildingPic(buildId, ext);
+public String saveBuildingPic(int buildId, String filename){
+        return dbFacade.saveBuildingPic(buildId, filename);
         
     }
 

@@ -219,8 +219,8 @@ public class DBFacade {
         return b;
     }
     
-    public String saveBuildingPic(int buildId, String ext) {
-        return bm.saveBuildingPic(buildId, ext, con);
+    public String saveBuildingPic(int buildId, String filename) {
+        return bm.saveBuildingPic(buildId, filename, con);
         //System.out.println("Saved buildingPic");
     }
 

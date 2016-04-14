@@ -198,10 +198,9 @@ function yesnoCheck() {
    
    <br>
         Upload pictures:
-        <input type="file" name="Upload Pictures"  />
+        <input type="file" name="fileUpload"  multiple="multiple"/>
         Discprition: 
-     <textarea name="" rows="2" cols="20">
-     </textarea>
+     <textarea name="roompicdescrip" rows="2" cols="20"></textarea>
         
         <br>
         <br>

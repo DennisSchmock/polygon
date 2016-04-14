@@ -59,16 +59,16 @@ public class BuildingMapper {
         return b;
     }
 
-    public String saveBuildingPic(int buildId, String ext, Connection con) {
+    public String saveBuildingPic(int buildId, String filename, Connection con) {
         int imgId = 0;
         System.out.println("build id");
         System.out.println(buildId);
 
         try {
-            String sqlString = "insert into building_pic(building_pic_extension,building_id) values(?,?)";
+            String sqlString = "insert into building_pic(filename,building_id) values(?,?)";
             PreparedStatement statement = con.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
 
-            statement.setString(1, ext);
+            statement.setString(1, filename);
             statement.setInt(2, buildId);
             statement.executeUpdate();
 
@@ -79,7 +79,7 @@ public class BuildingMapper {
         } catch (SQLException ex) {
             Logger.getLogger(BuildingMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String filePath = imgId + "." + ext;
+        String filePath = filename;
         System.out.println(filePath);
         return filePath;
     }
