@@ -11,18 +11,55 @@
 
 <title>Report</title>
 <%@include file="Style/Header.jsp" %>
-
-
-<%@include file="reportview/reportnav.jsp" %>
-<%@include file="reportview/reportheader.jsp" %>
-<c:if test="${requestScope.room!=null}"><%@include file="reportview/reportroom.jsp" %></c:if>
+<nav class="w3-sidenav w3-light-grey" style="width:150px;float: left">
+    <a href="getreport?action=showreport&reportid=${sessionScope.report.reportId}">View main info</a> 
+    <a href="#">Print Report*</a>
     
-<c:if test="${requestScope.viewreport==true}"><%@include file="reportview/reportmain.jsp" %></c:if>
+    <a class="w3-grey" href="#"></a>
+    
+    <c:forEach items="${sessionScope.report.reportFloors}" var="floor" varStatus="count">
+
+        <c:if test="${!empty floor.reportRooms}">
+            <div class="w3-accordion">
+
+                <a onclick="myAccFunc(<c:out value="${count.count}"/>)" href="#">Floor: ${floor.floorNumber}</a>
+
+                <div id="room${count.count}" class="w3-accordion-content w3-white w3-card-4">
+
+                    <c:forEach items="${floor.reportRooms}" var="room">
+                        <a href="getreport?action=reportroom&viewroom=${room.repRoomId}">${room.roomName}</a>
+                    </c:forEach>
+
+                </div>
+            </div>
+        </c:if>
+
+    </c:forEach>
+
+</nav>
 
 
 
+<main style="margin-left: 150px; margin-right: 100px;">
 
-
-
+<c:if test="${requestScope.showroom==true}"><%@include file="reportview/reportroom.jsp" %></c:if>
+    
+<%@include file="reportview/reportmain.jsp" %>
+</main>
+<script>
+    function myAccFunc(i) {
+        var x = document.getElementById("room" + i);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-green", "");
+        }
+    }
+</script>
 <%@include file="Style/Footer.jsp" %>
+
+
 

@@ -10,6 +10,7 @@ import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
 import Domain.Report;
+import Domain.ReportRoom;
 
 import java.io.IOException;
 
@@ -49,11 +50,7 @@ public class ReportController extends HttpServlet {
         if (page == null) {
             page = "";
         }
-        if (page.equalsIgnoreCase("newbuilding")) {
-            url = "/addbuildingalternateupload.jsp";
-
-        }
-
+        
         if (request.getServletPath().equalsIgnoreCase("/viewreports")) {
             url = "/viewreports.jsp";
         }
@@ -115,13 +112,21 @@ public class ReportController extends HttpServlet {
 
         }
         if (action.equalsIgnoreCase("showreport")) {
-           // url = "/viewreport.jsp";
+           
             int reportId = Integer.parseInt(request.getParameter("reportid"));
-            Report report = df.getReport(reportId);
-            System.out.println("Test: " + report.getDate());
-            System.out.println("Are we having fun or not?");
+            Report report = df.getReport(reportId);                   
 //
             request.getSession().setAttribute("report", report);
+
+        }
+        if (action.equalsIgnoreCase("reportroom")) {
+           
+            int reportRoomId = Integer.parseInt(request.getParameter("viewroom"));
+            Report report = (Report)request.getSession().getAttribute("report");
+            ReportRoom rr = report.getReportRoomFromReportFloor(reportRoomId);
+//
+            request.setAttribute("reportroom", rr);
+            request.setAttribute("showroom", true);
 
         }
 //        if(action.equalsIgnoreCase("reportroom")){

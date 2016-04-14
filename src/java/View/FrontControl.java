@@ -62,7 +62,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
-    private boolean testing = true;
+    private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
     Building bdg;
@@ -255,10 +255,11 @@ public class FrontControl extends HttpServlet {
                 String filename = df.saveBuildingPic(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
                 b.setBuilding_pic(filename);                                          //Add the path for building img to building
                 uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
-                sessionObj.setAttribute("newbuilding", b);                            //Update the active building in the session
+                sessionObj.setAttribute("building", b);                            //Update the active building in the session
+                request.setAttribute("showBuilding", true);
             } 
-            response.sendRedirect("viewnewbuilding.jsp");
-            return;
+            url="/viewbuildingadmin.jsp";
+            
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             Building b =updateBuilding(request, df, sessionObj);
