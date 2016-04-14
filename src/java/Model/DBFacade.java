@@ -22,7 +22,6 @@ import java.util.List;
 public class DBFacade {
 
     private Connection con;
-    private ReportMapper rm;
     private static DBFacade instance;
     private CustomerMapper cm;
     private BuildingMapper bm;
@@ -31,67 +30,25 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-//        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
-//        facade.saveBuildingRoom(newRoom);
-//        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
-//        for (BuildingRoom br : rl) {
-//            System.out.println("floor:" + br.getRoomName());
-//        }
+        Report report = facade.getSingleReport(1);
+        for (ReportFloor reportFloor : report.getReportFloors()) {
+            System.out.println("****Floor number: " + reportFloor.getFloorId() + " " + reportFloor.getFloorNumber());
+            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
+                System.out.println("***Roomname: " + reportRoom.getRoomName());
+                for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
+                    System.out.println("  InteriorName: " + reportRoomInterior.getRepRoomIntName());
+                    System.out.println("    InteriorRemark: " + reportRoomInterior.getRemark());
+                    
+                }
+                
+            }
+        }
+       System.out.println( "Numbers of floors in building" + report.getReportFloors().size());
         
-//        ArrayList<BuildingRoom> br=facade.getRoomList(1);
-//        System.out.println(".."+ br.get(0).getRoomId());
-//        System.out.println(".."+ br.get(1).getRoomId());
-//        System.out.println(".."+ br.get(2).getRoomId());
-//        ArrayList<Contact> listOfContacts = facade.getListOfContacts(1);
-//        NewReportMapper nm = new NewReportMapper();
-//        ArrayList<Report> reports = nm.getAllReportsBuilding(1, facade.getCon());
-//        for (Report report : reports) {
-//            System.out.println(report.getReportId());
-//        }
-        
-        Building b = facade.getBuilding(1);
-        System.out.println(b.getBdgId() + b.getBuildingName());
-//        Report report = nm.getSingleReport(21, facade.getCon());
-//        System.out.println(report);
-//        System.out.println(report.getDate());
-//        System.out.println("********Report Start******");
-//        for (ReportRoom reportroom : report.getListOfRepRoom()) {
-//            System.out.println("**** int in room: " + reportroom.getRoomName());
-//            
-//            for (ReportExterior rre : report.getListOfRepRoomExt()) {
-//                System.out.println("Exteriorname: " + rre.getRepExtDescription());
-//            }
-//            for (ReportRoomInterior reportint : reportroom.getListOfInt()) {
-//                System.out.println(reportint.getRepRoomIntName());
-//            }
-//            System.out.println("**** Damage to room: " + reportroom.getRoomName());
-//
-//            for (ReportRoomDamage damage : reportroom.getListOfDamages()) {
-//                System.out.println(damage.getDamageTime());
-//                System.out.println(damage.getPlace());
-//
-//            }
-//            System.out.println("**** Rec for room to room: " + reportroom.getRoomName());
-//
-//            for (ReportRoomRecommendation rec : reportroom.getListOfRec()) {
-//                System.out.println("Rec: " + rec.getRecommendation());
-//            }
-//            System.out.println("Moist at: "+ reportroom.getMoist().getMeasurePoint() + " = " + reportroom.getMoist().getMoistMeasured());
-//        }
-//        for (Contact c : listOfContacts) {
-//            System.out.println("\t" + c.getContactID() + "\t" + c.getName() + "\t" + c.getEmail() + "\t" + c.getTelNum() + "\t" + c.getCustID());
-//        }
-//
-//        System.out.println(facade.validateUser("daeniz", "123"));
 
-//        Contact c = new Contact("name","..@....dk","(+45)98564730",2);
-//        facade.saveContact(c);
-//        Customer customer = new Customer("Polygon", "Dennis Schmock","dennis@schmock.eu", "MyStreet12", 213, 2312, 1111, "Albertslund", "21321311");
-//        facade.addCustomer(customer);
     }
 
     private DBFacade() {
-        rm = new ReportMapper();
         con = DBconnector.getInstance().getConnection();
         //this.con = con;
         cm = new CustomerMapper();
@@ -116,76 +73,9 @@ public class DBFacade {
         return um.validateUser(username, pwd, getCon());
     }
 
-    public Report saveNewReport(Report r) {
-        r = rm.saveNewReport(r, getCon());
-        return r;
-    }
+   
 
-    public ReportRoom saveReportRoom(ReportRoom rr) {
-        rr = rm.saveReportRoom(rr, getCon());
-        return rr;
-    }
-
-    public void saveReportExt(ReportExterior re) {
-        rm.saveReportExt(re, getCon());
-    }
-
-    public void saveReportRoomDamage(ReportRoomDamage rrd) {
-        rm.saveReportRoomDamage(rrd, getCon());
-    }
-
-    public void saveReportInterior(ReportRoomInterior ri) {
-        rm.saveReportInterior(ri, getCon());
-    }
-
-    public void saveReportRoomRec(ReportRoomRecommendation rrr) {
-        rm.saveReportRoomRec(rrr, getCon());
-    }
-
-//    public Report getReport(int id) {
-////        return rm.getReport(id, getCon());
-//    }
-
-//    public ReportExterior getReportExt(int id) {
-////        return rm.getReportExt(id, getCon());
-//    }
-
-    public ReportRoom getReportRoom(int id) {
-        return rm.getReportRoom(id, getCon());
-    }
-
-    public ReportRoomDamage getReportDamage(int id) {
-        return rm.getReportDamage(id, getCon());
-    }
-
-    public ReportRoomInterior getReportInt(int id) {
-        return rm.getReportInt(id, getCon());
-    }
-
-    public ReportRoomRecommendation getReportRec(int id) {
-        return rm.getReportRec(id, getCon());
-    }
-
-//    public ArrayList<ReportExterior> getListOfExt(int id) {
-//        return rm.getListOfExt(id, getCon());
-//    }
-
-    public ArrayList<ReportRoom> getListOfReportRoom(int id) {
-        return rm.getListOfReportRoom(id, getCon());
-    }
-
-    public ArrayList<ReportRoomDamage> getListOfDamages(int id) {
-        return rm.getListOfDamages(id, getCon());
-    }
-
-    public ArrayList<ReportRoomInterior> getListOfInt(int id) {
-        return rm.getListOfInt(id, getCon());
-    }
-
-    public ArrayList<ReportRoomRecommendation> getListOfRec(int id) {
-        return rm.getListOfRec(id, getCon());
-    }
-
+   
     public void addCustomer(Customer cus) {
         cm.addCustomerToDB(cus, getCon());
     }
@@ -198,10 +88,7 @@ public class DBFacade {
         return cm.getContact(custID, con);
     }
 
-    public void saveReportMoist(ReportRoomMoist rrm) {
-        rm.saveReportMoist(rrm, getCon());
-
-    }
+    
 
     public ArrayList<Contact> getListOfContacts(int id) {
         return cm.getListOfContacts(id, getCon());
@@ -290,8 +177,13 @@ public class DBFacade {
         return nrm.getAllReportsBuilding(buildingId, con);
     }
     
-    public Report getSingleReport(int id) {
-        return nrm.getSingleReport(id, getCon());
+    /**
+     * Returns a single report based on the reportId
+     * @param reportId
+     * @return a report object.
+     */
+    public Report getSingleReport(int reportId) {
+        return nrm.getSingleReport(reportId, getCon());
     }
 
     /**
@@ -306,10 +198,23 @@ public class DBFacade {
         
         return um.getPolygonUser(userName, con);
     }
+    
+    /** 
+     * The purpose of this method, is to check if a user can login in with username and password
+     * TODO: add security
+     * @param userName
+     * @param pwd
+     * @return a boolean. False if not validated and true if validated
+     */
     public boolean validatePolygonUser(String userName, String pwd) {
         return um.validatePolygonUser(userName,pwd,con);
     }
     
+    /**
+     * Returns a Building object based on building ID
+     * @param bdgId
+     * @return
+     */
     public Building getBuilding(int bdgId){
         Building b=bm.getBuilding(bdgId, con);
         String imgPath = bm.getLatestBuildingImage(bdgId, con);

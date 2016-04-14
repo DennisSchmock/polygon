@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Report {
     private int reportId;
     private Date date;
+    private ArrayList<ReportFloor> reportFloors;
     private ArrayList<ReportRoom> listOfRepRoom;
     private ArrayList<ReportExterior> listOfRepExt;
     private int buildingId;
@@ -22,18 +23,21 @@ public class Report {
     private String polygonUserName;
     private String customerAccountable;
     private boolean finshed;
+    
     /**
-     *
+     *This constructer is for loading an object from the mapper.
      * @param reportId  report number
      * @param date   date
      * @param buildingId    building's ID
      * @param catCon  category conclusion
      */
-    public Report(int reportId, Date date, int buildingId, int catCon) {
+    public Report(int reportId, Date date, int buildingId, int catCon, String polygonUser, String customerName) {
         this.reportId = reportId;
         this.date = date;
         this.buildingId = buildingId;
         this.categoryConclusion = catCon;
+        this.polygonUserName = polygonUser;
+        this.customerAccountable = customerName;
     }
     
     public Report(String Date, int buildingId, int catCon) {
@@ -48,6 +52,7 @@ public class Report {
         this.buildingId = buildingId;
         this.polygonUserName = polygonUserID;
     }
+
     
     
 
@@ -163,6 +168,20 @@ public class Report {
         }
         }
         return reportExtString;
+    }
+
+    /**
+     * @return the reportFloors
+     */
+    public ArrayList<ReportFloor> getReportFloors() {
+        return reportFloors;
+    }
+
+    /**
+     * @param reportFloors the reportFloors to set
+     */
+    public void setReportFloors(ArrayList<ReportFloor> reportFloors) {
+        this.reportFloors = reportFloors;
     }
     
     

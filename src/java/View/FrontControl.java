@@ -97,7 +97,7 @@ public class FrontControl extends HttpServlet {
         }
     
         HttpSession sessionObj = request.getSession(); //Get the session
-        ReportHelper rh = new ReportHelper();
+      //  ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
@@ -119,11 +119,7 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "/index.jsp";
         }
-        if (page.equalsIgnoreCase("report")) {
-            url = "/report.jsp";
-            request = rh.process(request, response, df);
-            sessionObj.setAttribute("report", df.getReport(21));
-        }
+        
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
             sessionObj.setAttribute("customerSelcted", false);
@@ -862,7 +858,7 @@ public class FrontControl extends HttpServlet {
         }
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         
-        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),temp.getBdgId());
+        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),buildingRoom.getRoomId());
         BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
         reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
