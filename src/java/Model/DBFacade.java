@@ -279,4 +279,9 @@ public class DBFacade {
     public ArrayList<BuildingRoom> getRoomList(int flrId){
         return bm.getRoomList(flrId, con);
     }
+
+    public ArrayList<Report> getSimpleListOfReports() {
+       return nrm.getSimpleListOfReports(con);
+
+    }
 }

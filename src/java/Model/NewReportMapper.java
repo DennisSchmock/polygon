@@ -163,15 +163,7 @@ public class NewReportMapper {
 
     }
 
-    /**
-     * The purpose of this method is to get a list of all reports in the database.
-     * @param con
-     * @return
-     */
-    public ArrayList<Report> getAllReports(Connection con) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
-    }
+    
 
     //method that will take all the Report_Exteriour details in a certain Report
     private ArrayList<ReportExterior> getReportExterior(int id, Connection con) {
@@ -432,7 +424,7 @@ public class NewReportMapper {
                 int floorNumber = rs.getInt("floor_number");
                 int m2 = rs.getInt("floor_size");
                 ReportFloor reportFloor = new ReportFloor( floorId, floorNumber, m2,  reportId, buildingId);
-                reportFloor.setReportRooms(getReportRoomsWithFloorId(floorId,con));
+                reportFloor.setReportRooms(getReportRoomsWithFloorId(floorId,reportId,con));
                 reportFloors.add(reportFloor);
 
             }
@@ -445,13 +437,14 @@ public class NewReportMapper {
     
     }
 
-    private ArrayList<ReportRoom> getReportRoomsWithFloorId(int floorId, Connection con) {
+    private ArrayList<ReportRoom> getReportRoomsWithFloorId(int floorId, int reportId, Connection con) {
         ArrayList<ReportRoom> reportRooms = new ArrayList<>();
 
-        String SQLString = "SELECT * FROM Polygon.building_room, Polygon.report_room where report_room.building_room = building_room.room_id AND building_room.floor_id = ?;";
+        String SQLString = "SELECT * FROM Polygon.building_room, Polygon.report_room where report_room.building_room = building_room.room_id AND building_room.floor_id = ? AND report = ?;";
 
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, floorId);
+            statement.setInt(2, reportId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 int reportRoomId = rs.getInt("report_room_id");
@@ -469,6 +462,26 @@ public class NewReportMapper {
             return reportRooms;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getReportRoomBasedOnFloorId");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    ArrayList<Report> getSimpleListOfReports(Connection con) {
+         ArrayList<Report> reports = new ArrayList<>();
+        String SQLString = "select * from report";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                Report r = new Report();
+                r.setReportId(rs.getInt("report_id"));
+                r.setDate(rs.getDate("report_date"));
+                reports.add(r);
+            }
+            return reports;
+        }
+        catch (Exception e) {
+            System.out.println("Failed to get reports for building");
             System.out.println(e.getMessage());
             return null;
         }

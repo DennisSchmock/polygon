@@ -201,4 +201,12 @@ public class DomainFacade {
         return dbFacade.getSingleReport(reportId);
     }
 
+    /**
+     * The purpose of this method, is to get a very simple list of all reports from DB. 
+     * @return
+     */
+    public ArrayList<Report> getSimpleListOfReports() {
+        return dbFacade.getSimpleListOfReports();
+    }
+
 }

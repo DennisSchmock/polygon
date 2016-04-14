@@ -53,11 +53,27 @@ public class Report {
         this.polygonUserName = polygonUserID;
     }
 
+    public Report() {
+    }
+
     
     
 
     public ReportRoom getReportRoom(int id){
         return this.listOfRepRoom.get(id);
+    }
+    
+    public ReportRoom getReportRoomFromReportFloor(int reportRoomId){
+        for (ReportFloor reportFloor : reportFloors) {
+            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
+                if(reportRoom.getRepRoomId()==reportRoomId){
+                    return reportRoom;
+                }
+                
+            }
+            
+        }
+        return null;
     }
     public void setReportId(int reportId) {
         this.reportId = reportId;
@@ -183,6 +199,7 @@ public class Report {
     public void setReportFloors(ArrayList<ReportFloor> reportFloors) {
         this.reportFloors = reportFloors;
     }
+    
     
     
 
