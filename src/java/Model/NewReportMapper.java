@@ -53,9 +53,12 @@ public class NewReportMapper {
                 reportId = rs.getInt(1);
                 System.out.println("Report id = " + reportId);
             }
-
+            if(r.getListOfRepRoom() != null){
             saveRoomsToDatabase(r, reportId, con);
+            }
+            if(r.getListOfRepExt() != null){
             saveExteriorToDB(r, reportId, con);
+            }
             
             con.commit();
             System.out.println("Report Saved in database Succes - Yeah 8)");
@@ -260,10 +263,18 @@ public class NewReportMapper {
                 if (rs.next()) {
                     roomId = rs.getInt(1);
                 }
+                if(reportRoom.getListOfDamages() != null){
                 saveRoomDamages(reportRoom, roomId, con);
+                }
+                if(reportRoom.getListOfInt() != null){
                 saveRoomInterior(reportRoom, roomId, con);
+                }
+                if(reportRoom.getListOfRec() != null){
                 saveRoomRecommendations(reportRoom, roomId, con);
+                }
+                if(reportRoom.getMoist() != null){
                 saveRoomMoist(reportRoom, roomId, con);
+                }
         }
 
     }
