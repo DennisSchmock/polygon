@@ -13,7 +13,7 @@ public class DBFixture {
     private static String driver = "com.mysql.jdbc.Driver";
     private static String URL = "jdbc:mysql://localhost:3306/polytest";
     private static String id = "root";			
-    private static String pw = "kodeord";
+    private static String pw = "daniel";
 
     public void setUp() throws SQLException {
         try {
@@ -143,7 +143,7 @@ public class DBFixture {
                     + "`customer_username` VARCHAR(45) NOT NULL,"
                     + "`building_id` INT(11) NULL DEFAULT NULL,"
                     + "`order_type` VARCHAR(45) NULL DEFAULT NULL,"
-                    + "`order_description` TEXT NULL DEFAULT NULL,"
+                    + "`order_description` TEXT,"
                     + "PRIMARY KEY (`order_id`),"
                     + "INDEX `customer_username` (`customer_username` ASC),"
                     + "INDEX `building_id` (`building_id` ASC),"
@@ -178,7 +178,10 @@ public class DBFixture {
                     + "`report_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`report_date` DATE NULL DEFAULT NULL,"
                     + "`building_id` INT(10) NULL DEFAULT NULL,"
+                    + "`polygonuser` varchar(30) DEFAULT NULL,"
+                    + "`customer_user` varchar(30) DEFAULT NULL,"
                     + "`category_conclusion` INT(1) NULL DEFAULT NULL,"
+                    + "`report_finished` tinyint(1) NOT NULL,"
                     + "PRIMARY KEY (`report_id`),"
                     + "INDEX `building_id` (`building_id` ASC),"
                     + "CONSTRAINT `report_ibfk_1`"
@@ -195,6 +198,7 @@ public class DBFixture {
                     + "`report_ext_description` VARCHAR(100) NULL DEFAULT NULL,"
                     + "`report_ext_pic` INT(10) NULL DEFAULT NULL,"
                     + "`report` INT(10) NULL DEFAULT NULL,"
+                    + "`rep_ext_inspected_area` varchar(45) DEFAULT NULL,"
                     + "PRIMARY KEY (`report_ext_id`),"
                     + "INDEX `report` (`report` ASC),"
                     + "CONSTRAINT `report_exterior_ibfk_1`"
@@ -243,7 +247,7 @@ public class DBFixture {
 
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_damage` ("
                     + "`report_room_damage_id` INT(10) NOT NULL AUTO_INCREMENT,"
-                    + "`damage_time` DATE NULL DEFAULT NULL,"
+                    + "`damage_time` varchar(100) DEFAULT NULL,"
                     + "`place` VARCHAR(30) NULL DEFAULT NULL,"
                     + "`what_happened` VARCHAR(30) NULL DEFAULT NULL,"
                     + "`what_is_repaired` VARCHAR(30) NULL DEFAULT NULL,"
@@ -295,7 +299,7 @@ public class DBFixture {
 
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_moist` ("
                     + "`report_room_moist_id` INT(10) NOT NULL AUTO_INCREMENT,"
-                    + "`report_room_moist_measured` INT(5) NULL DEFAULT NULL,"
+                    + "`report_room_moist_measured` varchar(100) NULL DEFAULT NULL,"
                     + "`report_room_moist_place` VARCHAR(30) NULL DEFAULT NULL,"
                     + "`report_room_id` INT(10) NULL DEFAULT NULL,"
                     + "PRIMARY KEY (`report_room_moist_id`),"
@@ -342,7 +346,7 @@ public class DBFixture {
             System.out.println("Fail in JdbcTest - setup");
             System.out.println(e.getMessage());
         } finally {
-        }
+        }   
     }
 
     public void tearDown() throws SQLException {
