@@ -13,6 +13,7 @@ import Domain.Report;
 import Domain.ReportRoom;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,12 +21,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author dennisschmock
  */
-@WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1"})
+@WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1", "/room"})
 public class ReportController extends HttpServlet {
 
     /**
@@ -50,7 +52,7 @@ public class ReportController extends HttpServlet {
         if (page == null) {
             page = "";
         }
-        
+
         if (request.getServletPath().equalsIgnoreCase("/viewreports")) {
             url = "/viewreports.jsp";
         }
@@ -91,12 +93,24 @@ public class ReportController extends HttpServlet {
             request.setAttribute("addFloor", true);
 
         }
+        if (action.equalsIgnoreCase("addroom")) {
+            int floorId = Integer.parseInt(request.getParameter("floor"));
+            request.setAttribute("addRoom", true);
+            request.setAttribute("floorId", floorId);
+
+        }
         if (action.equalsIgnoreCase("listreports")) {
             request.getSession().setAttribute("reports", df.getSimpleListOfReports());
         }
 
         if (action.equalsIgnoreCase("addfloorsubmit")) {
             addFloors(request, df);
+
+        }
+        if (action.equalsIgnoreCase("addroomsubmit")) {
+            int floorId = Integer.parseInt(request.getParameter("floorID"));
+            addRoom(request, df, floorId);
+            request.setAttribute("showBuilding", true);
 
         }
         if (action.equalsIgnoreCase("editbuilding")) {
@@ -112,7 +126,7 @@ public class ReportController extends HttpServlet {
 
         }
         if (action.equalsIgnoreCase("showreport")) {
-           
+
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
             Building b = df.getBuilding(report.getBuildingId());
@@ -122,9 +136,9 @@ public class ReportController extends HttpServlet {
 
         }
         if (action.equalsIgnoreCase("reportroom")) {
-           
+
             int reportRoomId = Integer.parseInt(request.getParameter("viewroom"));
-            Report report = (Report)request.getSession().getAttribute("report");
+            Report report = (Report) request.getSession().getAttribute("report");
             ReportRoom rr = report.getReportRoomFromReportFloor(reportRoomId);
 //
             request.setAttribute("reportroom", rr);
@@ -179,8 +193,21 @@ public class ReportController extends HttpServlet {
             df.addFloors(bf);
             b = df.getBuilding(b.getBdgId());
             request.getSession().setAttribute("building", b);
+
         }
 
+    }
+
+    private void addRoom(HttpServletRequest request, DomainFacade df, int floorId) {
+        Building b = (Building) request.getSession().getAttribute("building");
+
+        String roomName = (String) request.getParameter("roomname");
+        if (roomName != null) {
+            BuildingRoom br = new BuildingRoom(roomName, floorId);
+            df.addRoom(br);
+            b = df.getBuilding(b.getBdgId());
+            request.getSession().setAttribute("building", b);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
