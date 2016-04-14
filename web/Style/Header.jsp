@@ -52,11 +52,11 @@
                     <a href="#">Admin/employee</a>
                     <div class="w3-dropdown-content w3-white w3-card-4">
 
-                        <a href="viewreport1?page=newbuilding&action=addbuilding">Add building alternate</a>
+                    
                         <a href="frontpage?page=addcustomer">Add customer</a>
                         <a href="frontpage?page=viewcustomers">View Customers</a>
                         <a href="viewreports?action=listreports">View Reports</a>
-                        <a href="#">View Buildings</a>
+                        <a href="#">View Buildings*</a>
                         <a href="frontpage?page=addfloor">Add Floors and rooms</a>
                     </div>
                 </li>
