@@ -18,8 +18,8 @@
     <div class="w3-row-padding w3-threequarter">
         <input type="hidden" name="action" value="addfloorsubmit" />
         <div class="w3-half"><label>Floor Number:</label><input type="number" name="floornumber" value="" required class="w3-input w3-border"/></div>
-        <div class="w3-half"><label>Floor Size:</label><input type="decimal" name="floorsize" value="" class="w3-input w3-border" /></div>
-        <div class="w3-half"><label>Number of Rooms:</label><input type="number" name="totalrooms" value="" class="w3-input w3-border" /></div>
+        <div class="w3-half"><label>Floor Size (m2):</label><input type="decimal" name="floorsize" value="" class="w3-input w3-border" required /></div>
+        <div class="w3-half"><label>Number of Rooms:</label><input type="number" name="totalrooms" value="" class="w3-input w3-border" required /></div>
         <div class="w3-half"><input name="addFloor" type="submit" value="Add Floor" /></div>
 
     </div>
@@ -30,14 +30,7 @@
         <th>Size</th>
         <th>Number of Rooms</th>
         </tr>
-        <c:forEach items="${sessionScope.floorsList}" var="floor">
-
-            <tr>
-            <td>${floor.floorNumber} </td>
-            <td>${floor.floorSize}</td>
-            <td>${floor.totalRooms}<br></td>
-            </tr>                                                                   
-        </c:forEach>
+       
 
     </table>
 </form>    

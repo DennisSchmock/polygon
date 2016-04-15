@@ -13,10 +13,11 @@
 <title>New Building added</title>
 <%@include file="Style/Header.jsp" %>
 <nav class="w3-sidenav w3-light-grey" style="width:150px;float: left">
+    <a href="viewreport1?action=showbuilding">Building info</a>
     <a href="viewreport1?action=addfloor">Add Floor</a>
     <a href="viewreport1?action=editbuilding">Edit building</a>
-    <a href="viewreport1?action=showbuilding">View building</a>
-    <a href="#">Add floorplan</a>
+    <a href="#">Floorplan</a>
+    <a href="#">Documents</a>
     ---------------
 
     <c:forEach items="${sessionScope.building.listOfFloors}" var="floor" varStatus="count">
@@ -28,7 +29,7 @@
             <div id="room${count.count}" class="w3-accordion-content w3-white w3-card-4">
 
                 <c:forEach items="${floor.listOfRooms}" var="room">
-                    <a href="viewreport1?action=viewroom&viewroom=${room.roomId}&floor=${room.floorid}">Room ${room.roomName}</a>
+                    <a href="viewreport1?action=viewroom&viewroom=${room.roomId}&floor=${room.floorid}">${room.roomName}</a>
                 </c:forEach>
                 <b><a href="viewreport1?action=addroom&floor=${floor.floorId}">Add Room</a></b>
 
@@ -36,7 +37,6 @@
         </div>
 
     </c:forEach>
-
 
 </nav>
 <main style="margin-left: 150px; margin-right: 10px;">

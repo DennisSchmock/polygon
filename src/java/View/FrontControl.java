@@ -14,6 +14,7 @@ import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
 import Domain.ReportExterior;
+import Domain.ReportPic;
 import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
@@ -62,7 +63,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
-    private boolean testing = true;
+    private final NewFileUpload nfu = new NewFileUpload();
+    private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
     Building bdg;
@@ -83,21 +85,18 @@ public class FrontControl extends HttpServlet {
         request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
         Part filePart = null;                                   //Used in case of fileuploads
         List<Part> fileParts = new ArrayList();
+        Collection<Part> parts=null;
         //filePart = request.getPart("buildingImg");
         if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
                       //Extracts the part of the form that is the file
-        Collection<Part> parts = request.getParts();
-        
-            for (Part part : parts) {
-                //filePart = request.getPart("buildingImg");
-                if (part.getName().equals("buildingImg")) fileParts.add(part);
-                System.out.println("part.getName()");
-                System.out.println(part.getName());
-            }
+        parts = request.getParts();
+            System.out.println("multipart");
+            if(parts!=null)System.out.println(parts.size());;
+            
         }
     
         HttpSession sessionObj = request.getSession(); //Get the session
-        ReportHelper rh = new ReportHelper();
+      //  ReportHelper rh = new ReportHelper();
         NewReportHelper nrh = new NewReportHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
@@ -119,11 +118,7 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "/index.jsp";
         }
-        if (page.equalsIgnoreCase("report")) {
-            url = "/report.jsp";
-            request = rh.process(request, response, df);
-            sessionObj.setAttribute("report", df.getReport(21));
-        }
+        
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
             sessionObj.setAttribute("customerSelcted", false);
@@ -141,23 +136,25 @@ public class FrontControl extends HttpServlet {
         }
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
-            saveReportExterior(request, sessionObj);
+            saveReportExterior(request, sessionObj,parts);
+            //nfu.uploadExteriorPic(fileParts);
         }
 
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
-            setUpForRoomInspection(request, sessionObj, df);
+            setUpForRoomInspection(request, sessionObj, df, parts);
         }
         
         if (page.equalsIgnoreCase("submittedRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
-            createReportRoomElements(request,sessionObj);
+            createReportRoomElements(request,sessionObj, parts);
         }
         
         if (page.equalsIgnoreCase("saveFinishedReport")) {
-            url = "/reportJSPs/viewfinishedreport.jsp";
+            url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
-           saveFinishedReport(sessionObj,df);
+           int reportId = saveFinishedReport(sessionObj,df);
+           request.getSession().setAttribute("report", df.getReport(reportId));
         }
         
         if (page.equalsIgnoreCase("toFinishReport")) {
@@ -170,7 +167,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
-            setUpForRoomInspection(request, sessionObj, df );
+            setUpForRoomInspection(request, sessionObj, df, parts );
         }
 
         if (page.equalsIgnoreCase("newReportSubmit")) {
@@ -246,45 +243,12 @@ public class FrontControl extends HttpServlet {
          */
         if (page.equalsIgnoreCase("newbuilding")) {
             
-            Building b=createBuilding(request, df, sessionObj);
-            
-            if (!fileParts.isEmpty()){
-                System.out.println("FileParts Size");
-                System.out.println(fileParts.size());
-                filePart=fileParts.get(0);
-                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
-                String extension = fileDotSplit[fileDotSplit.length-1];               //Take last part of filename(the extension)
-                if (testing)System.out.println(filePart.getSubmittedFileName());
-                if (testing)System.out.println(extension);
-                String filename = df.saveBuildingPic(b.getBdgId(), extension);        //Upload the image details in db, get a filename back
-                b.setBuilding_pic(filename);                                          //Add the path for building img to building
-                uploadFile(filePart,"buildingPic",filename);                          //Upload the file in buildingPicFolder
-                sessionObj.setAttribute("newbuilding", b);                            //Update the active building in the session
-            } 
+            Building b=createBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
-            Building b =updateBuilding(request, df, sessionObj);
-            
-            //This part deals with uploading image for building IF one was submitted
-            if (filePart!=null){
-                String[] fileDotSplit = filePart.getSubmittedFileName().split("\\.");
-                if (fileDotSplit.length>1){                                             //If the was a dot in the filepart ie xyz.jpg
-                String extension = fileDotSplit[fileDotSplit.length-1];                 //Set extension to be what comes after the last dot
-                System.out.println("SubmittedFileName");
-                System.out.println(filePart.getSubmittedFileName());
-                System.out.println(extension);
-                // Save buildingpic info in db (not the image itself but information)
-                // Gets the filename back made from the info
-                String filename = df.saveBuildingPic(b.getBdgId(), extension);
-                System.out.println("Filename");
-                System.out.println(filename);
-                b.setBuilding_pic(filename);
-                // Do the actual upload
-                uploadFile(filePart,"buildingPic",filename);
-                }
-            }
+            Building b =updateBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
@@ -405,46 +369,8 @@ public class FrontControl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-      if (false){
-          System.out.println("Running Files Upload");
-          boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if (!isMultipart) {
-            System.out.println("Not multipart");
-        } else {
-            System.out.println("Is multipart");
-            FileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            List items = null;
-            try {
-                System.out.println("upload.parseRequest(request)");
-                //Part p = request.getPart("buildingImg");
-                //System.out.println(p.getContentType());
-                items = upload.parseRequest(request);
-                
-                } catch (FileUploadException e) {
-                    e.printStackTrace();
-                }
-            Iterator itr = items.iterator();
-            System.out.println("Before hasnext");
-            while (itr.hasNext()) {
-                System.out.println("hasNextLoop");
-                FileItem item = (FileItem) itr.next();
-                if (item.isFormField()) {
-                    System.out.println(item.getFieldName());
-                    
-                } else {
-                    try {
-                    String itemName = item.getName();
-                    File savedFile = new File("C:\\Img\\"+itemName);
-                    item.write(savedFile);  
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    
-      }
+     
+      
      
         processRequest(request, response);
 
@@ -466,7 +392,7 @@ public class FrontControl extends HttpServlet {
      * Facade. Then it stores the created building object in the session to be
      * displayed.
      */
-    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -475,21 +401,25 @@ public class FrontControl extends HttpServlet {
         int buildingYear = Integer.parseInt(request.getParameter("BuildingYear"));
         String useOfBuilding = request.getParameter("useOfBuilding");
         User userLoggedIn = (User)session.getAttribute("user");
+        String buildingPic = (nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
+
         
         int custId=userLoggedIn.getCustomerid();
         System.out.println("CustId");
         System.out.println(custId);
         if (custId==0 && request.getParameter("customerId")!=null){
             custId=Integer.parseInt(request.getParameter("customerId"));
-        
         }
         System.out.println(custId);
+        
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding,custId);
         
 
         b.setCustId(custId);
+        b.setBuilding_pic(buildingPic);
+        df.saveBuildingPic(b.getBdgId(), buildingPic);
         session.setAttribute("newbuilding", b);
         return b;
     }
@@ -556,11 +486,12 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the buildingToBeEdited object,
      * that that we have to change based on the input fields
      */
-    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session) {
+    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
 
         System.out.println(request.getCharacterEncoding());
 
-        Building buildingToBeEdited = (Building) session.getAttribute("building");
+        Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited");  // Had been edited to "building"?! gave crash
+        if (buildingToBeEdited==null)buildingToBeEdited = (Building)session.getAttribute("building");
         buildingToBeEdited.setBuildingName(request.getParameter("buildingName"));
         buildingToBeEdited.setStreetAddress(request.getParameter("streetAddress"));
         buildingToBeEdited.setStreetNumber(request.getParameter("streetNumber"));
@@ -568,7 +499,10 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
-
+        buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
+        
+        System.out.println("BuildingPic");
+        System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
@@ -690,7 +624,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the fields, the user have inserted.
      * @param sessionObj Holds obejcts like report, and building for report
      */
-    public void saveReportExterior(HttpServletRequest request, HttpSession sessionObj) {
+    public void saveReportExterior(HttpServletRequest request, HttpSession sessionObj, Collection<Part> parts) {
         String remarksOnRoof = request.getParameter("remarksOnRoof");
         String remarksOnWalls = request.getParameter("remarksOnWall");
 
@@ -698,6 +632,13 @@ public class FrontControl extends HttpServlet {
 
         ReportExterior roofEx = new ReportExterior("Roof", remarksOnRoof);
         ReportExterior wallEx = new ReportExterior("Wall", remarksOnWalls);
+        
+        ArrayList<ReportPic> extPic = new ArrayList();
+        String filepath = nfu.saveExtPicture(getServletContext().getRealPath(""),parts);
+        String description = request.getParameter("decriptionOfPicture");
+        extPic.add(new ReportPic(filepath,description));
+        
+        report.setListOfExtPics(extPic);
 
         if (report.getListOfRepExt() == null) {
             ArrayList<ReportExterior> listOfExt = new ArrayList<>();
@@ -710,41 +651,20 @@ public class FrontControl extends HttpServlet {
             listOfExt.add(roofEx);
             report.setListOfRepExt(listOfExt);
         }
-
+        
         sessionObj.setAttribute("reportToBeCreated", report);
 
         
     }
     
-    public void uploadMultipleFiles(Part filePart, String folder){
-        
-    }
-    
+ 
     /**
      * Uploads a file to the server. Helper method for any fileUpload
      * @param filePart the Part that holds the file
      * @param folder the subfolder it should go into (has to exist beforehand, uses relative path!)
      * @param filename the full name of the file.
      */
-    private void uploadFile(Part filePart, String folder, String filename) {
-        // The Wrong way of doing things according to several sources (relative path)
-        // Deliberate in this case for the purpose of being able to implement across multiple systems
-        String uploadFolder = getServletContext().getRealPath("")
-                + File.separator ;
-        
-        if (testing) System.out.println("UploadFile");
-        File uploads = new File(uploadFolder);
-        uploads = new File (uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
-        if (testing) System.out.println(uploads.getParentFile().getParent()+File.separator+"web"+File.separator+folder);
-        File file = new File(uploads, filename);
-
-        try (InputStream input = filePart.getInputStream()) {
-            Files.copy(input, file.toPath());
-        } catch (IOException ex) {
-            Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
     /**
      * This method adds a new floor, then set to BuildingFloor object and session with the list of floors 
      * @param request
@@ -826,7 +746,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
             
@@ -862,10 +782,12 @@ public class FrontControl extends HttpServlet {
         }
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         
-        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),temp.getBdgId());
+        ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),buildingRoom.getRoomId());
         BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
         reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
+
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
+      
     }
 
     /**
@@ -923,7 +845,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the Report object that needs to
      * be updated.
      */
-    private void createReportRoomElements(HttpServletRequest request, HttpSession sessionObj) {
+    private void createReportRoomElements(HttpServletRequest request, HttpSession sessionObj, Collection<Part> parts) {
         
         //For the interior / Examination:
         if(request.getParameter("Examination").equalsIgnoreCase("Remarks")){
@@ -1000,12 +922,22 @@ public class FrontControl extends HttpServlet {
             
         }
         
+         // Stuff for adding reportRoomPics
+        ArrayList<ReportPic> rrPic = new ArrayList();
+        String description = request.getParameter("roompicdescrip");
+        if (description==null) description="";
+        System.out.println("Size of parts in reportroom");
+        if (parts!=null) System.out.println(parts.size());
+        rrPic=nfu.addReportRoomPics(getServletContext().getRealPath(""), description, parts);
+        
         // After all of the elemets has been added to the report_Room
         // The report_Room, should be saved in the Report att.
         // And then be removed, since there now needs to be an new object inserted
         
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
+        reportRoom.setRrPic(rrPic);
+        System.out.println(rrPic.size());
         if(report.getListOfRepRoom() == null){
             // means that the report does not contain any rooms yet
             ArrayList<ReportRoom> roomList = new ArrayList();
@@ -1151,9 +1083,9 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the report object 
      * @param df Holds the connection to the domain layer
      */
-    private void saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
+    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
-        df.saveReport(report);
+        return df.saveReport(report);
     }
 
     

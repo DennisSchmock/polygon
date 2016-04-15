@@ -39,53 +39,24 @@ public class DomainFacade {
     public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
         b.setCustId(custId); // this is hardcoded! Should load the userloged in!
-        b=dbFacade.saveNewBuilding(b);
+        b = dbFacade.saveNewBuilding(b);
         return b;
-    } 
+    }
 
 
-public String saveBuildingPic(int buildId, String ext){
-        return dbFacade.saveBuildingPic(buildId, ext);
+public String saveBuildingPic(int buildId, String filename){
+        return dbFacade.saveBuildingPic(buildId, filename);
         
     }
 
-    public Report saveNewReport(Date date, int buildingId, int category) {
-        Report r = new Report(0, date, buildingId, category); // Fix
-        r = dbFacade.saveNewReport(r);
-        return r;
-    }
-
-    public ReportRoom saveReportRoom(int repRoomId, String roomName, int reportId, int buildingId) {
-        ReportRoom rr = new ReportRoom(0, roomName, reportId);
-        rr.setBuildingRoomId(buildingId);
-        rr = dbFacade.saveReportRoom(rr);
-        return rr;
-    }
-
-    public void saveReportMoist(String moistMeasured, String measurePoint, int reportRoom) {
-        ReportRoomMoist rrm = new ReportRoomMoist(0, moistMeasured, measurePoint, reportRoom);
-
-        dbFacade.saveReportMoist(rrm);
-    }
-
-    public void saveReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
-        ReportRoomDamage rrd = new ReportRoomDamage(damageTime, place, whatHappened, whatIsRepaired, damageType, repRoomId);
-        dbFacade.saveReportRoomDamage(rrd);
-    }
-
+//    public Report saveNewReport(Date date, int buildingId, int category) {
+//        Report r = new Report(0, date, buildingId, category); // Fix
+//        r = dbFacade.saveNewReport(r);
+//        return r;
+//    }
     public void saveNewReportExt(int repExtId, String repExtDescription, int repExtPic, int reportId) {
 //        ReportExterior r = new ReportExterior(0, repExtDescription, repExtPic, reportId); // Fix
 //        dbFacade.saveReportExt(r);
-    }
-
-    public void saveReportRoomRec(String recommendation, int repRoomId) {
-        ReportRoomRecommendation rrr = new ReportRoomRecommendation(recommendation, repRoomId);
-        dbFacade.saveReportRoomRec(rrr);
-    }
-
-    public void saveReportInterior(String repRoomIntName, String remark, int repRoomId) {
-        ReportRoomInterior ri = new ReportRoomInterior(repRoomIntName, remark, repRoomId);
-        dbFacade.saveReportInterior(ri);
     }
 
 //    public void saveNewReport(String date, int buildingId, int category){
@@ -135,10 +106,11 @@ public String saveBuildingPic(int buildId, String ext){
 
     /**
      * Sends the report obejct to the DB Facade
+     *
      * @param report The report object without an uniqe ID jet.
      */
-    public void saveReport(Report report) {
-         dbFacade.reportToDataBase(report);
+    public int saveReport(Report report) {
+        return dbFacade.reportToDataBase(report);
 
     }
 
@@ -152,10 +124,6 @@ public String saveBuildingPic(int buildId, String ext){
 
     }
 
-    public Report getReport(int i) {
-        return dbFacade.getSingleReport(i);
-    }
-
     /**
      * Needs to load all the customers in the database
      *
@@ -167,16 +135,17 @@ public String saveBuildingPic(int buildId, String ext){
 
     /**
      * Loads an building in the database
+     *
      * @param buildingID Id for the building to be loaded
      * @return An objet of the the Building that has been loaded
      */
     public Building getBuilding(int buildingID) {
         return dbFacade.getBuilding(buildingID);
     }
-    
-    public String getLatestBuildingImage(int buildingId){
+
+    public String getLatestBuildingImage(int buildingId) {
         return dbFacade.getLatestBuildingImage(buildingId);
-        
+
     }
 
     public void addFloors(BuildingFloor bf) {
@@ -184,17 +153,17 @@ public String saveBuildingPic(int buildId, String ext){
     }
 
     /**
-     * Method for creating a BUILDING ROOM.
-     * Something that belongs to the FLOOR, that Belongs to the builing.
-     * Not something in the report
-     * @param newRoom A BuildingRoom object that is to be created. 
-     * @return  The newly created building object in the database with the 
-     * an ID!
+     * Method for creating a BUILDING ROOM. Something that belongs to the FLOOR,
+     * that Belongs to the builing. Not something in the report
+     *
+     * @param newRoom A BuildingRoom object that is to be created.
+     * @return The newly created building object in the database with the an ID!
      */
     public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
         return dbFacade.saveBuildingRoom(newRoom);
-}
-    public ArrayList<BuildingFloor> listOfFloors(int bdgId){
+    }
+
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId) {
         return dbFacade.getListOfFloors(bdgId);
     }
 
@@ -202,22 +171,21 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getCustomer(cusid);
     }
 
-    
-    public ArrayList<BuildingRoom> getListOfRooms(int flrId){
+    public ArrayList<BuildingRoom> getListOfRooms(int flrId) {
         return dbFacade.getRoomList(flrId);
     }
 
     public void addRoom(BuildingRoom br) {
         dbFacade.saveBuildingRoom(br);
     }
-    
-    public void updateFloor(int id, int newNumRooms){
+
+    public void updateFloor(int id, int newNumRooms) {
         dbFacade.updateFloor(id, newNumRooms);
     }
- 
 
     /**
      * Method that needs to load an Building Floor based on a floorod-
+     *
      * @param floorid the ID for the floor to be loaded
      * @return An object of the infomation for the floor.
      */
@@ -225,5 +193,21 @@ public String saveBuildingPic(int buildId, String ext){
         return dbFacade.getFloor(floorid);
     }
 
- 
+    /**
+     * The purpose of this method, is to return a single report based on reportID
+     * @param reportId
+     * @return a Report
+     */
+    public Report getReport(int reportId) {
+        return dbFacade.getSingleReport(reportId);
+    }
+
+    /**
+     * The purpose of this method, is to get a very simple list of all reports from DB. 
+     * @return
+     */
+    public ArrayList<Report> getSimpleListOfReports() {
+        return dbFacade.getSimpleListOfReports();
+    }
+
 }

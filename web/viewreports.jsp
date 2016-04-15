@@ -25,8 +25,7 @@
                     <c:forEach items="${sessionScope.reports}" var="report">
                        
                       
-                        <li><a href="viewreport?page=viewreport&reportid=${report.reportId}">Report date: ${report.date} Report id: ${report.reportId}</a><span onclick="this.parentElement.style.display = 'none'" 
-                                                                                           class="w3-closebtn w3-margin-right w3-medium">x</span><br></li>
+                        <li><a href="getreport?action=showreport&reportid=${report.reportId}">Report date: ${report.date} Report id: ${report.reportId}</a>
                                                                                            
                     </c:forEach>
                 </ul>

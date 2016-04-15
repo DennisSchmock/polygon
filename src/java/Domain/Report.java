@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -12,9 +13,10 @@ import java.util.ArrayList;
  *
  * @author CJS
  */
-public class Report {
+public class Report implements Serializable{
     private int reportId;
     private Date date;
+    private ArrayList<ReportFloor> reportFloors;
     private ArrayList<ReportRoom> listOfRepRoom;
     private ArrayList<ReportExterior> listOfRepExt;
     private int buildingId;
@@ -22,18 +24,22 @@ public class Report {
     private String polygonUserName;
     private String customerAccountable;
     private boolean finshed;
+    private ArrayList<ReportPic> listOfExtPics;
+    private String buildingName;
     /**
-     *
+     *This constructer is for loading an object from the mapper.
      * @param reportId  report number
      * @param date   date
      * @param buildingId    building's ID
      * @param catCon  category conclusion
      */
-    public Report(int reportId, Date date, int buildingId, int catCon) {
+    public Report(int reportId, Date date, int buildingId, int catCon, String polygonUser, String customerName) {
         this.reportId = reportId;
         this.date = date;
         this.buildingId = buildingId;
         this.categoryConclusion = catCon;
+        this.polygonUserName = polygonUser;
+        this.customerAccountable = customerName;
     }
     
     public Report(String Date, int buildingId, int catCon) {
@@ -48,11 +54,28 @@ public class Report {
         this.buildingId = buildingId;
         this.polygonUserName = polygonUserID;
     }
+
+    public Report() {
+    }
+
     
     
 
     public ReportRoom getReportRoom(int id){
-        return this.listOfRepRoom.get(id);
+        return this.getListOfRepRoom().get(id);
+    }
+    
+    public ReportRoom getReportRoomFromReportFloor(int reportRoomId){
+        for (ReportFloor reportFloor : getReportFloors()) {
+            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
+                if(reportRoom.getRepRoomId()==reportRoomId){
+                    return reportRoom;
+                }
+                
+            }
+            
+        }
+        return null;
     }
     public void setReportId(int reportId) {
         this.reportId = reportId;
@@ -141,14 +164,14 @@ public class Report {
     
     @Override
     public String toString() {
-        return "Report{" + "reportId=" + reportId + ", date=" + date + ", buildingId=" + buildingId + ", categoryConclusion=" + categoryConclusion + ", polygonUserName=" + polygonUserName + ", finshed=" + finshed + 
+        return "Report{" + "reportId=" + getReportId() + ", date=" + getDate() + ", buildingId=" + getBuildingId() + ", categoryConclusion=" + getCategoryConclusion() + ", polygonUserName=" + getPolygonUserName() + ", finshed=" + isFinshed() + 
                 reportRoomToString()+ reportRoomExtToString() +'}';
     }
 
     private String reportRoomToString() {
         String reportRoomsString="\n";
-        if(listOfRepRoom != null){
-        for (ReportRoom Room : listOfRepRoom) {
+        if(getListOfRepRoom() != null){
+        for (ReportRoom Room : getListOfRepRoom()) {
             reportRoomsString +="NEWROOM: " + Room.toString() +"\n";
         }
         }
@@ -157,13 +180,50 @@ public class Report {
 
     private String reportRoomExtToString() {
         String reportExtString ="\n";
-        if(listOfRepRoom != null){
-        for (ReportExterior exterior : listOfRepExt ) {
+        if(getListOfRepRoom() != null){
+        for (ReportExterior exterior : getListOfRepExt() ) {
             reportExtString += "New EXTERIOR: " + exterior.toString();
         }
         }
         return reportExtString;
     }
+
+    public ArrayList<ReportPic> getListOfExtPics() {
+        return listOfExtPics;
+    }
+
+    public void setListOfExtPics(ArrayList<ReportPic> listOfExtPics) {
+        this.listOfExtPics = listOfExtPics;
+    }
+    
+    /**
+     * @return the reportFloors
+     */
+    public ArrayList<ReportFloor> getReportFloors() {
+        return reportFloors;
+    }
+
+    /**
+     * @param reportFloors the reportFloors to set
+     */
+    public void setReportFloors(ArrayList<ReportFloor> reportFloors) {
+        this.reportFloors = reportFloors;
+    }
+
+    /**
+     * @return the buildingName
+     */
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    /**
+     * @param buildingName the buildingName to set
+     */
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+    
     
     
 

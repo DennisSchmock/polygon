@@ -31,33 +31,33 @@
     Remarks for Outside:
 
     <br>
-
-    <form name="exterior" action="frontpage" method="POST">
-        <input type="hidden" name="page" value="ChooseRoom" /> 
-
-        <h2>Remarks on Roof:</h2>
-        <textarea name="remarksOnRoof" rows="4" cols="20">
-        </textarea>
-
-        <br>
-
-
-        <h2>Remarks on Walls:</h2>
-        <textarea name="remarksOnWall" rows="4" cols="20">
-        </textarea>
-
-        <br>
-
-        <div id="pictureButton">
-            <input type="button" onclick="javascript:showDivAttid();"  value="Add Picture" />
-        </div>
-
-        <div id="pictureForm" style="display: none">
-
-            Upload Pictures:
-            <input type="file" name="outsidePictures" />
-
-            <h1>Decription of Pictures:</h1>
+    
+    <form name="exterior" action="frontpage" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="ChooseRoom" /> 
+   
+    <h2>Remarks on Roof:</h2>
+    <textarea name="remarksOnRoof" rows="4" cols="20">
+    </textarea>
+    
+    <br>
+    
+    
+    <h2>Remarks on Walls:</h2>
+    <textarea name="remarksOnWall" rows="4" cols="20">
+    </textarea>
+    
+    <br>
+    
+    <div id="pictureButton">
+    <input type="button" onclick="javascript:showDivAttid();"  value="Add Picture" />
+    </div>
+    
+    <div id="pictureForm" style="display: none">
+    
+    Upload Pictures:
+    <input type="file" name="uploadFile" />
+    
+    <h1>Decription of Pictures:</h1>
     <textarea name="decriptionOfPicture" rows="4" cols="20">
     </textarea>
 

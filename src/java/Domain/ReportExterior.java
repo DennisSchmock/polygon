@@ -5,16 +5,18 @@
  */
 package Domain;
 
+import java.io.Serializable;
+
 /**
  * Class that can elements to create exterior decription of the building.
  * Does contain few decriptions of the building.
  * @author  CJS
  */
-public class ReportExterior {
+public class ReportExterior implements Serializable{
     private int repExtId;
     private String repExtInspectedArea;
     private String repExtDescription;
-    private int repExtPic;
+    private String repExtPic;
     private int reportId;
 
     /**
@@ -35,7 +37,7 @@ public class ReportExterior {
      * @param repExtPic
      * @param reportId
      */
-    public ReportExterior(int repExtId, String repExtInspectedArea, String repExtDescription, int repExtPic, int reportId) {
+    public ReportExterior(int repExtId, String repExtInspectedArea, String repExtDescription, String repExtPic, int reportId) {
         this.repExtId = repExtId;
         this.repExtInspectedArea = repExtInspectedArea;
         this.repExtDescription = repExtDescription;
@@ -47,16 +49,13 @@ public class ReportExterior {
 
     
     
-    public ReportExterior( String repExtDescription, int repExtPic, int reportId) {
+    public ReportExterior( String repExtDescription, String repExtPic, int reportId) {
         this.repExtDescription = repExtDescription;
         this.repExtPic = repExtPic;
         this.reportId = reportId;
     }
     
-    public ReportExterior( String repExtDescription, int repExtPic) {
-        this.repExtDescription = repExtDescription;
-        this.repExtPic = repExtPic;
-    }
+   
 
     public void setRepExtId(int repExtId) {
         this.repExtId = repExtId;
@@ -71,7 +70,7 @@ public class ReportExterior {
         return repExtDescription;
     }
 
-    public int getRepExtPic() {
+    public String getRepExtPic() {
         return repExtPic;
     }
 
@@ -91,7 +90,7 @@ public class ReportExterior {
         this.repExtDescription = repExtDescription;
     }
 
-    public void setRepExtPic(int repExtPic) {
+    public void setRepExtPic(String repExtPic) {
         this.repExtPic = repExtPic;
     }
 
