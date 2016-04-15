@@ -50,9 +50,20 @@ public class ReportTester {
          fixture.closeConnection();
     }
     
+    /** Method for testing the database save report and load report.
+     * There is not need for creating id's for the different report elements
+     * because the database should take care of that
+     *
+     */
     @Test
-    public void testthing(){
-        
+    public void reportTester(){
+        Report report = new Report(1, "emp1");
+        ReportExterior reportExteior;
+        ReportRoom room;
+        ReportRoomDamage roomdmg;
+        ReportRoomInterior roomInterior;
+        ReportRoomMoist roomMoist;
+        ReportRoomRecommendation roomRecomendation;
     }
     
 }

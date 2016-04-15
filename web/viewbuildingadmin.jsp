@@ -38,7 +38,6 @@
 
     </c:forEach>
 
-
 </nav>
 <main style="margin-left: 150px; margin-right: 10px;">
     <h1> ${sessionScope.building.buildingName}</h1>

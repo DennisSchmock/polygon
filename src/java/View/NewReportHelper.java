@@ -129,8 +129,8 @@ public class NewReportHelper extends HttpServlet {
 
         String roof = request.getParameter("roof"); //Getting description of Roof.
         String walls = request.getParameter("walls"); //Getting description of Walls.
-        report.getListOfRepExt().add(new ReportExterior(roof, 1));//Putting it inside the report object
-        report.getListOfRepExt().add(new ReportExterior(walls, 1));
+        report.getListOfRepExt().add(new ReportExterior(roof, "d"));//Putting it inside the report object
+        report.getListOfRepExt().add(new ReportExterior(walls, "d"));
 
         for (int roomCount = 0; roomCount <= numOfRooms; roomCount++) {
             ReportRoom rr;

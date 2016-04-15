@@ -14,22 +14,22 @@
 
 <script>
     function showDivAttid(){
-            document.getElementById("pictureForm").style.display = 'inline';
-            document.getElementById("pictureButton").style.display = 'none';
+        document.getElementById("pictureForm").style.display = 'inline';
+        document.getElementById("pictureButton").style.display = 'none';
     }
 </script>
 
 <main>
-    
+
     <h1> Hello from Report Start</h1>
-    
-    
+
+
     Report for Buidling: ${sessionScope.reportBuilding.buildingName} <br>
     With Address: ${sessionScope.reportBuilding.streetAddress}
-    
-    
+
+
     Remarks for Outside:
-    
+
     <br>
     
     <form name="exterior" action="frontpage" method="POST" enctype="multipart/form-data">
@@ -60,14 +60,14 @@
     <h1>Decription of Pictures:</h1>
     <textarea name="decriptionOfPicture" rows="4" cols="20">
     </textarea>
-    
-    </div>
-    <br>
-    <input type="submit" value="Next" name="submitButton" />
+
+        </div>
+        <br>
+        <input type="submit" value="Next" name="submitButton" />
     </form>
-   
-    
-    
+
+
+
 </main>
 
 

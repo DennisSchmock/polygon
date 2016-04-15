@@ -106,6 +106,7 @@ public class UserMapper {
                 String phone = rs.getString("phone");
                 int customerId = rs.getInt("customer_id");
                 user = new User(userName, pwd, customerId, fName, lName, email, phone, companyname);
+                user.setRole("customer");
             }
 
         } catch (SQLException ex) {

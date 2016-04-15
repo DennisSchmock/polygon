@@ -109,8 +109,8 @@ public String saveBuildingPic(int buildId, String filename){
      *
      * @param report The report object without an uniqe ID jet.
      */
-    public void saveReport(Report report) {
-        dbFacade.reportToDataBase(report);
+    public int saveReport(Report report) {
+        return dbFacade.reportToDataBase(report);
 
     }
 

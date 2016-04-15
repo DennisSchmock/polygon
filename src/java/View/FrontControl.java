@@ -64,7 +64,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
-    private boolean testing = true;
+    private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
     Building bdg;
@@ -151,9 +151,10 @@ public class FrontControl extends HttpServlet {
         }
         
         if (page.equalsIgnoreCase("saveFinishedReport")) {
-            url = "/reportJSPs/viewfinishedreport.jsp";
+            url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
-           saveFinishedReport(sessionObj,df);
+           int reportId = saveFinishedReport(sessionObj,df);
+           request.getSession().setAttribute("report", df.getReport(reportId));
         }
         
         if (page.equalsIgnoreCase("toFinishReport")) {
@@ -1082,9 +1083,9 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the report object 
      * @param df Holds the connection to the domain layer
      */
-    private void saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
+    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
-        df.saveReport(report);
+        return df.saveReport(report);
     }
 
     

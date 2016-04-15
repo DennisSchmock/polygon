@@ -31,8 +31,9 @@ public class NewReportMapper {
      * with all of the Lists going to the right places.
      * @param r Report object
      * @param con Connection to the database
+     * @return 
      */
-    public void reportToDataBase(Report r, Connection con) {
+    public int reportToDataBase(Report r, Connection con) {
         String SQLString = "insert into report(report_date,building_id, polygonuser, customer_user, category_conclusion, report_finished) values (?,?,?,?,?,?)";
         try {
            con.setAutoCommit(false);
@@ -53,13 +54,17 @@ public class NewReportMapper {
                 reportId = rs.getInt(1);
                 System.out.println("Report id = " + reportId);
             }
-
+            if(r.getListOfRepRoom() != null){
             saveRoomsToDatabase(r, reportId, con);
+            }
+            if(r.getListOfRepExt() != null){
             saveExteriorToDB(r, reportId, con);
+            }
             
             
             con.commit();
             System.out.println("Report Saved in database Succes - Yeah 8)");
+            return reportId;
 
         } catch (Exception e) {
             try {
@@ -70,6 +75,7 @@ public class NewReportMapper {
             System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
             System.out.println(e);
         }
+        return 0;
 
     }
     
@@ -135,7 +141,7 @@ public class NewReportMapper {
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
             System.out.println("AddedRoom!!!");
-//            r.setListOfRepRoomExt(getReportExterior(reportId, con));
+            r.setListOfRepExt(getReportExterior(reportId, con));
 
             return r;
         } catch (Exception e) {
@@ -185,7 +191,7 @@ public class NewReportMapper {
                         rs.getInt("report_ext_id"),
                         rs.getString("rep_ext_inspected_area"),
                         rs.getString("report_ext_description"),
-                        rs.getInt("report_ext_pic"),
+                        rs.getString("report_ext_pic"),
                         rs.getInt("report"));
                 listOfExt.add(re);
             }
@@ -283,11 +289,19 @@ public class NewReportMapper {
                 if (rs.next()) {
                     roomId = rs.getInt(1);
                 }
+                if(reportRoom.getListOfDamages() != null){
                 saveRoomDamages(reportRoom, roomId, con);
+                }
+                if(reportRoom.getListOfInt() != null){
                 saveRoomInterior(reportRoom, roomId, con);
+                }
+                if(reportRoom.getListOfRec() != null){
                 saveRoomRecommendations(reportRoom, roomId, con);
+                }
+                if(reportRoom.getMoist() != null){
                 saveRoomMoist(reportRoom, roomId, con);
                 saveRoomPics(reportRoom,roomId,con);
+        }
         }
 
     }
@@ -359,13 +373,14 @@ public class NewReportMapper {
 
     private void saveExteriorToDB(Report r, int reportId, Connection con) throws Exception {
 
-        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report) values (?,?,?)";
+        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area) values (?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
 
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
                 statement.setString(2, r.getListOfExtPics().get(0).getFilename());
+                statement.setString(4, re.getRepExtInspectedArea());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
         }
@@ -469,6 +484,7 @@ public class NewReportMapper {
                 reportRoom.setListOfDamages(getListOfDamages(reportRoomId, con));
                 reportRoom.setListOfRec(getListOfRec(reportRoomId, con));
                 reportRoom.setMoist(getMoist(reportRoomId, con));
+                reportRoom.setRrPic(getListOfRoomPics(reportRoomId,con));
                 reportRooms.add(reportRoom);
 
             }
@@ -532,6 +548,8 @@ public class NewReportMapper {
             System.out.println(e.getMessage());
             return null;
         }}
+
+   
 
     
 

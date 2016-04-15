@@ -348,7 +348,7 @@ public class DBFixture {
                     + "`city` VARCHAR(45) NOT NULL,"
                     + "PRIMARY KEY (`zipcode`))");
 
-            // insert
+            // insert in all: 1 customer, 1 building, 1 Polygon user, 1 building_floor, 2 building rooms
             st.addBatch("insert into customer (companyname,street)"
             +"values ('CPH-Business','Nørregårsvej')");
             st.addBatch("INSERT INTO `polytest`.`building` (`idbuilding`, `building_name`, `building_m2`, `building_adress`, `building_housenumber`, `building_buildyear`, `building_zip`, `building_pic`, `building_use`, `customer_id`) "
