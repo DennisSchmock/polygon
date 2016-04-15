@@ -302,6 +302,7 @@ public class NewReportMapper {
                 saveRoomMoist(reportRoom, roomId, con);
                 saveRoomPics(reportRoom,roomId,con);
         }
+        }
 
     }
 
