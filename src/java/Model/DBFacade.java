@@ -27,6 +27,7 @@ public class DBFacade {
     private BuildingMapper bm;
     private UserMapper um;
     private NewReportMapper nrm;
+    private OrderMapper om;
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
@@ -322,5 +323,22 @@ public class DBFacade {
     public ArrayList<Report> getSimpleListOfReports() {
        return nrm.getSimpleListOfReports(con);
 
+    }
+    
+    /**
+     * redirects to the OrderMapper
+     * @param o new Order
+     */
+    public void addNewOrder(Order o){
+        om.addNewOrder(o, con);
+    }
+    
+    /**
+     * redirects to the OrderMapper
+     * @param orderNum an ID that will be a reference on which order should be taken from the database 
+     * @return an Order
+     */
+    public Order getOrder(int orderNum){
+        return om.getOrder(orderNum, con);
     }
 }

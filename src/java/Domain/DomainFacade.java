@@ -210,4 +210,21 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getSimpleListOfReports();
     }
 
+    /**
+     * This method is used to save a new Order
+     * @param o new Order
+     */
+    public void addNewOrder(Order o){
+        dbFacade.addNewOrder(o);
+    }
+    
+    /**
+     * This method is used to get a single order from the database
+     * @param orderNum an ID that will be a reference on which order should be taken from the database 
+     * @return an Order
+     */
+    public Order getOrder(int orderNum){
+        return dbFacade.getOrder(orderNum);
+    }
+    
 }
