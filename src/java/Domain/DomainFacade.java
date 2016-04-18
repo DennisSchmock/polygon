@@ -227,4 +227,12 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getOrder(orderNum);
     }
     
+    /**
+     * This method is used to get a customer data from the database based on the username
+     * @param username username used by the user to login
+     * @return a customer
+     */
+    public Customer getCustomerAfterLogIn(String username){
+        return dbFacade.getCustomerAfterLogIn(username);
+    }
 }

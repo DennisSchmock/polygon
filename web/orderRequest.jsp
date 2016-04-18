@@ -13,14 +13,14 @@
     <%@include file="Style/Header.jsp" %>
 <main>
     <form action="frontpage" method="POST">
-    <input type="hidden" name="page" value="selBdg" />
+    <input type="hidden" name="page" value="selBdgReq" />
     <div class="w3-row-padding">
     <label>Select building:</label>
     <select name="buildings">
         <c:forEach items="${sessionScope.customersBuildings}" var="building">
             <option value="${building.bdgId}">${building.buildingName}</option>
         </c:forEach>  </select>
-        <input name="selBdg" type="submit" value="GO" /></div>    
+        <input name="selBdgReq" type="submit" value="GO" /></div>    
     
     
     <div class="w3-row-padding">
