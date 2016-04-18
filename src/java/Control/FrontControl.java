@@ -10,6 +10,7 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
+import Domain.Order;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
@@ -308,16 +309,30 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
+        //loading order request page
         if(page.equalsIgnoreCase("orderRequest")){
            loadBuildingsAfterLogIn(sessionObj, df);
            response.sendRedirect("orderRequest.jsp");
            return;
         }
         
+        //selecting a building for order request
         if (page.equalsIgnoreCase("selBdgReq")) {
             selectBuilding(request, df, sessionObj);
             response.sendRedirect("orderRequest.jsp");
             return;
+        }
+        
+        //create an order request
+        if(page.equalsIgnoreCase("orderRequestSubmit")){
+            saveOrder(request, sessionObj, df);
+            response.sendRedirect("ordersuccess.jsp");
+            return;
+        }
+        
+        //stuff to be done when order success
+        if(page.equalsIgnoreCase("ordersuccess")){
+            
         }
         
         if (page.equalsIgnoreCase("continue")) {
@@ -1099,6 +1114,26 @@ public class FrontControl extends HttpServlet {
     private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         return df.saveReport(report);
+    }
+
+    /**
+     * This method will take the values of the attributes for saving a new order
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void saveOrder(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+
+        String serviceDesc = (String) request.getParameter("services");
+        String otherDesc = (String) request.getParameter("otherservice");
+        if(serviceDesc.equals("other")){
+            serviceDesc = otherDesc;
+        }
+        String problemStmt = (String) request.getParameter("problemstatement");
+        String orderStat= "Order has been placed";
+        Order o = new Order(serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
+        
+        df.addNewOrder(o);
     }
 
     
