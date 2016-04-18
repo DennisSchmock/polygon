@@ -51,6 +51,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
+    private final PrinterPDF printer = new PrinterPDF();
     private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
