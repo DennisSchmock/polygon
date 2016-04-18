@@ -64,6 +64,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
+    private final PrinterPDF printer = new PrinterPDF();
     private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
@@ -163,7 +164,7 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("backToChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
         }
-
+        
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
@@ -207,6 +208,12 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("viewreport.jsp");
             return;
         }
+           if (page.equalsIgnoreCase("printReport")) {
+               // I don't now how this will work yet.
+            response.sendRedirect("viewreport.jsp");
+            return;
+          }
+           
         if (page.equalsIgnoreCase("viewcustomers")) {
             List<Customer> customers = df.loadAllCustomers();
             sessionObj.setAttribute("customers", customers);
