@@ -42,6 +42,10 @@
 
 <main style="margin-left: 150px; margin-right: 100px;">
     <h1>Report for ${sessionScope.report.buildingName}</h1>
+    <form name="PrintForm" action="frontpage" method="POST">
+        <input type="hidden" name="page" value="printReport" />  
+        <input type="submit" value="Print Report" name="ReportButton" style="background-color: #f44336; font-size: 20px;" />
+    </form>
 
     <c:if test="${requestScope.showroom==true}"><%@include file="reportview/reportroom.jsp" %></c:if>
 

@@ -128,15 +128,9 @@ public class NewReportMapper {
             int catagoryConclusion = rs.getInt("category_conclusion");
             String polygonUser = rs.getString("polygonuser");
             String customerUser = rs.getString("customer_user");
-            //String extPicPath = rs.getString("report_ext_pic");
-            //String extPicDesc = rs.getString("report_ext_description");
-            
-            //ReportPic extPic = new ReportPic(extPicPath,extPicDesc);
-            //ArrayList<ReportPic> extPics = new ArrayList();
-            //extPics.add(extPic);
+           
 
             r = new Report(reportId, reportDate, buildingId, catagoryConclusion,polygonUser,customerUser);
-            //r.setListOfExtPics(extPics);
             
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
