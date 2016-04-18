@@ -14,6 +14,7 @@ import Domain.ReportRoom;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -29,7 +32,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1", "/room"})
 public class ReportController extends HttpServlet {
-
+NewFileUpload nfu = new NewFileUpload();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,6 +44,12 @@ public class ReportController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Collection<Part> parts=null;
+        if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
+                      //Extracts the part of the form that is the file
+        parts = request.getParts();
+        }
         response.setContentType("text/html;charset=UTF-8");
         String url = "/viewbuildingadmin.jsp";
 
@@ -145,13 +154,29 @@ public class ReportController extends HttpServlet {
             request.setAttribute("showroom", true);
 
         }
-//        if(action.equalsIgnoreCase("reportroom")){
-//            Report report = (Report) request.getSession().getAttribute("report");
-//            int roomId = Integer.parseInt(request.getParameter("reportid"));
-//            request.setAttribute("showReportRoom", true);
-//            request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
-//        }
-//       
+        
+        //Trying to see if I can work this out
+        if(action.equalsIgnoreCase("roomfiles")){
+            //int buildId = Integer.parseInt(request.getParameter("buildingid"));
+            request.setAttribute("roomfiles", true);
+            //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+        }
+        
+        if(action.equalsIgnoreCase("addfilessubmit")){
+            Building b = (Building) request.getSession().getAttribute("building");
+            int buildId;
+            if (b!=null) {
+                buildId = b.getBdgId();
+                //Add to folder
+                
+                //Add to db
+                
+            }
+            request.setAttribute("roomfiles", true);
+            request.setAttribute("filessubmitted", true);
+            //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+        }
+       
         if (action.equalsIgnoreCase("addBuilding")) {
             Building b = new Building();
             b.setBuildingName("tempname");

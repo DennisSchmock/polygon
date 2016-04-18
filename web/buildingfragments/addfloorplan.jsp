@@ -19,7 +19,7 @@
         <input type="hidden" name="action" value="addfilessubmit" />
         <div class="w3-half"><label>Remark:</label><input type="Text" name="floornumber" value="" required class="w3-input w3-border"/></div>
         <div class="w3-half"><input name="addFiles" type="file" multiple="multiple" /></div>
-        <input type="submit" value="Add Files" />
+
     </div>
     <br>
     <br>

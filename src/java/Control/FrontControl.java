@@ -83,16 +83,11 @@ public class FrontControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
-        Part filePart = null;                                   //Used in case of fileuploads
-        List<Part> fileParts = new ArrayList();
+        
         Collection<Part> parts=null;
-        //filePart = request.getPart("buildingImg");
         if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
                       //Extracts the part of the form that is the file
         parts = request.getParts();
-            System.out.println("multipart");
-            if(parts!=null)System.out.println(parts.size());;
-            
         }
     
         HttpSession sessionObj = request.getSession(); //Get the session
@@ -499,8 +494,10 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
+        //Calls method to upload file and get a string with filename back
         buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
-        
+        //This call should perhaps be moved to a deeper layer
+        df.saveBuildingPic(buildingToBeEdited.getBdgId(), buildingToBeEdited.getBuildingPic());
         System.out.println("BuildingPic");
         System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);
