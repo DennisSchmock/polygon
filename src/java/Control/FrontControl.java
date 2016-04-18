@@ -19,19 +19,11 @@ import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
 import Domain.User;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.sql.Date;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -41,11 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
@@ -64,6 +51,7 @@ public class FrontControl extends HttpServlet {
 
     private final CreateUserHelper CUH = new CreateUserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
+    private final PrinterPDF printer = new PrinterPDF();
     private boolean testing = false;
     //store objects since get parameter values resets
     Customer c; 
@@ -92,7 +80,6 @@ public class FrontControl extends HttpServlet {
     
         HttpSession sessionObj = request.getSession(); //Get the session
       //  ReportHelper rh = new ReportHelper();
-        NewReportHelper nrh = new NewReportHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -113,44 +100,49 @@ public class FrontControl extends HttpServlet {
         if (page == null) {
             page = "/index.jsp";
         }
-        
+        //For creating a new report
         if (page.equalsIgnoreCase("newreport")) {
             url = "/reportJSPs/choosebuilding.jsp";
             sessionObj.setAttribute("customerSelcted", false);
             chooseCustomer(sessionObj, df);
         }
-
+        //For choosing the customer //TODO split redirect and action
         if (page.equalsIgnoreCase("report_cus_choosen")) {
             url = "/reportJSPs/choosebuilding.jsp";
             loadCustomersBuildings(request, sessionObj, df);
         }
-
+        //When building has been chosen, it sets up the report object
         if (page.equalsIgnoreCase("report_start")) {
             url = "/reportJSPs/report_start.jsp";
             createReport(request, sessionObj, df);
         }
+        
+        //For choosing room when setting up report, after exterior has been added
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj,parts);
-            //nfu.uploadExteriorPic(fileParts);
         }
-
+        
+        //For inspecting the chosen room.
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             setUpForRoomInspection(request, sessionObj, df, parts);
         }
         
+        //For submitting what is written about the room
         if (page.equalsIgnoreCase("submittedRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             createReportRoomElements(request,sessionObj, parts);
         }
         
+        //Saving finished report and redirection to report view. 
         if (page.equalsIgnoreCase("saveFinishedReport")) {
             url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
            int reportId = saveFinishedReport(sessionObj,df);
            request.getSession().setAttribute("report", df.getReport(reportId));
         }
+        
         
         if (page.equalsIgnoreCase("toFinishReport")) {
             url = "/reportJSPs/finishreport.jsp";
@@ -159,25 +151,18 @@ public class FrontControl extends HttpServlet {
             url = "/reportJSPs/chooseroom.jsp";
         }
 
+        //For inspecting a room you just added to the building
         if (page.equalsIgnoreCase("inspectRoomjustCreated")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             createNewRoom(request, sessionObj, df);
             setUpForRoomInspection(request, sessionObj, df, parts );
         }
-
-        if (page.equalsIgnoreCase("newReportSubmit")) {
-            nrh.submitReport(request, response, df);
-            sessionObj.setAttribute("reports", df.getListOfReports(1));
-            response.sendRedirect("viewreport.jsp");
-            return;
-        }
+        
+        //List all reports for all customers
         if (page.equalsIgnoreCase("listreports")) {
             sessionObj.setAttribute("reports", df.getListOfReports(1));
             response.sendRedirect("viewreports.jsp");
             return;
-        }
-        if (page.equalsIgnoreCase("reportAddRoom")) {
-            //url = "/report.jsp";
         }
         if (page.equalsIgnoreCase("addbuilding")) {
             url = "/addbuilding.jsp";
@@ -185,15 +170,20 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addcustomer")) {
             url = "/addcustomer.jsp";
         }
+        
+        //Viewing the list of all the 
         if (page.equalsIgnoreCase("viewlistofbuildings")) {
             findListOfBuilding(request, df, sessionObj);
             url = "/viewlistofbuildings.jsp";
         }
+        
+        //Edit a building
         if (page.equalsIgnoreCase("editBuilding")) {
             findBuildingToBeEdit(request, sessionObj, df);
             response.sendRedirect("editBuilding.jsp");
             return;
         }
+        
         if (page.equalsIgnoreCase("viewreport")) {
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
@@ -202,6 +192,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("viewreport.jsp");
             return;
         }
+        
         if (page.equalsIgnoreCase("viewcustomers")) {
             List<Customer> customers = df.loadAllCustomers();
             sessionObj.setAttribute("customers", customers);
@@ -223,6 +214,8 @@ public class FrontControl extends HttpServlet {
             return;
 
         }
+        
+        //This gets a Dash for a building
         if (page.equalsIgnoreCase("viewbuildingadmin")) {
             int buildId = Integer.parseInt(request.getParameter("buildingid"));
             Building b=df.getBuilding(buildId);
@@ -236,28 +229,30 @@ public class FrontControl extends HttpServlet {
          * sending a rediret is better, because a forward will add to the
          * database twice
          */
+        
+        //TODO seperate redirect and action
         if (page.equalsIgnoreCase("newbuilding")) {
             
             Building b=createBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
+        
+        //TODO: seperate action and redirect
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             Building b =updateBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
+        
+        //TODO: seperate action and redirect
         if (page.equalsIgnoreCase("submitcustomer")) {
             createNewCustomer(request, df, sessionObj);
             response.sendRedirect("customersubmitted.jsp");
             return;
         }
 
-        if (page.equalsIgnoreCase("createuser")) {
-            createUser(request, df, sessionObj);
-            response.sendRedirect("login");
-            return;
-        }
+       
 
         if (page.equalsIgnoreCase("addfloorsubmit")) {
             addFloors(request, df, sessionObj);
@@ -325,6 +320,7 @@ public class FrontControl extends HttpServlet {
             }
             url = "/login.jsp";
         }
+        
         if (page.equalsIgnoreCase("logout")) {
             request.setAttribute("user", null);
             request.setAttribute("loggedin", false);
@@ -424,9 +420,6 @@ public class FrontControl extends HttpServlet {
 
     }
 
-    private void submitReport(HttpServletRequest request, HttpServletResponse response, DomainFacade df) {
-
-    }
 
     /**
      * Loads a list of buildings from database for the customer_id Attribute
@@ -526,8 +519,6 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-    private void createUser(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
-    }
 
 
     /**
@@ -777,7 +768,6 @@ public class FrontControl extends HttpServlet {
             }
             
         }
-        Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         
         ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),buildingRoom.getRoomId());
         BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
