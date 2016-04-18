@@ -313,6 +313,12 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
+        if(page.equalsIgnoreCase("orderRequest")){
+           selectBuilding(request, df, sessionObj);
+           response.sendRedirect("orderRequest.jsp");
+           return;
+        }
+        
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
