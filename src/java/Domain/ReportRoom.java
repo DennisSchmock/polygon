@@ -37,7 +37,6 @@ public class ReportRoom implements Serializable{
     }
 
     /**
-     * This one is to be used in the setUpForRoomInspection
      * @param roomName
      * @param reportId
      * @param buildingRoomId
@@ -52,11 +51,11 @@ public class ReportRoom implements Serializable{
      * Used in the frontController to create the object
      * based on field from JSP.
      * @param roomName
-     * @param roomNumber
+     * @param buildingRoomId
      */
-    public ReportRoom( String roomName, int roomNumber) {
+    public ReportRoom( String roomName, int buildingRoomId) {
         this.roomName = roomName;
-        this.buildingRoomId = roomNumber;
+        this.buildingRoomId = buildingRoomId;
     }
 
     
