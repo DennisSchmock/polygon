@@ -6,8 +6,10 @@
 package Model;
 
 import Domain.Building;
+import Domain.BuildingFile;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
+import Domain.BuildingFiles;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -587,6 +589,45 @@ public class BuildingMapper {
             System.out.println("Fail in deleteBuilding ");
             System.out.println(e.getMessage());
         } 
+    }
+    
+    //Does not deal with the fact that docs may be there already
+    public void saveBuildingDocs(Building b, Connection con) {
+        int buildingId = b.getBdgId();
+        ArrayList<BuildingFiles> files=b.getListOfFiles();
+        for (BuildingFiles file : files) {
+            String description = file.getDescription();
+            ArrayList<BuildingFile> individualFiles=file.getListOfFileInfo();
+            for (BuildingFile individualFile : individualFiles) {
+                
+                System.out.println("Trying to save buildingfile:");
+                System.out.println(individualFile.getDocumentname());
+                saveBuildingDoc(buildingId, description,individualFile,con);
+                
+            }
+        }
+    }
+        public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) {
+            String filename = bf.getFilename();
+            String documentname= bf.getDocumentname();
+            int size = bf.getSize();
+            //Size of file 0 for now
+            
+            
+        String sql = "insert into building_documents (filename,documentname,building_id,document_size) values  (?,?,?,?) ";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, filename);
+            statement.setString(2, documentname);
+            statement.setInt(3, buildId);
+            statement.setInt(4, size);
+            statement.executeUpdate();
+            
+           
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL SavebuildingDoc " + ex );
+        }
+        
     }
 }
 

@@ -210,4 +210,8 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getSimpleListOfReports();
     }
 
+    public void saveBuildingFiles(Building b) {
+        dbFacade.saveBuildingFiles(b);
+    }
+
 }

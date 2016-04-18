@@ -6,6 +6,8 @@
 package Control;
 
 import Domain.Building;
+import Domain.BuildingFile;
+import Domain.BuildingFiles;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
@@ -18,6 +20,7 @@ import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +34,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author dennisschmock
  */
 @WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1", "/room"})
+@MultipartConfig
 public class ReportController extends HttpServlet {
 NewFileUpload nfu = new NewFileUpload();
     /**
@@ -163,18 +167,9 @@ NewFileUpload nfu = new NewFileUpload();
         }
         
         if(action.equalsIgnoreCase("addfilessubmit")){
-            Building b = (Building) request.getSession().getAttribute("building");
-            int buildId;
-            if (b!=null) {
-                buildId = b.getBdgId();
-                //Add to folder
-                
-                //Add to db
-                
-            }
-            request.setAttribute("roomfiles", true);
-            request.setAttribute("filessubmitted", true);
-            //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+             
+            request = addFiles(request,parts, df);
+            
         }
        
         if (action.equalsIgnoreCase("addBuilding")) {
@@ -273,5 +268,33 @@ NewFileUpload nfu = new NewFileUpload();
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+        ArrayList<BuildingFiles> files;
+        Building b = (Building) request.getSession().getAttribute("building");
+        int buildId;
+            if (b!=null) {
+                files=b.getListOfFiles();
+                
+                System.out.println("b not null");
+                //Add to folder
+                ArrayList<BuildingFile> file;
+                
+                String filesDescription;
+                file=nfu.saveBuildingDocs(getServletContext().getRealPath(""),  parts);
+                filesDescription=request.getParameter("fileRemarks");
+                if (file==null)System.out.println("file is null");
+                if (filesDescription==null)System.out.println("fileDescrip is null");
+                if (files==null)System.out.println("files is null");
+                files.add(new BuildingFiles(file,filesDescription));
+                b.setListOfFiles(files);
+                //Add to db
+                df.saveBuildingFiles(b);
+                
+                request.setAttribute("filessubmitted", true);
+            }
+            request.setAttribute("roomfiles", true);
+            return request;
+    }
 
 }

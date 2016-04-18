@@ -324,4 +324,8 @@ public class DBFacade {
        return nrm.getSimpleListOfReports(con);
 
     }
+
+    public void saveBuildingFiles(Building b) {
+        bm.saveBuildingDocs(b, con);
+    }
 }

@@ -6,6 +6,8 @@
 package Control;
 
 import Domain.Building;
+import Domain.BuildingFile;
+import Domain.BuildingFiles;
 import Domain.ReportPic;
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +60,27 @@ public class NewFileUpload {
         }
         return null;
         
+    }
+    
+    public ArrayList<BuildingFile> saveBuildingDocs(String parentFolder, Collection<Part> parts){
+        ArrayList<BuildingFile> buildingfile=null;
+        System.out.println("saveBuildingDocs");
+        if (parts!=null){
+            System.out.println("Parts not null");
+        List<Part> fileParts = getAllParts(parts);
+        buildingfile=new ArrayList();
+        if (fileParts!=null){
+            for (Part filePart : fileParts) {
+                BuildingFile bf = saveBuildingDoc(parentFolder,filePart);
+                
+                buildingfile.add(bf);
+                System.out.println(bf.getDocumentname());
+                System.out.println(bf.getSize());
+            }
+            
+        }
+        }
+        return buildingfile;
     }
     
     public String saveExtPicture(String parentFolder, Collection<Part> parts) {
@@ -178,6 +201,20 @@ public class NewFileUpload {
     }
             return filename;
     }
-    
-    
+
+    private BuildingFile saveBuildingDoc(String parentFolder, Part filePart) {
+        System.out.println("Inside nfu saveBuildingDoc");
+        if (filePart!=null) {
+            
+            String filename=getNewFileName(filePart);
+            String documentname = filePart.getSubmittedFileName();
+            long bytesize = filePart.getSize();
+            int size = (int)(bytesize/1048576); //convert from byte to MB
+            uploadFile(filePart, parentFolder,"buildingDocs", filename);
+            System.out.println(filename);
+            BuildingFile bf = new BuildingFile(size,filename,documentname);
+            return bf; 
+        }
+        return null;
+        }
 }
