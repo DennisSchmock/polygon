@@ -32,8 +32,12 @@ public class DBFacade {
     public static void main(String[] args) {
         DBFacade facade = getInstance();
         
-        Customer c = facade.getCustomerAfterLogIn("daeniz");
-        System.out.println("Customer:" + c.getCustomerId());
+//        String username = "daeniz";
+//        Customer c = facade.getCustomerAfterLogIn(username);
+//        System.out.println("c" + c.getCustomerId());
+//        Order o = new Order("check-up","inspection","Order has been placed",1,2);
+//        facade.addNewOrder(o);
+        
 //        facade.deleteBuilding(22);
 //        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
 //        facade.saveBuildingRoom(newRoom);
@@ -66,6 +70,7 @@ public class DBFacade {
         bm = new BuildingMapper();
         um = new UserMapper();
         nrm = new NewReportMapper();
+        om = new OrderMapper();
 
     }
 
@@ -333,7 +338,7 @@ public class DBFacade {
      * @param o new Order
      */
     public void addNewOrder(Order o){
-        om.addNewOrder(o, con);
+            om.addNewOrder(o, con);
     }
     
     /**

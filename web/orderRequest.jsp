@@ -52,7 +52,7 @@
         </textarea>
         <br>
         <br>
-        <input type="hidden" name="page" value="orderRequest" />
+        <input type="hidden" name="page" value="orderRequestSubmit" />
         <input name="orderRequest" type="submit" value="Submit" /></div>    
     </form>
     

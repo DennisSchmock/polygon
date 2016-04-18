@@ -19,36 +19,25 @@ public class OrderMapper {
      * @param con connection
      */
     public void addNewOrder(Order o, Connection con){
-    String SQLString = "insert into orders (service_description,problem_statement,order_status,customer_id,idbuilding) values (?,?,?,?,?)";
-        try {
-            con.setAutoCommit(false);
-            PreparedStatement statement
-                    = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
-            //insert a tuple and set the values
-            statement.setString(1, o.getServiceDescription());
-            statement.setString(2, o.getProblemStatement());
-            statement.setString(3, o.getOrderStatus());
-            statement.setInt(4, o.getCustomerId());
-            statement.setInt(5,o.getBuildingId());                  
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            String SQLString = "insert into orders(service_description,problem_statement,order_status,customer_id,idbuilding) values (?,?,?,?,?)";
+            try (PreparedStatement statement
+                    = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
+                //insert a tuple and set the values
+                statement.setString(1, o.getServiceDescription());
+                statement.setString(2, o.getProblemStatement());
+                statement.setString(3, o.getOrderStatus());
+                statement.setInt(4, o.getCustomerId());
+                statement.setInt(5, o.getBuildingId());
+                statement.executeUpdate();
+                ResultSet rs = statement.getGeneratedKeys();
 
-            if (rs.next()) {   
-                o.setOrderNumber(rs.getInt(1));
-                System.out.println("Order Number = " + rs.getInt(1));
+                if (rs.next()) {
+                    o.setOrderNumber(rs.getInt(1));
+                }
+            } catch (Exception e) {
+                System.out.println("Fail in saving new order - addNewOrder");
+                System.out.println(e.getMessage());
             }
-           
-            con.commit();
-
-        } catch (Exception e) {
-            try {
-                con.rollback();
-            } catch (SQLException ex) {
-                System.out.println("Failed at rollingback" + ex);
-            }
-            System.out.println("Fail in saving new order - addNewOrder. Actions has been Rolledback");
-            System.out.println(e);
-        }
     }
     
     /**
