@@ -303,6 +303,18 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
+        if(page.equalsIgnoreCase("orderRequest")){
+           loadBuildingsAfterLogIn(sessionObj, df);
+           response.sendRedirect("orderRequest.jsp");
+           return;
+        }
+        
+        if (page.equalsIgnoreCase("selBdgReq")) {
+            selectBuilding(request, df, sessionObj);
+            response.sendRedirect("orderRequest.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
@@ -504,9 +516,14 @@ public class FrontControl extends HttpServlet {
      * @param response
      */
     public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
-        String username = (String) request.getParameter("username");
+        String username = (String) request.getParameter("username"); 
         String pwd = (String) request.getParameter("pwd");
-
+        
+        //this is for order request when a customer loggedin
+        System.out.println("..." + username+pwd);
+        c = df.getCustomerAfterLogIn(username);
+        System.out.println("Customer:" + c.getCustomerId());
+        
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
             request.getSession().setAttribute("userrole", "user");
@@ -516,7 +533,13 @@ public class FrontControl extends HttpServlet {
             request.getSession().setAttribute("loggedin", false);
         }
     }
-
+    
+    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
+        if(c!=null){
+            List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
+            sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        }
+    }
 
 
     /**

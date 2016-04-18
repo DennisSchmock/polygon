@@ -27,30 +27,34 @@ public class DBFacade {
     private BuildingMapper bm;
     private UserMapper um;
     private NewReportMapper nrm;
+    private OrderMapper om;
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        facade.deleteBuilding(22);
+        
+        Customer c = facade.getCustomerAfterLogIn("daeniz");
+        System.out.println("Customer:" + c.getCustomerId());
+//        facade.deleteBuilding(22);
 //        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
 //        facade.saveBuildingRoom(newRoom);
 //        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
 //        for (BuildingRoom br : rl) {
 //            System.out.println("floor:" + br.getRoomName());
 //        }
-        Report report = facade.getSingleReport(1);
-        for (ReportFloor reportFloor : report.getReportFloors()) {
-            System.out.println("****Floor number: " + reportFloor.getFloorId() + " " + reportFloor.getFloorNumber());
-            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
-                System.out.println("***Roomname: " + reportRoom.getRoomName());
-                for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
-                    System.out.println("  InteriorName: " + reportRoomInterior.getRepRoomIntName());
-                    System.out.println("    InteriorRemark: " + reportRoomInterior.getRemark());
-                    
-                }
-                
-            }
-        }
-       System.out.println( "Numbers of floors in building" + report.getReportFloors().size());
+//        Report report = facade.getSingleReport(1);
+//        for (ReportFloor reportFloor : report.getReportFloors()) {
+//            System.out.println("****Floor number: " + reportFloor.getFloorId() + " " + reportFloor.getFloorNumber());
+//            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
+//                System.out.println("***Roomname: " + reportRoom.getRoomName());
+//                for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
+//                    System.out.println("  InteriorName: " + reportRoomInterior.getRepRoomIntName());
+//                    System.out.println("    InteriorRemark: " + reportRoomInterior.getRemark());
+//                    
+//                }
+//                
+//            }
+//        }
+//       System.out.println( "Numbers of floors in building" + report.getReportFloors().size());
         
 
     }
@@ -322,5 +326,31 @@ public class DBFacade {
     public ArrayList<Report> getSimpleListOfReports() {
        return nrm.getSimpleListOfReports(con);
 
+    }
+    
+    /**
+     * redirects to the OrderMapper
+     * @param o new Order
+     */
+    public void addNewOrder(Order o){
+        om.addNewOrder(o, con);
+    }
+    
+    /**
+     * redirects to the OrderMapper
+     * @param orderNum an ID that will be a reference on which order should be taken from the database 
+     * @return an Order
+     */
+    public Order getOrder(int orderNum){
+        return om.getOrder(orderNum, con);
+    }
+    
+    /**
+     * redirects to the CustomerMapper
+     * @param username username used by the user to login
+     * @return
+     */
+    public Customer getCustomerAfterLogIn(String username){
+        return cm.getCustomerAfterLogIn(username, con);
     }
 }
