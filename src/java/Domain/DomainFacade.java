@@ -210,10 +210,20 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getSimpleListOfReports();
     }
 
+    /**
+     * Saves Documents associated with a building that are NOT the
+     * floorplans
+     * @param b the buliding which has documents to be saved
+     */
     public void saveBuildingFiles(Building b) {
         dbFacade.saveBuildingFiles(b);
     }
 
+    /**
+     * Saves floorplans to a specific floor
+     * @param floorId Id of the floor the floorplan(s) belongs to 
+     * @param plans ArrayList of floorplans
+     */
     public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
             for (Floorplan floorplan : plans) {
                 System.out.println("Trying to save floorplan:");;
@@ -221,6 +231,12 @@ public String saveBuildingPic(int buildId, String filename){
             }
     }
     
+    /**
+     * Method finds all the floorplans belonging to an ArrayList of floors
+     * 
+     * @param listOfFLoors a list of BuildingFloor objects
+     * @return Floorplans belonging to the buildingfloors put in
+     */
     public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors){
         ArrayList<Floorplan> plans=new ArrayList();
         
@@ -255,5 +271,31 @@ public String saveBuildingPic(int buildId, String filename){
      */
     public Customer getCustomerAfterLogIn(String username){
         return dbFacade.getCustomerAfterLogIn(username);
+    }
+    
+    /**
+     * This method is used to get the status description of an order
+     * @param stat order status ID
+     * @return status description
+     */
+    public String getOrderStatus(int stat){
+        return dbFacade.getOrderStatus(stat);
+    }
+    
+    /**
+     * This method is used to get the list of orders of a customer
+     * @param custId customer ID
+     * @return list of Orders
+     */
+    public ArrayList<Order> getListOfOrders(int custId){
+        return dbFacade.getlistOfOrders(custId);
+    }
+    
+    /**
+     * This method is used to get list of all the orders
+     * @return list of all Orders
+     */
+    public ArrayList<Order> getListOfAllOrders(){
+        return dbFacade.getListOfAllOrders();
     }
 }

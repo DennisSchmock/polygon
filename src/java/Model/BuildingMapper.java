@@ -62,6 +62,14 @@ public class BuildingMapper {
         return b;
     }
 
+    /**
+     * Saves information of a picture associated with a building
+     *
+     * @param buildId building to associate picture with
+     * @param filename full filename ie xxx.jpg
+     * @param con
+     * @return the same filename that was put in. for some odd reason
+     */
     public String saveBuildingPic(int buildId, String filename, Connection con) {
         int imgId = 0;
         System.out.println("build id");
@@ -311,6 +319,13 @@ public class BuildingMapper {
         return roomList;
     }
     
+    /**
+     * Method for getting all floorplans associated with a floor
+     *
+     * @param floorId id to choose a specific floor in db
+     * @param con
+     * @return a list of Floorplan objects
+     */
     public ArrayList<Floorplan> getFloorplans(int floorId, Connection con) {
         ArrayList<Floorplan> floorplans = new ArrayList();
         String sqlString = "SELECT * FROM floorplan where floor_id=?";
@@ -335,7 +350,13 @@ public class BuildingMapper {
         return floorplans;
     }
         
-
+    /**
+     * Method for getting one and just one image associated with a building
+     *
+     * @param buildingId id of the building to find an image for
+     * @param con
+     * @return the last image to come out of the db with the buildingId
+     */
     public String getLatestBuildingImage(int buildingId, Connection con) {
         String filename = null;
         System.out.println("getLatestBuildingImage");
@@ -616,6 +637,13 @@ public class BuildingMapper {
     }
     
     //Does not deal with the fact that docs may be there already
+
+    /**
+     * Method takes a cluster of documents and iterates over all of the
+     * individual files sotring their info in the db
+     * @param b the building that has docs to store
+     * @param con
+     */
     public void saveBuildingDocs(Building b, Connection con) {
         int buildingId = b.getBdgId();
         ArrayList<BuildingFiles> files=b.getListOfFiles();
@@ -631,7 +659,16 @@ public class BuildingMapper {
             }
         }
     }
-        public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) {
+
+    /**
+     * method for putting information of single files in db
+     *
+     * @param buildId Id of the building fileinfo belongs to
+     * @param description description of the document
+     * @param bf information on the specific document
+     * @param con
+     */
+    public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) {
             String filename = bf.getFilename();
             String documentname= bf.getDocumentname();
             int size = bf.getSize();
@@ -654,11 +691,14 @@ public class BuildingMapper {
         
     }
 
-    
-
-    
-
-    void saveFloorplan(int floorId, Floorplan f, Connection con) {
+    /**
+     * Method puts information of a Floorplan in the db (not the file itself)
+     *
+     * @param floorId the foreign key of the table
+     * @param f the floorplan to be stored
+     * @param con
+     */
+    public void saveFloorplan(int floorId, Floorplan f, Connection con) {
         String filename = f.getFilename();
         String documentname= f.getDocumentname();
         int size = f.getSize();

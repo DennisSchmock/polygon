@@ -28,11 +28,6 @@ import javax.servlet.http.Part;
  * @author Daniel Grønbjerg
  */
 public class NewFileUpload {
-    
-    
-    
-
-    
     /**
      * Meant for the singular image of the building.
      * 
@@ -63,6 +58,13 @@ public class NewFileUpload {
         
     }
     
+    /**
+     * Takes the potential multifile upload of building related documents
+     * uploads it and saves the file information in a list of BuildingFile objects
+     * @param parentFolder
+     * @param parts
+     * @return
+     */
     public ArrayList<BuildingFile> saveBuildingDocs(String parentFolder, Collection<Part> parts){
         ArrayList<BuildingFile> buildingfile=null;
         System.out.println("saveBuildingDocs");
@@ -84,6 +86,14 @@ public class NewFileUpload {
         return buildingfile;
     }
     
+    /**
+     * Saves potential multifile upload to disk and returns an ArrrayList of 
+     * the Floorplan objects with info it generates
+     * 
+     * @param parentFolder
+     * @param parts
+     * @return
+     */
     public ArrayList<Floorplan> saveFloorplans(String parentFolder, Collection<Part> parts){
         ArrayList<Floorplan> floorplans=null;
         System.out.println("saveFloorplans");
@@ -185,6 +195,10 @@ public class NewFileUpload {
 
     private SecureRandom random = new SecureRandom();
 
+    /**
+     * Creates a random String to use for filenaming to prevent "overlap"
+     * @return
+     */
     public String nextFileId() {
         return new BigInteger(130, random).toString(32);
     }

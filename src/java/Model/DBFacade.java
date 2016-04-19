@@ -373,10 +373,41 @@ public class DBFacade {
         return cm.getCustomerAfterLogIn(username, con);
     }
     
+    /**
+     * redirects to OrderMapper
+     * @param stat order status ID
+     * @return status description
+     */
     public String getOrderStatus(int stat){
         return om.getOrderStatus(stat, con);
     }
     
+    /**
+     * redirects to OrderMapper
+     * @param custId customer ID
+     * @return list of Orders
+     */
+    public ArrayList<Order> getlistOfOrders(int custId){
+        return om.getListOfOrders(custId, con);
+    }
+    
+    /**
+     * redirects to OrderMapper
+     * @return list of all Orders
+     */
+    public ArrayList<Order> getListOfAllOrders(){
+        return om.getListOfAllOrders(con);
+    
+    }
+    
+    /**
+     * This method makes a call to the buildingmapper, where it calls
+     * a method that returns all floorplans for a specific floor, which is then
+     * returned.
+     *
+     * @param floorId the ID of a BuildingFloor object
+     * @return an ArrayList of Floorplan objects
+     */
     public ArrayList<Floorplan> getFloorplans(int floorId){
         return bm.getFloorplans(floorId, con);
     }

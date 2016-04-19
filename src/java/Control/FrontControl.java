@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -330,9 +332,11 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
-        //stuff to be done when order success
-        if(page.equalsIgnoreCase("ordersuccess")){
-            
+        //displays the order history and order progress
+        if(page.equalsIgnoreCase("orderhistory")){
+            loadCustomerOrders(sessionObj, df);
+            response.sendRedirect("orderhistory.jsp");
+            return;
         }
         
         if (page.equalsIgnoreCase("continue")) {
@@ -359,7 +363,23 @@ public class FrontControl extends HttpServlet {
             request.getSession().invalidate();
             url="/index.jsp";
         }
-
+        
+        if (page.equalsIgnoreCase("printReport")) {
+            Report report = (Report) sessionObj.getAttribute("report");
+            Building building = df.getBuilding(report.getBuildingId());
+            System.out.println("Creating Report for Report ID: " + report.getReportId());
+             String realPath = getServletContext().getRealPath("");
+            System.out.println(realPath);
+            try {
+                printer.sendReportToPrint(report, building, realPath);
+            } catch (Exception ex) {
+                System.out.println("Could not crearte a Report " + ex);
+                ex.printStackTrace();
+            }
+            response.sendRedirect("viewreport.jsp");
+            return;
+        }
+        
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
@@ -1133,6 +1153,7 @@ public class FrontControl extends HttpServlet {
         }
         String problemStmt = (String) request.getParameter("problemstatement");
         int orderStat= 1;
+        sessionObj.setAttribute("orderStatus", orderStat);
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         o = new Order(date,serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
         
@@ -1156,6 +1177,16 @@ public class FrontControl extends HttpServlet {
         
         //Call to  mail sender bean
         mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
+    }
+
+    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) {
+        ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
+        c.setListOfOrders(listOfOrders);
+        sessionObj.setAttribute("listOfOrders", listOfOrders);
+        for (Order o : listOfOrders) {
+            
+            System.out.println(o.getStatDesc());
+        }
     }
 
     

@@ -11,11 +11,13 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -38,7 +40,7 @@ public class PrinterPDF {
         Building reportBuilding = getreportBuilding(report.getBuildingId());
         PrinterPDF instance = new PrinterPDF();
         try {
-            instance.sendReportToPrint(report, reportBuilding);
+            instance.sendReportToPrint(report, reportBuilding,"C:\\Users\\Daniel\\Dropbox\\Computer Science\\2.semester\\NetBeans Projects\\polygon\\build\\web\\");
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -56,18 +58,23 @@ public class PrinterPDF {
     }
 
     /**
-     * This class is resposable for creating a pdf document based on the
+     * This class is resposable for creating a pdf document based on the report
+     * obejct in the parameter. READ CAREFULLY. USES ALOT OF METHOD CALLS.
      *
-     * @param report
+     * @param report An object of the report to be created.
      * @param reportBuilding An object of the building that the report was
      * created for.
      * @throws java.lang.Exception This method throws all Exceptions
      */
-    public void sendReportToPrint(Report report, Building reportBuilding) throws Exception {
+    public void sendReportToPrint(Report report, Building reportBuilding, String path) throws Exception {
+       
+        File file = new File(path+"\\pdfReports\\"+"test.pdf");
+        FileOutputStream pdfFileout = new FileOutputStream(file);
 
         Document doc = new Document();
-        PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(
-                "testPDF.pdf"));
+        PdfWriter writer = PdfWriter.getInstance(doc, pdfFileout);
+        doc.addAuthor("Polygon");
+        doc.addTitle("TestingPDF");
         doc.open();
         Font title = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
         Font underline = new Font(Font.FontFamily.TIMES_ROMAN, 17, Font.UNDERLINE);
@@ -75,10 +82,10 @@ public class PrinterPDF {
         Font links = new Font(Font.FontFamily.TIMES_ROMAN, 17, Font.UNDERLINE);
         links.setColor(BaseColor.BLUE);
         Font smallHeadline = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-
-        int pagenumber = 1;
-        insertPageNumber(writer, pagenumber);
-        pagenumber++;
+        Font conditionFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+        conditionFont.setColor(BaseColor.RED);
+        Font smallText =  new Font(Font.FontFamily.TIMES_ROMAN, 12);
+        Font bold = new Font(Font.FontFamily.TIMES_ROMAN, 17, Font.BOLD);
 
         addHeader(doc, report, reportBuilding);
 
@@ -91,26 +98,355 @@ public class PrinterPDF {
         addListOfRooms(smallHeadline, doc, report, links);
 
         doc.add(Chunk.NEXTPAGE);
-        insertPageNumber(writer, pagenumber);
-        pagenumber++;
+        addHeader(doc, report, reportBuilding);
         addSecondPageEXTERIOR(doc, report, reportBuilding, title, smallHeadline);
         doc.add(Chunk.NEXTPAGE);
 
         for (ReportFloor floor : report.getReportFloors()) {
 
             for (ReportRoom room : floor.getReportRooms()) {
-                insertPageNumber(writer, pagenumber);
-                pagenumber++;
 
                 addHeader(doc, report, reportBuilding);
-                Paragraph headlineRoom = new Paragraph("Report of Room: " + floor.getFloorNumber()+ " - " + room.getRoomName(), title);
+                Paragraph headlineRoom = new Paragraph("Inspection of Room: " + floor.getFloorNumber() + " - " + room.getRoomName(), title);
                 headlineRoom.setAlignment(Element.ALIGN_CENTER);
                 doc.add(headlineRoom);
+
+                doc.add(Chunk.NEWLINE);
+
+                Phrase examinationHeadline = new Phrase("Interior State Of Room:", smallHeadline);
+                doc.add(examinationHeadline);
+                addInteriorTable(room, bold, doc, smallHeadline);
+
+                Phrase damageHeadline = new Phrase("Damages to the room", bold);
+                doc.add(damageHeadline);
+                addDamageTable(room, bold, doc, smallHeadline);
+
+                Phrase moistHeadline = new Phrase("Moist Scan For Room", smallHeadline);
+                doc.add(moistHeadline);
+                addMoistTable(room, bold, doc, smallHeadline);
+
+                Phrase recomendationHeadline = new Phrase("Recomendation For Room", smallHeadline);
+                doc.add(recomendationHeadline);
+                addRecomendationTable(room, bold, doc, smallHeadline);
+                
+                addPicturesForRooms(room, smallHeadline, doc, bold);
+
+                doc.add(Chunk.NEXTPAGE); // New page for each report.
             }
         }
 
-        doc.close();
+        // Last Page:
+        addHeader(doc, report, reportBuilding);
+        Paragraph headlineConclussion = new Paragraph("Conclusion", title);
+        headlineConclussion.setAlignment(Element.ALIGN_CENTER);
+        doc.add(headlineConclussion);
 
+        addLastPage(doc, normal, report, underline, smallHeadline, conditionFont, bold, smallText);
+
+        doc.add(Chunk.NEWLINE);
+
+        // Google T'ed!
+        Phrase endingText = new Phrase("This report and building analysis is made"
+                + " to clarify the immediate visual problems. Our purpose is to "
+                + "ensure that the use of the building can be maintained. We will "
+                + "not repair damage as part of building the review / report. "
+                + "The review of the building does not contain moisture measurements "
+                + "of the entire building, but we can make moisture scans few places "
+                + "in the building, if we deem it necessary. If we find critical areas"
+                + " of the building we will present recommendations for additional measures"
+                + " such as further examinations, repairs or construction updates."
+                + "Note that we have access to the entire building to perform a full review "
+                + "(this includes access to the roof, attic, basement, crawl space or other enclosed areas)."
+                + " This building analysis is non-destructive. If there is to be made destructive interference,"
+                + " this must first be approved by the building manager."
+                + " Destructive interference is not part of this report or building analysis."
+                + "The building principal must supply the floor plan of the building before "
+                + "building the review can be made.", smallText);
+        doc.add(endingText);
+
+        doc.close();
+        pdfFileout.close();
+
+    }
+
+    /**
+     * Adds an picture table if there is any pictures
+     * associated with the room
+     * @param room
+     * @param smallHeadline
+     * @param doc
+     * @param bold
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void addPicturesForRooms(ReportRoom room, Font smallHeadline, Document doc, Font bold) throws IOException, DocumentException {
+        if(room.getRrPic() != null && !room.getRrPic().isEmpty()){
+            Phrase pictureHeadline = new Phrase("Pictures for Room:", smallHeadline);
+            doc.add(pictureHeadline);
+            for (ReportPic picture : room.getRrPic()) {
+                
+                PdfPTable pictureTable = new PdfPTable(2);
+                PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture", bold));
+                row1cell1.setBackgroundColor(BaseColor.GRAY);
+                Image roompic = Image.getInstance("web/ReportRoomPic/" + picture.getFilename());
+                roompic.scaleToFit(new Rectangle(200, 200));
+                PdfPCell row1cell2 = new PdfPCell(roompic);
+                row1cell2.setBorder(0);
+                PdfPCell row2cell1 = new PdfPCell(new Phrase("Description", bold));
+                row2cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row2cell2 = new PdfPCell(new Phrase(picture.getDescription(), bold));
+                
+                
+                pictureTable.addCell(row1cell1);
+                pictureTable.addCell(row1cell2);
+                pictureTable.addCell(row2cell1);
+                pictureTable.addCell(row2cell2);
+                doc.add(pictureTable);
+                doc.add(Chunk.NEWLINE);
+                
+            }
+        }
+    }
+
+    /**
+     * Responsable for creating elements for the last page in the 
+     * printable version of the report.
+     * @param doc
+     * @param normal
+     * @param report
+     * @param underline
+     * @param smallHeadline
+     * @param conditionFont
+     * @param bold
+     * @param smallText
+     * @throws DocumentException
+     */
+    private void addLastPage(Document doc, Font normal, Report report, Font underline, Font smallHeadline, Font conditionFont, Font bold, Font smallText) throws DocumentException {
+        doc.add(new Phrase("The Building Inspection Was Done by ", normal));
+        doc.add(new Phrase(report.getPolygonUserName(), underline));
+        doc.add(Chunk.NEWLINE);
+
+        if (report.getCustomerAccountable() != null && !report.getCustomerAccountable().equals("")) {
+            // An Customer Accountable has been added to the report
+            doc.add(new Phrase("In Cooperation with Customer Accountable ", normal));
+            doc.add(new Phrase(report.getCustomerAccountable(), underline));
+        } else {
+            // An Customer accountable has not been added to the report:
+            doc.add(new Phrase("The Inspection was done without an Customer Contact Person", normal));
+
+        }
+        doc.add(Chunk.NEWLINE);
+
+        Paragraph conditionGradeHeadline = new Paragraph("The Condition Grade for the Building is: ", smallHeadline);
+        conditionGradeHeadline.setAlignment(Element.ALIGN_CENTER);
+        doc.add(conditionGradeHeadline);
+        Paragraph conditionGrade = new Paragraph(report.getCategoryConclusion() + "", conditionFont);
+        conditionGrade.setAlignment(Element.ALIGN_CENTER);
+        doc.add(conditionGrade);
+
+        doc.add(new Phrase("Condition Grade Reference Table", smallHeadline));
+        doc.add(Chunk.NEWLINE);
+
+        PdfPTable referenceTable = new PdfPTable(3);
+        PdfPCell row1cell1 = new PdfPCell(new Phrase("Condition Grade", bold));
+        row1cell1.setBackgroundColor(BaseColor.GRAY);
+        PdfPCell row1cell2 = new PdfPCell(new Phrase("Description of building", bold));
+        PdfPCell row1cell3 = new PdfPCell(new Phrase("Functionalty of building", bold));
+        PdfPCell row2cell1 = new PdfPCell(new Phrase("Condition Grade 0", smallText));
+        row2cell1.setBackgroundColor(BaseColor.GRAY);
+        PdfPCell row2cell2 = new PdfPCell(new Phrase("The building is as if it was new", smallText));
+        PdfPCell row2cell3 = new PdfPCell(new Phrase("The Functionality of the building is as descriped", smallText));
+        PdfPCell row3cell1 = new PdfPCell(new Phrase("Condition Grade 1", smallText));
+        row3cell1.setBackgroundColor(BaseColor.GRAY);
+        PdfPCell row3cell2 = new PdfPCell(new Phrase("The building is intact, but with some wear and some visible damages. (Not something that disrupts the functionality )", smallText));
+        PdfPCell row3cell3 = new PdfPCell(new Phrase("The Functionality of the building is as descriped", smallText));
+        PdfPCell row4cell1 = new PdfPCell(new Phrase("Condition Grade 2", smallText));
+        row4cell1.setBackgroundColor(BaseColor.GRAY);
+        PdfPCell row4cell2 = new PdfPCell(new Phrase("The building has started to decay with some defective elements", smallText));
+        PdfPCell row4cell3 = new PdfPCell(new Phrase("The functionality has been reduced – risk for consequential damages", smallText));
+        PdfPCell row5cell1 = new PdfPCell(new Phrase("Condition Grade 3", smallText));
+        row5cell1.setBackgroundColor(BaseColor.GRAY);
+        PdfPCell row5cell2 = new PdfPCell(new Phrase("The building has been degraded and needs to be replaced", smallText));
+        PdfPCell row5cell3 = new PdfPCell(new Phrase("	The functionality has ceased - risk for consequential damages", smallText));
+
+        referenceTable.addCell(row1cell1);
+        referenceTable.addCell(row1cell3);
+        referenceTable.addCell(row1cell2);
+        referenceTable.addCell(row2cell1);
+        referenceTable.addCell(row2cell3);
+        referenceTable.addCell(row2cell2);
+        referenceTable.addCell(row3cell1);
+        referenceTable.addCell(row3cell3);
+        referenceTable.addCell(row3cell2);
+        referenceTable.addCell(row4cell1);
+        referenceTable.addCell(row4cell3);
+        referenceTable.addCell(row4cell2);
+        referenceTable.addCell(row5cell1);
+        referenceTable.addCell(row5cell3);
+        referenceTable.addCell(row5cell2);
+
+        doc.add(referenceTable);
+    }
+
+    /**
+     * Responsable for creating the recomendation table for each Room.
+     *
+     * @param room
+     * @param bold
+     * @param doc
+     * @param smallHeadline
+     * @throws DocumentException
+     */
+    private void addRecomendationTable(ReportRoom room, Font bold, Document doc, Font smallHeadline) throws DocumentException {
+        if (room.getListOfRec() != null && !room.getListOfRec().isEmpty()) {
+            // There has been added Recomendation for the Room.
+
+            for (ReportRoomRecommendation recomendation : room.getListOfRec()) {
+                PdfPTable recomendationTable = new PdfPTable(2);
+                PdfPCell row1cell1 = new PdfPCell(new Phrase("Recomendation", bold));
+                row1cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row1cell2 = new PdfPCell(new Phrase(recomendation.getRecommendation(), bold));
+
+                recomendationTable.addCell(row1cell1);
+                recomendationTable.addCell(row1cell2);
+                doc.add(recomendationTable);
+                doc.add(Chunk.NEWLINE);
+            }
+
+        } else {
+            // No Recomendation for the Room has been added.
+            Paragraph noRecomendations = new Paragraph("No Recomendations added for this room", smallHeadline);
+            noRecomendations.setAlignment(Element.ALIGN_CENTER);
+            doc.add(noRecomendations);
+            doc.add(Chunk.NEWLINE);
+        }
+    }
+
+    /**
+     * Responsable for added in moist Table for a given room in the report!
+     *
+     * @param room
+     * @param bold
+     * @param doc
+     * @param smallHeadline
+     * @throws DocumentException
+     */
+    public void addMoistTable(ReportRoom room, Font bold, Document doc, Font smallHeadline) throws DocumentException {
+        if (room.getMoist() != null) {
+            // There has been added moist scan for this room.
+            PdfPTable moistTable = new PdfPTable(2);
+            PdfPCell row1cell1 = new PdfPCell(new Phrase("Moist Scan Result", bold));
+            row1cell1.setBackgroundColor(BaseColor.GRAY);
+            PdfPCell row1cell2 = new PdfPCell(new Phrase(room.getMoist().getMoistMeasured(), bold));
+            PdfPCell row2cell1 = new PdfPCell(new Phrase("Moist Scan Area", bold));
+            row2cell1.setBackgroundColor(BaseColor.GRAY);
+            PdfPCell row2cell2 = new PdfPCell(new Phrase(room.getMoist().getMeasurePoint(), bold));
+
+            moistTable.addCell(row1cell1);
+            moistTable.addCell(row1cell2);
+            moistTable.addCell(row2cell1);
+            moistTable.addCell(row2cell2);
+            doc.add(moistTable);
+            doc.add(Chunk.NEWLINE);
+        } else {
+            // There has not been added a moist scan for the room
+            Paragraph noMoistScan = new Paragraph("No Moist scan for this Room", smallHeadline);
+            noMoistScan.setAlignment(Element.ALIGN_CENTER);
+            doc.add(noMoistScan);
+            doc.add(Chunk.NEWLINE);
+        }
+    }
+
+    /**
+     * Responsable for creating the damage table for each report room.
+     *
+     * @param room
+     * @param bold
+     * @param doc
+     * @param smallHeadline
+     * @throws DocumentException
+     */
+    private void addDamageTable(ReportRoom room, Font bold, Document doc, Font smallHeadline) throws DocumentException {
+        if (room.getListOfDamages() != null && !room.getListOfDamages().isEmpty()) {
+            // There has been added some damages in the report
+            for (ReportRoomDamage damage : room.getListOfDamages()) {
+                PdfPTable damagetable = new PdfPTable(2);
+                PdfPCell row1cell1 = new PdfPCell(new Phrase("Estimated Time of Damage", bold));
+                row1cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row1cell2 = new PdfPCell(new Phrase(damage.getDamageTime(), bold));
+                PdfPCell row2cell1 = new PdfPCell(new Phrase("Where Damage Occurred", bold));
+                row2cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row2cell2 = new PdfPCell(new Phrase(damage.getPlace(), bold));
+                PdfPCell row3cell1 = new PdfPCell(new Phrase("Decription of Damage", bold));
+                row3cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row3cell2 = new PdfPCell(new Phrase(damage.getWhatHappened(), bold));
+                PdfPCell row4cell1 = new PdfPCell(new Phrase("Done Repairs ", bold));
+                row4cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row4cell2 = new PdfPCell(new Phrase(damage.getWhatIsRepaired(), bold));
+                PdfPCell row5cell1 = new PdfPCell(new Phrase("Damage Type ", bold));
+                row5cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row5cell2 = new PdfPCell(new Phrase(damage.getDamageType(), bold));
+                
+                damagetable.addCell(row1cell1);
+                damagetable.addCell(row1cell2);
+                damagetable.addCell(row2cell1);
+                damagetable.addCell(row2cell2);
+                damagetable.addCell(row3cell1);
+                damagetable.addCell(row3cell2);
+                damagetable.addCell(row4cell1);
+                damagetable.addCell(row4cell2);
+                damagetable.addCell(row5cell1);
+                damagetable.addCell(row5cell2);
+                doc.add(damagetable);
+                doc.add(Chunk.NEWLINE);
+
+            }
+        } else {
+            //There has not been added any damages in the report.
+            Paragraph noDamages = new Paragraph("No damages added for this room", smallHeadline);
+            noDamages.setAlignment(Element.ALIGN_CENTER);
+            doc.add(noDamages);
+            doc.add(Chunk.NEWLINE);
+
+        }
+    }
+
+    /**
+     * Responsable for creating, and adding the interior table for each of the
+     * interior obejects in the stored in the rooms list of interiors.
+     *
+     * @param room
+     * @param bold
+     * @param doc
+     * @param smallHeadline
+     * @throws DocumentException
+     */
+    private void addInteriorTable(ReportRoom room, Font bold, Document doc, Font smallHeadline) throws DocumentException {
+        if (room.getListOfInt() != null && !room.getListOfInt().isEmpty()) {
+            // not empty or null there for read from and add
+            PdfPTable interiorTable = new PdfPTable(2);
+            PdfPCell row1cell1 = new PdfPCell(new Phrase("Inspected Area", bold));
+            row1cell1.setBackgroundColor(BaseColor.GRAY);
+            interiorTable.addCell(row1cell1);
+            PdfPCell row1cell2 = new PdfPCell(new Phrase("Remark", bold));
+            interiorTable.addCell(row1cell2);
+            for (ReportRoomInterior interior : room.getListOfInt()) {
+
+                PdfPCell row2cell1 = new PdfPCell(new Phrase(interior.getRepRoomIntName(), bold));
+                row2cell1.setBackgroundColor(BaseColor.GRAY);
+                interiorTable.addCell(row2cell1);
+                PdfPCell row2cell2 = new PdfPCell(new Phrase(interior.getRemark(), bold));
+                interiorTable.addCell(row2cell2);
+            }
+            doc.add(interiorTable);
+            doc.add(Chunk.NEWLINE);
+        } else {
+            // The list of Room interior was empty or null.
+            Paragraph noInterior = new Paragraph("There are no Interior Remarks of this Room", smallHeadline);
+            noInterior.setAlignment(Element.ALIGN_CENTER);
+            doc.add(noInterior);
+            doc.add(Chunk.NEWLINE);
+        }
     }
 
     /**
@@ -123,7 +459,7 @@ public class PrinterPDF {
      * @throws IOException
      * @throws DocumentException
      */
-    public void insertPageNumber(PdfWriter writer, int pagenumber) throws IOException, DocumentException {
+    private void insertPageNumber(PdfWriter writer, int pagenumber) throws IOException, DocumentException {
         PdfContentByte pagenumberPos = writer.getDirectContent();
         BaseFont bf = BaseFont.createFont();
         pagenumberPos.saveState();
@@ -148,7 +484,6 @@ public class PrinterPDF {
      * @throws IOException
      */
     private void addSecondPageEXTERIOR(Document doc, Report report, Building reportBuilding, Font title, Font smallHeadline) throws DocumentException, IOException {
-        addHeader(doc, report, reportBuilding);
         Paragraph headlineEXTERIOR = new Paragraph("Exterior review of Building", title);
         headlineEXTERIOR.setAlignment(Element.ALIGN_CENTER);
         doc.add(headlineEXTERIOR);
@@ -175,24 +510,27 @@ public class PrinterPDF {
             doc.add(Chunk.NEWLINE);
             //takes the first, since now it's only possible to add one picture
             ReportExterior firstEx = report.getListOfRepExt().get(0);
-            if (firstEx != null && firstEx.getRepExtPic() != null ) {
-            
-            report.getListOfExtPics();
-            PdfPTable pictureExteriorTable = new PdfPTable(2);
-            PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture:"));
-            row1cell1.setBackgroundColor(BaseColor.GRAY);
-            pictureExteriorTable.addCell(row1cell1);
+            if (firstEx != null && firstEx.getRepExtPic() != null) {
 
-            Image exteriorimg = Image.getInstance("web/ReportExtPic/" + firstEx.getRepExtPic());
-            pictureExteriorTable.addCell(exteriorimg);
-            
-            PdfPCell row2cell1 = new PdfPCell(new Phrase("Decription:"));
-            row2cell1.setBackgroundColor(BaseColor.GRAY);
-            pictureExteriorTable.addCell(row2cell1);
-            PdfPCell row2cell2 = new  PdfPCell(new Phrase(firstEx.getRepExtPicDescriptoin()));
-            pictureExteriorTable.addCell(row2cell2);
-            doc.add(pictureExteriorTable);
-            } 
+                report.getListOfExtPics();
+                PdfPTable pictureExteriorTable = new PdfPTable(2);
+                PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture:"));
+                row1cell1.setBackgroundColor(BaseColor.GRAY);
+                pictureExteriorTable.addCell(row1cell1);
+
+                Image exteriorimg = Image.getInstance("web/ReportExtPic/" + firstEx.getRepExtPic());
+                exteriorimg.scaleToFit(new Rectangle(200, 200));
+                PdfPCell row1cell2 = new PdfPCell(exteriorimg);
+                row1cell2.setBorder(0);
+                pictureExteriorTable.addCell(row1cell2);
+
+                PdfPCell row2cell1 = new PdfPCell(new Phrase("Decription:"));
+                row2cell1.setBackgroundColor(BaseColor.GRAY);
+                pictureExteriorTable.addCell(row2cell1);
+                PdfPCell row2cell2 = new PdfPCell(new Phrase(firstEx.getRepExtPicDescriptoin()));
+                pictureExteriorTable.addCell(row2cell2);
+                doc.add(pictureExteriorTable);
+            }
 
         }
     }
