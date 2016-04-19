@@ -17,6 +17,7 @@ public class ReportExterior implements Serializable{
     private String repExtInspectedArea;
     private String repExtDescription;
     private String repExtPic;
+    private String repExtPicDecription;
     private int reportId;
 
     /**
@@ -98,6 +99,14 @@ public class ReportExterior implements Serializable{
         this.reportId = reportId;
     }
 
+    public String getRepExtPicDescriptoin() {
+        return repExtPicDecription;
+    }
+
+    public void setRepExtPicDescriptoin(String repExtPicDescriptoin) {
+        this.repExtPicDecription = repExtPicDescriptoin;
+    }
+    
     @Override
     public String toString() {
         return "ReportExterior{" + "repExtId=" + repExtId + ", repExtInspectedArea=" + repExtInspectedArea + ", repExtDescription=" + repExtDescription + ", repExtPic=" + repExtPic + ", reportId=" + reportId + '}';

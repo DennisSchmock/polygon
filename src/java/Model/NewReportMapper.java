@@ -187,6 +187,7 @@ public class NewReportMapper {
                         rs.getString("report_ext_description"),
                         rs.getString("report_ext_pic"),
                         rs.getInt("report"));
+                re.setRepExtPicDescriptoin(rs.getString("rep_ext_pic_description"));
                 listOfExt.add(re);
             }
             return listOfExt;
@@ -367,7 +368,7 @@ public class NewReportMapper {
 
     private void saveExteriorToDB(Report r, int reportId, Connection con) throws Exception {
 
-        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area) values (?,?,?,?)";
+        String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area, rep_ext_pic_description) values (?,?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
 
            PreparedStatement statement
@@ -375,6 +376,7 @@ public class NewReportMapper {
                 statement.setString(1, re.getRepExtDescription());
                 statement.setString(2, r.getListOfExtPics().get(0).getFilename());
                 statement.setString(4, re.getRepExtInspectedArea());
+                statement.setString(5, r.getListOfExtPics().get(0).getDescription());
                 statement.setInt(3, reportId);
                 statement.executeUpdate();
         }
