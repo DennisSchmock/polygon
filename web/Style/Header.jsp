@@ -42,6 +42,7 @@
                 <c:if test="${sessionScope.user.role=='customer'||sessionScope.testing==true}">
                     <li><a href="frontpage?page=viewlistofbuildings">View My Buildings</a></li>
                     <li><a href="frontpage?page=orderRequest">Order Request</a></li>
+                    <li><a href="frontpage?page=orderhistory">Order History</a></li>
                     </c:if>
                     <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"> 
                     <li><a href="frontpage?page=newreport">Add Report</a></li>

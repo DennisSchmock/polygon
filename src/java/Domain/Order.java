@@ -15,6 +15,7 @@ public class Order {
     private int orderStatus;
     private int customerId;
     private int buildingId;
+    private String statDesc;
 
     /**
      *
@@ -25,8 +26,9 @@ public class Order {
      * @param orderStatus status of the order
      * @param customerId customer ID that will reference to the customer
      * @param buildingId building ID that will reference to which building
+     * @param statDesc status description
      */
-    public Order(int orderNumber, Date orderDate, String serviceDescription, String problemStatement, int orderStatus, int customerId, int buildingId) {
+    public Order(int orderNumber, Date orderDate, String serviceDescription, String problemStatement, int orderStatus, int customerId, int buildingId, String statDesc) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.serviceDescription = serviceDescription;
@@ -34,6 +36,7 @@ public class Order {
         this.orderStatus = orderStatus;
         this.customerId = customerId;
         this.buildingId = buildingId;
+        this.statDesc = statDesc;
     }
 
     public Order(Date orderDate,String serviceDescription, String problemStatement,int orderStatus, int customerId, int buildingId) {
@@ -45,6 +48,14 @@ public class Order {
         this.buildingId = buildingId;
     }
 
+    public String getStatDesc() {
+        return statDesc;
+    }
+
+    public void setStatDesc(String statDesc) {
+        this.statDesc = statDesc;
+    }
+    
     public Date getOrderDate() {
         return orderDate;
     }

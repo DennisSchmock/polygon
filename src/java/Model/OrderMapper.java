@@ -2,10 +2,12 @@ package Model;
 
 import Domain.Order;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -57,14 +59,16 @@ public class OrderMapper {
                 return null;
             }
             
-            o = new Order(
-                    rs.getInt("order_number"),
-                    rs.getDate("order_date"),
-                    rs.getString("service_description"),
-                    rs.getString("problem_statement"),
-                    rs.getInt("order_status"),
-                    rs.getInt("customer_id"),
-                    rs.getInt("idbuilding"));
+                int on = rs.getInt("order_number");
+                Date d = rs.getDate("order_date");
+                String sd = rs.getString("service_description");
+                String ps = rs.getString("problem_statement");
+                int os = rs.getInt("order_status");
+                int c = rs.getInt("customer_id");
+                int b = rs.getInt("idbuilding");
+                String statDesc = getOrderStatus(os, con);
+                o = new Order(on,d,sd,ps,os,c,b,statDesc);
+            
             return o;
         } catch (Exception e) {
             System.out.println("Fail in OrderMapper-getOrder");
@@ -73,6 +77,12 @@ public class OrderMapper {
         }
     }
     
+    /**
+     * This method will get the status description of an order
+     * @param stat a status id
+     * @param con connection
+     * @return status description 
+     */
     public String getOrderStatus(int stat, Connection con) {
         String statDesc = "";
         String SQLString = "select * from order_status where order_status=?";
@@ -89,5 +99,72 @@ public class OrderMapper {
             return null;
         }
         return statDesc;
+    }
+    
+    /**
+     * This method will get all the orders of a customer from the database
+     * @param custId customer Id
+     * @param con connection
+     * @return list of Orders
+     */
+    public ArrayList<Order> getListOfOrders(int custId, Connection con){
+        String sql = "select * from orders where customer_id = ?";
+        ArrayList<Order> orderList = new ArrayList<>();
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, custId);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                int on = rs.getInt("order_number");
+                Date d = rs.getDate("order_date");
+                String sd = rs.getString("service_description");
+                String ps = rs.getString("problem_statement");
+                int os = rs.getInt("order_status");
+                int b = rs.getInt("idbuilding");
+                String statDesc = getOrderStatus(os, con);
+                Order o = new Order(on,d,sd,ps,os,custId,b,statDesc);
+                orderList.add(o);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL OrderMapper-getListOfOrders " + ex);
+            
+        }
+       
+        return orderList;
+    }
+    
+    /**
+     * This method will get all the orders from the database
+     * @param con connection
+     * @return list of all Orders
+     */
+    public ArrayList<Order> getListOfAllOrders(Connection con){
+        String sql = "select * from orders";
+        ArrayList<Order> orderList = new ArrayList<>();
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            
+            while(rs.next()){
+                int on = rs.getInt("order_number");
+                Date d = rs.getDate("order_date");
+                String sd = rs.getString("service_description");
+                String ps = rs.getString("problem_statement");
+                int os = rs.getInt("order_status");
+                int c = rs.getInt("customer_id");
+                int b = rs.getInt("idbuilding");
+                String statDesc = getOrderStatus(os, con);
+                Order o = new Order(on,d,sd,ps,os,c,b,statDesc);
+                orderList.add(o);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL OrderMapper-getAllOrders " + ex);
+            
+        }
+       
+        return orderList;
     }
 }
