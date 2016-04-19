@@ -7,8 +7,10 @@ package Model;
 
 import Domain.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -31,11 +33,12 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        
+        System.out.println("stat: " +facade.getOrderStatus(1));
 //        String username = "daeniz";
 //        Customer c = facade.getCustomerAfterLogIn(username);
 //        System.out.println("c" + c.getCustomerId());
-//        Order o = new Order("check-up","inspection","Order has been placed",1,2);
+//        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+//        Order o = new Order(date,"check-up","inspection",1,1,2);
 //        facade.addNewOrder(o);
         
 //        facade.deleteBuilding(22);
@@ -357,5 +360,9 @@ public class DBFacade {
      */
     public Customer getCustomerAfterLogIn(String username){
         return cm.getCustomerAfterLogIn(username, con);
+    }
+    
+    public String getOrderStatus(int stat){
+        return om.getOrderStatus(stat, con);
     }
 }
