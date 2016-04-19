@@ -14,13 +14,27 @@
 
 
 
-<form action="viewreport1" method="POST">
+<form action="viewreport1" method="POST" enctype="multipart/form-data">
+    <c:if test="${requestScope.filessubmitted==true}">Your upload is done</c:if>
     <div class="w3-row-padding w3-threequarter">
-        <input type="hidden" name="action" value="addfilessubmit" />
-        <div class="w3-half"><label>Remark:</label><input type="Text" name="floornumber" value="" required class="w3-input w3-border"/></div>
-        <div class="w3-half"><input name="addFiles" type="file" multiple="multiple" /></div>
-
+        <h4>Please upload floorplans here so we can provide the best posible service!</h4>
+        
+        <select name="floors">
+        <c:forEach items="${sessionScope.floorsList}" var="floor">
+            <option value="${floor.floorId}">${floor.floorNumber}</option>
+            
+        </c:forEach>
+        </select>
+        Please select the floor this plan belongs to
+        <br>
+        <br>
+        
+        <input type="hidden" name="action" value="addfloorplanssubmit" />
+        <div class="w3-half"><input name="uploadFile" type="file" multiple="multiple" required/></div>
+        <input type="submit" value="Add Files" />
     </div>
+    <br>
+    <br>
     <br>
     <br>
     <br>

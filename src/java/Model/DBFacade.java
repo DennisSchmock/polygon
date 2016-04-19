@@ -328,4 +328,10 @@ public class DBFacade {
     public void saveBuildingFiles(Building b) {
         bm.saveBuildingDocs(b, con);
     }
+
+    public void saveFloorplan(int floor, Floorplan f) {
+        bm.saveFloorplan(floor, f,con);
+                }
+    
+    
 }

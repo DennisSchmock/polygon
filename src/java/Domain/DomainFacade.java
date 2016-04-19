@@ -214,4 +214,18 @@ public String saveBuildingPic(int buildId, String filename){
         dbFacade.saveBuildingFiles(b);
     }
 
+    public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
+        
+        
+        
+            for (Floorplan floorplan : plans) {
+                
+                System.out.println("Trying to save floorplan:");;
+                dbFacade.saveFloorplan(floorId,floorplan);
+            }
+        
+        
+        
+    }
+
 }

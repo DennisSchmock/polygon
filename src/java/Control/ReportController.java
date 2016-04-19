@@ -11,6 +11,7 @@ import Domain.BuildingFiles;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
+import Domain.Floorplan;
 import Domain.Report;
 import Domain.ReportRoom;
 
@@ -165,10 +166,23 @@ NewFileUpload nfu = new NewFileUpload();
             request.setAttribute("roomfiles", true);
             //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
         }
+        if(action.equalsIgnoreCase("addfloorplans")){
+            Building b = (Building)request.getSession().getAttribute("building");
+            ArrayList<BuildingFloor> bfList = df.listOfFloors(b.getBdgId());
+            
+            request.getSession().setAttribute("floorsList", bfList);
+            request.setAttribute("addfloorplans", true);
+        }
         
         if(action.equalsIgnoreCase("addfilessubmit")){
              
             request = addFiles(request,parts, df);
+            
+        }
+        
+        if(action.equalsIgnoreCase("addfloorplanssubmit")){
+             
+            request = addFloorplans(request,parts, df);
             
         }
        
@@ -296,5 +310,39 @@ NewFileUpload nfu = new NewFileUpload();
             request.setAttribute("roomfiles", true);
             return request;
     }
+
+    private HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+        ArrayList<BuildingFloor> floors;
+        Building b = (Building) request.getSession().getAttribute("building");
+        
+            if (b!=null) {
+                System.out.println("b not null");
+                
+                
+                //Add to folder
+                ArrayList<Floorplan> floorplans;
+                floorplans=nfu.saveFloorplans(getServletContext().getRealPath(""),  parts);
+                
+                //Add to buildings floorobject
+                floors=b.getListOfFloors();
+                int chosenFloor = Integer.parseInt(request.getParameter("floors"));
+                for (BuildingFloor floor : floors) {
+                    if (floor.getFloorId()==chosenFloor){
+                        ArrayList<Floorplan> fp =floor.getFloorplans();
+                        fp.addAll(floorplans);
+                        floor.setFloorplans(fp);
+                    }
+                }
+                
+                //Add to db
+                
+                df.saveFloorplans(chosenFloor,floorplans);
+                
+                
+                //Set succesattribute
+                request.setAttribute("filessubmitted", true);
+            }
+            request.setAttribute("roomfiles", true);
+            return request;}
 
 }

@@ -10,6 +10,7 @@ import Domain.BuildingFile;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.BuildingFiles;
+import Domain.Floorplan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -628,6 +629,32 @@ public class BuildingMapper {
             System.out.println("Error in SQL SavebuildingDoc " + ex );
         }
         
+    }
+
+    
+
+    
+
+    void saveFloorplan(int floorId, Floorplan f, Connection con) {
+        String filename = f.getFilename();
+        String documentname= f.getDocumentname();
+        int size = f.getSize();
+        
+            
+            
+        String sql = "insert into floorplan (floorplanpath,documentname,floor_id,documentsize) values  (?,?,?,?) ";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, filename);
+            statement.setString(2, documentname);
+            statement.setInt(3, floorId);
+            statement.setInt(4, size);
+            statement.executeUpdate();
+            
+           
+        } catch (SQLException ex) {
+            System.out.println("Error in SQL SaveFloorplan " + ex );
+        }
     }
 }
 
