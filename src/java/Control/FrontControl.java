@@ -521,8 +521,10 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
+        //Calls method to upload file and get a string with filename back
         buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
-        
+        //This call should perhaps be moved to a deeper layer
+        df.saveBuildingPic(buildingToBeEdited.getBdgId(), buildingToBeEdited.getBuildingPic());
         System.out.println("BuildingPic");
         System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);

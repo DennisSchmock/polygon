@@ -126,8 +126,9 @@ public class DBFacade {
     }
     
     public String saveBuildingPic(int buildId, String filename) {
+        System.out.println("Saving buildingPic db-facade");
         return bm.saveBuildingPic(buildId, filename, con);
-        //System.out.println("Saved buildingPic");
+        
     }
 
     /**
@@ -335,6 +336,16 @@ public class DBFacade {
        return nrm.getSimpleListOfReports(con);
 
     }
+
+    public void saveBuildingFiles(Building b) {
+        bm.saveBuildingDocs(b, con);
+    }
+
+    public void saveFloorplan(int floor, Floorplan f) {
+        bm.saveFloorplan(floor, f,con);
+                }
+    
+    
     
     /**
      * redirects to the OrderMapper

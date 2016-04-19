@@ -210,6 +210,24 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getSimpleListOfReports();
     }
 
+    public void saveBuildingFiles(Building b) {
+        dbFacade.saveBuildingFiles(b);
+    }
+
+    public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
+        
+        
+        
+            for (Floorplan floorplan : plans) {
+                
+                System.out.println("Trying to save floorplan:");;
+                dbFacade.saveFloorplan(floorId,floorplan);
+            }
+        
+        
+        
+    }
+
     /**
      * This method is used to save a new Order
      * @param o new Order

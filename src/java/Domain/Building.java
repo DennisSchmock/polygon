@@ -24,6 +24,7 @@ public class Building implements Serializable{
     private String buildingPic;   // Change to string to combine id with extension i.e. 23 + "." + "png"
     private ArrayList<Report> listOfReports;
     private ArrayList<BuildingFloor> listOfFloors;
+    private ArrayList<BuildingFiles> listOfFiles;
     private int custId;
     
 
@@ -169,6 +170,15 @@ public class Building implements Serializable{
        }
        return null;
    }
+
+    public ArrayList<BuildingFiles> getListOfFiles() {
+        if (listOfFiles==null) listOfFiles=new ArrayList();
+        return listOfFiles;
+    }
+
+    public void setListOfFiles(ArrayList<BuildingFiles> listOfFiles) {
+        this.listOfFiles = listOfFiles;
+    }
     
     
     
