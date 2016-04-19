@@ -10,6 +10,7 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
+import Domain.Order;
 import Domain.Report;
 import Domain.ReportRoom;
 import Domain.ReportRoomDamage;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -58,6 +60,10 @@ public class FrontControl extends HttpServlet {
     Building bdg;
     BuildingFloor bf;
     BuildingRoom br;
+    Order o;
+    
+    @EJB
+    private MailSenderBean mailSender;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -71,15 +77,14 @@ public class FrontControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
-        
+      
+        //This part of the code, checks if there might be files for upload, and seperates them, if that is the case
         Collection<Part> parts=null;
-        if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
-                      //Extracts the part of the form that is the file
-        parts = request.getParts();
+        if (ServletFileUpload.isMultipartContent(request)){                                           
+        parts = request.getParts();            //Extracts the part of the form that is the file
         }
     
         HttpSession sessionObj = request.getSession(); //Get the session
-      //  ReportHelper rh = new ReportHelper();
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
@@ -91,6 +96,7 @@ public class FrontControl extends HttpServlet {
 
         //Set base url
         String url = "/index.jsp";
+        
         String page = request.getParameter("page");
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
@@ -303,6 +309,32 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
+        //loading order request page
+        if(page.equalsIgnoreCase("orderRequest")){
+           loadBuildingsAfterLogIn(sessionObj, df);
+           response.sendRedirect("orderRequest.jsp");
+           return;
+        }
+        
+        //selecting a building for order request
+        if (page.equalsIgnoreCase("selBdgReq")) {
+            selectBuilding(request, df, sessionObj);
+            response.sendRedirect("orderRequest.jsp");
+            return;
+        }
+        
+        //create an order request
+        if(page.equalsIgnoreCase("orderRequestSubmit")){
+            saveOrder(request, sessionObj, df);
+            response.sendRedirect("ordersuccess.jsp");
+            return;
+        }
+        
+        //stuff to be done when order success
+        if(page.equalsIgnoreCase("ordersuccess")){
+            
+        }
+        
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
@@ -506,9 +538,14 @@ public class FrontControl extends HttpServlet {
      * @param response
      */
     public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
-        String username = (String) request.getParameter("username");
+        String username = (String) request.getParameter("username"); 
         String pwd = (String) request.getParameter("pwd");
-
+        
+        //this is for order request when a customer loggedin
+        System.out.println("..." + username+pwd);
+        c = df.getCustomerAfterLogIn(username);
+        System.out.println("Customer:" + c.getCustomerId());
+        
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
             request.getSession().setAttribute("userrole", "user");
@@ -518,7 +555,13 @@ public class FrontControl extends HttpServlet {
             request.getSession().setAttribute("loggedin", false);
         }
     }
-
+    
+    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
+        if(c!=null){
+            List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
+            sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        }
+    }
 
 
     /**
@@ -1073,6 +1116,46 @@ public class FrontControl extends HttpServlet {
     private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         return df.saveReport(report);
+    }
+
+    /**
+     * This method will take the values of the attributes for saving a new order
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    public void saveOrder(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+
+        String serviceDesc = (String) request.getParameter("services");
+        String otherDesc = (String) request.getParameter("otherservice");
+        if(serviceDesc.equals("other")){
+            serviceDesc = otherDesc;
+        }
+        String problemStmt = (String) request.getParameter("problemstatement");
+        int orderStat= 1;
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        o = new Order(date,serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
+        
+        df.addNewOrder(o);
+        sendOrderEmail();
+    }
+
+    private void sendOrderEmail() {
+        mailSender = new MailSenderBean();
+        String toEmail = "noreply.polygonproject@gmail.com";
+        String subject = "ORDER: " + o.getServiceDescription();
+        String message = "REQUEST FOR "+ o.getServiceDescription() +
+                "\n\nOrder Date:" + o.getOrderDate() +
+                "\nCustomer: " + c.getCompanyName() +
+                "\nBuilding: " + bdg.getBuildingName() +
+                "\nProblem Description: " + o.getProblemStatement();
+        
+        String fromEmail = "noreply.polygonproject@gmail.com";
+        String username = "noreply.polygonproject";
+        String password = "poly123go";
+        
+        //Call to  mail sender bean
+        mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
     }
 
     

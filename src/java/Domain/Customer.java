@@ -51,6 +51,20 @@ public class Customer implements Serializable{
         this.phoneNumber = phoneNumber;
     }
 
+    public Customer(int customerId, String companyName, String contactPerson, String cusMail, String street, String streetNumber, String cusCVR, int zip, String phoneNumber) {
+        this.customerId = customerId;
+        this.companyName = companyName;
+        this.contactPerson = contactPerson;
+        this.cusMail = cusMail;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.cusCVR = cusCVR;
+        this.zip = zip;
+        this.phoneNumber = phoneNumber;
+    }
+    
+    
+
     /**
      *
      * @param companyName

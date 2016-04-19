@@ -57,7 +57,7 @@ public class Building implements Serializable{
     }
 
     
-    
+  
     public int getBdgId() {
         return bdgId;
     }

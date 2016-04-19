@@ -121,6 +121,7 @@ public class CustomerMapper {
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 c = new Customer(
+                rs.getInt("customer_id"),
                 rs.getString("companyname"),
                 rs.getString("contactperson"),
                 rs.getString("email"),
@@ -128,7 +129,6 @@ public class CustomerMapper {
                 rs.getString("streetnumber"),
                 rs.getString("cvr"),
                 rs.getInt("zipcode"),
-                "city",
                 rs.getString("phone"));
                 return c;
             }
@@ -141,6 +141,31 @@ public class CustomerMapper {
         return c;
     }
 
+    /**
+     * This method will get the customer data based on the username after log in
+     * @param username username used by the user when logging in
+     * @param con connection
+     * @return
+     */
+    public Customer getCustomerAfterLogIn(String username, Connection con){
+        Customer c=null;
+        String SQLString = "select customer_id from customer_user where username=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setString(1, username);  
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                c = getCustomer(rs.getInt("customer_id"), con);
+                return c;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("caught an exception");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return c;
+    }
+    
     public Contact getContact(int custID, Connection con) {
         Contact c=null;
         String SQLString = "select * from contact where customerID=?";
