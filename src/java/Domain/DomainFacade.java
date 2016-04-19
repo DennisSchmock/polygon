@@ -215,17 +215,20 @@ public String saveBuildingPic(int buildId, String filename){
     }
 
     public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
-        
-        
-        
             for (Floorplan floorplan : plans) {
-                
                 System.out.println("Trying to save floorplan:");;
                 dbFacade.saveFloorplan(floorId,floorplan);
             }
+    }
+    
+    public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors){
+        ArrayList<Floorplan> plans=new ArrayList();
         
-        
-        
+        for (BuildingFloor bf : listOfFLoors) {
+            ArrayList<Floorplan> plansFetched = dbFacade.getFloorplans(bf.getFloorId());
+            if (plansFetched != null) plans.addAll(plansFetched);
+        }
+        return plans;
     }
 
     /**

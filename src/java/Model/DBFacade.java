@@ -376,4 +376,8 @@ public class DBFacade {
     public String getOrderStatus(int stat){
         return om.getOrderStatus(stat, con);
     }
+    
+    public ArrayList<Floorplan> getFloorplans(int floorId){
+        return bm.getFloorplans(floorId, con);
+    }
 }

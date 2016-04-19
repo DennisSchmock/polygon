@@ -310,12 +310,35 @@ public class BuildingMapper {
         }
         return roomList;
     }
+    
+    public ArrayList<Floorplan> getFloorplans(int floorId, Connection con) {
+        ArrayList<Floorplan> floorplans = new ArrayList();
+        String sqlString = "SELECT * FROM floorplan where floor_id=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, floorId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Floorplan temp = new Floorplan(
+                        rs.getInt("documentsize"),
+                        rs.getString("floorplanpath"),
+                        rs.getString("documentname")
+                );
+                temp.setFileID(rs.getInt("floorplan_id"));
+                floorplans.add(temp);
+                System.out.println(temp.getFilename());
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception in BUILDINGMAPPER/getfloorplan list: " + ex);
+        }
+        return floorplans;
+    }
         
 
     public String getLatestBuildingImage(int buildingId, Connection con) {
         String filename = null;
         System.out.println("getLatestBuildingImage");
-        System.out.println(buildingId);
         String SQLString = "select * from building_pic where building_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             System.out.println("statement prepared");

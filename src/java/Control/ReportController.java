@@ -169,7 +169,9 @@ NewFileUpload nfu = new NewFileUpload();
         if(action.equalsIgnoreCase("addfloorplans")){
             Building b = (Building)request.getSession().getAttribute("building");
             ArrayList<BuildingFloor> bfList = df.listOfFloors(b.getBdgId());
+            ArrayList<Floorplan> plans= df.getFloorplans(bfList);
             
+            request.getSession().setAttribute("floorplans", plans);
             request.getSession().setAttribute("floorsList", bfList);
             request.setAttribute("addfloorplans", true);
         }
