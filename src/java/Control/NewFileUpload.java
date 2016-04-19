@@ -6,6 +6,9 @@
 package Control;
 
 import Domain.Building;
+import Domain.BuildingFile;
+import Domain.BuildingFiles;
+import Domain.Floorplan;
 import Domain.ReportPic;
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -61,6 +61,48 @@ public class NewFileUpload {
         }
         return null;
         
+    }
+    
+    public ArrayList<BuildingFile> saveBuildingDocs(String parentFolder, Collection<Part> parts){
+        ArrayList<BuildingFile> buildingfile=null;
+        System.out.println("saveBuildingDocs");
+        if (parts!=null){
+            System.out.println("Parts not null");
+        List<Part> fileParts = getAllParts(parts);
+        buildingfile=new ArrayList();
+        if (fileParts!=null){
+            for (Part filePart : fileParts) {
+                BuildingFile bf = saveBuildingDoc(parentFolder,filePart);
+                
+                buildingfile.add(bf);
+                System.out.println(bf.getDocumentname());
+                System.out.println(bf.getSize());
+            }
+            
+        }
+        }
+        return buildingfile;
+    }
+    
+    public ArrayList<Floorplan> saveFloorplans(String parentFolder, Collection<Part> parts){
+        ArrayList<Floorplan> floorplans=null;
+        System.out.println("saveFloorplans");
+        if (parts!=null){
+            System.out.println("Parts not null");
+        List<Part> fileParts = getAllParts(parts);
+        floorplans=new ArrayList();
+        if (fileParts!=null){
+            for (Part filePart : fileParts) {
+                Floorplan f = saveFloorplan(parentFolder,filePart);
+                
+                floorplans.add(f);
+                System.out.println(f.getDocumentname());
+                System.out.println(f.getSize());
+            }
+            
+        }
+        }
+        return floorplans;
     }
     
     public String saveExtPicture(String parentFolder, Collection<Part> parts) {
@@ -181,6 +223,40 @@ public class NewFileUpload {
     }
             return filename;
     }
+
+    private BuildingFile saveBuildingDoc(String parentFolder, Part filePart) {
+        System.out.println("Inside nfu saveBuildingDoc");
+        if (filePart!=null) {
+            
+            String filename=getNewFileName(filePart);
+            String documentname = filePart.getSubmittedFileName();
+            long bytesize = filePart.getSize();
+            int size = (int)(bytesize/1048576); //convert from byte to MB
+            uploadFile(filePart, parentFolder,"buildingDocs", filename);
+            System.out.println(filename);
+            BuildingFile bf = new BuildingFile(size,filename,documentname);
+            return bf; 
+        }
+        return null;
+        }
     
     
+    private Floorplan saveFloorplan(String parentFolder, Part filePart) {
+        System.out.println("Inside nfu saveFloorplan");
+        if (filePart!=null) {
+            
+            String filename=getNewFileName(filePart);
+            String documentname = filePart.getSubmittedFileName();
+            long bytesize = filePart.getSize();
+            int size = (int)(bytesize);//1048576); //convert from byte to MB
+            uploadFile(filePart, parentFolder,"floorplans", filename);
+            System.out.println(filename);
+            Floorplan f = new Floorplan(size,filename,documentname);
+            return f; 
+        }
+        return null;
+        }
 }
+
+
+

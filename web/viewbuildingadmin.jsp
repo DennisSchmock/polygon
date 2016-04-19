@@ -16,8 +16,8 @@
     <a href="viewreport1?action=showbuilding">Building info</a>
     <a href="viewreport1?action=addfloor">Add Floor</a>
     <a href="viewreport1?action=editbuilding">Edit building</a>
-    <a href="#">Floorplan</a>
-    <a href="#">Documents</a>
+    <a href="viewreport1?action=addfloorplans">Floorplan</a>
+    <a href="viewreport1?action=roomfiles">Documents</a>
     ---------------
 
     <c:forEach items="${sessionScope.building.listOfFloors}" var="floor" varStatus="count">
@@ -46,6 +46,9 @@
     <c:if test="${requestScope.addFloor==true}"><%@include file="buildingfragments/addfloor.jsp" %></c:if>
     <c:if test="${requestScope.addRoom==true}"><%@include file="buildingfragments/addroom.jsp" %></c:if>
     <c:if test="${requestScope.editBuilding==true}"><%@include file="buildingfragments/editbuilding.jsp" %></c:if>
+    <c:if test="${requestScope.addfloorplans==true}"><%@include file="buildingfragments/addfloorplan.jsp" %></c:if>
+    <c:if test="${requestScope.roomfiles==true}"><%@include file="buildingfragments/roomfiles.jsp" %></c:if>
+    
     </main>
 
 <%@include file="Style/Footer.jsp" %>

@@ -35,19 +35,19 @@
     <form name="selectrequest" action="frontpage" method="POST">
         
         <div class="w3-row-padding">
-            <label>Select Service Request:</label><br>
-        <input type="radio" name="services" value="checkup" />Check-up Building<br>
-        <input type="radio" name="services" value="leak" />Leak Detection<br>
-        <input type="radio" name="services" value="moisture" />Moisture Testing<br>
-        <input type="radio" name="services" value="drying" />Drying Service<br>
-        <input type="radio" name="services" value="graffiti" />Graffiti Removal<br>
-        <input type="radio" name="services" value="burglary" />Repair and Close after Burglary<br>
-        <input type="radio" name="services" value="fire" />Fire Damage Restoration<br>
-        <input type="radio" name="services" value="other" />Other: Please specify<br>
+        <h2>Select Service Request:</h2>
+        <input type="radio" name="services" value="Check-up Building" />Check-up Building<br>
+        <input type="radio" name="services" value="Leak Detection" />Leak Detection<br>
+        <input type="radio" name="services" value="Moisture Testing" />Moisture Testing<br>
+        <input type="radio" name="services" value="Drying Service" />Drying Service<br>
+        <input type="radio" name="services" value="Graffiti Removal" />Graffiti Removal<br>
+        <input type="radio" name="services" value="Repair and Close after Burglary" />Repair and Close after Burglary<br>
+        <input type="radio" name="services" value="Fire Damage Restoration" />Fire Damage Restoration<br>
+        <input type="radio" name="services" value="other" />Other: <i>(Please specify)</i><br>
         <input type="text" name="otherservice" />
         <br>
         <br>
-        <label>Describe the problem:</label><br>
+        <h3>Describe the problem:</h3><i>(Please state if urgent assistance is needed)</i><br>
         <textarea name="problemstatement" rows="4" cols="30">
         </textarea>
         <br>

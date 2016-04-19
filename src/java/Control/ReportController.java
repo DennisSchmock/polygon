@@ -6,30 +6,38 @@
 package Control;
 
 import Domain.Building;
+import Domain.BuildingFile;
+import Domain.BuildingFiles;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.DomainFacade;
+import Domain.Floorplan;
 import Domain.Report;
 import Domain.ReportRoom;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
  * @author dennisschmock
  */
 @WebServlet(name = "ReportController", urlPatterns = {"/viewreports", "/getreport", "/viewreport1", "/room"})
+@MultipartConfig
 public class ReportController extends HttpServlet {
-
+NewFileUpload nfu = new NewFileUpload();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,6 +49,12 @@ public class ReportController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Collection<Part> parts=null;
+        if (ServletFileUpload.isMultipartContent(request)){     //Checks if the form might(!?) contain a file for upload
+                      //Extracts the part of the form that is the file
+        parts = request.getParts();
+        }
         response.setContentType("text/html;charset=UTF-8");
         String url = "/viewbuildingadmin.jsp";
 
@@ -145,13 +159,33 @@ public class ReportController extends HttpServlet {
             request.setAttribute("showroom", true);
 
         }
-//        if(action.equalsIgnoreCase("reportroom")){
-//            Report report = (Report) request.getSession().getAttribute("report");
-//            int roomId = Integer.parseInt(request.getParameter("reportid"));
-//            request.setAttribute("showReportRoom", true);
-//            request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
-//        }
-//       
+        
+        //Trying to see if I can work this out
+        if(action.equalsIgnoreCase("roomfiles")){
+            //int buildId = Integer.parseInt(request.getParameter("buildingid"));
+            request.setAttribute("roomfiles", true);
+            //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+        }
+        if(action.equalsIgnoreCase("addfloorplans")){
+            Building b = (Building)request.getSession().getAttribute("building");
+            ArrayList<BuildingFloor> bfList = df.listOfFloors(b.getBdgId());
+            
+            request.getSession().setAttribute("floorsList", bfList);
+            request.setAttribute("addfloorplans", true);
+        }
+        
+        if(action.equalsIgnoreCase("addfilessubmit")){
+             
+            request = addFiles(request,parts, df);
+            
+        }
+        
+        if(action.equalsIgnoreCase("addfloorplanssubmit")){
+             
+            request = addFloorplans(request,parts, df);
+            
+        }
+       
         if (action.equalsIgnoreCase("addBuilding")) {
             Building b = new Building();
             b.setBuildingName("tempname");
@@ -248,5 +282,67 @@ public class ReportController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+        ArrayList<BuildingFiles> files;
+        Building b = (Building) request.getSession().getAttribute("building");
+        int buildId;
+            if (b!=null) {
+                files=b.getListOfFiles();
+                
+                System.out.println("b not null");
+                //Add to folder
+                ArrayList<BuildingFile> file;
+                
+                String filesDescription;
+                file=nfu.saveBuildingDocs(getServletContext().getRealPath(""),  parts);
+                filesDescription=request.getParameter("fileRemarks");
+                if (file==null)System.out.println("file is null");
+                if (filesDescription==null)System.out.println("fileDescrip is null");
+                if (files==null)System.out.println("files is null");
+                files.add(new BuildingFiles(file,filesDescription));
+                b.setListOfFiles(files);
+                //Add to db
+                df.saveBuildingFiles(b);
+                
+                request.setAttribute("filessubmitted", true);
+            }
+            request.setAttribute("roomfiles", true);
+            return request;
+    }
+
+    private HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+        ArrayList<BuildingFloor> floors;
+        Building b = (Building) request.getSession().getAttribute("building");
+        
+            if (b!=null) {
+                System.out.println("b not null");
+                
+                
+                //Add to folder
+                ArrayList<Floorplan> floorplans;
+                floorplans=nfu.saveFloorplans(getServletContext().getRealPath(""),  parts);
+                
+                //Add to buildings floorobject
+                floors=b.getListOfFloors();
+                int chosenFloor = Integer.parseInt(request.getParameter("floors"));
+                for (BuildingFloor floor : floors) {
+                    if (floor.getFloorId()==chosenFloor){
+                        ArrayList<Floorplan> fp =floor.getFloorplans();
+                        fp.addAll(floorplans);
+                        floor.setFloorplans(fp);
+                    }
+                }
+                
+                //Add to db
+                
+                df.saveFloorplans(chosenFloor,floorplans);
+                
+                
+                //Set succesattribute
+                request.setAttribute("filessubmitted", true);
+            }
+            request.setAttribute("roomfiles", true);
+            return request;}
 
 }

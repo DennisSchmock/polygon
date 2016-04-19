@@ -19,15 +19,16 @@ public class OrderMapper {
      * @param con connection
      */
     public void addNewOrder(Order o, Connection con){
-            String SQLString = "insert into orders(service_description,problem_statement,order_status,customer_id,idbuilding) values (?,?,?,?,?)";
+            String SQLString = "insert into orders(order_date,service_description,problem_statement,order_status,customer_id,idbuilding) values (?,?,?,?,?,?)";
             try (PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
                 //insert a tuple and set the values
-                statement.setString(1, o.getServiceDescription());
-                statement.setString(2, o.getProblemStatement());
-                statement.setString(3, o.getOrderStatus());
-                statement.setInt(4, o.getCustomerId());
-                statement.setInt(5, o.getBuildingId());
+                statement.setDate(1, o.getOrderDate());
+                statement.setString(2, o.getServiceDescription());
+                statement.setString(3, o.getProblemStatement());
+                statement.setInt(4, o.getOrderStatus());
+                statement.setInt(5, o.getCustomerId());
+                statement.setInt(6, o.getBuildingId());
                 statement.executeUpdate();
                 ResultSet rs = statement.getGeneratedKeys();
 
@@ -58,9 +59,10 @@ public class OrderMapper {
             
             o = new Order(
                     rs.getInt("order_number"),
+                    rs.getDate("order_date"),
                     rs.getString("service_description"),
                     rs.getString("problem_statement"),
-                    rs.getString("order_status"),
+                    rs.getInt("order_status"),
                     rs.getInt("customer_id"),
                     rs.getInt("idbuilding"));
             return o;
@@ -69,5 +71,23 @@ public class OrderMapper {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+    
+    public String getOrderStatus(int stat, Connection con) {
+        String statDesc = "";
+        String SQLString = "select * from order_status where order_status=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, stat);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                statDesc = rs.getString("status_description");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Fail in OrderMapper-getOrderStatus");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return statDesc;
     }
 }

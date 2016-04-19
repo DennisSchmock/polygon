@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -59,6 +60,10 @@ public class FrontControl extends HttpServlet {
     Building bdg;
     BuildingFloor bf;
     BuildingRoom br;
+    Order o;
+    
+    @EJB
+    private MailSenderBean mailSender;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -514,8 +519,10 @@ public class FrontControl extends HttpServlet {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
+        //Calls method to upload file and get a string with filename back
         buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(getServletContext().getRealPath(""), parts));
-        
+        //This call should perhaps be moved to a deeper layer
+        df.saveBuildingPic(buildingToBeEdited.getBdgId(), buildingToBeEdited.getBuildingPic());
         System.out.println("BuildingPic");
         System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);
@@ -1125,10 +1132,30 @@ public class FrontControl extends HttpServlet {
             serviceDesc = otherDesc;
         }
         String problemStmt = (String) request.getParameter("problemstatement");
-        String orderStat= "Order has been placed";
-        Order o = new Order(serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
+        int orderStat= 1;
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        o = new Order(date,serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
         
         df.addNewOrder(o);
+        sendOrderEmail();
+    }
+
+    private void sendOrderEmail() {
+        mailSender = new MailSenderBean();
+        String toEmail = "noreply.polygonproject@gmail.com";
+        String subject = "ORDER: " + o.getServiceDescription();
+        String message = "REQUEST FOR "+ o.getServiceDescription() +
+                "\n\nOrder Date:" + o.getOrderDate() +
+                "\nCustomer: " + c.getCompanyName() +
+                "\nBuilding: " + bdg.getBuildingName() +
+                "\nProblem Description: " + o.getProblemStatement();
+        
+        String fromEmail = "noreply.polygonproject@gmail.com";
+        String username = "noreply.polygonproject";
+        String password = "poly123go";
+        
+        //Call to  mail sender bean
+        mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
     }
 
     

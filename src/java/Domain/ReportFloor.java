@@ -5,13 +5,14 @@
  */
 package Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author dennisschmock
  */
-public class ReportFloor {
+public class ReportFloor implements Serializable{
     
     private int reportId;
     private int buildingId;
