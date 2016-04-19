@@ -11,11 +11,13 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -38,7 +40,7 @@ public class PrinterPDF {
         Building reportBuilding = getreportBuilding(report.getBuildingId());
         PrinterPDF instance = new PrinterPDF();
         try {
-            instance.sendReportToPrint(report, reportBuilding);
+            instance.sendReportToPrint(report, reportBuilding,"C:\\Users\\Daniel\\Dropbox\\Computer Science\\2.semester\\NetBeans Projects\\polygon\\build\\web\\");
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -64,11 +66,15 @@ public class PrinterPDF {
      * created for.
      * @throws java.lang.Exception This method throws all Exceptions
      */
-    public void sendReportToPrint(Report report, Building reportBuilding) throws Exception {
+    public void sendReportToPrint(Report report, Building reportBuilding, String path) throws Exception {
+       
+        File file = new File(path+"\\pdfReports\\"+"test.pdf");
+        FileOutputStream pdfFileout = new FileOutputStream(file);
 
         Document doc = new Document();
-        PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(
-                "testPDF.pdf"));
+        PdfWriter writer = PdfWriter.getInstance(doc, pdfFileout);
+        doc.addAuthor("Polygon");
+        doc.addTitle("TestingPDF");
         doc.open();
         Font title = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
         Font underline = new Font(Font.FontFamily.TIMES_ROMAN, 17, Font.UNDERLINE);
@@ -92,6 +98,7 @@ public class PrinterPDF {
         addListOfRooms(smallHeadline, doc, report, links);
 
         doc.add(Chunk.NEXTPAGE);
+        addHeader(doc, report, reportBuilding);
         addSecondPageEXTERIOR(doc, report, reportBuilding, title, smallHeadline);
         doc.add(Chunk.NEXTPAGE);
 
@@ -121,6 +128,8 @@ public class PrinterPDF {
                 Phrase recomendationHeadline = new Phrase("Recomendation For Room", smallHeadline);
                 doc.add(recomendationHeadline);
                 addRecomendationTable(room, bold, doc, smallHeadline);
+                
+                addPicturesForRooms(room, smallHeadline, doc, bold);
 
                 doc.add(Chunk.NEXTPAGE); // New page for each report.
             }
@@ -156,7 +165,47 @@ public class PrinterPDF {
         doc.add(endingText);
 
         doc.close();
+        pdfFileout.close();
 
+    }
+
+    /**
+     * Adds an picture table if there is any pictures
+     * associated with the room
+     * @param room
+     * @param smallHeadline
+     * @param doc
+     * @param bold
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void addPicturesForRooms(ReportRoom room, Font smallHeadline, Document doc, Font bold) throws IOException, DocumentException {
+        if(room.getRrPic() != null && !room.getRrPic().isEmpty()){
+            Phrase pictureHeadline = new Phrase("Pictures for Room:", smallHeadline);
+            doc.add(pictureHeadline);
+            for (ReportPic picture : room.getRrPic()) {
+                
+                PdfPTable pictureTable = new PdfPTable(2);
+                PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture", bold));
+                row1cell1.setBackgroundColor(BaseColor.GRAY);
+                Image roompic = Image.getInstance("web/ReportRoomPic/" + picture.getFilename());
+                roompic.scaleToFit(new Rectangle(200, 200));
+                PdfPCell row1cell2 = new PdfPCell(roompic);
+                row1cell2.setBorder(0);
+                PdfPCell row2cell1 = new PdfPCell(new Phrase("Description", bold));
+                row2cell1.setBackgroundColor(BaseColor.GRAY);
+                PdfPCell row2cell2 = new PdfPCell(new Phrase(picture.getDescription(), bold));
+                
+                
+                pictureTable.addCell(row1cell1);
+                pictureTable.addCell(row1cell2);
+                pictureTable.addCell(row2cell1);
+                pictureTable.addCell(row2cell2);
+                doc.add(pictureTable);
+                doc.add(Chunk.NEWLINE);
+                
+            }
+        }
     }
 
     /**
@@ -337,7 +386,7 @@ public class PrinterPDF {
                 PdfPCell row5cell1 = new PdfPCell(new Phrase("Damage Type ", bold));
                 row5cell1.setBackgroundColor(BaseColor.GRAY);
                 PdfPCell row5cell2 = new PdfPCell(new Phrase(damage.getDamageType(), bold));
-
+                
                 damagetable.addCell(row1cell1);
                 damagetable.addCell(row1cell2);
                 damagetable.addCell(row2cell1);
@@ -410,7 +459,7 @@ public class PrinterPDF {
      * @throws IOException
      * @throws DocumentException
      */
-    public void insertPageNumber(PdfWriter writer, int pagenumber) throws IOException, DocumentException {
+    private void insertPageNumber(PdfWriter writer, int pagenumber) throws IOException, DocumentException {
         PdfContentByte pagenumberPos = writer.getDirectContent();
         BaseFont bf = BaseFont.createFont();
         pagenumberPos.saveState();
@@ -435,7 +484,6 @@ public class PrinterPDF {
      * @throws IOException
      */
     private void addSecondPageEXTERIOR(Document doc, Report report, Building reportBuilding, Font title, Font smallHeadline) throws DocumentException, IOException {
-        addHeader(doc, report, reportBuilding);
         Paragraph headlineEXTERIOR = new Paragraph("Exterior review of Building", title);
         headlineEXTERIOR.setAlignment(Element.ALIGN_CENTER);
         doc.add(headlineEXTERIOR);
@@ -471,7 +519,10 @@ public class PrinterPDF {
                 pictureExteriorTable.addCell(row1cell1);
 
                 Image exteriorimg = Image.getInstance("web/ReportExtPic/" + firstEx.getRepExtPic());
-                pictureExteriorTable.addCell(exteriorimg);
+                exteriorimg.scaleToFit(new Rectangle(200, 200));
+                PdfPCell row1cell2 = new PdfPCell(exteriorimg);
+                row1cell2.setBorder(0);
+                pictureExteriorTable.addCell(row1cell2);
 
                 PdfPCell row2cell1 = new PdfPCell(new Phrase("Decription:"));
                 row2cell1.setBackgroundColor(BaseColor.GRAY);

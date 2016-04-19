@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -359,7 +361,23 @@ public class FrontControl extends HttpServlet {
             request.getSession().invalidate();
             url="/index.jsp";
         }
-
+        
+        if (page.equalsIgnoreCase("printReport")) {
+            Report report = (Report) sessionObj.getAttribute("report");
+            Building building = df.getBuilding(report.getBuildingId());
+            System.out.println("Creating Report for Report ID: " + report.getReportId());
+             String realPath = getServletContext().getRealPath("");
+            System.out.println(realPath);
+            try {
+                printer.sendReportToPrint(report, building, realPath);
+            } catch (Exception ex) {
+                System.out.println("Could not crearte a Report " + ex);
+                ex.printStackTrace();
+            }
+            response.sendRedirect("viewreport.jsp");
+            return;
+        }
+        
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
