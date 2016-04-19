@@ -48,7 +48,7 @@
         <br>
         <br>
         <h3>Describe the problem:</h3><i>(Please state if urgent assistance is needed)</i><br>
-        <textarea name="problemstatement" rows="4" cols="30">
+        <textarea name="problemstatement" rows="4" cols="30" required>
         </textarea>
         <br>
         <br>

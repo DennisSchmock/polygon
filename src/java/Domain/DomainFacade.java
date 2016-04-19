@@ -253,4 +253,30 @@ public String saveBuildingPic(int buildId, String filename){
     public Customer getCustomerAfterLogIn(String username){
         return dbFacade.getCustomerAfterLogIn(username);
     }
+    
+    /**
+     * This method is used to get the status description of an order
+     * @param stat order status ID
+     * @return status description
+     */
+    public String getOrderStatus(int stat){
+        return dbFacade.getOrderStatus(stat);
+    }
+    
+    /**
+     * This method is used to get the list of orders of a customer
+     * @param custId customer ID
+     * @return list of Orders
+     */
+    public ArrayList<Order> getListOfOrders(int custId){
+        return dbFacade.getlistOfOrders(custId);
+    }
+    
+    /**
+     * This method is used to get list of all the orders
+     * @return list of all Orders
+     */
+    public ArrayList<Order> getListOfAllOrders(){
+        return dbFacade.getListOfAllOrders();
+    }
 }

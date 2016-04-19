@@ -26,6 +26,7 @@ public class Customer implements Serializable{
     private String phoneNumber;
     private ArrayList<User> listOfUsers;
     private List<Building> buildings;
+    private ArrayList<Order> listOfOrders;
 
     /**
      *
@@ -250,8 +251,13 @@ public class Customer implements Serializable{
         this.buildings = buildings;
     }
 
+    public ArrayList<Order> getListOfOrders() {
+        return listOfOrders;
+    }
+
+    public void setListOfOrders(ArrayList<Order> listOfOrders) {
+        this.listOfOrders = listOfOrders;
+    }
+
    
-    
-    
-    
 }

@@ -332,9 +332,11 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
-        //stuff to be done when order success
-        if(page.equalsIgnoreCase("ordersuccess")){
-            
+        //displays the order history and order progress
+        if(page.equalsIgnoreCase("orderhistory")){
+            loadCustomerOrders(sessionObj, df);
+            response.sendRedirect("orderhistory.jsp");
+            return;
         }
         
         if (page.equalsIgnoreCase("continue")) {
@@ -1151,6 +1153,7 @@ public class FrontControl extends HttpServlet {
         }
         String problemStmt = (String) request.getParameter("problemstatement");
         int orderStat= 1;
+        sessionObj.setAttribute("orderStatus", orderStat);
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         o = new Order(date,serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
         
@@ -1174,6 +1177,16 @@ public class FrontControl extends HttpServlet {
         
         //Call to  mail sender bean
         mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
+    }
+
+    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) {
+        ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
+        c.setListOfOrders(listOfOrders);
+        sessionObj.setAttribute("listOfOrders", listOfOrders);
+        for (Order o : listOfOrders) {
+            
+            System.out.println(o.getStatDesc());
+        }
     }
 
     
