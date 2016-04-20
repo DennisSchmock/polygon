@@ -17,9 +17,13 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Color;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  * This Class is responsable for one thing only. Printing an Report in PDF file.
@@ -40,7 +44,7 @@ public class PrinterPDF {
         Building reportBuilding = getreportBuilding(report.getBuildingId());
         PrinterPDF instance = new PrinterPDF();
         try {
-            instance.sendReportToPrint(report, reportBuilding,"C:\\Users\\Daniel\\Dropbox\\Computer Science\\2.semester\\NetBeans Projects\\polygon\\build\\web\\");
+            instance.sendReportToPrint(report, reportBuilding,"C:\\Users\\Daniel\\Dropbox\\Computer Science\\2.semester\\NetBeans Projects\\polygon\\build\\web\\","test");
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -64,11 +68,18 @@ public class PrinterPDF {
      * @param report An object of the report to be created.
      * @param reportBuilding An object of the building that the report was
      * created for.
+     * @param path The Path to the Project folder that you get by using: getServletContext().getRealPath("");
+     * in a servlet.
+     * @param fileName The Filename that you want the saved pdf file to be named! 
+     * But NOT with the .pdf - that will be added later
      * @throws java.lang.Exception This method throws all Exceptions
      */
-    public void sendReportToPrint(Report report, Building reportBuilding, String path) throws Exception {
-       
-        File file = new File(path+"\\pdfReports\\"+"test.pdf");
+    public void sendReportToPrint(Report report, Building reportBuilding, String path, String fileName) throws Exception {
+        
+        File filepath = new File (path+File.separator);
+        filepath = new File(filepath.getParentFile().getParent()+File.separator+"web"+File.separator+"pdfReports");
+        String webPath = filepath.getParentFile().getPath(); // This is to get the right folder for loading images!
+        File file = new File(filepath,fileName+".pdf");
         FileOutputStream pdfFileout = new FileOutputStream(file);
 
         Document doc = new Document();
@@ -87,7 +98,7 @@ public class PrinterPDF {
         Font smallText =  new Font(Font.FontFamily.TIMES_ROMAN, 12);
         Font bold = new Font(Font.FontFamily.TIMES_ROMAN, 17, Font.BOLD);
 
-        addHeader(doc, report, reportBuilding);
+        addHeader(doc, report, reportBuilding, webPath);
 
         Paragraph headline = new Paragraph("Report Overview", title);
         headline.setAlignment(Element.ALIGN_CENTER);
@@ -98,15 +109,15 @@ public class PrinterPDF {
         addListOfRooms(smallHeadline, doc, report, links);
 
         doc.add(Chunk.NEXTPAGE);
-        addHeader(doc, report, reportBuilding);
-        addSecondPageEXTERIOR(doc, report, reportBuilding, title, smallHeadline);
+        addHeader(doc, report, reportBuilding, webPath);
+        addSecondPageEXTERIOR(doc, report, reportBuilding, title, smallHeadline, webPath);
         doc.add(Chunk.NEXTPAGE);
 
         for (ReportFloor floor : report.getReportFloors()) {
 
             for (ReportRoom room : floor.getReportRooms()) {
 
-                addHeader(doc, report, reportBuilding);
+                addHeader(doc, report, reportBuilding, webPath);
                 Paragraph headlineRoom = new Paragraph("Inspection of Room: " + floor.getFloorNumber() + " - " + room.getRoomName(), title);
                 headlineRoom.setAlignment(Element.ALIGN_CENTER);
                 doc.add(headlineRoom);
@@ -129,14 +140,14 @@ public class PrinterPDF {
                 doc.add(recomendationHeadline);
                 addRecomendationTable(room, bold, doc, smallHeadline);
                 
-                addPicturesForRooms(room, smallHeadline, doc, bold);
+                addPicturesForRooms(room, smallHeadline, doc, bold, webPath);
 
                 doc.add(Chunk.NEXTPAGE); // New page for each report.
             }
         }
 
         // Last Page:
-        addHeader(doc, report, reportBuilding);
+        addHeader(doc, report, reportBuilding, webPath);
         Paragraph headlineConclussion = new Paragraph("Conclusion", title);
         headlineConclussion.setAlignment(Element.ALIGN_CENTER);
         doc.add(headlineConclussion);
@@ -145,24 +156,7 @@ public class PrinterPDF {
 
         doc.add(Chunk.NEWLINE);
 
-        // Google T'ed!
-        Phrase endingText = new Phrase("This report and building analysis is made"
-                + " to clarify the immediate visual problems. Our purpose is to "
-                + "ensure that the use of the building can be maintained. We will "
-                + "not repair damage as part of building the review / report. "
-                + "The review of the building does not contain moisture measurements "
-                + "of the entire building, but we can make moisture scans few places "
-                + "in the building, if we deem it necessary. If we find critical areas"
-                + " of the building we will present recommendations for additional measures"
-                + " such as further examinations, repairs or construction updates."
-                + "Note that we have access to the entire building to perform a full review "
-                + "(this includes access to the roof, attic, basement, crawl space or other enclosed areas)."
-                + " This building analysis is non-destructive. If there is to be made destructive interference,"
-                + " this must first be approved by the building manager."
-                + " Destructive interference is not part of this report or building analysis."
-                + "The building principal must supply the floor plan of the building before "
-                + "building the review can be made.", smallText);
-        doc.add(endingText);
+        
 
         doc.close();
         pdfFileout.close();
@@ -179,7 +173,7 @@ public class PrinterPDF {
      * @throws IOException
      * @throws DocumentException
      */
-    private void addPicturesForRooms(ReportRoom room, Font smallHeadline, Document doc, Font bold) throws IOException, DocumentException {
+    private void addPicturesForRooms(ReportRoom room, Font smallHeadline, Document doc, Font bold, String webPath) throws IOException, DocumentException {
         if(room.getRrPic() != null && !room.getRrPic().isEmpty()){
             Phrase pictureHeadline = new Phrase("Pictures for Room:", smallHeadline);
             doc.add(pictureHeadline);
@@ -188,7 +182,13 @@ public class PrinterPDF {
                 PdfPTable pictureTable = new PdfPTable(2);
                 PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture", bold));
                 row1cell1.setBackgroundColor(BaseColor.GRAY);
-                Image roompic = Image.getInstance("web/ReportRoomPic/" + picture.getFilename());
+                
+                webPath += File.separator+"ReportRoomPic";
+                
+                Image roompic = Image.getInstance(webPath + File.separator + picture.getFilename());
+                
+                
+                
                 roompic.scaleToFit(new Rectangle(200, 200));
                 PdfPCell row1cell2 = new PdfPCell(roompic);
                 row1cell2.setBorder(0);
@@ -284,6 +284,25 @@ public class PrinterPDF {
         referenceTable.addCell(row5cell1);
         referenceTable.addCell(row5cell3);
         referenceTable.addCell(row5cell2);
+        
+        // Google T'ed!
+        Phrase endingText = new Phrase("This report and building analysis is made"
+                + " to clarify the immediate visual problems. Our purpose is to "
+                + "ensure that the use of the building can be maintained. We will "
+                + "not repair damage as part of building the review / report. "
+                + "The review of the building does not contain moisture measurements "
+                + "of the entire building, but we can make moisture scans few places "
+                + "in the building, if we deem it necessary. If we find critical areas"
+                + " of the building we will present recommendations for additional measures"
+                + " such as further examinations, repairs or construction updates."
+                + "Note that we have access to the entire building to perform a full review "
+                + "(this includes access to the roof, attic, basement, crawl space or other enclosed areas)."
+                + " This building analysis is non-destructive. If there is to be made destructive interference,"
+                + " this must first be approved by the building manager."
+                + " Destructive interference is not part of this report or building analysis."
+                + "The building principal must supply the floor plan of the building before "
+                + "building the review can be made.", smallText);
+        doc.add(endingText);
 
         doc.add(referenceTable);
     }
@@ -483,7 +502,7 @@ public class PrinterPDF {
      * @throws DocumentException
      * @throws IOException
      */
-    private void addSecondPageEXTERIOR(Document doc, Report report, Building reportBuilding, Font title, Font smallHeadline) throws DocumentException, IOException {
+    private void addSecondPageEXTERIOR(Document doc, Report report, Building reportBuilding, Font title, Font smallHeadline, String webPath) throws DocumentException, IOException {
         Paragraph headlineEXTERIOR = new Paragraph("Exterior review of Building", title);
         headlineEXTERIOR.setAlignment(Element.ALIGN_CENTER);
         doc.add(headlineEXTERIOR);
@@ -518,7 +537,8 @@ public class PrinterPDF {
                 row1cell1.setBackgroundColor(BaseColor.GRAY);
                 pictureExteriorTable.addCell(row1cell1);
 
-                Image exteriorimg = Image.getInstance("web/ReportExtPic/" + firstEx.getRepExtPic());
+                webPath += File.separator + "ReportExtPic" ; 
+                Image exteriorimg = Image.getInstance( webPath + File.separator +firstEx.getRepExtPic());
                 exteriorimg.scaleToFit(new Rectangle(200, 200));
                 PdfPCell row1cell2 = new PdfPCell(exteriorimg);
                 row1cell2.setBorder(0);
@@ -543,9 +563,10 @@ public class PrinterPDF {
      * @throws IOException
      * @throws BadElementException
      */
-    private void addHeader(Document doc, Report report, Building reportBuilding) throws DocumentException, IOException, BadElementException {
-        Image header = Image.getInstance("web/images/Healthybuildings.png");
-        Image logo = Image.getInstance("web/images/PolygonLogo.png");
+    private void addHeader(Document doc, Report report, Building reportBuilding, String path) throws DocumentException, IOException, BadElementException {
+        path += File.separator+"images";
+        Image header = Image.getInstance(path + File.separator +"Healthybuildings.png");
+        Image logo = Image.getInstance(path + File.separator +"PolygonLogo.png");
         header.setAbsolutePosition(430, 750);
         doc.add(header);
         logo.setAbsolutePosition(10, 750);
