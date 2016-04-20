@@ -339,6 +339,13 @@ public class FrontControl extends HttpServlet {
             return;
         }
         
+        //displays the order list and order progress
+        if(page.equalsIgnoreCase("orderslist")){
+            loadAllOrders(sessionObj, df);
+            response.sendRedirect("orderslist.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
@@ -1166,7 +1173,8 @@ public class FrontControl extends HttpServlet {
         String toEmail = "noreply.polygonproject@gmail.com";
         String subject = "ORDER: " + o.getServiceDescription();
         String message = "REQUEST FOR "+ o.getServiceDescription() +
-                "\n\nOrder Date:" + o.getOrderDate() +
+                "\n\nOrder Number: " + o.getOrderNumber() +
+                "\nOrder Date:" + o.getOrderDate() +
                 "\nCustomer: " + c.getCompanyName() +
                 "\nBuilding: " + bdg.getBuildingName() +
                 "\nProblem Description: " + o.getProblemStatement();
@@ -1183,10 +1191,12 @@ public class FrontControl extends HttpServlet {
         ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
         c.setListOfOrders(listOfOrders);
         sessionObj.setAttribute("listOfOrders", listOfOrders);
-        for (Order o : listOfOrders) {
-            
-            System.out.println(o.getStatDesc());
-        }
+        
+    }
+
+    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) {
+        ArrayList<Order> listOfAllOrders = df.getListOfAllOrders();
+        sessionObj.setAttribute("listOfOrders", listOfAllOrders);
     }
 
     

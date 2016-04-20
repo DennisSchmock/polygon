@@ -46,6 +46,7 @@
                     </c:if>
                     <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"> 
                     <li><a href="frontpage?page=newreport">Add Report</a></li>
+                    <li><a href="frontpage?page=orderslist">Orders List</a></li>
                     </c:if>
 
                 <li><a href="frontpage?page=addbuilding">Add building</a></li>
