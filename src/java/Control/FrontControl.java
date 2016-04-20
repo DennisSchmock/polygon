@@ -407,8 +407,10 @@ public class FrontControl extends HttpServlet {
         
         
         } catch (PolygonException ex) {
-                Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                System.out.println(ex.getMessage());
+                request.setAttribute("errormessage", ex.getMessage());
+                url="/errorpage.jsp";
+        }
 
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
@@ -423,18 +425,15 @@ public class FrontControl extends HttpServlet {
      * to create
      * @param df Connection to the domain.
      * @param response Responce object to place the file in. 
+     * @throws Domain.Exceptions.PolygonException Throws an Polygon if there is any problem
+     * with creating an PDF File.
      */
-    private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response)  {
+    private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response) throws PolygonException  {
         Report report = (Report) sessionObj.getAttribute("report");
         Building building = df.getBuilding(report.getBuildingId());
         String realPath = getServletContext().getRealPath("");
         String fileName = "ReportFile" + report.getReportId();
-        try {
-            printer.sendReportToPrint(report, building, realPath, fileName);
-        } catch (Exception ex) {
-            System.out.println("Could not crearte a Report " + ex);
-            ex.printStackTrace();
-        }
+        printer.sendReportToPrint(report, building, realPath, fileName);
         //This tells the browser that we will send a PDF file to the browser
         response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".pdf");
         
@@ -465,7 +464,7 @@ public class FrontControl extends HttpServlet {
         out.flush();
         } catch (IOException ex) {
             System.out.println("Error in Creating an PDf" + ex);
-            ex.printStackTrace();
+            throw new PolygonException("Error in Printing the pdf");
         }
     }
 
