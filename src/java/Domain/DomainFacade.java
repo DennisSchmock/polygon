@@ -37,7 +37,7 @@ public class DomainFacade {
      * @see All the fields needed to create an building object Creates the
      * building object and sends it to the DBFacade
      */
-    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) {
+    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) throws PolygonException {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
         b.setCustId(custId); // this is hardcoded! Should load the userloged in!
         b = dbFacade.saveNewBuilding(b);
@@ -45,7 +45,7 @@ public class DomainFacade {
     }
 
 
-public String saveBuildingPic(int buildId, String filename){
+public String saveBuildingPic(int buildId, String filename) throws PolygonException{
         return dbFacade.saveBuildingPic(buildId, filename);
         
     }
@@ -75,7 +75,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param customerID ID of the customer that is to be loaded
      * @return An list of buildings related to the customerID
      */
-    public List<Building> getListOfBuildings(int customerID) {
+    public List<Building> getListOfBuildings(int customerID) throws PolygonException {
         // When we have implemeted an hashmap, where should be some logic, to
         // Find out if the hashmap is empty or not. Otherwise it loads it form 
         // The database.
@@ -93,7 +93,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param buildingToBeEdited Is the updated building object that needs to be
      * saved in the database
      */
-    public void Updatebuilding(Building buildingToBeEdited) {
+    public void Updatebuilding(Building buildingToBeEdited) throws PolygonException {
         dbFacade.updateBuildingDBFacade(buildingToBeEdited);
     }
 
@@ -140,16 +140,16 @@ public String saveBuildingPic(int buildId, String filename){
      * @param buildingID Id for the building to be loaded
      * @return An objet of the the Building that has been loaded
      */
-    public Building getBuilding(int buildingID) {
+    public Building getBuilding(int buildingID) throws PolygonException {
         return dbFacade.getBuilding(buildingID);
     }
 
-    public String getLatestBuildingImage(int buildingId) {
+    public String getLatestBuildingImage(int buildingId) throws PolygonException {
         return dbFacade.getLatestBuildingImage(buildingId);
 
     }
 
-    public void addFloors(BuildingFloor bf) {
+    public void addFloors(BuildingFloor bf) throws PolygonException {
         dbFacade.addFloor(bf);
     }
 
@@ -160,11 +160,11 @@ public String saveBuildingPic(int buildId, String filename){
      * @param newRoom A BuildingRoom object that is to be created.
      * @return The newly created building object in the database with the an ID!
      */
-    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
+    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) throws PolygonException {
         return dbFacade.saveBuildingRoom(newRoom);
     }
 
-    public ArrayList<BuildingFloor> listOfFloors(int bdgId) {
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId) throws PolygonException {
         return dbFacade.getListOfFloors(bdgId);
     }
 
@@ -172,15 +172,15 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getCustomer(cusid);
     }
 
-    public ArrayList<BuildingRoom> getListOfRooms(int flrId) {
+    public ArrayList<BuildingRoom> getListOfRooms(int flrId) throws PolygonException {
         return dbFacade.getRoomList(flrId);
     }
 
-    public void addRoom(BuildingRoom br) {
+    public void addRoom(BuildingRoom br) throws PolygonException {
         dbFacade.saveBuildingRoom(br);
     }
 
-    public void updateFloor(int id, int newNumRooms) {
+    public void updateFloor(int id, int newNumRooms) throws PolygonException {
         dbFacade.updateFloor(id, newNumRooms);
     }
 
@@ -190,7 +190,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param floorid the ID for the floor to be loaded
      * @return An object of the infomation for the floor.
      */
-    public BuildingFloor getBuildingFloor(int floorid) {
+    public BuildingFloor getBuildingFloor(int floorid) throws PolygonException {
         return dbFacade.getFloor(floorid);
     }
 
@@ -238,7 +238,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param listOfFLoors a list of BuildingFloor objects
      * @return Floorplans belonging to the buildingfloors put in
      */
-    public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors){
+    public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors) throws PolygonException{
         ArrayList<Floorplan> plans=new ArrayList();
         
         for (BuildingFloor bf : listOfFLoors) {

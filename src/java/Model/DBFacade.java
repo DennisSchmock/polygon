@@ -120,13 +120,13 @@ public class DBFacade {
      * @param b A Building object that is to be saved in the database
      * @return The created building with it's ID set
      */
-    public Building saveNewBuilding(Building b) {
+    public Building saveNewBuilding(Building b) throws PolygonException {
         b=bm.saveNewBuildingDB(b, con);
         System.out.println("Saved building");
         return b;
     }
     
-    public String saveBuildingPic(int buildId, String filename) {
+    public String saveBuildingPic(int buildId, String filename) throws PolygonException {
         System.out.println("Saving buildingPic db-facade");
         return bm.saveBuildingPic(buildId, filename, con);
         
@@ -138,7 +138,7 @@ public class DBFacade {
      * @param customerID ID of the customer that is to be loaded
      * @return An list of buildings related to the customerID
      */
-    public List<Building> getListOfbuildingsDB(int customerID) {
+    public List<Building> getListOfbuildingsDB(int customerID) throws PolygonException {
         return bm.getListOfBuildingsBM(customerID, con);
     }
 
@@ -148,7 +148,7 @@ public class DBFacade {
      * @param updatedBuildObj The object that should be updated in the database
      *
      */
-    public void updateBuildingDBFacade(Building updatedBuildObj) {
+    public void updateBuildingDBFacade(Building updatedBuildObj) throws PolygonException {
         bm.updateBuildingBm(updatedBuildObj, con);
     }
 
@@ -236,14 +236,14 @@ public class DBFacade {
      * @param bdgId
      * @return
      */
-    public Building getBuilding(int bdgId){
+    public Building getBuilding(int bdgId) throws PolygonException{
         Building b=bm.getBuilding(bdgId, con);
         String imgPath = bm.getLatestBuildingImage(bdgId, con);
         b.setBuilding_pic(imgPath);
         return b;
     }
     
-    public String getLatestBuildingImage(int buildingId){
+    public String getLatestBuildingImage(int buildingId) throws PolygonException{
         return bm.getLatestBuildingImage(buildingId, con);
         
     }
@@ -252,7 +252,7 @@ public class DBFacade {
      * redirects to the BuildingMapper
      * @param bf the BuildingFloor object will be added to the database
      */
-    public void addFloor(BuildingFloor bf) {
+    public void addFloor(BuildingFloor bf) throws PolygonException {
         bm.addFloor(bf,con);
     }
     
@@ -261,7 +261,7 @@ public class DBFacade {
      * @param bdgId building Id
      * @return a list of floors from the database based on the building ID
      */
-    public ArrayList<BuildingFloor> getListOfFloors(int bdgId){
+    public ArrayList<BuildingFloor> getListOfFloors(int bdgId) throws PolygonException{
         return bm.getFloorsList(bdgId, con);
     }
 
@@ -270,7 +270,7 @@ public class DBFacade {
      * @param newRoom Room the be created in the Database 
      * @return The new buildingRoom with an uniqe ID.
      */
-    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) {
+    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) throws PolygonException {
         return bm.saveBuildingRoom(newRoom, con);
     }
     
@@ -279,7 +279,7 @@ public class DBFacade {
      * @param id floor ID
      * @return BuildingFloor object based on the floor ID
      */
-    public BuildingFloor getFloor(int id){
+    public BuildingFloor getFloor(int id) throws PolygonException{
         return bm.getFloor(id, con);
     }
     
@@ -288,7 +288,7 @@ public class DBFacade {
      * @param id floorID
      * @param totalRooms new number of rooms to be updated in the database
      */
-    public void updateFloor(int id, int totalRooms){
+    public void updateFloor(int id, int totalRooms) throws PolygonException{
         bm.updateFloor(id, con, totalRooms);
     }
     
@@ -297,7 +297,7 @@ public class DBFacade {
      * @param flrId floor ID
      * @return a list of Building Rooms based on the floor ID
      */
-    public ArrayList<BuildingRoom> getRoomList(int flrId){
+    public ArrayList<BuildingRoom> getRoomList(int flrId) throws PolygonException{
         return bm.getRoomList(flrId, con);
     }
     
@@ -313,7 +313,7 @@ public class DBFacade {
      *redirects to the buildingMapper
      * @param br new BuildingRoom that holds the changes
      */
-    public void updateRoom(BuildingRoom br){
+    public void updateRoom(BuildingRoom br) throws PolygonException{
         bm.updateRoom(br, con);
     }
     
@@ -321,7 +321,7 @@ public class DBFacade {
      * redirects to the BuildingMapper
      * @param bf new BuildingFloor that holds the changes
      */
-    public void updateFloor(BuildingFloor bf){
+    public void updateFloor(BuildingFloor bf) throws PolygonException{
         bm.updateFloor(bf, con);
     }
     
@@ -329,7 +329,7 @@ public class DBFacade {
      * redirects to the BuildingMapper
      * @param b new Building that holds the changes
      */
-    public void updateBuilding(Building b){
+    public void updateBuilding(Building b) throws PolygonException{
         bm.updateBuilding(b, con);
     }
 
@@ -409,7 +409,7 @@ public class DBFacade {
      * @param floorId the ID of a BuildingFloor object
      * @return an ArrayList of Floorplan objects
      */
-    public ArrayList<Floorplan> getFloorplans(int floorId){
+    public ArrayList<Floorplan> getFloorplans(int floorId) throws PolygonException{
         return bm.getFloorplans(floorId, con);
     }
 

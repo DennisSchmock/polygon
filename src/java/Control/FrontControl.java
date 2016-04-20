@@ -407,6 +407,8 @@ public class FrontControl extends HttpServlet {
         
         } catch (PolygonException ex) {
                 Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errormessage", ex.getMessage());
+                url="/errorpage.jsp";
             }
 
         RequestDispatcher dispatcher
