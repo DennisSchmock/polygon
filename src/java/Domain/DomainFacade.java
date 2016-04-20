@@ -298,4 +298,13 @@ public String saveBuildingPic(int buildId, String filename){
     public ArrayList<Order> getListOfAllOrders(){
         return dbFacade.getListOfAllOrders();
     }
+
+    /**
+     * This method is used to update the order status
+     * @param orderNumber order number
+     * @param newStat to be changed
+     */
+    public void updateStatus(int orderNumber, int newStat) {
+        dbFacade.updateOrder(orderNumber,newStat);
+    }
 }
