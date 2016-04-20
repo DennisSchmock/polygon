@@ -131,6 +131,12 @@ public class BuildingMapper{
         return buildingList;
     }
     
+    /**
+     * This will get the building state corresponding to the building ID
+     * @param buildingID building ID
+     * @param con connection
+     * @return integer of category conclusion or building state
+     */
     public int getBuildingState(int buildingID, Connection con) {
         int state=0;
         String sqlString = "SELECT category_conclusion FROM report where building_id=?";
