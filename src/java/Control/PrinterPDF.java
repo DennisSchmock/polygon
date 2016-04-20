@@ -1,6 +1,7 @@
 package Control;
 
 import Domain.*;
+import Domain.Exceptions.PolygonException;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -72,10 +73,11 @@ public class PrinterPDF {
      * in a servlet.
      * @param fileName The Filename that you want the saved pdf file to be named! 
      * But NOT with the .pdf - that will be added later
-     * @throws java.lang.Exception This method throws all Exceptions
+     * @throws Domain.Exceptions.PolygonException If an error has been chaught while 
+     * creating an pdf document, we throw an PolygonException.
      */
-    public void sendReportToPrint(Report report, Building reportBuilding, String path, String fileName) throws Exception {
-        
+    public void sendReportToPrint(Report report, Building reportBuilding, String path, String fileName) throws PolygonException {
+        try{
         File filepath = new File (path+File.separator);
         filepath = new File(filepath.getParentFile().getParent()+File.separator+"web"+File.separator+"pdfReports");
         String webPath = filepath.getParentFile().getPath(); // This is to get the right folder for loading images!
@@ -156,10 +158,16 @@ public class PrinterPDF {
 
         doc.add(Chunk.NEWLINE);
 
-        
+
 
         doc.close();
         pdfFileout.close();
+        }
+        catch(DocumentException | IOException e){
+            System.out.println("An Error was chaugh when creating an Report" + e);
+            e.printStackTrace();
+            throw new PolygonException("Error Printing the Report");
+        }
 
     }
 

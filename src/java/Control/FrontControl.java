@@ -20,6 +20,7 @@ import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
 import Domain.User;
+import Domain.Exceptions.PolygonException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
