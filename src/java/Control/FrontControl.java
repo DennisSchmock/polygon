@@ -10,6 +10,7 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
+import Domain.Exceptions.PolygonException;
 import Domain.Order;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -107,6 +108,7 @@ public class FrontControl extends HttpServlet {
         String page = request.getParameter("page");
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
+        try {
 
        
 
@@ -153,7 +155,9 @@ public class FrontControl extends HttpServlet {
             url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
            int reportId = saveFinishedReport(sessionObj,df);
-            request.getSession().setAttribute("report", df.getReport(reportId));
+            
+                request.getSession().setAttribute("report", df.getReport(reportId));
+            
         }
 
         
@@ -399,6 +403,11 @@ public class FrontControl extends HttpServlet {
             printReport(sessionObj, df, response);
             return;
         }
+        
+        
+        } catch (PolygonException ex) {
+                Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
@@ -1203,7 +1212,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the report object
      * @param df Holds the connection to the domain layer
      */
-    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
+    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) throws PolygonException {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         return df.saveReport(report);
     }

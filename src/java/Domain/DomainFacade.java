@@ -82,7 +82,7 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getListOfbuildingsDB(customerID);
     }
 
-    public ArrayList<Report> getListOfReports(int buildingId) {
+    public ArrayList<Report> getListOfReports(int buildingId) throws PolygonException {
         return dbFacade.getListOfReports(buildingId);
     }
 
@@ -110,7 +110,7 @@ public String saveBuildingPic(int buildId, String filename){
      *
      * @param report The report object without an uniqe ID jet.
      */
-    public int saveReport(Report report) {
+    public int saveReport(Report report) throws PolygonException {
         return dbFacade.reportToDataBase(report);
 
     }
@@ -199,7 +199,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param reportId
      * @return a Report
      */
-    public Report getReport(int reportId) {
+    public Report getReport(int reportId) throws PolygonException {
         return dbFacade.getSingleReport(reportId);
     }
 
