@@ -388,7 +388,7 @@ public class DBFacade {
      * @param custId customer ID
      * @return list of Orders
      */
-    public ArrayList<Order> getlistOfOrders(int custId){
+    public ArrayList<Order> getlistOfOrders(int custId) throws PolygonException{
         return om.getListOfOrders(custId, con);
     }
     
@@ -396,7 +396,7 @@ public class DBFacade {
      * redirects to OrderMapper
      * @return list of all Orders
      */
-    public ArrayList<Order> getListOfAllOrders(){
+    public ArrayList<Order> getListOfAllOrders() throws PolygonException{
         return om.getListOfAllOrders(con);
     
     }

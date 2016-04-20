@@ -1268,7 +1268,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
         c.setListOfOrders(listOfOrders);
         sessionObj.setAttribute("listOfOrders", listOfOrders);
@@ -1280,7 +1280,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) {
+    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<Order> listOfAllOrders = df.getListOfAllOrders();
         Collections.sort(listOfAllOrders,Order.orderStat);
         sessionObj.setAttribute("listOfOrders", listOfAllOrders);
