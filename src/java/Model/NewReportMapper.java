@@ -33,8 +33,9 @@ public class NewReportMapper {
      * @param r Report object
      * @param con Connection to the database
      * @return 
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
-    public int reportToDataBase(Report r, Connection con) {
+    public int reportToDataBase(Report r, Connection con) throws PolygonException {
         String SQLString = "insert into report(report_date,building_id, polygonuser, customer_user, category_conclusion, report_finished) values (?,?,?,?,?,?)";
         try {
            con.setAutoCommit(false);
@@ -72,11 +73,13 @@ public class NewReportMapper {
                 con.rollback();
             } catch (SQLException ex) {
                 System.out.println("Failed at rollingback" + ex );
+                throw new PolygonException("Database error");
             }
             System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
             System.out.println(e);
+            throw new PolygonException("Database error");
         }
-        return 0;
+        
 
     }
     
@@ -112,9 +115,10 @@ public class NewReportMapper {
      * @param reportId
      * @param con
      * @return
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
 
-    public Report getSingleReport(int reportId, Connection con) {
+    public Report getSingleReport(int reportId, Connection con) throws PolygonException {
         Report r;
         String SQLString = "select * from report where report_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -142,7 +146,7 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in NewReportMapper-getReport");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
@@ -151,8 +155,9 @@ public class NewReportMapper {
      * @param buildingId
      * @param con
      * @return
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
-    public ArrayList<Report> getAllReportsBuilding(int buildingId, Connection con) {
+    public ArrayList<Report> getAllReportsBuilding(int buildingId, Connection con) throws PolygonException {
         ArrayList<Report> reports = new ArrayList<>();
         String SQLString = "select * from report where building_id = ?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -166,7 +171,7 @@ public class NewReportMapper {
         catch (Exception e) {
             System.out.println("Failed to get reports for building");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
         return reports;
 
@@ -175,7 +180,7 @@ public class NewReportMapper {
     
 
     //method that will take all the Report_Exteriour details in a certain Report
-    private ArrayList<ReportExterior> getReportExterior(int id, Connection con) {
+    private ArrayList<ReportExterior> getReportExterior(int id, Connection con) throws PolygonException {
         String SQLString = "select * from report_exterior where report=?";
         ArrayList<ReportExterior> listOfExt = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -195,12 +200,12 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfExt");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
     //take all damages of a certain report room
-    private ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) {
+    private ArrayList<ReportRoomDamage> getListOfDamages(int id, Connection con) throws PolygonException {
         String SQLString = "select * from report_room_damage where report_room=?";
         ArrayList<ReportRoomDamage> listOfDmg = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -221,12 +226,12 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfDamages");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
     //take all interiors data of a certain room 
-    private ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con) {
+    private ArrayList<ReportRoomInterior> getListOfInt(int id, Connection con) throws PolygonException {
         String SQLString = "select * from report_room_interior where report_room=?";
         ArrayList<ReportRoomInterior> listOfInt = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -244,12 +249,12 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfInt");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
     //take all recommendations of a ceratin reported room
-    private ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con) {
+    private ArrayList<ReportRoomRecommendation> getListOfRec(int id, Connection con) throws PolygonException {
         String SQLString = "select * from report_room_recommendation where report_room=?";
         ArrayList<ReportRoomRecommendation> listOfRec = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -266,7 +271,7 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfRec");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
@@ -383,7 +388,7 @@ public class NewReportMapper {
         }
     }
 
-    private ArrayList<ReportRoom> getReportRooms(int reportId, Connection con) {
+    private ArrayList<ReportRoom> getReportRooms(int reportId, Connection con) throws PolygonException {
         ArrayList<ReportRoom> reportRooms = new ArrayList<>();
 
         String SQLString = "select * from report_room where report=?";
@@ -402,21 +407,18 @@ public class NewReportMapper {
                 reportRoom.setRrPic(getListOfRoomPics(reportRoomId, con));
                 reportRooms.add(reportRoom);
                 
-                
-                
-
             }
             return reportRooms;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getReportRoom");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 
     
 
-    private ReportRoomMoist getMoist(int reportRoomId, Connection con) {
+    private ReportRoomMoist getMoist(int reportRoomId, Connection con) throws PolygonException {
         String SQLString = "select * from report_room_moist where report_room_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, reportRoomId);
@@ -433,7 +435,7 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfDamages");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Database error");
         }
     }
 

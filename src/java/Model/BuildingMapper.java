@@ -36,7 +36,7 @@ public class BuildingMapper{
      * @param b building to be added to database
      * @param con connection to database
      */
-    public Building saveNewBuildingDB(Building b, Connection con) {
+    public Building saveNewBuildingDB(Building b, Connection con) throws PolygonException {
         String sqlString = "insert into building(building_name, building_m2, "
                 + "building_adress, building_housenumber, building_zip, "
                 + "building_use, building_buildyear,customer_id) values(?,?,?,?,?,?,?,?) ";
@@ -59,6 +59,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN SaveNewBuildingDB " + ex.getMessage());
+            throw new PolygonException("Database error");
         }
         return b;
     }
@@ -71,7 +72,7 @@ public class BuildingMapper{
      * @param con
      * @return the same filename that was put in. for some odd reason
      */
-    public String saveBuildingPic(int buildId, String filename, Connection con) {
+    public String saveBuildingPic(int buildId, String filename, Connection con) throws PolygonException {
         int imgId = 0;
         System.out.println("build id");
         System.out.println(buildId);
@@ -90,6 +91,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuildingMapper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PolygonException("Database error");
         }
         String filePath = filename;
         System.out.println(filePath);
@@ -103,7 +105,7 @@ public class BuildingMapper{
      * @param con Connection to Database
      * @return An list of buildings related to the customerID
      */
-    public List<Building> getListOfBuildingsBM(int customerID, Connection con) {
+    public List<Building> getListOfBuildingsBM(int customerID, Connection con) throws PolygonException {
         List<Building> buildingList = new ArrayList<>();
         String sqlString = "SELECT * FROM building where customer_id=?";
         try {
@@ -127,6 +129,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER: " + ex);
+            throw new PolygonException("Database error");
         }
         return buildingList;
     }
@@ -161,7 +164,7 @@ public class BuildingMapper{
      * the building tuble in the database
      * @param con Connection to the database
      */
-    public void updateBuildingBm(Building updatedBuildObj, Connection con) {
+    public void updateBuildingBm(Building updatedBuildObj, Connection con) throws PolygonException {
         String sqlString = "UPDATE building "
                 + "set building_name=?, "
                 + " building_m2=?, "
@@ -188,6 +191,7 @@ public class BuildingMapper{
 
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
+            throw new PolygonException("Database error");
         }
     }
 
@@ -199,7 +203,7 @@ public class BuildingMapper{
      * @param con Connection to the Database
      * @return An object of the building
      */
-    public Building getBuildingBM(int buildingID, Connection con) {
+    public Building getBuildingBM(int buildingID, Connection con) throws PolygonException {
 
         String sqlString = "SELECT * FROM building where customer_id=?";
         Building temp = null;
@@ -221,6 +225,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
+            throw new PolygonException("Database error");
         }
         return temp;
     }
@@ -231,7 +236,7 @@ public class BuildingMapper{
      * @param con
      * @return
      */
-    public Building getBuilding(int bdgId, Connection con) {
+    public Building getBuilding(int bdgId, Connection con) throws PolygonException {
         Building b;
         String SQLString = "select * from building where idbuilding=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -254,10 +259,10 @@ public class BuildingMapper{
             b.setListOfFloors(getFloorsList(buildingId, con));
 
             return b;
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in NewBuildingMapper-getBuilding");
-            System.out.println(e.getMessage());
-            return null;
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         }
     }
 
@@ -266,7 +271,7 @@ public class BuildingMapper{
      * @param bf floor object
      * @param con
      */
-    public void addFloor(BuildingFloor bf, Connection con) {
+    public void addFloor(BuildingFloor bf, Connection con) throws PolygonException {
         String SQLString = "insert into building_floor(floor_number,floor_size,total_rooms,idbuilding) values (?,?,?,?)";
         try (PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
@@ -281,9 +286,10 @@ public class BuildingMapper{
             if (rs.next()) {
                 bf.setFloorId(rs.getInt(1));
             }
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in saving new floor - addFloor");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         }
     }
 
@@ -293,7 +299,7 @@ public class BuildingMapper{
      * @param con 
      * @return a list of floors
      */
-    public ArrayList<BuildingFloor> getFloorsList(int buildingId, Connection con) {
+    public ArrayList<BuildingFloor> getFloorsList(int buildingId, Connection con) throws PolygonException {
         ArrayList<BuildingFloor> floorsList = new ArrayList();
         String sqlString = "SELECT * FROM building_floor where idbuilding=?";
         try {
@@ -313,6 +319,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/get floorslist: " + ex);
+            throw new PolygonException("Database error");
         }
         return floorsList;
     }
@@ -323,7 +330,7 @@ public class BuildingMapper{
      * @param con
      * @return a list of rooms
      */
-    public ArrayList<BuildingRoom> getRoomList(int floorId, Connection con) {
+    public ArrayList<BuildingRoom> getRoomList(int floorId, Connection con) throws PolygonException {
         ArrayList<BuildingRoom> roomList = new ArrayList();
         String sqlString = "SELECT * FROM building_room where floor_id=?";
         try {
@@ -340,6 +347,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/getroom list: " + ex);
+            throw new PolygonException("Database error");
         }
         return roomList;
     }
@@ -351,7 +359,7 @@ public class BuildingMapper{
      * @param con
      * @return a list of Floorplan objects
      */
-    public ArrayList<Floorplan> getFloorplans(int floorId, Connection con) {
+    public ArrayList<Floorplan> getFloorplans(int floorId, Connection con) throws PolygonException {
         ArrayList<Floorplan> floorplans = new ArrayList();
         String sqlString = "SELECT * FROM floorplan where floor_id=?";
         try {
@@ -371,6 +379,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/getfloorplan list: " + ex);
+            throw new PolygonException("Database error");
         }
         return floorplans;
     }
@@ -382,7 +391,7 @@ public class BuildingMapper{
      * @param con
      * @return the last image to come out of the db with the buildingId
      */
-    public String getLatestBuildingImage(int buildingId, Connection con) {
+    public String getLatestBuildingImage(int buildingId, Connection con) throws PolygonException {
         String filename = null;
         System.out.println("getLatestBuildingImage");
         String SQLString = "select * from building_pic where building_id=?";
@@ -396,10 +405,10 @@ public class BuildingMapper{
             filename = rs.getString("filename");
             }
             
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in NewBuildingMapper-getLatestBuildingPic");
-            System.out.println(e.getMessage());
-            return null;
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         }
         
         
@@ -412,8 +421,9 @@ public class BuildingMapper{
      * @param newRoom The building object to be inserted.
      * @param con Connection to the database
      * @return The newly inserted building object
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom, Connection con) {
+    public BuildingRoom saveBuildingRoom(BuildingRoom newRoom, Connection con) throws PolygonException {
         String sql = "insert into building_room (room_name,floor_id) values  (?,?) ";
         try {
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -428,6 +438,7 @@ public class BuildingMapper{
            }
         } catch (SQLException ex) {
             System.out.println("Error in SQL SavebuildingRoom " + ex );
+            throw new PolygonException("Database error");
         }
         
         return newRoom;
@@ -439,8 +450,9 @@ public class BuildingMapper{
      * @param floorid For the building to be loaded
      * @param con Connection to Database
      * @return  Loaded Buildingfloor object
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public BuildingFloor getBuildingFloorBM(int floorid, Connection con) {
+    public BuildingFloor getBuildingFloorBM(int floorid, Connection con) throws PolygonException {
         String sql = "Select * from building_floor where floor_id=? ";
         BuildingFloor bf = null;
         try {
@@ -458,6 +470,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("Error in Get Building Floor BM: " + ex);
+            throw new PolygonException("Database error");
         }
         return bf;
     }
@@ -467,8 +480,9 @@ public class BuildingMapper{
      * @param flrId floor ID
      * @param con
      * @return BuildingFloor object of a certain floor in a building
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public BuildingFloor getFloor(int flrId, Connection con) {
+    public BuildingFloor getFloor(int flrId, Connection con) throws PolygonException {
         BuildingFloor bf = null;
         String sqlString = "SELECT * FROM building_floor where floor_id=?";
         try {
@@ -486,7 +500,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/get floor: " + ex);
-            return null;
+            throw new PolygonException("Database error");
         }
         return bf;
     }
@@ -496,8 +510,9 @@ public class BuildingMapper{
      * @param flrId floor ID
      * @param con
      * @param newTotalRooms new number of Rooms to be changed in the database
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public void updateFloor(int flrId, Connection con, int newTotalRooms) {
+    public void updateFloor(int flrId, Connection con, int newTotalRooms) throws PolygonException {
        
         String SQLString
                 = "update building_floor set total_rooms = ? where floor_id = ?";
@@ -507,9 +522,10 @@ public class BuildingMapper{
             statement.setInt(1, newTotalRooms);
             statement.setInt(2, flrId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in updateFloor");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         } 
     }
     
@@ -517,8 +533,9 @@ public class BuildingMapper{
      * This method will update data of a building in the database based on the building ID
      * @param b new Building object that holds the changes
      * @param con
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public void updateBuilding(Building b, Connection con){
+    public void updateBuilding(Building b, Connection con) throws PolygonException{
         String SQLString
                 = "update building "
                 + "set building_name = ?,"
@@ -543,9 +560,10 @@ public class BuildingMapper{
             statement.setString(8, b.getUseOfBuilding());
             statement.setInt(10, b.getBdgId());
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in updateBuilding");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         } 
     }
     
@@ -554,7 +572,7 @@ public class BuildingMapper{
      * @param bf new BuildingFloor that holds the changes
      * @param con
      */
-    public void updateFloor(BuildingFloor bf, Connection con){
+    public void updateFloor(BuildingFloor bf, Connection con) throws PolygonException{
         String SQLString
                 = "update building_floor "
                 + "set floor_size = ? "
@@ -567,9 +585,10 @@ public class BuildingMapper{
             statement.setInt(2, bf.getTotalRooms());
             statement.setInt(3, bf.getFloorId());
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in updateFloor");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         } 
     }
     
@@ -579,7 +598,7 @@ public class BuildingMapper{
      * @param br new BuildingRoom that holds the changes
      * @param con
      */
-    public void updateRoom(BuildingRoom br, Connection con){
+    public void updateRoom(BuildingRoom br, Connection con) throws PolygonException{
         String SQLString
                 = "update building_room "
                 + "set room_name = ? "
@@ -590,9 +609,10 @@ public class BuildingMapper{
             statement.setString(1, br.getRoomName());
             statement.setInt(2, br.getRoomId());
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in updateRoom");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         } 
     }
     
@@ -601,8 +621,9 @@ public class BuildingMapper{
      * @param floorId floor ID
      * @param con
      * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
-    public void deleteAllRooms(int floorId, Connection con){
+    public void deleteAllRooms(int floorId, Connection con) throws PolygonException{
         String SQLString
                 = "delete from building_room where floor_id = ?";
         PreparedStatement statement = null;
@@ -610,9 +631,10 @@ public class BuildingMapper{
             statement = con.prepareStatement(SQLString);
             statement.setInt(1, floorId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in deleteBuildingRooms ");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
         } 
     }
     /**
@@ -620,6 +642,7 @@ public class BuildingMapper{
      * @param bdgId building ID
      * @param con
      * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
     public void deleteAllFloors(int bdgId, Connection con) throws PolygonException{
         String SQLString
@@ -629,10 +652,10 @@ public class BuildingMapper{
             statement = con.prepareStatement(SQLString);
             statement.setInt(1, bdgId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in deleteBuildingFloors ");
             
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
             throw new PolygonException("Error deleting building floors from database - "
                     + "The file was NOT uploaded");
         } 
@@ -643,6 +666,7 @@ public class BuildingMapper{
      * @param bdgId building ID
      * @param con
      * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
     public void deleteBuilding(int bdgId, Connection con) throws PolygonException{
         ArrayList<BuildingFloor> floorsInTheBuilding = getFloorsList(bdgId, con);
@@ -658,9 +682,9 @@ public class BuildingMapper{
             statement = con.prepareStatement(SQLString);
             statement.setInt(1, bdgId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException ex) {
             System.out.println("Fail in deleteBuilding ");
-            System.out.println(e.getMessage());
+            System.out.println(ex.getMessage());
             throw new PolygonException("There was an error deleting from database");
         } 
     }
@@ -672,6 +696,7 @@ public class BuildingMapper{
      * individual files sotring their info in the db
      * @param b the building that has docs to store
      * @param con
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
     public void saveBuildingDocs(Building b, Connection con) throws PolygonException {
         int buildingId = b.getBdgId();
@@ -696,6 +721,7 @@ public class BuildingMapper{
      * @param description description of the document
      * @param bf information on the specific document
      * @param con
+     * @throws Domain.Exceptions.PolygonException Thrown in case of sql-exception
      */
     public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) throws PolygonException {
             String filename = bf.getFilename();

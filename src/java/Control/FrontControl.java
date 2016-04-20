@@ -10,6 +10,7 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
+import Domain.Exceptions.PolygonException;
 import Domain.Order;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -20,6 +21,7 @@ import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
 import Domain.User;
+import Domain.Exceptions.PolygonException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -107,6 +109,7 @@ public class FrontControl extends HttpServlet {
         String page = request.getParameter("page");
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
+        try {
 
        
 
@@ -153,7 +156,9 @@ public class FrontControl extends HttpServlet {
             url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
            int reportId = saveFinishedReport(sessionObj,df);
-            request.getSession().setAttribute("report", df.getReport(reportId));
+            
+                request.getSession().setAttribute("report", df.getReport(reportId));
+            
         }
 
         
@@ -399,6 +404,13 @@ public class FrontControl extends HttpServlet {
             printReport(sessionObj, df, response);
             return;
         }
+        
+        
+        } catch (PolygonException ex) {
+                Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errormessage", ex.getMessage());
+                url="/errorpage.jsp";
+            }
 
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
@@ -413,18 +425,15 @@ public class FrontControl extends HttpServlet {
      * to create
      * @param df Connection to the domain.
      * @param response Responce object to place the file in. 
+     * @throws Domain.Exceptions.PolygonException Throws an Polygon if there is any problem
+     * with creating an PDF File.
      */
-    private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response)  {
+    private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response) throws PolygonException  {
         Report report = (Report) sessionObj.getAttribute("report");
         Building building = df.getBuilding(report.getBuildingId());
         String realPath = getServletContext().getRealPath("");
         String fileName = "ReportFile" + report.getReportId();
-        try {
-            printer.sendReportToPrint(report, building, realPath, fileName);
-        } catch (Exception ex) {
-            System.out.println("Could not crearte a Report " + ex);
-            ex.printStackTrace();
-        }
+        printer.sendReportToPrint(report, building, realPath, fileName);
         //This tells the browser that we will send a PDF file to the browser
         response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".pdf");
         
@@ -455,7 +464,7 @@ public class FrontControl extends HttpServlet {
         out.flush();
         } catch (IOException ex) {
             System.out.println("Error in Creating an PDf" + ex);
-            ex.printStackTrace();
+            throw new PolygonException("Error in Printing the pdf");
         }
     }
 
@@ -505,7 +514,7 @@ public class FrontControl extends HttpServlet {
      * Facade. Then it stores the created building object in the session to be
      * displayed.
      */
-    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
+    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) throws PolygonException {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -552,7 +561,7 @@ public class FrontControl extends HttpServlet {
      * not null. Either this Attribute should be filled when an customer user
      * logs on, or before an admin gets to the site. because it loads that
      */
-    private void findListOfBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void findListOfBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
 //        int customerID = (Integer) sessionObj.getAttribute("customer_id");
 
         /**
@@ -572,7 +581,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj The session object holds the list of the buildings for
      * that customer.
      */
-    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         if (sessionObj.getAttribute("listOfBuildings")==null)findListOfBuilding(request, df, sessionObj);   // Added for the sake of Admin editing building
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
@@ -596,7 +605,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the buildingToBeEdited object,
      * that that we have to change based on the input fields
      */
-    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
+    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) throws PolygonException {
 
         System.out.println(request.getCharacterEncoding());
 
@@ -644,7 +653,7 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
+    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df) throws PolygonException{
             List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
             Collections.sort(listOfBuildings, Building.bdgState);
             sessionObj.setAttribute("customersBuildings", listOfBuildings);
@@ -698,7 +707,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) throws PolygonException {
         sessionObj.setAttribute("customerSelcted", true);
         int cusid = Integer.parseInt(request.getParameter("owners"));
         List<Building> listOfBuildings = df.getListOfBuildings(cusid);
@@ -721,7 +730,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         int buildingID = Integer.parseInt(request.getParameter("buildings"));
         User polygonUser = (User) sessionObj.getAttribute("user");
         String polygonUserID = polygonUser.getUserName();
@@ -789,7 +798,7 @@ public class FrontControl extends HttpServlet {
      * @param df
      * @param sessionObj
      */
-    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
         String totalRooms =(String)request.getParameter("totalrooms");
@@ -814,7 +823,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFloor> bfList = df.listOfFloors(bdg.getBdgId());
         bdg.setListOfFloors(bfList);
         sessionObj.setAttribute("floorsList", bfList);
@@ -826,7 +835,7 @@ public class FrontControl extends HttpServlet {
      * @param df
      * @param sessionObj
      */
-    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
 
         int id = Integer.parseInt(request.getParameter("buildings"));
         bdg = df.getBuilding(id);
@@ -841,7 +850,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the buildingID
      * @param df Connection to the domain level
      */
-    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         String roomName = request.getParameter("RoomName");
         int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
 
@@ -864,7 +873,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) throws PolygonException {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
 
@@ -913,7 +922,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         int id = Integer.parseInt(request.getParameter("floors"));
         bf = df.getBuildingFloor(id);
         sessionObj.setAttribute("selectedFloor", bf);
@@ -925,7 +934,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<BuildingRoom> roomsList = df.getListOfRooms(bf.getFloorId());
         bf.setListOfRooms(roomsList);
         sessionObj.setAttribute("roomsList", roomsList);
@@ -937,7 +946,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         String roomName = (String)request.getParameter("roomname");
         if (roomName != null) {
             br = new BuildingRoom(roomName,bf.getFloorId());
@@ -1200,7 +1209,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the report object
      * @param df Holds the connection to the domain layer
      */
-    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
+    private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) throws PolygonException {
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         return df.saveReport(report);
     }

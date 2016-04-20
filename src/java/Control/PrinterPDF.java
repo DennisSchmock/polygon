@@ -1,6 +1,7 @@
 package Control;
 
 import Domain.*;
+import Domain.Exceptions.PolygonException;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -23,6 +24,8 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -38,9 +41,14 @@ public class PrinterPDF {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PolygonException {
         //Test class:
-        Report report = setUpPDFTest();
+        Report report=null;
+        try {
+            report = setUpPDFTest();
+        } catch (PolygonException ex) {
+            Logger.getLogger(PrinterPDF.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Building reportBuilding = getreportBuilding(report.getBuildingId());
         PrinterPDF instance = new PrinterPDF();
         try {
@@ -56,7 +64,7 @@ public class PrinterPDF {
      * @param buildingId
      * @return
      */
-    public static Building getreportBuilding(int buildingId) {
+    public static Building getreportBuilding(int buildingId) throws PolygonException {
         DomainFacade df = DomainFacade.getInstance();
         return df.getBuilding(buildingId);
     }
@@ -72,10 +80,11 @@ public class PrinterPDF {
      * in a servlet.
      * @param fileName The Filename that you want the saved pdf file to be named! 
      * But NOT with the .pdf - that will be added later
-     * @throws java.lang.Exception This method throws all Exceptions
+     * @throws Domain.Exceptions.PolygonException If an error has been chaught while 
+     * creating an pdf document, we throw an PolygonException.
      */
-    public void sendReportToPrint(Report report, Building reportBuilding, String path, String fileName) throws Exception {
-        
+    public void sendReportToPrint(Report report, Building reportBuilding, String path, String fileName) throws PolygonException {
+        try{
         File filepath = new File (path+File.separator);
         filepath = new File(filepath.getParentFile().getParent()+File.separator+"web"+File.separator+"pdfReports");
         String webPath = filepath.getParentFile().getPath(); // This is to get the right folder for loading images!
@@ -156,10 +165,16 @@ public class PrinterPDF {
 
         doc.add(Chunk.NEWLINE);
 
-        
+
 
         doc.close();
         pdfFileout.close();
+        }
+        catch(DocumentException | IOException e){
+            System.out.println("An Error was chaugh when creating an Report" + e);
+            e.printStackTrace();
+            throw new PolygonException("Error Printing the Report");
+        }
 
     }
 
@@ -702,7 +717,7 @@ public class PrinterPDF {
      *
      * @return A Report object that is loaded from the database for testing.
      */
-    private static Report setUpPDFTest() {
+    private static Report setUpPDFTest() throws PolygonException {
         DomainFacade df = DomainFacade.getInstance();
         Report report = df.getReport(71); // This can be changed if you want to test another report.
         return report;
