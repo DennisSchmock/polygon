@@ -11,6 +11,7 @@ import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.BuildingFiles;
 import Domain.Floorplan;
+import Domain.Exceptions.PolygonException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author danie
  */
-public class BuildingMapper {
+public class BuildingMapper{
 
     /**
      * saves the building object in the database
@@ -596,7 +597,7 @@ public class BuildingMapper {
      * @param con
      * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
      */
-    public void deleteAllFloors(int bdgId, Connection con){
+    public void deleteAllFloors(int bdgId, Connection con) throws PolygonException{
         String SQLString
                 = "delete from building_floor where idbuilding = ?";
         PreparedStatement statement = null;
@@ -606,7 +607,10 @@ public class BuildingMapper {
             statement.executeUpdate();
         } catch (Exception e) {
             System.out.println("Fail in deleteBuildingFloors ");
+            
             System.out.println(e.getMessage());
+            throw new PolygonException("Error deleting building floors from database - "
+                    + "The file was NOT uploaded");
         } 
     }
     
@@ -616,7 +620,7 @@ public class BuildingMapper {
      * @param con
      * REMEMBER: BuildingFloor and Building rooms should be deleted first before deleting the Building 
      */
-    public void deleteBuilding(int bdgId, Connection con){
+    public void deleteBuilding(int bdgId, Connection con) throws PolygonException{
         ArrayList<BuildingFloor> floorsInTheBuilding = getFloorsList(bdgId, con);
         for (BuildingFloor buildingFloor : floorsInTheBuilding) {
            deleteAllRooms(buildingFloor.getFloorId(), con); //it has to delete all the rooms on each floor
@@ -633,6 +637,7 @@ public class BuildingMapper {
         } catch (Exception e) {
             System.out.println("Fail in deleteBuilding ");
             System.out.println(e.getMessage());
+            throw new PolygonException("There was an error deleting from database");
         } 
     }
     
@@ -644,7 +649,7 @@ public class BuildingMapper {
      * @param b the building that has docs to store
      * @param con
      */
-    public void saveBuildingDocs(Building b, Connection con) {
+    public void saveBuildingDocs(Building b, Connection con) throws PolygonException {
         int buildingId = b.getBdgId();
         ArrayList<BuildingFiles> files=b.getListOfFiles();
         for (BuildingFiles file : files) {
@@ -668,7 +673,7 @@ public class BuildingMapper {
      * @param bf information on the specific document
      * @param con
      */
-    public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) {
+    public void saveBuildingDoc(int buildId,String description,BuildingFile bf, Connection con) throws PolygonException {
             String filename = bf.getFilename();
             String documentname= bf.getDocumentname();
             int size = bf.getSize();
@@ -687,6 +692,8 @@ public class BuildingMapper {
            
         } catch (SQLException ex) {
             System.out.println("Error in SQL SavebuildingDoc " + ex );
+            throw new PolygonException("Error saving building documents to database - "
+                    + "NO files were uploaded");
         }
         
     }
@@ -697,15 +704,16 @@ public class BuildingMapper {
      * @param floorId the foreign key of the table
      * @param f the floorplan to be stored
      * @param con
+     * @throws Domain.Exceptions.PolygonException if saving the  Floorplan fails due to sql error
      */
-    public void saveFloorplan(int floorId, Floorplan f, Connection con) {
+    public void saveFloorplan(int floorId, Floorplan f, Connection con) throws PolygonException {
         String filename = f.getFilename();
         String documentname= f.getDocumentname();
         int size = f.getSize();
         
             
             
-        String sql = "insert into floorplan (floorplanpath,documentname,floor_id,documentsize) values  (?,?,?,?) ";
+        String sql = "insert into floorplanz (floorplanpath,documentname,floor_id,documentsize) values  (?,?,?,?) ";
         try {
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, filename);
@@ -717,6 +725,8 @@ public class BuildingMapper {
            
         } catch (SQLException ex) {
             System.out.println("Error in SQL SaveFloorplan " + ex );
+            throw new PolygonException("Error saving floorplan to database - "
+                    + "The file was NOT uploaded");
         }
     }
 }

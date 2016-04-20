@@ -14,10 +14,13 @@ import Domain.DomainFacade;
 import Domain.Floorplan;
 import Domain.Report;
 import Domain.ReportRoom;
+import Domain.Exceptions.PolygonException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -66,6 +69,7 @@ NewFileUpload nfu = new NewFileUpload();
         if (page == null) {
             page = "";
         }
+        try {
 
         if (request.getServletPath().equalsIgnoreCase("/viewreports")) {
             url = "/viewreports.jsp";
@@ -184,7 +188,9 @@ NewFileUpload nfu = new NewFileUpload();
         
         if(action.equalsIgnoreCase("addfloorplanssubmit")){
              
-            request = addFloorplans(request,parts, df);
+            
+                request = addFloorplans(request,parts, df);
+            
             
         }
        
@@ -200,6 +206,12 @@ NewFileUpload nfu = new NewFileUpload();
             request.getSession().setAttribute("building", b);
 
         }
+        
+        } catch (PolygonException ex) {
+                System.out.println(ex.getMessage());
+                request.setAttribute("errormessage", ex.getMessage());
+                url="/errorpage.jsp";
+            }
 
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
@@ -295,7 +307,7 @@ NewFileUpload nfu = new NewFileUpload();
      * @param df
      * @return
      */
-    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFiles> files;
         Building b = (Building) request.getSession().getAttribute("building");
         int buildId;
@@ -333,7 +345,7 @@ NewFileUpload nfu = new NewFileUpload();
      * @param df
      * @return
      */
-    public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+    public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFloor> floors;
         Building b = (Building) request.getSession().getAttribute("building");
         
@@ -353,8 +365,11 @@ NewFileUpload nfu = new NewFileUpload();
                     }
                 }
                 
+           
                 //Add to db
                 df.saveFloorplans(chosenFloor,floorplans);
+            
+            
                 
                 //Set succesattribute
                 request.setAttribute("filessubmitted", true);

@@ -6,6 +6,7 @@
 package Model;
 
 import Domain.*;
+import Domain.Exceptions.PolygonException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -436,7 +437,7 @@ public class NewReportMapper {
         }
     }
 
-    private ArrayList<ReportFloor> getReportFloors(int buildingId,int reportId,Connection con) {
+    private ArrayList<ReportFloor> getReportFloors(int buildingId,int reportId,Connection con) throws PolygonException {
     ArrayList<ReportFloor> reportFloors = new ArrayList<>();
     String SQLString = "SELECT * FROM Polygon.building_floor where idbuilding = ?;";
 
@@ -456,12 +457,12 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getReportRoom");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Error retrieving floors from database");
         }
     
     }
 
-    private ArrayList<ReportRoom> getReportRoomsWithFloorId(int floorId, int reportId, Connection con) {
+    private ArrayList<ReportRoom> getReportRoomsWithFloorId(int floorId, int reportId, Connection con) throws PolygonException {
         ArrayList<ReportRoom> reportRooms = new ArrayList<>();
 
         String SQLString = "SELECT * FROM Polygon.building_room, Polygon.report_room where report_room.building_room = building_room.room_id AND building_room.floor_id = ? AND report = ?;";
@@ -488,11 +489,12 @@ public class NewReportMapper {
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getReportRoomBasedOnFloorId");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Error retrieving report for room from database");
+            
         }
     }
 
-    ArrayList<Report> getSimpleListOfReports(Connection con) {
+    ArrayList<Report> getSimpleListOfReports(Connection con) throws PolygonException {
          ArrayList<Report> reports = new ArrayList<>();
         String SQLString = "select * from report";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -508,7 +510,7 @@ public class NewReportMapper {
         catch (Exception e) {
             System.out.println("Failed to get reports for building");
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Error retrieving reports from database");
         }
     }
     private void saveRoomPics(ReportRoom reportRoom, int roomId, Connection con) throws Exception{
@@ -525,7 +527,7 @@ public class NewReportMapper {
         }
     }
 
-    private ArrayList<ReportPic> getListOfRoomPics(int reportRoomId, Connection con) {
+    private ArrayList<ReportPic> getListOfRoomPics(int reportRoomId, Connection con) throws PolygonException {
         String SQLString = "select * from report_room_pic where reportroom=?";
         ArrayList<ReportPic> listOfRooms = new ArrayList<>();
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
@@ -541,8 +543,10 @@ public class NewReportMapper {
             return listOfRooms;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfRoomPics");
+            
             System.out.println(e.getMessage());
-            return null;
+            throw new PolygonException("Error retrieving images from database");
+            
         }}
 
    
