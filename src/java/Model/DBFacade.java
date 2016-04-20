@@ -397,5 +397,18 @@ public class DBFacade {
      */
     public ArrayList<Order> getListOfAllOrders(){
         return om.getListOfAllOrders(con);
+    
+    }
+    
+    /**
+     * This method makes a call to the buildingmapper, where it calls
+     * a method that returns all floorplans for a specific floor, which is then
+     * returned.
+     *
+     * @param floorId the ID of a BuildingFloor object
+     * @return an ArrayList of Floorplan objects
+     */
+    public ArrayList<Floorplan> getFloorplans(int floorId){
+        return bm.getFloorplans(floorId, con);
     }
 }

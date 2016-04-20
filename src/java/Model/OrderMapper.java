@@ -1,5 +1,6 @@
 package Model;
 
+import Domain.Building;
 import Domain.Order;
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 public class OrderMapper {
     
+        BuildingMapper bm = new BuildingMapper();
     /**
      * This method will save the new order in the database
      * @param o an object that handles the new order
@@ -65,9 +67,10 @@ public class OrderMapper {
                 String ps = rs.getString("problem_statement");
                 int os = rs.getInt("order_status");
                 int c = rs.getInt("customer_id");
-                int b = rs.getInt("idbuilding");
+                int bdgId = rs.getInt("idbuilding");
                 String statDesc = getOrderStatus(os, con);
-                o = new Order(on,d,sd,ps,os,c,b,statDesc);
+                Building b = bm.getBuilding(bdgId, con);
+                o = new Order(on,d,sd,ps,os,c,bdgId,statDesc,b.getBuildingName());
             
             return o;
         } catch (Exception e) {
@@ -121,9 +124,10 @@ public class OrderMapper {
                 String sd = rs.getString("service_description");
                 String ps = rs.getString("problem_statement");
                 int os = rs.getInt("order_status");
-                int b = rs.getInt("idbuilding");
+                int bdgId = rs.getInt("idbuilding");
                 String statDesc = getOrderStatus(os, con);
-                Order o = new Order(on,d,sd,ps,os,custId,b,statDesc);
+                Building b = bm.getBuilding(bdgId, con);
+                Order o = new Order(on,d,sd,ps,os,custId,bdgId,statDesc,b.getBuildingName());
                 orderList.add(o);
             }
             
@@ -154,9 +158,10 @@ public class OrderMapper {
                 String ps = rs.getString("problem_statement");
                 int os = rs.getInt("order_status");
                 int c = rs.getInt("customer_id");
-                int b = rs.getInt("idbuilding");
+                int bdgId = rs.getInt("idbuilding");
                 String statDesc = getOrderStatus(os, con);
-                Order o = new Order(on,d,sd,ps,os,c,b,statDesc);
+                Building b = bm.getBuilding(bdgId, con);
+                Order o = new Order(on,d,sd,ps,os,c,bdgId,statDesc,b.getBuildingName());
                 orderList.add(o);
             }
             
@@ -167,4 +172,6 @@ public class OrderMapper {
        
         return orderList;
     }
+    
+    
 }

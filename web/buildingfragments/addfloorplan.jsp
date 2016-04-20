@@ -33,11 +33,34 @@
         <div class="w3-half"><input name="uploadFile" type="file" multiple="multiple" required/></div>
         <input type="submit" value="Add Files" />
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
     
-</form>    
+</form>
+    <br>
+    <div class="w3-row-padding w3-threequarter">
+    <h4>You currently have the following floorplans uploaded:</h4>    
+    <br>
+    <ul>
+        <c:forEach items="${sessionScope.floorplans}" var="floorplan">
+            <li>${floorplan.documentname}</li>                                                             
+                    </c:forEach>
+    </ul>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>

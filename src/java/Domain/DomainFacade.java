@@ -210,22 +210,41 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getSimpleListOfReports();
     }
 
+    /**
+     * Saves Documents associated with a building that are NOT the
+     * floorplans
+     * @param b the buliding which has documents to be saved
+     */
     public void saveBuildingFiles(Building b) {
         dbFacade.saveBuildingFiles(b);
     }
 
+    /**
+     * Saves floorplans to a specific floor
+     * @param floorId Id of the floor the floorplan(s) belongs to 
+     * @param plans ArrayList of floorplans
+     */
     public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
-        
-        
-        
             for (Floorplan floorplan : plans) {
-                
                 System.out.println("Trying to save floorplan:");;
                 dbFacade.saveFloorplan(floorId,floorplan);
             }
+    }
+    
+    /**
+     * Method finds all the floorplans belonging to an ArrayList of floors
+     * 
+     * @param listOfFLoors a list of BuildingFloor objects
+     * @return Floorplans belonging to the buildingfloors put in
+     */
+    public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors){
+        ArrayList<Floorplan> plans=new ArrayList();
         
-        
-        
+        for (BuildingFloor bf : listOfFLoors) {
+            ArrayList<Floorplan> plansFetched = dbFacade.getFloorplans(bf.getFloorId());
+            if (plansFetched != null) plans.addAll(plansFetched);
+        }
+        return plans;
     }
 
     /**

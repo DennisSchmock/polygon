@@ -342,7 +342,14 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("orderhistory.jsp");
             return;
         }
-
+        
+        //displays the order list and order progress
+        if(page.equalsIgnoreCase("orderslist")){
+            loadAllOrders(sessionObj, df);
+            response.sendRedirect("orderslist.jsp");
+            return;
+        }
+        
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
@@ -1207,12 +1214,13 @@ public class FrontControl extends HttpServlet {
         mailSender = new MailSenderBean();
         String toEmail = "noreply.polygonproject@gmail.com";
         String subject = "ORDER: " + o.getServiceDescription();
-        String message = "REQUEST FOR " + o.getServiceDescription()
-                + "\n\nOrder Date:" + o.getOrderDate()
-                + "\nCustomer: " + c.getCompanyName()
-                + "\nBuilding: " + bdg.getBuildingName()
-                + "\nProblem Description: " + o.getProblemStatement();
-
+        String message = "REQUEST FOR "+ o.getServiceDescription() +
+                "\n\nOrder Number: " + o.getOrderNumber() +
+                "\nOrder Date:" + o.getOrderDate() +
+                "\nCustomer: " + c.getCompanyName() +
+                "\nBuilding: " + bdg.getBuildingName() +
+                "\nProblem Description: " + o.getProblemStatement();
+        
         String fromEmail = "noreply.polygonproject@gmail.com";
         String username = "noreply.polygonproject";
         String password = "poly123go";
@@ -1225,10 +1233,12 @@ public class FrontControl extends HttpServlet {
         ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
         c.setListOfOrders(listOfOrders);
         sessionObj.setAttribute("listOfOrders", listOfOrders);
-        for (Order o : listOfOrders) {
+        
+    }
 
-            System.out.println(o.getStatDesc());
-        }
+    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) {
+        ArrayList<Order> listOfAllOrders = df.getListOfAllOrders();
+        sessionObj.setAttribute("listOfOrders", listOfAllOrders);
     }
 
     

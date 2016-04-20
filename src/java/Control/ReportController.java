@@ -169,7 +169,9 @@ NewFileUpload nfu = new NewFileUpload();
         if(action.equalsIgnoreCase("addfloorplans")){
             Building b = (Building)request.getSession().getAttribute("building");
             ArrayList<BuildingFloor> bfList = df.listOfFloors(b.getBdgId());
+            ArrayList<Floorplan> plans= df.getFloorplans(bfList);
             
+            request.getSession().setAttribute("floorplans", plans);
             request.getSession().setAttribute("floorsList", bfList);
             request.setAttribute("addfloorplans", true);
         }
@@ -283,7 +285,17 @@ NewFileUpload nfu = new NewFileUpload();
         return "Short description";
     }// </editor-fold>
 
-    private HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+    /**
+     * Strips request of fileparts and uploads them to the documents folder
+     * Then puts the information it gets back into the Buildings BuildingFiles list
+     * Lastly updates the information in the db
+     *
+     * @param request
+     * @param parts
+     * @param df
+     * @return
+     */
+    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
         ArrayList<BuildingFiles> files;
         Building b = (Building) request.getSession().getAttribute("building");
         int buildId;
@@ -311,14 +323,21 @@ NewFileUpload nfu = new NewFileUpload();
             return request;
     }
 
-    private HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+    /**
+     * Strips request of fileparts and uploads them to the floorplan folder
+     * Then puts the information it gets back into the Buildings Floor objects
+     * Lastly updates the information in the db
+     *
+     * @param request
+     * @param parts
+     * @param df
+     * @return
+     */
+    public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
         ArrayList<BuildingFloor> floors;
         Building b = (Building) request.getSession().getAttribute("building");
         
             if (b!=null) {
-                System.out.println("b not null");
-                
-                
                 //Add to folder
                 ArrayList<Floorplan> floorplans;
                 floorplans=nfu.saveFloorplans(getServletContext().getRealPath(""),  parts);
@@ -335,9 +354,7 @@ NewFileUpload nfu = new NewFileUpload();
                 }
                 
                 //Add to db
-                
                 df.saveFloorplans(chosenFloor,floorplans);
-                
                 
                 //Set succesattribute
                 request.setAttribute("filessubmitted", true);
