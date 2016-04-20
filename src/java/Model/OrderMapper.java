@@ -1,6 +1,7 @@
 package Model;
 
 import Domain.Building;
+import Domain.Exceptions.PolygonException;
 import Domain.Order;
 import java.sql.Connection;
 import java.sql.Date;
@@ -111,7 +112,7 @@ public class OrderMapper {
      * @param con connection
      * @return list of Orders
      */
-    public ArrayList<Order> getListOfOrders(int custId, Connection con){
+    public ArrayList<Order> getListOfOrders(int custId, Connection con) throws PolygonException{
         String sql = "select * from orders where customer_id = ?";
         ArrayList<Order> orderList = new ArrayList<>();
         try {
@@ -145,7 +146,7 @@ public class OrderMapper {
      * @param con connection
      * @return list of all Orders
      */
-    public ArrayList<Order> getListOfAllOrders(Connection con){
+    public ArrayList<Order> getListOfAllOrders(Connection con) throws PolygonException{
         String sql = "select * from orders";
         ArrayList<Order> orderList = new ArrayList<>();
         try {

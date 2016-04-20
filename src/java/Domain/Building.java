@@ -7,6 +7,7 @@ package Domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Building implements Serializable{
     private ArrayList<BuildingFloor> listOfFloors;
     private ArrayList<BuildingFiles> listOfFiles;
     private int custId;
-    
+    private int buildingState;
 
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
         this.buildingName = buildingName;
@@ -53,6 +54,28 @@ public class Building implements Serializable{
         buildingPic="0.png";
     }
 
+    public Building(int bdgId, String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding, int custId, int buildingState) {
+        this.bdgId = bdgId;
+        this.buildingName = buildingName;
+        this.streetAddress = streetAddress;
+        this.streetNumber = streetNumber;
+        this.zipCode = zipCode;
+        this.buildingYear = buildingYear;
+        this.buildingSize = buildingSize;
+        this.useOfBuilding = useOfBuilding;
+//        this.buildingPic = buildingPic;
+        this.custId = custId;
+        this.buildingState = buildingState;
+    }
+
+    public int getBuildingState() {
+        return buildingState;
+    }
+
+    public void setBuildingState(int buildingState) {
+        this.buildingState = buildingState;
+    }
+    
     public Building() {
     }
 
@@ -180,6 +203,20 @@ public class Building implements Serializable{
         this.listOfFiles = listOfFiles;
     }
     
+     /**
+     * This will sort the status of the orders
+     */
     
+    public static Comparator<Building> bdgState = new Comparator<Building>() {
+
+	public int compare(Building b1, Building b2) {
+
+	   int state01 = b1.getBuildingState();
+	   int state02 = b2.getBuildingState();
+
+	   /*For ascending order*/
+	   return state01-state02;
+
+   }};
     
 }

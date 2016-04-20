@@ -33,6 +33,7 @@ public class NewReportMapper {
      * @param r Report object
      * @param con Connection to the database
      * @return 
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
     public int reportToDataBase(Report r, Connection con) throws PolygonException {
         String SQLString = "insert into report(report_date,building_id, polygonuser, customer_user, category_conclusion, report_finished) values (?,?,?,?,?,?)";
@@ -72,6 +73,7 @@ public class NewReportMapper {
                 con.rollback();
             } catch (SQLException ex) {
                 System.out.println("Failed at rollingback" + ex );
+                throw new PolygonException("Database error");
             }
             System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
             System.out.println(e);
@@ -113,6 +115,7 @@ public class NewReportMapper {
      * @param reportId
      * @param con
      * @return
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
 
     public Report getSingleReport(int reportId, Connection con) throws PolygonException {
@@ -152,6 +155,7 @@ public class NewReportMapper {
      * @param buildingId
      * @param con
      * @return
+     * @throws Domain.Exceptions.PolygonException throws exception in case of sql-exceptions
      */
     public ArrayList<Report> getAllReportsBuilding(int buildingId, Connection con) throws PolygonException {
         ArrayList<Report> reports = new ArrayList<>();

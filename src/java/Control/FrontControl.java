@@ -407,10 +407,10 @@ public class FrontControl extends HttpServlet {
         
         
         } catch (PolygonException ex) {
-                System.out.println(ex.getMessage());
+                Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("errormessage", ex.getMessage());
                 url="/errorpage.jsp";
-        }
+            }
 
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
@@ -514,7 +514,7 @@ public class FrontControl extends HttpServlet {
      * Facade. Then it stores the created building object in the session to be
      * displayed.
      */
-    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
+    private Building createBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) throws PolygonException {
         String buildingName = request.getParameter("buildingName");
         String StreetAddress = request.getParameter("streetAddress");
         String StreetNumber = request.getParameter("streetNumber");
@@ -561,7 +561,7 @@ public class FrontControl extends HttpServlet {
      * not null. Either this Attribute should be filled when an customer user
      * logs on, or before an admin gets to the site. because it loads that
      */
-    private void findListOfBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void findListOfBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
 //        int customerID = (Integer) sessionObj.getAttribute("customer_id");
 
         /**
@@ -581,7 +581,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj The session object holds the list of the buildings for
      * that customer.
      */
-    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void findBuildingToBeEdit(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         if (sessionObj.getAttribute("listOfBuildings")==null)findListOfBuilding(request, df, sessionObj);   // Added for the sake of Admin editing building
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
@@ -605,7 +605,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Session object holds the buildingToBeEdited object,
      * that that we have to change based on the input fields
      */
-    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) {
+    private Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts) throws PolygonException {
 
         System.out.println(request.getCharacterEncoding());
 
@@ -641,9 +641,7 @@ public class FrontControl extends HttpServlet {
         String pwd = (String) request.getParameter("pwd");
 
         //this is for order request when a customer loggedin
-        System.out.println("..." + username+pwd);
         c = df.getCustomerAfterLogIn(username);
-        System.out.println("Customer:" + c.getCustomerId());
 
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
@@ -655,11 +653,10 @@ public class FrontControl extends HttpServlet {
         }
     }
 
-    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
-        if(c!=null){
+    public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df) throws PolygonException{
             List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
+            Collections.sort(listOfBuildings, Building.bdgState);
             sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        }
     }
 
 
@@ -710,7 +707,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) throws PolygonException {
         sessionObj.setAttribute("customerSelcted", true);
         int cusid = Integer.parseInt(request.getParameter("owners"));
         List<Building> listOfBuildings = df.getListOfBuildings(cusid);
@@ -733,7 +730,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createReport(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         int buildingID = Integer.parseInt(request.getParameter("buildings"));
         User polygonUser = (User) sessionObj.getAttribute("user");
         String polygonUserID = polygonUser.getUserName();
@@ -801,7 +798,7 @@ public class FrontControl extends HttpServlet {
      * @param df
      * @param sessionObj
      */
-    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void addFloors(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
         String floorNum = (String)request.getParameter("floornumber");
         String floorSize =(String)request.getParameter("floorsize");
         String totalRooms =(String)request.getParameter("totalrooms");
@@ -826,7 +823,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void loadFloors(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFloor> bfList = df.listOfFloors(bdg.getBdgId());
         bdg.setListOfFloors(bfList);
         sessionObj.setAttribute("floorsList", bfList);
@@ -838,7 +835,7 @@ public class FrontControl extends HttpServlet {
      * @param df
      * @param sessionObj
      */
-    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) {
+    private void selectBuilding(HttpServletRequest request, DomainFacade df, HttpSession sessionObj) throws PolygonException {
 
         int id = Integer.parseInt(request.getParameter("buildings"));
         bdg = df.getBuilding(id);
@@ -853,7 +850,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj Holds the buildingID
      * @param df Connection to the domain level
      */
-    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void createNewRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         String roomName = request.getParameter("RoomName");
         int floorid = Integer.parseInt(request.getParameter("Floorselect2"));
 
@@ -876,7 +873,7 @@ public class FrontControl extends HttpServlet {
      * @param request Holds the Fields to Create the Report_ROOM
      * @param sessionObj
      */
-    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) {
+    private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) throws PolygonException {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
 
@@ -925,7 +922,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void selectFloor(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         int id = Integer.parseInt(request.getParameter("floors"));
         bf = df.getBuildingFloor(id);
         sessionObj.setAttribute("selectedFloor", bf);
@@ -937,7 +934,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void loadRooms(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<BuildingRoom> roomsList = df.getListOfRooms(bf.getFloorId());
         bf.setListOfRooms(roomsList);
         sessionObj.setAttribute("roomsList", roomsList);
@@ -949,7 +946,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) {
+    private void addRoom(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
         String roomName = (String)request.getParameter("roomname");
         if (roomName != null) {
             br = new BuildingRoom(roomName,bf.getFloorId());
@@ -1253,7 +1250,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) {
+    private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
         c.setListOfOrders(listOfOrders);
         sessionObj.setAttribute("listOfOrders", listOfOrders);
@@ -1265,7 +1262,7 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      * @param df
      */
-    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) {
+    private void loadAllOrders(HttpSession sessionObj, DomainFacade df) throws PolygonException {
         ArrayList<Order> listOfAllOrders = df.getListOfAllOrders();
         Collections.sort(listOfAllOrders,Order.orderStat);
         sessionObj.setAttribute("listOfOrders", listOfAllOrders);

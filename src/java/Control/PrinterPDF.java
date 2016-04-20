@@ -41,7 +41,7 @@ public class PrinterPDF {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PolygonException {
         //Test class:
         Report report=null;
         try {
@@ -64,7 +64,7 @@ public class PrinterPDF {
      * @param buildingId
      * @return
      */
-    public static Building getreportBuilding(int buildingId) {
+    public static Building getreportBuilding(int buildingId) throws PolygonException {
         DomainFacade df = DomainFacade.getInstance();
         return df.getBuilding(buildingId);
     }
