@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -329,7 +330,7 @@ public class FrontControl extends HttpServlet {
         if(page.equalsIgnoreCase("orderRequestSubmit")){
             saveOrder(request, sessionObj, df);
             response.sendRedirect("ordersuccess.jsp");
-            return;
+            return; 
         }
         
         //displays the order history and order progress
@@ -341,6 +342,25 @@ public class FrontControl extends HttpServlet {
         
         //displays the order list and order progress
         if(page.equalsIgnoreCase("orderslist")){
+            loadAllOrders(sessionObj, df);
+            response.sendRedirect("orderslist.jsp");
+            return;
+        }
+        
+        //displays the order details
+        if (page.equalsIgnoreCase("vieworder")) {
+            int orderNumber = Integer.parseInt(request.getParameter("ordernumber"));
+            sessionObj.setAttribute("orderNumber",orderNumber);
+            o = df.getOrder(orderNumber);
+            sessionObj.setAttribute("selectedOrder", o);
+            response.sendRedirect("vieworder.jsp");
+            return;
+        }
+        
+        //updates the order progress
+        if(page.equalsIgnoreCase("updateStat")){
+            int newStat = Integer.parseInt(request.getParameter("orderstatus"));
+            df.updateStatus(o.getOrderNumber(),newStat);
             loadAllOrders(sessionObj, df);
             response.sendRedirect("orderslist.jsp");
             return;
@@ -1168,6 +1188,10 @@ public class FrontControl extends HttpServlet {
         sendOrderEmail();
     }
 
+    /**
+     * This method will call the mail sender bean that would be responsible in sending the email 
+     * to noreply.polygon and notify them about the order request
+     */
     private void sendOrderEmail() {
         mailSender = new MailSenderBean();
         String toEmail = "noreply.polygonproject@gmail.com";
@@ -1187,6 +1211,11 @@ public class FrontControl extends HttpServlet {
         mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
     }
 
+    /**
+     * This will get all the customer's orders
+     * @param sessionObj
+     * @param df
+     */
     private void loadCustomerOrders(HttpSession sessionObj, DomainFacade df) {
         ArrayList<Order> listOfOrders = df.getListOfOrders(c.getCustomerId());
         c.setListOfOrders(listOfOrders);
@@ -1194,8 +1223,14 @@ public class FrontControl extends HttpServlet {
         
     }
 
+    /**
+     * This will get all the orders of all the customers of polygon and will be sorted by order status
+     * @param sessionObj
+     * @param df
+     */
     private void loadAllOrders(HttpSession sessionObj, DomainFacade df) {
         ArrayList<Order> listOfAllOrders = df.getListOfAllOrders();
+        Collections.sort(listOfAllOrders,Order.orderStat);
         sessionObj.setAttribute("listOfOrders", listOfAllOrders);
     }
 
