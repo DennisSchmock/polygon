@@ -377,6 +377,7 @@ public class FrontControl extends HttpServlet {
 
         if (page.equalsIgnoreCase("printReport")) {
             printReport(sessionObj, df, response);
+            return;
         }
 
         RequestDispatcher dispatcher

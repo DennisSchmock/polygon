@@ -177,13 +177,12 @@ public class PrinterPDF {
         if(room.getRrPic() != null && !room.getRrPic().isEmpty()){
             Phrase pictureHeadline = new Phrase("Pictures for Room:", smallHeadline);
             doc.add(pictureHeadline);
+            webPath += File.separator+"ReportRoomPic";
             for (ReportPic picture : room.getRrPic()) {
                 
                 PdfPTable pictureTable = new PdfPTable(2);
                 PdfPCell row1cell1 = new PdfPCell(new Phrase("Picture", bold));
                 row1cell1.setBackgroundColor(BaseColor.GRAY);
-                
-                webPath += File.separator+"ReportRoomPic";
                 
                 Image roompic = Image.getInstance(webPath + File.separator + picture.getFilename());
                 
