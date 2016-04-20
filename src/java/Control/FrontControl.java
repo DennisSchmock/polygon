@@ -632,9 +632,7 @@ public class FrontControl extends HttpServlet {
         String pwd = (String) request.getParameter("pwd");
 
         //this is for order request when a customer loggedin
-        System.out.println("..." + username+pwd);
         c = df.getCustomerAfterLogIn(username);
-        System.out.println("Customer:" + c.getCustomerId());
 
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
@@ -647,10 +645,9 @@ public class FrontControl extends HttpServlet {
     }
 
     public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
-        if(c!=null){
             List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
+            Collections.sort(listOfBuildings, Building.bdgState);
             sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        }
     }
 
 
