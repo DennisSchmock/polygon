@@ -288,7 +288,7 @@ public String saveBuildingPic(int buildId, String filename) throws PolygonExcept
      * @param custId customer ID
      * @return list of Orders
      */
-    public ArrayList<Order> getListOfOrders(int custId){
+    public ArrayList<Order> getListOfOrders(int custId) throws PolygonException{
         return dbFacade.getlistOfOrders(custId);
     }
     
@@ -296,7 +296,7 @@ public String saveBuildingPic(int buildId, String filename) throws PolygonExcept
      * This method is used to get list of all the orders
      * @return list of all Orders
      */
-    public ArrayList<Order> getListOfAllOrders(){
+    public ArrayList<Order> getListOfAllOrders() throws PolygonException{
         return dbFacade.getListOfAllOrders();
     }
 

@@ -227,7 +227,7 @@ NewFileUpload nfu = new NewFileUpload();
      * @param df
      * @param sessionObj
      */
-    private void addFloors(HttpServletRequest request, DomainFacade df) {
+    private void addFloors(HttpServletRequest request, DomainFacade df) throws PolygonException {
         String floorNum = (String) request.getParameter("floornumber");
         String floorSize = (String) request.getParameter("floorsize");
         String totalRooms = (String) request.getParameter("totalrooms");
@@ -246,7 +246,7 @@ NewFileUpload nfu = new NewFileUpload();
 
     }
 
-    private void addRoom(HttpServletRequest request, DomainFacade df, int floorId) {
+    private void addRoom(HttpServletRequest request, DomainFacade df, int floorId) throws PolygonException {
         Building b = (Building) request.getSession().getAttribute("building");
 
         String roomName = (String) request.getParameter("roomname");
