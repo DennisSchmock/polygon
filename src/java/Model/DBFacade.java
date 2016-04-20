@@ -153,7 +153,7 @@ public class DBFacade {
     }
 
     //Sending the report as a whole to DB - new method
-    public void newReportToDB(Report R) {
+    public void newReportToDB(Report R) throws PolygonException {
             nrm.reportToDataBase(R, con);
     }
 
@@ -190,11 +190,11 @@ public class DBFacade {
      * Creates the tuble in the database for a Report.
      * @param report Report to be saved in the database
      */
-    public int reportToDataBase(Report report) {
+    public int reportToDataBase(Report report) throws PolygonException {
            return nrm.reportToDataBase(report, con);
     }
 
-    public ArrayList<Report> getListOfReports(int buildingId) {
+    public ArrayList<Report> getListOfReports(int buildingId) throws PolygonException {
         return nrm.getAllReportsBuilding(buildingId, con);
     }
     
@@ -203,7 +203,7 @@ public class DBFacade {
      * @param reportId
      * @return a report object.
      */
-    public Report getSingleReport(int reportId) {
+    public Report getSingleReport(int reportId) throws PolygonException {
         return nrm.getSingleReport(reportId, getCon());
     }
 

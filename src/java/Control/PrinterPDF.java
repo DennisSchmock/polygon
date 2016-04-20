@@ -24,6 +24,8 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -41,7 +43,12 @@ public class PrinterPDF {
      */
     public static void main(String[] args) {
         //Test class:
-        Report report = setUpPDFTest();
+        Report report=null;
+        try {
+            report = setUpPDFTest();
+        } catch (PolygonException ex) {
+            Logger.getLogger(PrinterPDF.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Building reportBuilding = getreportBuilding(report.getBuildingId());
         PrinterPDF instance = new PrinterPDF();
         try {
@@ -710,7 +717,7 @@ public class PrinterPDF {
      *
      * @return A Report object that is loaded from the database for testing.
      */
-    private static Report setUpPDFTest() {
+    private static Report setUpPDFTest() throws PolygonException {
         DomainFacade df = DomainFacade.getInstance();
         Report report = df.getReport(71); // This can be changed if you want to test another report.
         return report;
