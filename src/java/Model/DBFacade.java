@@ -6,6 +6,7 @@
 package Model;
 
 import Domain.*;
+import Domain.Exceptions.PolygonException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -304,7 +305,7 @@ public class DBFacade {
      *redirects to the buildingMapper
      * @param bdgId buildingId of the building that has to be deleted
      */
-    public void deleteBuilding(int bdgId){
+    public void deleteBuilding(int bdgId) throws PolygonException{
         bm.deleteBuilding(bdgId, con);
     }
     
@@ -337,11 +338,11 @@ public class DBFacade {
 
     }
 
-    public void saveBuildingFiles(Building b) {
+    public void saveBuildingFiles(Building b) throws PolygonException {
         bm.saveBuildingDocs(b, con);
     }
 
-    public void saveFloorplan(int floor, Floorplan f) {
+    public void saveFloorplan(int floor, Floorplan f) throws PolygonException {
         bm.saveFloorplan(floor, f,con);
                 }
     

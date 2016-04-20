@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import Domain.Exceptions.PolygonException;
 import Model.DBFacade;
 import java.sql.Connection;
 import java.sql.Date;
@@ -224,7 +225,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param floorId Id of the floor the floorplan(s) belongs to 
      * @param plans ArrayList of floorplans
      */
-    public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) {
+    public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) throws PolygonException {
             for (Floorplan floorplan : plans) {
                 System.out.println("Trying to save floorplan:");;
                 dbFacade.saveFloorplan(floorId,floorplan);

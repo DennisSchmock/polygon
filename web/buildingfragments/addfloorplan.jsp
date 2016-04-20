@@ -41,7 +41,7 @@
     <br>
     <ul>
         <c:forEach items="${sessionScope.floorplans}" var="floorplan">
-            <li>${floorplan.documentname}</li>                                                             
+            <li><a href="${pageContext.request.contextPath}/floorplans/${floorplan.filename}">${floorplan.documentname}</a></li>                                                             
                     </c:forEach>
     </ul>
     </div>
