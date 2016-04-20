@@ -426,7 +426,7 @@ public class FrontControl extends HttpServlet {
      * @param df Connection to the domain.
      * @param response Responce object to place the file in. 
      * @throws Domain.Exceptions.PolygonException Throws an Polygon if there is any problem
-     * with creating an PDF File.
+     * with creating an PDF File
      */
     private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response) throws PolygonException  {
         Report report = (Report) sessionObj.getAttribute("report");
@@ -979,7 +979,7 @@ public class FrontControl extends HttpServlet {
         //For the interior / Examination:
         if(request.getParameter("Examination").equalsIgnoreCase("Remarks")){
             // This means that the user has check the radio button to yes.
-            try{
+            
             if(request.getParameter("Floor") != null || !(request.getParameter("Floor").equals(""))){
                     //This means that Field has been filled by the user:
                 createRoomInteriorElement("Floor",request.getParameter("Floor"),sessionObj);
@@ -998,27 +998,20 @@ public class FrontControl extends HttpServlet {
                     //This means that Field has been filled by the user:
                 createRoomInteriorElement("Other",request.getParameter("Other"),sessionObj);
                 }
-            }
-            catch(Exception e){
-                System.out.println("Error in getting the Exsamination field" + e.getMessage());
-            }
+            
         }
 
         // For the Damage:
         if(request.getParameter("damage").equalsIgnoreCase("Damage")){
             // The user has Check the damages Field, We can move the try-catch if this works!
-            try{
+           
                 String damageTime = request.getParameter("damageTime");
                 String damagePlace = request.getParameter("damagePlace");
                 String damageWhatHasHappend = request.getParameter("damageHappend");
                 String damageRepaired = request.getParameter("damageReparied");
                 String damageType = request.getParameter("damageType");
             createRoomDamageElement(damageTime,damagePlace,damageWhatHasHappend,damageRepaired,damageType, sessionObj);
-            }
-            catch(Exception e){
-                System.out.println("Error in getting field from Damages: " + e.getMessage());
-
-            }
+            
 
             
         }
@@ -1027,28 +1020,20 @@ public class FrontControl extends HttpServlet {
         if(request.getParameter("Moist").equalsIgnoreCase("Moist")){
             // The user has Check the moist Field, We can move the try-catch if this works!
 
-            try{
+            
                 String moistScanResult = request.getParameter("moistScanResult");
                 String moistScanArea = request.getParameter("moistScanArea");
                 createRoomMoistElement(moistScanResult, moistScanArea, sessionObj);
 
-            }
-            catch(Exception e){
-                System.out.println("Error in getting field from Moist: " + e.getMessage());
-            }
         }
 
         //For Recomendations:
         if(request.getParameter("Recommendation").equalsIgnoreCase("Recommendation")){
             // The user has Check the Recomendation Field, We can move the try-catch if this works!
-            try{
+            
                 String roomRecomendations = request.getParameter("recomendation");
                 createRoomRecomendation(roomRecomendations, sessionObj);
-            }
-            catch(Exception e){
-                System.out.println("Error in getting field from Recomendations");
-            }
-
+            
         }
 
         // Stuff for adding reportRoomPics
@@ -1093,7 +1078,7 @@ public class FrontControl extends HttpServlet {
      * @param remark The remark the user has filled in
      * @param sessionObj Session object that holds the Report_Room Attriubte
      */
-    private void createRoomInteriorElement(String examinedpart, String remark, HttpSession sessionObj)throws Exception  {
+    private void createRoomInteriorElement(String examinedpart, String remark, HttpSession sessionObj)  {
         ReportRoomInterior interiorElement = new ReportRoomInterior(examinedpart, remark);
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
 
@@ -1124,7 +1109,7 @@ public class FrontControl extends HttpServlet {
      * @param damageType
      * @param sessionObj
      */
-    private void createRoomDamageElement(String damageTime, String damagePlace, String damageWhatHasHappend, String damageRepaired, String damageType, HttpSession sessionObj) throws Exception {
+    private void createRoomDamageElement(String damageTime, String damagePlace, String damageWhatHasHappend, String damageRepaired, String damageType, HttpSession sessionObj)  {
         ReportRoomDamage roomDamage = new ReportRoomDamage(damageTime, damagePlace, damageWhatHasHappend, damageRepaired, damageType);
 
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
@@ -1153,7 +1138,7 @@ public class FrontControl extends HttpServlet {
      * @param moistScanArea
      * @param sessionObj
      */
-    private void createRoomMoistElement(String moistScanResult, String moistScanArea, HttpSession sessionObj) throws Exception {
+    private void createRoomMoistElement(String moistScanResult, String moistScanArea, HttpSession sessionObj) {
         ReportRoomMoist roomMoist = new ReportRoomMoist(moistScanResult, moistScanArea);
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
         reportRoom.setMoist(roomMoist);
@@ -1166,7 +1151,7 @@ public class FrontControl extends HttpServlet {
      * @param roomRecomendations
      * @param sessionObj
      */
-    private void createRoomRecomendation(String roomRecomendations, HttpSession sessionObj) throws Exception {
+    private void createRoomRecomendation(String roomRecomendations, HttpSession sessionObj) {
         ReportRoomRecommendation roomRecommendation = new ReportRoomRecommendation(roomRecomendations);
 
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
