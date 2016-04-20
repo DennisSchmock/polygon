@@ -19,13 +19,13 @@ import javax.mail.internet.MimeMessage;
 public class MailSenderBean {
 
     public void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message) {
-
+        
         Properties props = System.getProperties();
-
+        //properties set up
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", "smtp.gmail.com"); //gmail host
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "587"); //gmail port
 
         props.put("mail.smtp.user", username);
         props.put("mail.smtp.password", password);
@@ -34,12 +34,13 @@ public class MailSenderBean {
         props.put("mail.smtp.socketFactory.fallback", "false");
 
         Session mailSession = Session.getInstance(props, new javax.mail.Authenticator() {
-            @Override
+            @Override // username and password authentication
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
         });
         Message mailMessage = new MimeMessage(mailSession);
+        //will try to send the message to the recipient once authentication was success
         try {
             mailMessage.setFrom(new InternetAddress(fromEmail));
             mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
@@ -47,7 +48,6 @@ public class MailSenderBean {
             mailMessage.setSubject(subject);
 
             Transport.send(mailMessage);
-            System.out.println("DONE!!");
         } catch (MessagingException me) {
             me.getMessage();
         }

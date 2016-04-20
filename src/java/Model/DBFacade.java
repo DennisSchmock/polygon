@@ -34,7 +34,7 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        System.out.println("stat: " +facade.getOrderStatus(1));
+        
 //        String username = "daeniz";
 //        Customer c = facade.getCustomerAfterLogIn(username);
 //        System.out.println("c" + c.getCustomerId());
@@ -411,5 +411,14 @@ public class DBFacade {
      */
     public ArrayList<Floorplan> getFloorplans(int floorId){
         return bm.getFloorplans(floorId, con);
+    }
+
+    /**
+     * redirects to the OrderMapper
+     * @param orderNumber order number
+     * @param newStat holds the change
+     */
+    public void updateOrder(int orderNumber, int newStat) {
+        om.updateOrder(orderNumber,newStat,con);
     }
 }
