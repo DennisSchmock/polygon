@@ -2,12 +2,13 @@
 package Domain;
 
 import java.sql.Date;
+import java.util.Comparator;
 
 /**
  * This class will be handling the orders
  * @author CJS  
  */
-public class Order {
+public class Order{
     private int orderNumber;
     private Date orderDate;
     private String serviceDescription;
@@ -123,6 +124,27 @@ public class Order {
     public void setBuildingId(int buildingId) {
         this.buildingId = buildingId;
     }
+
+//    @Override
+//    public int compareTo(Object o) {
+//        int compareStat = ((Order)o).getOrderStatus();
+//        return compareStat-this.orderStatus;
+//    }
+
+    /**
+     * This will sort the status of the orders
+     */
     
-    
+    public static Comparator<Order> orderStat = new Comparator<Order>() {
+
+	public int compare(Order o1, Order o2) {
+
+	   int stat01 = o1.getOrderStatus();
+	   int stat02 = o2.getOrderStatus();
+
+	   /*For ascending order*/
+	   return stat01-stat02;
+
+   }};
+
 }

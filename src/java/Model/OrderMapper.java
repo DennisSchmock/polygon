@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -169,8 +170,28 @@ public class OrderMapper {
             System.out.println("Error in SQL OrderMapper-getAllOrders " + ex);
             
         }
-       
         return orderList;
+    }
+
+    /**
+     * This will update the status in the orders table in DB
+     * @param orderNumber order number
+     * @param newStat holds the value to update in the order status
+     * @param con connection
+     */
+    public void updateOrder(int orderNumber, int newStat, Connection con) {
+        String SQLString
+                = "update orders set order_status = ? where order_number = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement(SQLString);
+            statement.setInt(1, newStat);
+            statement.setInt(2, orderNumber);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Fail in updateStatus");
+            System.out.println(e.getMessage());
+        } 
     }
     
     
