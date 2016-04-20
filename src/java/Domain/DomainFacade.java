@@ -207,7 +207,7 @@ public String saveBuildingPic(int buildId, String filename){
      * The purpose of this method, is to get a very simple list of all reports from DB. 
      * @return
      */
-    public ArrayList<Report> getSimpleListOfReports() {
+    public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
         return dbFacade.getSimpleListOfReports();
     }
 
@@ -216,7 +216,7 @@ public String saveBuildingPic(int buildId, String filename){
      * floorplans
      * @param b the buliding which has documents to be saved
      */
-    public void saveBuildingFiles(Building b) {
+    public void saveBuildingFiles(Building b) throws PolygonException {
         dbFacade.saveBuildingFiles(b);
     }
 

@@ -307,7 +307,7 @@ NewFileUpload nfu = new NewFileUpload();
      * @param df
      * @return
      */
-    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) {
+    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFiles> files;
         Building b = (Building) request.getSession().getAttribute("building");
         int buildId;

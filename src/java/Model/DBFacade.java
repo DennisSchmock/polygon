@@ -333,7 +333,7 @@ public class DBFacade {
         bm.updateBuilding(b, con);
     }
 
-    public ArrayList<Report> getSimpleListOfReports() {
+    public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
        return nrm.getSimpleListOfReports(con);
 
     }
