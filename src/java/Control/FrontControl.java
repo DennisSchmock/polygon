@@ -20,7 +20,11 @@ import Domain.ReportRoomInterior;
 import Domain.ReportRoomMoist;
 import Domain.ReportRoomRecommendation;
 import Domain.User;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -58,12 +62,12 @@ public class FrontControl extends HttpServlet {
     private final PrinterPDF printer = new PrinterPDF();
     private boolean testing = false;
     //store objects since get parameter values resets
-    Customer c; 
+    Customer c;
     Building bdg;
     BuildingFloor bf;
     BuildingRoom br;
     Order o;
-    
+
     @EJB
     private MailSenderBean mailSender;
 
@@ -79,13 +83,13 @@ public class FrontControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");                  //Characterencoding for special characters
-      
+
         //This part of the code, checks if there might be files for upload, and seperates them, if that is the case
         Collection<Part> parts=null;
         if (ServletFileUpload.isMultipartContent(request)){                                           
-        parts = request.getParts();            //Extracts the part of the form that is the file
+            parts = request.getParts();            //Extracts the part of the form that is the file
         }
-    
+
         HttpSession sessionObj = request.getSession(); //Get the session
 
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
@@ -98,11 +102,11 @@ public class FrontControl extends HttpServlet {
 
         //Set base url
         String url = "/index.jsp";
-        
+
         String page = request.getParameter("page");
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
-        
+
        
 
         if (page == null) {
@@ -124,33 +128,33 @@ public class FrontControl extends HttpServlet {
             url = "/reportJSPs/report_start.jsp";
             createReport(request, sessionObj, df);
         }
-        
+
         //For choosing room when setting up report, after exterior has been added
         if (page.equalsIgnoreCase("ChooseRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             saveReportExterior(request, sessionObj,parts);
         }
-        
+
         //For inspecting the chosen room.
         if (page.equalsIgnoreCase("inspectRoom")) {
             url = "/reportJSPs/reportaddaroom.jsp";
             setUpForRoomInspection(request, sessionObj, df, parts);
         }
-        
+
         //For submitting what is written about the room
         if (page.equalsIgnoreCase("submittedRoom")) {
             url = "/reportJSPs/chooseroom.jsp";
             createReportRoomElements(request,sessionObj, parts);
         }
-        
+
         //Saving finished report and redirection to report view. 
         if (page.equalsIgnoreCase("saveFinishedReport")) {
             url = "/viewreport.jsp";
            finishReportObject(request,sessionObj);
            int reportId = saveFinishedReport(sessionObj,df);
-           request.getSession().setAttribute("report", df.getReport(reportId));
+            request.getSession().setAttribute("report", df.getReport(reportId));
         }
-        
+
         
         if (page.equalsIgnoreCase("toFinishReport")) {
             url = "/reportJSPs/finishreport.jsp";
@@ -165,7 +169,7 @@ public class FrontControl extends HttpServlet {
             createNewRoom(request, sessionObj, df);
             setUpForRoomInspection(request, sessionObj, df, parts );
         }
-        
+
         //List all reports for all customers
         if (page.equalsIgnoreCase("listreports")) {
             sessionObj.setAttribute("reports", df.getListOfReports(1));
@@ -178,20 +182,20 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("addcustomer")) {
             url = "/addcustomer.jsp";
         }
-        
+
         //Viewing the list of all the 
         if (page.equalsIgnoreCase("viewlistofbuildings")) {
             findListOfBuilding(request, df, sessionObj);
             url = "/viewlistofbuildings.jsp";
         }
-        
+
         //Edit a building
         if (page.equalsIgnoreCase("editBuilding")) {
             findBuildingToBeEdit(request, sessionObj, df);
             response.sendRedirect("editBuilding.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("viewreport")) {
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
@@ -200,7 +204,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("viewreport.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("viewcustomers")) {
             List<Customer> customers = df.loadAllCustomers();
             sessionObj.setAttribute("customers", customers);
@@ -208,7 +212,7 @@ public class FrontControl extends HttpServlet {
             return;
 
         }
-        
+
         if (page.equalsIgnoreCase("viewcustomer")) {
             int custId = Integer.parseInt(request.getParameter("customerid"));
             sessionObj.setAttribute("customer_id",custId);
@@ -216,13 +220,13 @@ public class FrontControl extends HttpServlet {
             List<Customer> customers = df.loadAllCustomers();
             for (Customer customer : customers) {
                 if (customer.getCustomerId()==custId) sessionObj.setAttribute("customer", customer);
-            }
+                }
             sessionObj.setAttribute("buildings", buildings);
             response.sendRedirect("viewcustomer.jsp");
             return;
 
         }
-        
+
         //This gets a Dash for a building
         if (page.equalsIgnoreCase("viewbuildingadmin")) {
             int buildId = Integer.parseInt(request.getParameter("buildingid"));
@@ -240,19 +244,19 @@ public class FrontControl extends HttpServlet {
         
         //TODO seperate redirect and action
         if (page.equalsIgnoreCase("newbuilding")) {
-            
+
             Building b=createBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
-        
+
         //TODO: seperate action and redirect
         if (page.equalsIgnoreCase("vieweditedbuilding")) {
             Building b =updateBuilding(request, df, sessionObj,parts);
             response.sendRedirect("viewnewbuilding.jsp");
             return;
         }
-        
+
         //TODO: seperate action and redirect
         if (page.equalsIgnoreCase("submitcustomer")) {
             createNewCustomer(request, df, sessionObj);
@@ -273,14 +277,14 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("addfloor.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("addfloor")) {
             sessionObj.setAttribute("customerSelcted", false);
             chooseCustomer(sessionObj, df);
             response.sendRedirect("addfloor.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("selCust")) {
             loadCustomersBuildings(request, sessionObj, df);
             response.sendRedirect("addfloor.jsp");
@@ -292,58 +296,58 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("addfloor.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("selFlr")) {
             selectFloor(request, sessionObj, df);
             response.sendRedirect("addroom.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("loadRooms")) {
             loadRooms(request, sessionObj, df);
             response.sendRedirect("addroom.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("addroomsubmit")) {
             addRoom(request, sessionObj, df);
             response.sendRedirect("addroom.jsp");
             return;
         }
-        
+
         //loading order request page
         if(page.equalsIgnoreCase("orderRequest")){
-           loadBuildingsAfterLogIn(sessionObj, df);
-           response.sendRedirect("orderRequest.jsp");
-           return;
+            loadBuildingsAfterLogIn(sessionObj, df);
+            response.sendRedirect("orderRequest.jsp");
+            return;
         }
-        
+
         //selecting a building for order request
         if (page.equalsIgnoreCase("selBdgReq")) {
             selectBuilding(request, df, sessionObj);
             response.sendRedirect("orderRequest.jsp");
             return;
         }
-        
+
         //create an order request
         if(page.equalsIgnoreCase("orderRequestSubmit")){
             saveOrder(request, sessionObj, df);
             response.sendRedirect("ordersuccess.jsp");
             return;
         }
-        
+
         //displays the order history and order progress
         if(page.equalsIgnoreCase("orderhistory")){
             loadCustomerOrders(sessionObj, df);
             response.sendRedirect("orderhistory.jsp");
             return;
         }
-        
+
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
 
         }
-        
+
         if (page.equalsIgnoreCase("login")) {
             url = "/login.jsp";
 
@@ -356,33 +360,75 @@ public class FrontControl extends HttpServlet {
             }
             url = "/login.jsp";
         }
-        
+
         if (page.equalsIgnoreCase("logout")) {
             request.setAttribute("user", null);
             request.setAttribute("loggedin", false);
             request.getSession().invalidate();
             url="/index.jsp";
         }
-        
+
         if (page.equalsIgnoreCase("printReport")) {
-            Report report = (Report) sessionObj.getAttribute("report");
-            Building building = df.getBuilding(report.getBuildingId());
-            System.out.println("Creating Report for Report ID: " + report.getReportId());
-             String realPath = getServletContext().getRealPath("");
-            System.out.println(realPath);
-            try {
-                printer.sendReportToPrint(report, building, realPath);
-            } catch (Exception ex) {
-                System.out.println("Could not crearte a Report " + ex);
-                ex.printStackTrace();
-            }
-            response.sendRedirect("viewreport.jsp");
-            return;
+            printReport(sessionObj, df, response);
         }
-        
+
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
+    }
+
+    /**
+     * Method for creating an Report in the PDF Format.
+     * Also sends via the response.setHeader() back to the View
+     * So that the user can download the just created report
+     * @param sessionObj Hold the Report object that is used to retrive whitch report
+     * to create
+     * @param df Connection to the domain.
+     * @param response Responce object to place the file in. 
+     */
+    private void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response)  {
+        Report report = (Report) sessionObj.getAttribute("report");
+        Building building = df.getBuilding(report.getBuildingId());
+        String realPath = getServletContext().getRealPath("");
+        String fileName = "ReportFile" + report.getReportId();
+        try {
+            printer.sendReportToPrint(report, building, realPath, fileName);
+        } catch (Exception ex) {
+            System.out.println("Could not crearte a Report " + ex);
+            ex.printStackTrace();
+        }
+        //This tells the browser that we will send a PDF file to the browser
+        response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".pdf");
+        
+        File filepath = new File(realPath + File.separator);
+        filepath = new File(filepath.getParentFile().getParent() + File.separator + "web" + File.separator + "pdfReports");
+        String absFilePath = filepath.getPath();
+        
+        //This is the absoulte File Path, for the File that has just been created!
+        absFilePath += File.separator + fileName + ".pdf";
+        File my_file = new File(absFilePath);
+        //output Stream and Input Stream are to read from the PDF and Write to the PDF
+        // that will be send to the Browser
+        OutputStream out;
+        try {
+            out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(my_file);
+        byte[] buffer = new byte[4096];
+        int length;
+        // This makes sure that the writer is finished with creating
+        // the PDF Document
+        while ((length = in.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+        }
+        // this closes the Stream.
+        // No need for Response redirct because we have already specified that
+        // the response should make a download.
+        in.close();
+        out.flush();
+        } catch (IOException ex) {
+            System.out.println("Error in Creating an PDf" + ex);
+            ex.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -412,12 +458,8 @@ public class FrontControl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-     
-      
-     
         processRequest(request, response);
 
-        
     }
 
     /**
@@ -454,11 +496,11 @@ public class FrontControl extends HttpServlet {
             custId=Integer.parseInt(request.getParameter("customerId"));
         }
         System.out.println(custId);
-        
+
 
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode,
                 buildingsize, buildingYear, useOfBuilding,custId);
-        
+
 
         b.setCustId(custId);
         b.setBuilding_pic(buildingPic);
@@ -558,14 +600,14 @@ public class FrontControl extends HttpServlet {
      * @param response
      */
     public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
-        String username = (String) request.getParameter("username"); 
+        String username = (String) request.getParameter("username");
         String pwd = (String) request.getParameter("pwd");
-        
+
         //this is for order request when a customer loggedin
         System.out.println("..." + username+pwd);
         c = df.getCustomerAfterLogIn(username);
         System.out.println("Customer:" + c.getCustomerId());
-        
+
         if (df.logUserIn(username, pwd)) {
             request.getSession().setAttribute("loggedin", true);
             request.getSession().setAttribute("userrole", "user");
@@ -575,7 +617,7 @@ public class FrontControl extends HttpServlet {
             request.getSession().setAttribute("loggedin", false);
         }
     }
-    
+
     public void loadBuildingsAfterLogIn( HttpSession sessionObj,DomainFacade df){
         if(c!=null){
             List<Building> listOfBuildings = df.getListOfBuildings(c.getCustomerId());
@@ -683,12 +725,12 @@ public class FrontControl extends HttpServlet {
 
         ReportExterior roofEx = new ReportExterior("Roof", remarksOnRoof);
         ReportExterior wallEx = new ReportExterior("Wall", remarksOnWalls);
-        
+
         ArrayList<ReportPic> extPic = new ArrayList();
         String filepath = nfu.saveExtPicture(getServletContext().getRealPath(""),parts);
         String description = request.getParameter("decriptionOfPicture");
         extPic.add(new ReportPic(filepath,description));
-        
+
         report.setListOfExtPics(extPic);
 
         if (report.getListOfRepExt() == null) {
@@ -702,12 +744,12 @@ public class FrontControl extends HttpServlet {
             listOfExt.add(roofEx);
             report.setListOfRepExt(listOfExt);
         }
-        
+
         sessionObj.setAttribute("reportToBeCreated", report);
 
         
     }
-    
+
  
     /**
      * Uploads a file to the server. Helper method for any fileUpload
@@ -736,11 +778,11 @@ public class FrontControl extends HttpServlet {
             ArrayList<BuildingFloor> bfList = df.listOfFloors(bf.getBuildingId());
             bdg.setListOfFloors(bfList);
             sessionObj.setAttribute("floorsList", bfList);
-        
+
         }
-        
+
     }
-    
+
     /**
      * This method load the floors in a certain building and sets to a session
      * @param request
@@ -780,11 +822,11 @@ public class FrontControl extends HttpServlet {
 
         BuildingRoom newRoom = new BuildingRoom(roomName, floorid);
         newRoom = df.addBuildingRoom(newRoom);
-          
+
         // After we have added a room to the database we need to reload the session att
-       // For the reportBuilding.
+        // For the reportBuilding.
         Building b = (Building) sessionObj.getAttribute("reportBuilding");
-       sessionObj.setAttribute("reportBuilding", df.getBuilding(b.getBdgId()));
+        sessionObj.setAttribute("reportBuilding", df.getBuilding(b.getBdgId()));
         request.setAttribute("RoomSelected", newRoom.getRoomId());
 
     }
@@ -800,23 +842,23 @@ public class FrontControl extends HttpServlet {
     private void setUpForRoomInspection(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, Collection<Part> parts) {
         int buildingRoomid;
         if(request.getParameter("RoomSelected") != null){
-            
+
             /*
-            This means that the user has selected an already existing room
-            to inspected. Therefore it is the parameter that is to be used!
-            */
+             This means that the user has selected an already existing room
+             to inspected. Therefore it is the parameter that is to be used!
+             */
             buildingRoomid = Integer.parseInt(request.getParameter("RoomSelected"));
-            
+
     }
         else{
             /*
-            This means that the user has just created an room
-            to inspected. Therefore it is the attribute is used
-            */
-            
-             buildingRoomid = (int) (request.getAttribute("RoomSelected"));
-}
-        
+             This means that the user has just created an room
+             to inspected. Therefore it is the attribute is used
+             */
+
+            buildingRoomid = (int) (request.getAttribute("RoomSelected"));
+        }
+
         Building temp = (Building) sessionObj.getAttribute("reportBuilding"); // finds the building object from session
         BuildingRoom buildingRoom= null;
 
@@ -824,20 +866,20 @@ public class FrontControl extends HttpServlet {
         // To find the one the user has selected.
         for (BuildingFloor floor : temp.getListOfFloors()) {
             for (BuildingRoom Room : floor.getListOfRooms() ) {
-              
+
              if(Room.getRoomId() == buildingRoomid){
-                 buildingRoom = Room;
-             }   
+                    buildingRoom = Room;
+                }
             }
-            
+
         }
-        
+
         ReportRoom reportRoom = new ReportRoom(buildingRoom.getRoomName(),buildingRoom.getRoomId());
         BuildingFloor buildingFloor =df.getBuildingFloor(buildingRoom.getFloorid());
         reportRoom.setRoomFloor(buildingFloor.getFloorNumber()+"");
 
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
-      
+
     }
 
     /**
@@ -896,69 +938,69 @@ public class FrontControl extends HttpServlet {
      * be updated.
      */
     private void createReportRoomElements(HttpServletRequest request, HttpSession sessionObj, Collection<Part> parts) {
-        
+
         //For the interior / Examination:
         if(request.getParameter("Examination").equalsIgnoreCase("Remarks")){
-          // This means that the user has check the radio button to yes.
+            // This means that the user has check the radio button to yes.
             try{
             if(request.getParameter("Floor") != null || !(request.getParameter("Floor").equals(""))){
-                //This means that Field has been filled by the user:
+                    //This means that Field has been filled by the user:
                 createRoomInteriorElement("Floor",request.getParameter("Floor"),sessionObj);
-            }
+                }
             if(request.getParameter("Window") != null || !(request.getParameter("Window").equals(""))){
-                //This means that Field has been filled by the user:
+                    //This means that Field has been filled by the user:
                 createRoomInteriorElement("Window",request.getParameter("Window"),sessionObj);
-            }
-            
+                }
+
             if(request.getParameter("Celling") != null || !(request.getParameter("Celling").equals(""))){
-                //This means that Field has been filled by the user:
+                    //This means that Field has been filled by the user:
                 createRoomInteriorElement("Celling",request.getParameter("Celling"),sessionObj);
-            }
-            
+                }
+
             if(request.getParameter("Other") != null || !(request.getParameter("Other").equals(""))){
-                //This means that Field has been filled by the user:
+                    //This means that Field has been filled by the user:
                 createRoomInteriorElement("Other",request.getParameter("Other"),sessionObj);
-            }
+                }
             }
             catch(Exception e){
                 System.out.println("Error in getting the Exsamination field" + e.getMessage());
             }
         }
-        
+
         // For the Damage:
         if(request.getParameter("damage").equalsIgnoreCase("Damage")){
-             // The user has Check the damages Field, We can move the try-catch if this works!
+            // The user has Check the damages Field, We can move the try-catch if this works!
             try{
-            String damageTime = request.getParameter("damageTime");
-            String damagePlace = request.getParameter("damagePlace");
-            String damageWhatHasHappend = request.getParameter("damageHappend");
-            String damageRepaired = request.getParameter("damageReparied");
-            String damageType = request.getParameter("damageType");
+                String damageTime = request.getParameter("damageTime");
+                String damagePlace = request.getParameter("damagePlace");
+                String damageWhatHasHappend = request.getParameter("damageHappend");
+                String damageRepaired = request.getParameter("damageReparied");
+                String damageType = request.getParameter("damageType");
             createRoomDamageElement(damageTime,damagePlace,damageWhatHasHappend,damageRepaired,damageType, sessionObj);
             }
             catch(Exception e){
                 System.out.println("Error in getting field from Damages: " + e.getMessage());
-                
+
             }
-            
+
             
         }
-        
+
         //For Moist:
         if(request.getParameter("Moist").equalsIgnoreCase("Moist")){
-             // The user has Check the moist Field, We can move the try-catch if this works!
-            
+            // The user has Check the moist Field, We can move the try-catch if this works!
+
             try{
                 String moistScanResult = request.getParameter("moistScanResult");
                 String moistScanArea = request.getParameter("moistScanArea");
                 createRoomMoistElement(moistScanResult, moistScanArea, sessionObj);
-                
+
             }
             catch(Exception e){
                 System.out.println("Error in getting field from Moist: " + e.getMessage());
             }
         }
-        
+
         //For Recomendations:
         if(request.getParameter("Recommendation").equalsIgnoreCase("Recommendation")){
             // The user has Check the Recomendation Field, We can move the try-catch if this works!
@@ -969,17 +1011,17 @@ public class FrontControl extends HttpServlet {
             catch(Exception e){
                 System.out.println("Error in getting field from Recomendations");
             }
-            
+
         }
-        
-         // Stuff for adding reportRoomPics
+
+        // Stuff for adding reportRoomPics
         ArrayList<ReportPic> rrPic = new ArrayList();
         String description = request.getParameter("roompicdescrip");
         if (description==null) description="";
         System.out.println("Size of parts in reportroom");
         if (parts!=null) System.out.println(parts.size());
         rrPic=nfu.addReportRoomPics(getServletContext().getRealPath(""), description, parts);
-        
+
         // After all of the elemets has been added to the report_Room
         // The report_Room, should be saved in the Report att.
         // And then be removed, since there now needs to be an new object inserted
@@ -1001,10 +1043,10 @@ public class FrontControl extends HttpServlet {
             roomList.add(reportRoom);
             report.setListOfRepRoom(roomList);
             sessionObj.setAttribute("reportToBeCreated", report);
-            
+
         }
         System.out.println(report.toString()); // for testing
-        
+
     }
 
     /**
@@ -1017,7 +1059,7 @@ public class FrontControl extends HttpServlet {
     private void createRoomInteriorElement(String examinedpart, String remark, HttpSession sessionObj)throws Exception  {
         ReportRoomInterior interiorElement = new ReportRoomInterior(examinedpart, remark);
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
-        
+
         if(reportRoom.getListOfInt() == null){
             //Means that there are no Interior Elements in the Report Room
             ArrayList<ReportRoomInterior> temp = new ArrayList<>();
@@ -1031,7 +1073,7 @@ public class FrontControl extends HttpServlet {
             temp.add(interiorElement);
             reportRoom.setListOfInt(temp);
             sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
-            
+
         }
     }
 
@@ -1047,9 +1089,9 @@ public class FrontControl extends HttpServlet {
      */
     private void createRoomDamageElement(String damageTime, String damagePlace, String damageWhatHasHappend, String damageRepaired, String damageType, HttpSession sessionObj) throws Exception {
         ReportRoomDamage roomDamage = new ReportRoomDamage(damageTime, damagePlace, damageWhatHasHappend, damageRepaired, damageType);
-        
-       ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
-       
+
+        ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
+
        if(reportRoom.getListOfDamages() == null){
             //Means that there are no Damage Elements in the Report Room
             ArrayList<ReportRoomDamage> temp = new ArrayList<>();
@@ -1063,7 +1105,7 @@ public class FrontControl extends HttpServlet {
             temp.add(roomDamage);
             reportRoom.setListOfDamages(temp);
             sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
-            
+
         }
     }
 
@@ -1079,7 +1121,7 @@ public class FrontControl extends HttpServlet {
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
         reportRoom.setMoist(roomMoist);
         sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
-        }
+    }
 
     /**
      * This method is for create a Report Room Recomendations Element.
@@ -1088,10 +1130,10 @@ public class FrontControl extends HttpServlet {
      * @param sessionObj
      */
     private void createRoomRecomendation(String roomRecomendations, HttpSession sessionObj) throws Exception {
-       ReportRoomRecommendation roomRecommendation = new ReportRoomRecommendation(roomRecomendations);
-        
-       ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
-       
+        ReportRoomRecommendation roomRecommendation = new ReportRoomRecommendation(roomRecomendations);
+
+        ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
+
        if(reportRoom.getListOfRec() == null){
             //Means that there are no Recomendation Elements in the Report Room
             ArrayList<ReportRoomRecommendation> temp = new ArrayList<>();
@@ -1105,10 +1147,10 @@ public class FrontControl extends HttpServlet {
             temp.add(roomRecommendation);
             reportRoom.setListOfRec(temp);
             sessionObj.setAttribute("reportRoomToBeCreated", reportRoom);
-            
+
         }
     }
-    
+
     /**
      * Saves the inserted Condition Grade and date to the report object.
      * Also saves the CompanyMan responsable for the building.
@@ -1123,14 +1165,14 @@ public class FrontControl extends HttpServlet {
         report.setDate(date);
         String customerAccountable =  request.getParameter("customerAccountable");
         report.setCustomerAccountable(customerAccountable);
-        
+
         sessionObj.setAttribute("reportToBeCreated", report);
     }
 
     /**
      * This method should be called when the report is ready to be saved and finished
      * This method saves the report object, that is in the session object, to the database.
-     * @param sessionObj Holds the report object 
+     * @param sessionObj Holds the report object
      * @param df Holds the connection to the domain layer
      */
     private int saveFinishedReport( HttpSession sessionObj, DomainFacade df) {
@@ -1152,11 +1194,11 @@ public class FrontControl extends HttpServlet {
             serviceDesc = otherDesc;
         }
         String problemStmt = (String) request.getParameter("problemstatement");
-        int orderStat= 1;
+        int orderStat = 1;
         sessionObj.setAttribute("orderStatus", orderStat);
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        o = new Order(date,serviceDesc,problemStmt,orderStat,c.getCustomerId(),bdg.getBdgId());
-        
+        o = new Order(date, serviceDesc, problemStmt, orderStat, c.getCustomerId(), bdg.getBdgId());
+
         df.addNewOrder(o);
         sendOrderEmail();
     }
@@ -1165,16 +1207,16 @@ public class FrontControl extends HttpServlet {
         mailSender = new MailSenderBean();
         String toEmail = "noreply.polygonproject@gmail.com";
         String subject = "ORDER: " + o.getServiceDescription();
-        String message = "REQUEST FOR "+ o.getServiceDescription() +
-                "\n\nOrder Date:" + o.getOrderDate() +
-                "\nCustomer: " + c.getCompanyName() +
-                "\nBuilding: " + bdg.getBuildingName() +
-                "\nProblem Description: " + o.getProblemStatement();
-        
+        String message = "REQUEST FOR " + o.getServiceDescription()
+                + "\n\nOrder Date:" + o.getOrderDate()
+                + "\nCustomer: " + c.getCompanyName()
+                + "\nBuilding: " + bdg.getBuildingName()
+                + "\nProblem Description: " + o.getProblemStatement();
+
         String fromEmail = "noreply.polygonproject@gmail.com";
         String username = "noreply.polygonproject";
         String password = "poly123go";
-        
+
         //Call to  mail sender bean
         mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
     }
@@ -1184,7 +1226,7 @@ public class FrontControl extends HttpServlet {
         c.setListOfOrders(listOfOrders);
         sessionObj.setAttribute("listOfOrders", listOfOrders);
         for (Order o : listOfOrders) {
-            
+
             System.out.println(o.getStatDesc());
         }
     }
