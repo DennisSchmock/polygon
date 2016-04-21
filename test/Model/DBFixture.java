@@ -8,29 +8,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBFixture {
-
+    
     private Connection connection;
     private static String driver = "com.mysql.jdbc.Driver";
     private static String URL = "jdbc:mysql://localhost:3306/polytest";
-    private static String id = "root";			
+    private static String id = "root";
     private static String pw = "daniel";
-
+    
     public void setUp() throws SQLException {
         try {
             Class.forName(driver);
-             connection = DriverManager.getConnection(URL, id, pw);
+            connection = DriverManager.getConnection(URL, id, pw);
             Statement st = getConnection().createStatement();
             // start transaction
             getConnection().setAutoCommit(true);
 
- //Test setup start
-            st.addBatch("drop table if exists floorplan, report_room_damage, report_room_recommendation, "
-                    + "report_room_moist,report_room_interior_pic,\n"
+            //Test setup start
+            st.addBatch("drop table if exists building_pic, report_ext_pic, report_room_pic, orders, order_status, floorplan, "
+                    + "report_room_damage,report_room_recommendation,"
+                    + "report_room_moist,report_room_interior_pic,"
                     + "report_room_interior,report_exterior,report_room,report_pic,report,"
                     + "building_room, building_floor,order_request,building_documents,building,customer_user,"
                     + "contact,customer,zip_codes,polygon_user;");
-      
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`customer` ("
                     + "`customer_id` INT(11) NOT NULL AUTO_INCREMENT,"
                     + "`companyname` VARCHAR(45) NULL DEFAULT NULL,"
@@ -42,9 +42,9 @@ public class DBFixture {
                     + "`cvr` VARCHAR(15) NULL DEFAULT NULL,"
                     + "`contactperson` VARCHAR(45) NULL DEFAULT NULL,"
                     + "PRIMARY KEY (`customer_id`))");
-
+            
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building` ("
                     + "`idbuilding` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`building_name` VARCHAR(40) NULL DEFAULT NULL,"
@@ -61,9 +61,9 @@ public class DBFixture {
                     + "CONSTRAINT `building_ibfk_1`"
                     + "FOREIGN KEY (`customer_id`)"
                     + "REFERENCES `Polytest`.`customer` (`customer_id`))");
-
+            
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_documents` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building_documents` ("
                     + "`document_id` INT(11) NOT NULL AUTO_INCREMENT,"
                     + "`document_type` VARCHAR(45) NULL DEFAULT NULL,"
@@ -75,22 +75,22 @@ public class DBFixture {
                     + "CONSTRAINT `building_documents_ibfk_1`"
                     + "  FOREIGN KEY (`building_id`)"
                     + "  REFERENCES `Polytest`.`building` (`idbuilding`))");
-
+            
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_floor` ");
             
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building_floor` ("
                     + "`floor_id` int(20) NOT NULL AUTO_INCREMENT,"
                     + "`floor_number` int(10) DEFAULT NULL,"
-                    +"`floor_size` double NOT NULL,"
-                    +" `total_rooms` int(100) DEFAULT NULL,"
-                    +" `idbuilding` int(10) DEFAULT NULL,"
+                    + "`floor_size` double NOT NULL,"
+                    + " `total_rooms` int(100) DEFAULT NULL,"
+                    + " `idbuilding` int(10) DEFAULT NULL,"
                     + "  PRIMARY KEY (`floor_id`),"
                     + " CONSTRAINT `building_floor_ibfk_1`"
-                    +" FOREIGN KEY (`idbuilding`) "
+                    + " FOREIGN KEY (`idbuilding`) "
                     + "REFERENCES `Polytest`.`building` (`idbuilding`))");
             
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_room` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`building_room` ("
                     + "`room_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`room_name` VARCHAR(40) NULL DEFAULT NULL,"
@@ -100,10 +100,8 @@ public class DBFixture {
                     + "  FOREIGN KEY (`floor_id`)"
                     + "  REFERENCES `Polytest`.`building_floor` (`floor_id`))");
             
-                  
-
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`contact` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`contact` ("
                     + "`contactID` INT(11) NOT NULL AUTO_INCREMENT,"
                     + "`name` VARCHAR(30) NOT NULL,"
@@ -115,9 +113,9 @@ public class DBFixture {
                     + "CONSTRAINT `contact_ibfk_1`"
                     + "  FOREIGN KEY (`customerID`)"
                     + "  REFERENCES `Polytest`.`customer` (`customer_id`))");
-
+            
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`customer_user`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`customer_user` ("
                     + "`username` VARCHAR(45) NOT NULL,"
                     + "`pwd` VARCHAR(45) NULL DEFAULT NULL,"
@@ -136,7 +134,7 @@ public class DBFixture {
 //-- Table `Polytest`.`floorplan`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`floorplan` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`floorplan` ("
                     + "`floorplan_id` INT(11) NOT NULL AUTO_INCREMENT,"
                     + "`floorplanpath` VARCHAR(45) NULL DEFAULT NULL,"
@@ -148,31 +146,41 @@ public class DBFixture {
                     + "  REFERENCES `Polytest`.`building` (`idbuilding`))");
 
 //-- -----------------------------------------------------
-//-- Table `Polytest`.`order_request`
+//-- Table `Polytest`.`order_status`
 //-- -----------------------------------------------------
-            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`order_request` ");
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`orders_status` ");
+            
+            st.addBatch("CREATE TABLE IF NOT EXISTS  `order_status`( "
+                    + "`order_status` int(11) NOT NULL,"
+                    + "  `status_description` varchar(30) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  PRIMARY KEY (`order_status`))");
 
-            st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`order_request` ("
-                    + "`order_id` INT(11) NOT NULL AUTO_INCREMENT,"
-                    + "`customer_username` VARCHAR(45) NOT NULL,"
-                    + "`building_id` INT(11) NULL DEFAULT NULL,"
-                    + "`order_type` VARCHAR(45) NULL DEFAULT NULL,"
-                    + "`order_description` TEXT,"
-                    + "PRIMARY KEY (`order_id`),"
-                    + "INDEX `customer_username` (`customer_username` ASC),"
-                    + "INDEX `building_id` (`building_id` ASC),"
-                    + "CONSTRAINT `order_request_ibfk_1`"
-                    + "  FOREIGN KEY (`customer_username`)"
-                    + "  REFERENCES `Polytest`.`customer_user` (`username`),"
-                    + "CONSTRAINT `order_request_ibfk_2`"
-                    + "  FOREIGN KEY (`building_id`)"
-                    + "  REFERENCES `Polytest`.`building` (`idbuilding`))");
+//-- -----------------------------------------------------
+//-- Table `Polytest`.`orders`
+//-- -----------------------------------------------------
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`orders` ");
+            
+            st.addBatch("CREATE TABLE IF NOT EXISTS  `orders` ("
+                    + "  `order_number` int(20) NOT NULL AUTO_INCREMENT,"
+                    + "  `order_date` date DEFAULT NULL,"
+                    + "  `service_description` varchar(50) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `problem_statement` varchar(200) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `order_status` int(5) DEFAULT NULL,"
+                    + "  `customer_id` int(10) DEFAULT NULL,"
+                    + "  `idbuilding` int(10) DEFAULT NULL,"
+                    + "  PRIMARY KEY (`order_number`),"
+                    + "CONSTRAINT `orders_ibfk_1` "
+                    + "FOREIGN KEY (`customer_id`) "
+                    + "REFERENCES `customer` (`customer_id`),"
+                    + "CONSTRAINT `orders_ibfk_2` "
+                    + "FOREIGN KEY (`idbuilding`) "
+                    + "REFERENCES `building` (`idbuilding`))");
 
 //-- -----------------------------------------------------
 //-- Table `Polytest`.`polygon_user`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`polygon_user` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`polygon_user` ("
                     + "`username` VARCHAR(45) NOT NULL,"
                     + "`pwd` VARCHAR(45) NULL DEFAULT NULL,"
@@ -187,7 +195,7 @@ public class DBFixture {
 //-- Table `Polytest`.`report`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report` ("
                     + "`report_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`report_date` DATE NULL DEFAULT NULL,"
@@ -206,7 +214,7 @@ public class DBFixture {
 //-- Table `Polytest`.`report_exterior`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_exterior` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_exterior` ("
                     + "`report_ext_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`report_ext_description` VARCHAR(100) NULL DEFAULT NULL,"
@@ -221,24 +229,10 @@ public class DBFixture {
 
 //
 //-- -----------------------------------------------------
-//-- Table `Polytest`.`report_pic`
-//-- -----------------------------------------------------
-            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_pic` ");
-
-            st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_pic` ("
-                    + "`report_pic_id` INT(10) NOT NULL AUTO_INCREMENT,"
-                    + "`report` INT(10) NULL DEFAULT NULL,"
-                    + "PRIMARY KEY (`report_pic_id`),"
-                    + "INDEX `report` (`report` ASC),"
-                    + "CONSTRAINT `report_pic_ibfk_1`"
-                    + "  FOREIGN KEY (`report`)"
-                    + "  REFERENCES `Polytest`.`report` (`report_id`))");
-//
-//-- -----------------------------------------------------
 //-- Table `Polytest`.`report_room`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room` ");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room` ("
                     + "`report_room_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`room_name` VARCHAR(30) NULL DEFAULT NULL,"
@@ -258,7 +252,7 @@ public class DBFixture {
 //-- Table `Polytest`.`report_room_damage`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_damage`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_damage` ("
                     + "`report_room_damage_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`damage_time` varchar(100) DEFAULT NULL,"
@@ -278,7 +272,7 @@ public class DBFixture {
 //-- Table `Polytest`.`report_room_interior`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_interior`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_interior` ("
                     + "`report_room_interior_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`report_room_interior_name` VARCHAR(30) NULL DEFAULT NULL,"
@@ -289,28 +283,13 @@ public class DBFixture {
                     + "CONSTRAINT `report_room_interior_ibfk_1`"
                     + "  FOREIGN KEY (`report_room`)"
                     + "  REFERENCES `Polytest`.`report_room` (`report_room_id`))");
-//
-//-- -----------------------------------------------------
-//-- Table `Polytest`.`report_room_interior_pic`
-//-- -----------------------------------------------------
-            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_interior_pic`");
-
-            st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_interior_pic` ("
-                    + "`report_room_interior_pic_id` INT(10) NOT NULL AUTO_INCREMENT,"
-                    + "`report_room_interior` INT(10) NULL DEFAULT NULL,"
-                    + "`remark` VARCHAR(100) NULL DEFAULT NULL,"
-                    + "PRIMARY KEY (`report_room_interior_pic_id`),"
-                    + "INDEX `report_room_interior` (`report_room_interior` ASC),"
-                    + "CONSTRAINT `report_room_interior_pic_ibfk_1`"
-                    + "  FOREIGN KEY (`report_room_interior`)"
-                    + "  REFERENCES `Polytest`.`report_room_interior` (`report_room_interior_id`))");
 
 //
 //-- -----------------------------------------------------
 //-- Table `Polytest`.`report_room_moist`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_moist`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_moist` ("
                     + "`report_room_moist_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`report_room_moist_measured` varchar(100) NULL DEFAULT NULL,"
@@ -326,7 +305,7 @@ public class DBFixture {
 //-- Table `Polytest`.`report_room_recommendation`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_recommendation`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`report_room_recommendation` ("
                     + "`report_room_recommendation_id` INT(10) NOT NULL AUTO_INCREMENT,"
                     + "`recommendation` VARCHAR(100) NULL DEFAULT NULL,"
@@ -337,12 +316,57 @@ public class DBFixture {
                     + "  FOREIGN KEY (`report_room`)"
                     + "  REFERENCES `Polytest`.`report_room` (`report_room_id`))");
 
+            //
+//-- -----------------------------------------------------
+//-- Table `Polytest`.`building_pic`
+//-- -----------------------------------------------------
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`building_pic`");
+            
+            st.addBatch("CREATE TABLE `building_pic` ("
+                    + "  `building_pic_id` int(10) NOT NULL AUTO_INCREMENT,"
+                    + "  `building_id` int(10) DEFAULT NULL,"
+                    + "  `filename` varchar(30) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  PRIMARY KEY (`building_pic_id`),"
+                    + "CONSTRAINT `building_pic_ibfk_1` "
+                    + "FOREIGN KEY (`building_id`) "
+                    + "REFERENCES `building` (`idbuilding`))");
+
+//
+//-- -----------------------------------------------------
+//-- Table `Polytest`.`report_ext_pic`
+//-- -----------------------------------------------------            
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_ext_pic`");
+            
+            st.addBatch("CREATE TABLE `report_ext_pic` ("
+                    + "  `report_pic_id` int(10) NOT NULL AUTO_INCREMENT,"
+                    + "  `filename` varchar(30) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `description` varchar(200) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `report_id` int(10) DEFAULT NULL,"
+                    + "  PRIMARY KEY (`report_pic_id`),CONSTRAINT `report_ext_pic_ibfk_1` "
+                    + "  FOREIGN KEY (`report_id`) "
+                    + "  REFERENCES `report` (`report_id`))");
+
+//
+//-- -----------------------------------------------------
+//-- Table `Polytest`.`report_room_pic`
+//-- -----------------------------------------------------            
+            st.addBatch("DROP TABLE IF EXISTS `Polytest`.`report_room_pic`");
+            
+            st.addBatch("CREATE TABLE `report_room_pic` ("
+                    + "  `report_pic_id` int(10) NOT NULL AUTO_INCREMENT,"
+                    + "  `description` varchar(200) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `filename` varchar(30) COLLATE utf8_danish_ci DEFAULT NULL,"
+                    + "  `reportroom` int(10) DEFAULT NULL,"
+                    + "  PRIMARY KEY (`report_pic_id`),CONSTRAINT `report_room_pic_ibfk_1`"
+                    + "  FOREIGN KEY (`reportroom`) "
+                    + "  REFERENCES `report_room` (`report_room_id`))");
+
 //
 //-- -----------------------------------------------------
 //-- Table `Polytest`.`zip_codes`
 //-- -----------------------------------------------------
             st.addBatch("DROP TABLE IF EXISTS `Polytest`.`zip_codes`");
-
+            
             st.addBatch("CREATE TABLE IF NOT EXISTS `Polytest`.`zip_codes` ("
                     + "`zipcode` INT(11) NOT NULL AUTO_INCREMENT,"
                     + "`city` VARCHAR(45) NOT NULL,"
@@ -350,7 +374,7 @@ public class DBFixture {
 
             // insert in all: 1 customer, 1 building, 1 Polygon user, 1 building_floor, 2 building rooms
             st.addBatch("insert into customer (companyname,street)"
-            +"values ('CPH-Business','Nørregårsvej')");
+                    + "values ('CPH-Business','Nørregårsvej')");
             st.addBatch("INSERT INTO `polytest`.`building` (`idbuilding`, `building_name`, `building_m2`, `building_adress`, `building_housenumber`, `building_buildyear`, `building_zip`, `building_pic`, `building_use`, `customer_id`) "
                     + "VALUES ('1', 'TestBuilding', '201', 'Sverige', '281', '1921', '2812', '0', 'Nothing', '1')");
             st.addBatch("INSERT INTO `polytest`.`polygon_user` (`username`, `pwd`, `fname`, `lname`, `email`, `phone`, `role`) "
@@ -370,9 +394,9 @@ public class DBFixture {
             System.out.println("Fail in JdbcTest - setup");
             System.out.println(e.getMessage());
         } finally {
-        }   
+        }
     }
-
+    
     public void tearDown() throws SQLException {
         
     }
@@ -384,14 +408,13 @@ public class DBFixture {
         return connection;
     }
     
-    public void closeConnection(){
+    public void closeConnection() {
         try {
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBFixture.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     /**
      * @param connection the connection to set

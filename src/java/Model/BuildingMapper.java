@@ -114,16 +114,17 @@ public class BuildingMapper{
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                Building temp = new Building(
-                        rs.getString("building_name"),
-                        rs.getString("building_adress"),
-                        rs.getString("building_housenumber"),
-                        rs.getInt("building_zip"),
-                        rs.getInt("building_buildyear"),
-                        rs.getDouble("building_m2"),
-                        rs.getString("building_use"));
-                temp.setCustId(rs.getInt("customer_id"));
-                temp.setBdgId(rs.getInt("idbuilding"));
+                int bdgId = rs.getInt("idbuilding");
+                String n= rs.getString("building_name");
+                String a= rs.getString("building_adress");
+                String hn = rs.getString("building_housenumber");
+                int z = rs.getInt("building_zip");
+                int y =rs.getInt("building_buildyear");
+                double s = rs.getDouble("building_m2");
+                String u = rs.getString("building_use");
+                int cId = rs.getInt("customer_id");
+                int state = getBuildingState(bdgId, con);
+                Building temp = new Building(bdgId,n,a,hn,z,y,s,u,cId,state);
                 buildingList.add(temp);
             }
         } catch (SQLException ex) {
@@ -131,6 +132,29 @@ public class BuildingMapper{
             throw new PolygonException("Database error");
         }
         return buildingList;
+    }
+    
+    /**
+     * This will get the building state corresponding to the building ID
+     * @param buildingID building ID
+     * @param con connection
+     * @return integer of category conclusion or building state
+     */
+    public int getBuildingState(int buildingID, Connection con) {
+        int state=0;
+        String sqlString = "SELECT category_conclusion FROM report where building_id=?";
+        try {
+            PreparedStatement statement = con.prepareStatement(sqlString);
+            statement.setInt(1, buildingID);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                state = rs.getInt("category_conclusion");
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL ERROR IN get state " + ex);
+        }
+        return state;
     }
 
     /**

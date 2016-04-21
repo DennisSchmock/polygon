@@ -29,7 +29,7 @@ public class DBFacade {
     private CustomerMapper cm;
     private BuildingMapper bm;
     private UserMapper um;
-    private NewReportMapper nrm;
+    private ReportMapper nrm;
     private OrderMapper om;
 
     public static void main(String[] args) {
@@ -73,7 +73,7 @@ public class DBFacade {
         cm = new CustomerMapper();
         bm = new BuildingMapper();
         um = new UserMapper();
-        nrm = new NewReportMapper();
+        nrm = new ReportMapper();
         om = new OrderMapper();
 
     }
