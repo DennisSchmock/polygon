@@ -8,7 +8,6 @@ package Model;
 import Domain.Order;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Calendar;
 import org.junit.After;
 import org.junit.Before;
@@ -23,10 +22,12 @@ public class OrderMapperTest {
     DBFixture fixture;
     DBFacade dbf;
     Order rightOrder;
-    Order orderWrongDate;
     Order orderWrongCustomer;
-    String stringDate;
+    Order orderWrongBuilding;
+//    Order orderWrongStat;
+//    String stringStat;
     Date date;
+    
     public OrderMapperTest() {
         
     }
@@ -39,11 +40,12 @@ public class OrderMapperTest {
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
         dbf.setCon(con);
+//        stringStat = "Ongoing";
         date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        stringDate = "2016-04-20";
         rightOrder=new Order(date,"Check-up Building", "for annual inspection",1,1,1);
-//        orderWrongDate = new Order(stringDate,"Check-up Building", "for annual inspection",1,1,1);
         orderWrongCustomer = new Order(date,"Check-up Building", "for annual inspection",1,1,20);
+        orderWrongBuilding = new Order(date,"Check-up Building", "for annual inspection",1,2,1);
+//        orderWrongStat = new Order(date,"Check-up Building", "for annual inspection",stringStat,1,1);
     }
     
     @After
@@ -51,33 +53,32 @@ public class OrderMapperTest {
         fixture.closeConnection();
     }
 
+    
+    //rightOrder is the expected order to be saved in the database
     @Test
     public void testAddNewOrderValidDataEntry() {
-        
+       boolean isSaved = dbf.addNewOrder(rightOrder);
+       assertTrue("Order is saved!",isSaved);
     }
     
-    //invalid data type of Date, inserting String instead of sql date
-    @Test
-    public void testAddNewOrderInvalidDate() {
-        
-    }
-    
-    //trying to insert a new order that has a customer ID that doesn't exist
+    //trying to insert a new order that has a customer that doesn't exist
     @Test
     public void testAddNewOrderForInvalidCustomer() {
-        
+        boolean isSaved = dbf.addNewOrder(orderWrongCustomer);
+        assertFalse("Fail to Save!",isSaved);
     }
 
+    //trying to insert a new order that has a building that doesn't exist
     @Test
-    public void testGetOrder() {
+    public void testAddNewOrderForInvalidBuilding() {
+        boolean isSaved = dbf.addNewOrder(orderWrongBuilding);
+        assertFalse("Fail to Save!",isSaved);
     }
-
-    @Test
-    public void testGetOrderStatus() {
-    }
-
-    @Test
-    public void testUpdateOrder() {
-    }
-    
+//    
+//    //trying to insert a new order that has a wrong data type of order status
+//    @Test
+//    public void testAddNewOrderInvalidStatus() {
+//        boolean isSaved = dbf.addNewOrder(orderWrongStat);
+//        assertFalse("Fail to Save!",isSaved);
+//    }
 }
