@@ -14,7 +14,6 @@ import org.junit.Test;
 import Domain.*;
 import Domain.Exceptions.PolygonException;
 import java.util.ArrayList;
-import Model.ReportMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.junit.Assert.*;

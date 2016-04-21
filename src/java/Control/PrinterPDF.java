@@ -541,7 +541,7 @@ public class PrinterPDF {
             doc.add(Chunk.NEWLINE);
             //takes the first, since now it's only possible to add one picture
             ReportExterior firstEx = report.getListOfRepExt().get(0);
-            if (firstEx != null && firstEx.getRepExtPic() != null) {
+            if (firstEx != null && firstEx.getRepExtPic() != null && !firstEx.getRepExtPic().equals("")) {
 
                 report.getListOfExtPics();
                 PdfPTable pictureExteriorTable = new PdfPTable(2);

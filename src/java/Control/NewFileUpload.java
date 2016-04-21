@@ -139,7 +139,9 @@ public class NewFileUpload {
         if (fileParts!=null){
             for (Part filePart : fileParts) {
                 filename=saveRoomPicture(parentFolder,filePart);
+                if(filename != null){
                 rrPic.add(new ReportPic(filename,description));
+                }
                 System.out.println(filename);
             }
             
