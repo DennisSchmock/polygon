@@ -13,7 +13,8 @@ public class DBFixture {
     private static String driver = "com.mysql.jdbc.Driver";
     private static String URL = "jdbc:mysql://localhost:3306/polytest";
     private static String id = "root";
-    private static String pw = "daniel";
+    private static String pw = "cjs110292";
+   
     
     public void setUp() throws SQLException {
         try {
@@ -221,6 +222,7 @@ public class DBFixture {
                     + "`report_ext_pic` INT(10) NULL DEFAULT NULL,"
                     + "`report` INT(10) NULL DEFAULT NULL,"
                     + "`rep_ext_inspected_area` varchar(45) DEFAULT NULL,"
+                    + "`rep_ext_pic_description` varchar(250)DEFAULT NULL, "
                     + "PRIMARY KEY (`report_ext_id`),"
                     + "INDEX `report` (`report` ASC),"
                     + "CONSTRAINT `report_exterior_ibfk_1`"

@@ -24,7 +24,7 @@ public class User {
     private String companyName;
 
     /**
-     *The purpose of this constructor is to create a user object for Polygon employees
+     *The purpose of this constructor is to create a user object for Polygon employees and customers
      * @param userName
      * @param pwd
      * @param fName

@@ -34,7 +34,10 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-        
+//        Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+//        String stringStat = "test";
+//        Order orderWrongStat = new Order(date,"Check-up Building", "for annual inspection",stringStat,1,1);
+//        System.out.println(facade.addNewOrder(orderWrongStat));
 //        String username = "daeniz";
 //        Customer c = facade.getCustomerAfterLogIn(username);
 //        System.out.println("c" + c.getCustomerId());
@@ -351,9 +354,10 @@ public class DBFacade {
     /**
      * redirects to the OrderMapper
      * @param o new Order
+     * @return just for testing
      */
-    public void addNewOrder(Order o){
-            om.addNewOrder(o, con);
+    public boolean addNewOrder(Order o){
+            return om.addNewOrder(o, con);
     }
     
     /**

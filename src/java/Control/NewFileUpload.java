@@ -5,9 +5,7 @@
  */
 package Control;
 
-import Domain.Building;
 import Domain.BuildingFile;
-import Domain.BuildingFiles;
 import Domain.Floorplan;
 import Domain.ReportPic;
 import java.io.File;
@@ -141,7 +139,9 @@ public class NewFileUpload {
         if (fileParts!=null){
             for (Part filePart : fileParts) {
                 filename=saveRoomPicture(parentFolder,filePart);
+                if(filename != null){
                 rrPic.add(new ReportPic(filename,description));
+                }
                 System.out.println(filename);
             }
             

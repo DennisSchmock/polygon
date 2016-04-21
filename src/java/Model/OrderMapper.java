@@ -23,8 +23,9 @@ public class OrderMapper {
      * This method will save the new order in the database
      * @param o an object that handles the new order
      * @param con connection
+     * @return boolean just for testing
      */
-    public void addNewOrder(Order o, Connection con){
+    public boolean addNewOrder(Order o, Connection con){
             String SQLString = "insert into orders(order_date,service_description,problem_statement,order_status,customer_id,idbuilding) values (?,?,?,?,?,?)";
             try (PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS)) {
@@ -41,9 +42,11 @@ public class OrderMapper {
                 if (rs.next()) {
                     o.setOrderNumber(rs.getInt(1));
                 }
+                return true;
             } catch (Exception e) {
                 System.out.println("Fail in saving new order - addNewOrder");
                 System.out.println(e.getMessage());
+                return false;
             }
     }
     

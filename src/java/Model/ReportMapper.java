@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Dennis Schmock, Daniel Grønberg, Cherry Rose
+ * @author Dennis Schmock, Daniel Grønberg, Cherry Rose, Daniel Holmann
  */
 public class ReportMapper {
 
@@ -49,6 +49,7 @@ public class ReportMapper {
             if (rs.next()) {   // Changed from !rs.next() as this didn't return the key
                 reportId = rs.getInt(1);
                 System.out.println("Report id = " + reportId);
+                r.setReportId(reportId);
             }
             if(r.getListOfRepRoom() != null){
             saveRoomsToDatabase(r, con);
@@ -71,6 +72,7 @@ public class ReportMapper {
             }
             System.out.println("Fail in saving new report - saveNewReport. Actions has been Rolledback");
             System.out.println(e);
+            e.printStackTrace();
             throw new PolygonException("Database error");
         }
         
@@ -258,6 +260,7 @@ public class ReportMapper {
                 int roomId = 0;
                 if (rs.next()) {
                     roomId = rs.getInt(1);
+                    reportRoom.setRepRoomId(roomId);
                 }
                 if(reportRoom.getListOfDamages() != null){
                 saveRoomDamages(reportRoom, con);
@@ -270,8 +273,10 @@ public class ReportMapper {
                 }
                 if(reportRoom.getMoist() != null){
                 saveRoomMoist(reportRoom, con);
+                }
+                if(reportRoom.getRrPic() != null){
                 saveRoomPics(reportRoom,con);
-        }
+                }
         }
 
     }
@@ -342,16 +347,26 @@ public class ReportMapper {
     }
 
     private void saveExteriorToDB(Report r, Connection con) throws Exception {
-
+        
+        /*
+        This is making sure that if there is no exteriorPics
+        There will be saved null values for the exteriorPics and exterior_pic_description
+        */
+        String exteriorPicsPath = null;
+        String exteriorDecription = null;
+        if(r.getListOfExtPics() != null){
+            exteriorPicsPath = r.getListOfExtPics().get(0).getFilename();
+            exteriorDecription = r.getListOfExtPics().get(0).getDescription();
+        }
         String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area, rep_ext_pic_description) values (?,?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
-
+            
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
-                statement.setString(2, r.getListOfExtPics().get(0).getFilename());
+                statement.setString(2, exteriorPicsPath);
                 statement.setString(4, re.getRepExtInspectedArea());
-                statement.setString(5, r.getListOfExtPics().get(0).getDescription());
+                statement.setString(5, exteriorDecription);
                 statement.setInt(3, r.getReportId());
                 statement.executeUpdate();
         }
@@ -410,7 +425,7 @@ public class ReportMapper {
 
     private ArrayList<ReportFloor> getReportFloors(int buildingId,int reportId,Connection con) throws PolygonException {
     ArrayList<ReportFloor> reportFloors = new ArrayList<>();
-    String SQLString = "SELECT * FROM Polygon.building_floor where idbuilding = ?;";
+    String SQLString = "SELECT * FROM building_floor where idbuilding = ?;";
 
          try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, buildingId);
@@ -436,7 +451,7 @@ public class ReportMapper {
     private ArrayList<ReportRoom> getReportRoomsWithFloorId(int floorId, int reportId, Connection con) throws PolygonException {
         ArrayList<ReportRoom> reportRooms = new ArrayList<>();
 
-        String SQLString = "SELECT * FROM Polygon.building_room, Polygon.report_room where report_room.building_room = building_room.room_id AND building_room.floor_id = ? AND report = ?;";
+        String SQLString = "SELECT * FROM building_room, report_room where report_room.building_room = building_room.room_id AND building_room.floor_id = ? AND report = ?;";
 
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, floorId);
