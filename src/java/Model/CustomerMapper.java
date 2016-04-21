@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author dennisschmock
+ * @author Dennis Schmock
  */
 public class CustomerMapper {
 

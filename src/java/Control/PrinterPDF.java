@@ -18,15 +18,11 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Color;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  * This Class is responsable for one thing only. Printing an Report in PDF file.
@@ -40,6 +36,7 @@ public class PrinterPDF {
      * works as it should.
      *
      * @param args
+     * @throws Domain.Exceptions.PolygonException
      */
     public static void main(String[] args) throws PolygonException {
         //Test class:
@@ -63,6 +60,7 @@ public class PrinterPDF {
      *
      * @param buildingId
      * @return
+     * @throws Domain.Exceptions.PolygonException
      */
     public static Building getreportBuilding(int buildingId) throws PolygonException {
         DomainFacade df = DomainFacade.getInstance();

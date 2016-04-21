@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Dennis Schmock, Daniel Grønberg, Cherry Rose
+ * @author Dennis Schmock, Daniel Grønberg, Cherry Rose, Daniel Holmann
  */
 public class ReportMapper {
 
