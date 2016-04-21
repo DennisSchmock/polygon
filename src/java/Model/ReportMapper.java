@@ -13,19 +13,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Dennis Schmock, Daniel Grønberg, Cherry Rose
  */
-public class NewReportMapper {
+public class ReportMapper {
 
     /**
      * Take the finished Report object and saves it in the database
@@ -57,10 +51,10 @@ public class NewReportMapper {
                 System.out.println("Report id = " + reportId);
             }
             if(r.getListOfRepRoom() != null){
-            saveRoomsToDatabase(r, reportId, con);
+            saveRoomsToDatabase(r, con);
             }
             if(r.getListOfRepExt() != null){
-            saveExteriorToDB(r, reportId, con);
+            saveExteriorToDB(r, con);
             }
             
             
@@ -83,32 +77,7 @@ public class NewReportMapper {
 
     }
     
-//    /**
-//     * Saves an NON finished Report object in the database. It
-//     * Assumes that so far the report object only contains building_id 
-//     * and Polygonuser. The rest is to be inserted.
-//     * @param report Report only containing values of the building and polygonuser.
-//     * @param con Connection to the database
-//     * @return Returns the updated Report object that now has a Report_id
-//     */
-//    public Report createReportTuble(Report report, Connection con){
-//        String sql = "insert into report(building_id, polygonuser, report_finished) values (?,?,?)";
-//        
-//        try {
-//            PreparedStatement statment = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            statment.setInt(1, report.getBuildingId());
-//            statment.setString(2, report.getPolygonUserName());
-//            statment.setInt(3, 0); // means that the report statues is set to not finished
-//            statment.executeUpdate();
-//            ResultSet rs = statment.getGeneratedKeys();
-//            if(rs.next()){
-//                report.setReportId(rs.getInt(1));
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Error in inserting Report Tuble " + ex );
-//        }
-//        return report;
-//    }
+
 
     /**
      * The purpose of this method, is to get a Single ReportObject based on the report Id.
@@ -275,13 +244,13 @@ public class NewReportMapper {
         }
     }
 
-    private void saveRoomsToDatabase(Report r, int reportId, Connection con) throws Exception {
+    private void saveRoomsToDatabase(Report r, Connection con) throws Exception {
         String SQLString = "insert into report_room(room_name,report,building_room) values (?,?,?)";
         for (ReportRoom reportRoom : r.getListOfRepRoom()) {
             PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS); 
                 statement.setString(1, reportRoom.getRoomName());
-                statement.setInt(2, reportId);
+                statement.setInt(2, r.getReportId());
                 statement.setInt(3, reportRoom.getBuildingRoomId());
                 System.out.println( "ReportRoom Building FOREIGN KEY: " + reportRoom.getBuildingRoomId());
                 statement.executeUpdate();
@@ -291,23 +260,23 @@ public class NewReportMapper {
                     roomId = rs.getInt(1);
                 }
                 if(reportRoom.getListOfDamages() != null){
-                saveRoomDamages(reportRoom, roomId, con);
+                saveRoomDamages(reportRoom, con);
                 }
                 if(reportRoom.getListOfInt() != null){
-                saveRoomInterior(reportRoom, roomId, con);
+                saveRoomInterior(reportRoom, con);
                 }
                 if(reportRoom.getListOfRec() != null){
-                saveRoomRecommendations(reportRoom, roomId, con);
+                saveRoomRecommendations(reportRoom, con);
                 }
                 if(reportRoom.getMoist() != null){
-                saveRoomMoist(reportRoom, roomId, con);
-                saveRoomPics(reportRoom,roomId,con);
+                saveRoomMoist(reportRoom, con);
+                saveRoomPics(reportRoom,con);
         }
         }
 
     }
 
-    private void saveRoomDamages(ReportRoom r, int roomId, Connection con) throws Exception {
+    private void saveRoomDamages(ReportRoom r, Connection con) throws Exception {
         String SQLString = "insert into report_room_damage (damage_time,place,what_happened,what_is_repaired,damage_type,report_room)"
                 + " values (?,?,?,?,?,?)";
         for (ReportRoomDamage damage : r.getListOfDamages()) {
@@ -319,7 +288,7 @@ public class NewReportMapper {
                 statement.setString(3, damage.getWhatHappened());
                 statement.setString(4, damage.getWhatIsRepaired());
                 statement.setString(5, damage.getDamageType());
-                statement.setInt(6, roomId);
+                statement.setInt(6, r.getRepRoomId());
                 statement.executeUpdate();
                 ResultSet rs = statement.getGeneratedKeys();
 
@@ -328,7 +297,7 @@ public class NewReportMapper {
 
     }
 
-    private void saveRoomInterior(ReportRoom reportRoom, int roomId, Connection con) throws Exception {
+    private void saveRoomInterior(ReportRoom reportRoom, Connection con) throws Exception {
         String SQLString = "insert into report_room_interior(report_room_interior_name,remark,report_room)"
                 + " values (?,?,?)";
         for (ReportRoomInterior rri : reportRoom.getListOfInt()) {
@@ -336,7 +305,7 @@ public class NewReportMapper {
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, rri.getRepRoomIntName());
                 statement.setString(2, rri.getRemark());
-                statement.setInt(3, roomId);
+                statement.setInt(3, reportRoom.getRepRoomId());
                 statement.executeUpdate();
 
            
@@ -345,14 +314,14 @@ public class NewReportMapper {
 
     }
 
-    private void saveRoomRecommendations(ReportRoom reportRoom, int roomId, Connection con) throws Exception {
+    private void saveRoomRecommendations(ReportRoom reportRoom, Connection con) throws Exception {
         String SQLString = "insert into report_room_recommendation(recommendation,report_room) values (?,?)";
         for (ReportRoomRecommendation rrr : reportRoom.getListOfRec()) {
 
             PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, rrr.getRecommendation());
-                statement.setInt(2, roomId);
+                statement.setInt(2, reportRoom.getRepRoomId());
                 statement.executeUpdate();
 
            
@@ -360,19 +329,19 @@ public class NewReportMapper {
 
     }
 
-    private void saveRoomMoist(ReportRoom reportRoom, int roomId, Connection con) throws Exception {
+    private void saveRoomMoist(ReportRoom reportRoom, Connection con) throws Exception {
         String SQLString = "insert into report_room_moist(report_room_moist_measured, report_room_moist_place,report_room_id) values (?,?,?)";
         PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, reportRoom.getMoist().getMoistMeasured());
             statement.setString(2, reportRoom.getMoist().getMeasurePoint());
-            statement.setInt(3, roomId);
+            statement.setInt(3, reportRoom.getRepRoomId());
             statement.executeUpdate();
 
         
     }
 
-    private void saveExteriorToDB(Report r, int reportId, Connection con) throws Exception {
+    private void saveExteriorToDB(Report r, Connection con) throws Exception {
 
         String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area, rep_ext_pic_description) values (?,?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
@@ -383,7 +352,7 @@ public class NewReportMapper {
                 statement.setString(2, r.getListOfExtPics().get(0).getFilename());
                 statement.setString(4, re.getRepExtInspectedArea());
                 statement.setString(5, r.getListOfExtPics().get(0).getDescription());
-                statement.setInt(3, reportId);
+                statement.setInt(3, r.getReportId());
                 statement.executeUpdate();
         }
     }
@@ -515,7 +484,7 @@ public class NewReportMapper {
             throw new PolygonException("Error retrieving reports from database");
         }
     }
-    private void saveRoomPics(ReportRoom reportRoom, int roomId, Connection con) throws Exception{
+    private void saveRoomPics(ReportRoom reportRoom, Connection con) throws Exception{
         String SQLString = "insert into report_room_pic(description, filename,reportroom) values (?,?,?)";
         for (ReportPic  rrPic : reportRoom.getRrPic()) {
             
@@ -524,7 +493,7 @@ public class NewReportMapper {
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, rrPic.getDescription());
             statement.setString(2, rrPic.getFilename());
-            statement.setInt(3, roomId);
+            statement.setInt(3, reportRoom.getRepRoomId());
             statement.executeUpdate();
         }
     }

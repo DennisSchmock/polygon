@@ -10,7 +10,6 @@ import Domain.Building;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
-import Domain.Exceptions.PolygonException;
 import Domain.Order;
 import Domain.Report;
 import Domain.ReportRoom;
@@ -24,7 +23,6 @@ import Domain.User;
 import Domain.Exceptions.PolygonException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -630,7 +628,7 @@ public class FrontControl extends HttpServlet {
     }
 
     /**
-     * Method for logging in.
+     * The purpose of this method, is to validate the user login.
      *
      * @param df
      * @param request
