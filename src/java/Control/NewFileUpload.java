@@ -5,9 +5,7 @@
  */
 package Control;
 
-import Domain.Building;
 import Domain.BuildingFile;
-import Domain.BuildingFiles;
 import Domain.Floorplan;
 import Domain.ReportPic;
 import java.io.File;

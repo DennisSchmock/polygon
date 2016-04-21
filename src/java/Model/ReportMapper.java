@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Dennis Schmock, Daniel Grønberg, Cherry Rose
+ * @author Dennis Schmock, Daniel Grønberg, Cherry Rose, Daniel Holmann
  */
 public class ReportMapper {
 
@@ -49,6 +49,7 @@ public class ReportMapper {
             if (rs.next()) {   // Changed from !rs.next() as this didn't return the key
                 reportId = rs.getInt(1);
                 System.out.println("Report id = " + reportId);
+                r.setReportId(reportId);
             }
             if(r.getListOfRepRoom() != null){
             saveRoomsToDatabase(r, con);

@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * Responsible for everything going in and out of the database with the table
  * building
  *
- * @author danie
+ * @author Dennis Schmock and Daniel Grønberg
  */
 public class BuildingMapper{
 
