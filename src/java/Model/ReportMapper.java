@@ -269,8 +269,8 @@ public class ReportMapper {
                 saveRoomRecommendations(reportRoom, con);
                 }
                 if(reportRoom.getMoist() != null){
-                saveRoomMoist(reportRoom, roomId, con);
-                saveRoomPics(reportRoom,roomId,con);
+                saveRoomMoist(reportRoom, con);
+                saveRoomPics(reportRoom,con);
         }
         }
 
@@ -329,13 +329,13 @@ public class ReportMapper {
 
     }
 
-    private void saveRoomMoist(ReportRoom reportRoom, int roomId, Connection con) throws Exception {
+    private void saveRoomMoist(ReportRoom reportRoom, Connection con) throws Exception {
         String SQLString = "insert into report_room_moist(report_room_moist_measured, report_room_moist_place,report_room_id) values (?,?,?)";
         PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, reportRoom.getMoist().getMoistMeasured());
             statement.setString(2, reportRoom.getMoist().getMeasurePoint());
-            statement.setInt(3, roomId);
+            statement.setInt(3, reportRoom.getRepRoomId());
             statement.executeUpdate();
 
         
@@ -484,7 +484,7 @@ public class ReportMapper {
             throw new PolygonException("Error retrieving reports from database");
         }
     }
-    private void saveRoomPics(ReportRoom reportRoom, int roomId, Connection con) throws Exception{
+    private void saveRoomPics(ReportRoom reportRoom, Connection con) throws Exception{
         String SQLString = "insert into report_room_pic(description, filename,reportroom) values (?,?,?)";
         for (ReportPic  rrPic : reportRoom.getRrPic()) {
             
@@ -493,7 +493,7 @@ public class ReportMapper {
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, rrPic.getDescription());
             statement.setString(2, rrPic.getFilename());
-            statement.setInt(3, roomId);
+            statement.setInt(3, reportRoom.getRepRoomId());
             statement.executeUpdate();
         }
     }
