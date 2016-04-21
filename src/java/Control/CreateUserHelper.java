@@ -5,8 +5,12 @@
  */
 package Control;
 
+import Domain.Customer;
 import Domain.DomainFacade;
+import Domain.User;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -14,6 +18,8 @@ import javax.servlet.http.HttpSession;
  * @author Dennis
  */
 class CreateUserHelper {
+
+    //Customer customer;
 
     void createNewCustomer(DomainFacade df, HttpSession session, HttpServletRequest request) {
         String companyName = request.getParameter("companyname");
@@ -27,6 +33,70 @@ class CreateUserHelper {
         int zip = Integer.parseInt(request.getParameter("zip"));
         df.createNewCustomer(companyName, contactPerson, email, street, streetNumber, CVR, zip, city, phoneNumber);
    
+    }
+
+    void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session, FrontControl frontControl) {
+        createNewCustomer(df, session, request);
+    }
+
+    /**
+     * The purpose of this method, is to validate the user login.
+     *
+     * @param df
+     * @param request
+     * @param response
+     */
+    public void login(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
+        String username = (String) request.getParameter("username");
+        String pwd = (String) request.getParameter("pwd");
+        //this is for order request when a customer loggedin
+        //c = df.getCustomerAfterLogIn(username);
+        request.getSession().setAttribute("customer", df.getCustomerAfterLogIn(username));
+        if (df.logUserIn(username, pwd)) {
+            request.getSession().setAttribute("loggedin", true);
+            request.getSession().setAttribute("userrole", "user");
+            User user = df.loadUser(username);
+            request.getSession().setAttribute("user", user);
+        } else {
+            request.getSession().setAttribute("loggedin", false);
+        }
+    }
+
+    /**
+     * Method that sets up, for the emp whitch building he has to create an
+     * report for. Needs to load all the customers.
+     *
+     * @param request
+     * @param sessionObj
+     * @param df
+     */
+    void chooseCustomer(HttpSession sessionObj, DomainFacade df) {
+        List<Customer> allCustomers = df.loadAllCustomers();
+        sessionObj.setAttribute("allCustomers", allCustomers);
+    }
+
+    /**
+     * Method for logging an user in. Question: The cus login set a session
+     * parameter that is called "user" This method could just use that aswell,
+     * to store the object Or have a different parameter. Also we need to find
+     * out if the loggedin should be an int. 0 = not logged in, 1= cus_loggedin,
+     * 2= emp_loggedin
+     *
+     * @param df
+     * @param request
+     * @param response
+     */
+    void emplogin(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
+        String username = (String) request.getParameter("username");
+        String pwd = (String) request.getParameter("pwd");
+        if (df.logEmpUserIn(username, pwd)) {
+            // not implemented!
+            request.getSession().setAttribute("loggedin", true);
+            User user = df.loadEmpUser(username); // not implemented!
+            request.getSession().setAttribute("user", user);
+        } else {
+            request.getSession().setAttribute("loggedin", false);
+        }
     }
     
 }
