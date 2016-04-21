@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author dennisschmock
+ * @author Dennis Schmock
  */
 @WebFilter(urlPatterns = {"/frontpagde", })
 public class LoginFilter implements Filter {
