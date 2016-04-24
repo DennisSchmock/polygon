@@ -7,6 +7,7 @@ package Model;
 
 import Domain.Building;
 import Domain.BuildingRoom;
+import Domain.Exceptions.PolygonException;
 import Domain.Report;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ public class DBFacadeTestBuilding {
 //    }
 //
     @Test
-    public void testSaveNewBuilding() {
+    public void testSaveNewBuilding() throws PolygonException {
         
         Building b = new Building("vor Fredfdasflser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
@@ -81,7 +82,7 @@ public class DBFacadeTestBuilding {
     }
 
     @Test
-    public void testGetListOfbuildingsDB() {
+    public void testGetListOfbuildingsDB() throws PolygonException {
        Building b = new Building("Vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
         dbf.saveNewBuilding(b); 
@@ -92,7 +93,7 @@ public class DBFacadeTestBuilding {
     }
 
     @Test
-    public void testUpdateBuildingDBFacade() {
+    public void testUpdateBuildingDBFacade() throws PolygonException {
          Building b = new Building("vor Frelser Kirke", "Christianshavn", "12A", 2300, 1734, 237.9, "Praiseing the Lord");
         b.setCustId(1);
         dbf.saveNewBuilding(b);

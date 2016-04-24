@@ -1,7 +1,7 @@
 <%-- 
     Document   : ordersuccess
     Created on : Apr 18, 2016, 9:29:47 AM
-    Author     : Bruger
+    Author     : Cherry
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,10 +13,14 @@
 <main>
     <form action="frontpage" method="POST">
     <div class="w3-row-padding" align = "center">
-        <h1>Thank you for your order.</h1>  
+        <h1>Thank you for your order!</h1>  
+        <i>You can check order progress in your Order History.</i>
     </div>
-    
-    <div class="w3-row-padding">
+        <br>
+        <br>
+        <br>
+        <br>
+    <div class="w3-row-padding" align = "center">
      <p>
         For instant assistance, please call 70 11 00 44 <br>
         (24 Hours on call service)

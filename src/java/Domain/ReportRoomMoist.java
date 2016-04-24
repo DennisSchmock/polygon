@@ -5,11 +5,13 @@
  */
 package Domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author danie
  */
-public class ReportRoomMoist {
+public class ReportRoomMoist implements Serializable {
     
     private int moistMeasureId;
     private String moistMeasured;

@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import Domain.Exceptions.PolygonException;
 import Model.DBFacade;
 import java.sql.Connection;
 import java.sql.Date;
@@ -36,7 +37,7 @@ public class DomainFacade {
      * @see All the fields needed to create an building object Creates the
      * building object and sends it to the DBFacade
      */
-    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) {
+    public Building createnewBuilding(String buildingName, String StreetAddress, String StreetNumber, int zipcode, double buildingsize, int buildingYear, String useOfBuilding, int custId) throws PolygonException {
         Building b = new Building(buildingName, StreetAddress, StreetNumber, zipcode, buildingYear, buildingsize, useOfBuilding);
         b.setCustId(custId); // this is hardcoded! Should load the userloged in!
         b = dbFacade.saveNewBuilding(b);
@@ -44,7 +45,7 @@ public class DomainFacade {
     }
 
 
-public String saveBuildingPic(int buildId, String filename){
+public String saveBuildingPic(int buildId, String filename) throws PolygonException{
         return dbFacade.saveBuildingPic(buildId, filename);
         
     }
@@ -74,14 +75,14 @@ public String saveBuildingPic(int buildId, String filename){
      * @param customerID ID of the customer that is to be loaded
      * @return An list of buildings related to the customerID
      */
-    public List<Building> getListOfBuildings(int customerID) {
+    public List<Building> getListOfBuildings(int customerID) throws PolygonException {
         // When we have implemeted an hashmap, where should be some logic, to
         // Find out if the hashmap is empty or not. Otherwise it loads it form 
         // The database.
         return dbFacade.getListOfbuildingsDB(customerID);
     }
 
-    public ArrayList<Report> getListOfReports(int buildingId) {
+    public ArrayList<Report> getListOfReports(int buildingId) throws PolygonException {
         return dbFacade.getListOfReports(buildingId);
     }
 
@@ -92,7 +93,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param buildingToBeEdited Is the updated building object that needs to be
      * saved in the database
      */
-    public void Updatebuilding(Building buildingToBeEdited) {
+    public void Updatebuilding(Building buildingToBeEdited) throws PolygonException {
         dbFacade.updateBuildingDBFacade(buildingToBeEdited);
     }
 
@@ -109,7 +110,7 @@ public String saveBuildingPic(int buildId, String filename){
      *
      * @param report The report object without an uniqe ID jet.
      */
-    public int saveReport(Report report) {
+    public int saveReport(Report report) throws PolygonException {
         return dbFacade.reportToDataBase(report);
 
     }
@@ -139,16 +140,16 @@ public String saveBuildingPic(int buildId, String filename){
      * @param buildingID Id for the building to be loaded
      * @return An objet of the the Building that has been loaded
      */
-    public Building getBuilding(int buildingID) {
+    public Building getBuilding(int buildingID) throws PolygonException {
         return dbFacade.getBuilding(buildingID);
     }
 
-    public String getLatestBuildingImage(int buildingId) {
+    public String getLatestBuildingImage(int buildingId) throws PolygonException {
         return dbFacade.getLatestBuildingImage(buildingId);
 
     }
 
-    public void addFloors(BuildingFloor bf) {
+    public void addFloors(BuildingFloor bf) throws PolygonException {
         dbFacade.addFloor(bf);
     }
 
@@ -159,11 +160,11 @@ public String saveBuildingPic(int buildId, String filename){
      * @param newRoom A BuildingRoom object that is to be created.
      * @return The newly created building object in the database with the an ID!
      */
-    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) {
+    public BuildingRoom addBuildingRoom(BuildingRoom newRoom) throws PolygonException {
         return dbFacade.saveBuildingRoom(newRoom);
     }
 
-    public ArrayList<BuildingFloor> listOfFloors(int bdgId) {
+    public ArrayList<BuildingFloor> listOfFloors(int bdgId) throws PolygonException {
         return dbFacade.getListOfFloors(bdgId);
     }
 
@@ -171,15 +172,15 @@ public String saveBuildingPic(int buildId, String filename){
         return dbFacade.getCustomer(cusid);
     }
 
-    public ArrayList<BuildingRoom> getListOfRooms(int flrId) {
+    public ArrayList<BuildingRoom> getListOfRooms(int flrId) throws PolygonException {
         return dbFacade.getRoomList(flrId);
     }
 
-    public void addRoom(BuildingRoom br) {
+    public void addRoom(BuildingRoom br) throws PolygonException {
         dbFacade.saveBuildingRoom(br);
     }
 
-    public void updateFloor(int id, int newNumRooms) {
+    public void updateFloor(int id, int newNumRooms) throws PolygonException {
         dbFacade.updateFloor(id, newNumRooms);
     }
 
@@ -189,7 +190,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param floorid the ID for the floor to be loaded
      * @return An object of the infomation for the floor.
      */
-    public BuildingFloor getBuildingFloor(int floorid) {
+    public BuildingFloor getBuildingFloor(int floorid) throws PolygonException {
         return dbFacade.getFloor(floorid);
     }
 
@@ -198,7 +199,7 @@ public String saveBuildingPic(int buildId, String filename){
      * @param reportId
      * @return a Report
      */
-    public Report getReport(int reportId) {
+    public Report getReport(int reportId) throws PolygonException {
         return dbFacade.getSingleReport(reportId);
     }
 
@@ -206,8 +207,45 @@ public String saveBuildingPic(int buildId, String filename){
      * The purpose of this method, is to get a very simple list of all reports from DB. 
      * @return
      */
-    public ArrayList<Report> getSimpleListOfReports() {
+    public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
         return dbFacade.getSimpleListOfReports();
+    }
+
+    /**
+     * Saves Documents associated with a building that are NOT the
+     * floorplans
+     * @param b the buliding which has documents to be saved
+     */
+    public void saveBuildingFiles(Building b) throws PolygonException {
+        dbFacade.saveBuildingFiles(b);
+    }
+
+    /**
+     * Saves floorplans to a specific floor
+     * @param floorId Id of the floor the floorplan(s) belongs to 
+     * @param plans ArrayList of floorplans
+     */
+    public void saveFloorplans(int floorId, ArrayList<Floorplan> plans) throws PolygonException {
+            for (Floorplan floorplan : plans) {
+                System.out.println("Trying to save floorplan:");;
+                dbFacade.saveFloorplan(floorId,floorplan);
+            }
+    }
+    
+    /**
+     * Method finds all the floorplans belonging to an ArrayList of floors
+     * 
+     * @param listOfFLoors a list of BuildingFloor objects
+     * @return Floorplans belonging to the buildingfloors put in
+     */
+    public ArrayList<Floorplan> getFloorplans(ArrayList<BuildingFloor> listOfFLoors) throws PolygonException{
+        ArrayList<Floorplan> plans=new ArrayList();
+        
+        for (BuildingFloor bf : listOfFLoors) {
+            ArrayList<Floorplan> plansFetched = dbFacade.getFloorplans(bf.getFloorId());
+            if (plansFetched != null) plans.addAll(plansFetched);
+        }
+        return plans;
     }
 
     /**
@@ -234,5 +272,40 @@ public String saveBuildingPic(int buildId, String filename){
      */
     public Customer getCustomerAfterLogIn(String username){
         return dbFacade.getCustomerAfterLogIn(username);
+    }
+    
+    /**
+     * This method is used to get the status description of an order
+     * @param stat order status ID
+     * @return status description
+     */
+    public String getOrderStatus(int stat){
+        return dbFacade.getOrderStatus(stat);
+    }
+    
+    /**
+     * This method is used to get the list of orders of a customer
+     * @param custId customer ID
+     * @return list of Orders
+     */
+    public ArrayList<Order> getListOfOrders(int custId) throws PolygonException{
+        return dbFacade.getlistOfOrders(custId);
+    }
+    
+    /**
+     * This method is used to get list of all the orders
+     * @return list of all Orders
+     */
+    public ArrayList<Order> getListOfAllOrders() throws PolygonException{
+        return dbFacade.getListOfAllOrders();
+    }
+
+    /**
+     * This method is used to update the order status
+     * @param orderNumber order number
+     * @param newStat to be changed
+     */
+    public void updateStatus(int orderNumber, int newStat) {
+        dbFacade.updateOrder(orderNumber,newStat);
     }
 }

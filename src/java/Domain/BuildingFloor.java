@@ -16,6 +16,7 @@ public class BuildingFloor implements Serializable{
     private int totalRooms;
     private int buildingId;
     private ArrayList<BuildingRoom> listOfRooms;
+    private ArrayList<Floorplan> floorplans;
 
     /**
      *
@@ -102,6 +103,20 @@ public class BuildingFloor implements Serializable{
             }
         }
             return null;
+    }
+
+    public ArrayList<Floorplan> getFloorplans() {
+        if (floorplans==null) floorplans= new ArrayList();
+        return floorplans;
+    }
+    
+    public void addFloorplan(Floorplan f){
+        if (floorplans==null) floorplans= new ArrayList();
+        floorplans.add(f);
+    }
+
+    public void setFloorplans(ArrayList<Floorplan> floorplans) {
+        this.floorplans = floorplans;
     }
     
 }

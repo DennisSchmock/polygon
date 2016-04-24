@@ -21,6 +21,7 @@
             <tr>
             <th>Building Name</th>
             <th>Building Address</th>
+            <th>Building State</th>
            
             </tr>
         </thead>
@@ -31,6 +32,7 @@
                 
             <td><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}">${building.buildingName}</a></td>
             <td><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}">${building.streetAddress}</a></td>
+            <td><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}">${building.buildingState}</a></td>
            
             </tr>
             </c:forEach>
