@@ -346,7 +346,7 @@ public class ReportMapper {
 
         String SQLString = "insert into report_exterior(report_ext_description, report_ext_pic,report,rep_ext_inspected_area, rep_ext_pic_description) values (?,?,?,?,?)";
         for (ReportExterior re : r.getListOfRepExt()) {
-
+                       
            PreparedStatement statement
                     = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, re.getRepExtDescription());
