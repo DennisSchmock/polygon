@@ -51,9 +51,6 @@ public class FrontControl extends HttpServlet {
     //store objects since get parameter values resets
     Order order;
    
-
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -90,9 +87,6 @@ public class FrontControl extends HttpServlet {
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
         try {
-
-       
-
         if (page == null) {
             page = "/index.jsp";
         }
@@ -136,11 +130,8 @@ public class FrontControl extends HttpServlet {
             url = "/viewreport.jsp";
            rh.finishReportObject(request,sessionObj);
            int reportId = rh.saveFinishedReport(sessionObj,df);
-            
                 request.getSession().setAttribute("report", df.getReport(reportId));
-            
         }
-
         
         if (page.equalsIgnoreCase("toFinishReport")) {
             url = "/reportJSPs/finishreport.jsp";
@@ -185,7 +176,6 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("viewreport")) {
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
-
             sessionObj.setAttribute("report", report);
             response.sendRedirect("viewreport.jsp");
             return;
@@ -196,7 +186,6 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("customers", customers);
             response.sendRedirect("viewcustomers.jsp");
             return;
-
         }
 
         if (page.equalsIgnoreCase("viewcustomer")) {
@@ -210,7 +199,6 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("buildings", buildings);
             response.sendRedirect("viewcustomer.jsp");
             return;
-
         }
 
         //This gets a Dash for a building
