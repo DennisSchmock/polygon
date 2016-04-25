@@ -18,8 +18,13 @@ import javax.mail.internet.MimeMessage;
 @Stateless
 public class MailSenderBean {
 
-    public void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message) {
-        
+    private String toEmail = "noreply.polygonproject@gmail.com";
+    private String fromEmail = "noreply.polygonproject@gmail.com";
+    private String username = "noreply.polygonproject";
+    private String password = "poly123go";
+    
+
+    public void sendEmail(String subject, String message) {
         Properties props = System.getProperties();
         //properties set up
         props.put("mail.smtp.starttls.enable", "true");

@@ -347,7 +347,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/getroom list: " + ex);
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't get rooms");
         }
         return roomList;
     }
@@ -379,7 +379,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/getfloorplan list: " + ex);
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't get floorplans");
         }
         return floorplans;
     }
@@ -408,7 +408,7 @@ public class BuildingMapper{
         } catch (SQLException ex) {
             System.out.println("Fail in NewBuildingMapper-getLatestBuildingPic");
             System.out.println(ex.getMessage());
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't get Image");
         }
         
         
@@ -438,7 +438,7 @@ public class BuildingMapper{
            }
         } catch (SQLException ex) {
             System.out.println("Error in SQL SavebuildingRoom " + ex );
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't save room");
         }
         
         return newRoom;
@@ -470,7 +470,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("Error in Get Building Floor BM: " + ex);
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't get floor");
         }
         return bf;
     }
@@ -500,7 +500,7 @@ public class BuildingMapper{
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/get floor: " + ex);
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error- Couldn't get floor");
         }
         return bf;
     }
@@ -525,7 +525,7 @@ public class BuildingMapper{
         } catch (SQLException ex) {
             System.out.println("Fail in updateFloor");
             System.out.println(ex.getMessage());
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't update floor");
         } 
     }
     
@@ -563,7 +563,7 @@ public class BuildingMapper{
         } catch (SQLException ex) {
             System.out.println("Fail in updateBuilding");
             System.out.println(ex.getMessage());
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't update building");
         } 
     }
     
@@ -588,7 +588,7 @@ public class BuildingMapper{
         } catch (SQLException ex) {
             System.out.println("Fail in updateFloor");
             System.out.println(ex.getMessage());
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't update floor");
         } 
     }
     
@@ -612,7 +612,7 @@ public class BuildingMapper{
         } catch (SQLException ex) {
             System.out.println("Fail in updateRoom");
             System.out.println(ex.getMessage());
-            throw new PolygonException("Database error");
+            throw new PolygonException("Database error - Couldn't update room");
         } 
     }
     
