@@ -238,7 +238,6 @@ NewFileUpload nfu = new NewFileUpload();
             df.addFloors(bf);
             b = df.getBuilding(b.getBdgId());
             request.getSession().setAttribute("building", b);
-
         }
 
     }
@@ -307,7 +306,7 @@ NewFileUpload nfu = new NewFileUpload();
     public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
         ArrayList<BuildingFiles> files;
         Building b = (Building) request.getSession().getAttribute("building");
-        int buildId;
+        
             if (b!=null) {
                 files=b.getListOfFiles();
                 
@@ -361,12 +360,9 @@ NewFileUpload nfu = new NewFileUpload();
                         floor.setFloorplans(fp);
                     }
                 }
-                
            
                 //Add to db
                 df.saveFloorplans(chosenFloor,floorplans);
-            
-            
                 
                 //Set succesattribute
                 request.setAttribute("filessubmitted", true);

@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Object that holds a list of grouped files for buildings that share
+ * a description
+ * 
  */
 package Domain;
 
