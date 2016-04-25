@@ -158,14 +158,102 @@ public class ReportTester {
 
     }
 
+    /**
+     *This method tests the method getmoist and setmoist in the reportmapper, 
+     * to make sure that the messure point is saved and loaded in the correct place.
+     */
     @Test
-    public void TestMoist() {
+    public void TestMoistPoint() {
+        
+        try {
+            String expected = "Upper left Corner";
+            
+            ReportRoomMoist tempMoist = r.getListOfRepRoom().get(0).getMoist();
+            tempMoist.setMeasurePoint(expected);
+            r.getListOfRepRoom().get(0).setMoist(tempMoist);
+            int reportID = rm.reportToDataBase(r, con);
+            Report reportfromDatabase = rm.getSingleReport(reportID, con);
+            
+            String actual = reportfromDatabase.getListOfRepRoom().get(0).getMoist().getMeasurePoint();
 
+            assertTrue("Expected: " + expected + " Found: " + actual, expected.equals(actual));
+        } catch (PolygonException ex) {
+             System.out.println("Error Polygon Exception " + ex);
+            ex.printStackTrace();
+        }
+        
     }
-
-    @Test
-    public void TestRecomendation() {
-
+    
+    /**
+     * Method that test if an exception is thrown if an String that is too long is inserted
+     * @throws PolygonException
+     */
+    @Test (expected = PolygonException.class)  
+    public void TestMoistPointTooLong() throws PolygonException {
+        String longString ="";
+        
+        for (int i = 0; i < 1000; i++) {
+            longString +="e";
+        }
+        ReportRoomMoist tempMoist = r.getListOfRepRoom().get(0).getMoist();
+            tempMoist.setMeasurePoint(longString);
+            r.getListOfRepRoom().get(0).setMoist(tempMoist);
+            int reportID = rm.reportToDataBase(r, con);
+        
+            //This should throw an exception before getting here.
+            assertTrue(false);
     }
+    
+    /**
+     * 
+     * Method for test what happens when the point string is null
+     */
+    @Test 
+    public void TestMoistPointNull() {
+        try{
+        String expected = null;
+        
+         ReportRoomMoist tempMoist = r.getListOfRepRoom().get(0).getMoist();
+            tempMoist.setMeasurePoint(expected);
+            r.getListOfRepRoom().get(0).setMoist(tempMoist);
+            int reportID = rm.reportToDataBase(r, con);
+            Report reportfromDatabase = rm.getSingleReport(reportID, con);
+            
+            String actual = reportfromDatabase.getListOfRepRoom().get(0).getMoist().getMeasurePoint();
+
+            assertTrue("Expected: " + expected + " Found: " + actual, actual == null);
+        } catch (PolygonException ex) {
+             System.out.println("Error Polygon Exception " + ex);
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Method for test what happens when the point string is empty
+     */
+    @Test 
+    public void TestMoistPointEmpty()   {
+        
+         try{
+        String expected = "";
+        
+         ReportRoomMoist tempMoist = r.getListOfRepRoom().get(0).getMoist();
+            tempMoist.setMeasurePoint(expected);
+            r.getListOfRepRoom().get(0).setMoist(tempMoist);
+            int reportID = rm.reportToDataBase(r, con);
+            Report reportfromDatabase = rm.getSingleReport(reportID, con);
+            
+            String actual = reportfromDatabase.getListOfRepRoom().get(0).getMoist().getMeasurePoint();
+
+            assertTrue("Expected: " + expected + " Found: " + actual, expected.equals(actual));
+        } catch (PolygonException ex) {
+             System.out.println("Error Polygon Exception " + ex);
+            ex.printStackTrace();
+        }
+        
+       
+    }
+    
+    
 
 }
