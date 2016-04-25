@@ -113,21 +113,58 @@ public class ReportTester {
      */
     @Test
     public void TestWholeObject() {
-        int reportID = 0;
         try {
-            reportID = rm.reportToDataBase(r, con);
-            Report reportfromDatabase =  rm.getSingleReport(reportID, con);
-            
-          ReportRoomRecommendation tempRecomendationfromDatabase = reportfromDatabase.getListOfRepRoom().get(0).getListOfRec().get(0);
-          ReportRoomRecommendation tempfromR = r.getListOfRepRoom().get(0).getListOfRec().get(0);
+            int reportID = rm.reportToDataBase(r, con);
+            Report reportfromDatabase = rm.getSingleReport(reportID, con);
 
-            assertTrue("The objects were not equal", tempfromR.getRecommendation().equals(tempRecomendationfromDatabase.getRecommendation()) );
+            int buildingIDfromdatabase = reportfromDatabase.getBuildingId();
+            int buildingIDfromR = r.getBuildingId();
+
+            ReportRoom roomfromDB = reportfromDatabase.getListOfRepRoom().get(0);
+            ReportRoom roomfromR = r.getListOfRepRoom().get(0);
+
+            ReportRoomMoist moistfromDB = roomfromDB.getMoist();
+            ReportRoomMoist moistfromR = roomfromR.getMoist();
+
+            ReportRoomDamage damagefromDB = roomfromDB.getListOfDamages().get(0);
+            ReportRoomDamage damagefromR = roomfromR.getListOfDamages().get(0);
+
+            ReportRoomInterior interiorfromDB = roomfromDB.getListOfInt().get(0);
+            ReportRoomInterior interiorfromR = roomfromR.getListOfInt().get(0);
+
+            ReportRoomRecommendation recomendationfromDatabase = reportfromDatabase.getListOfRepRoom().get(0).getListOfRec().get(0);
+            ReportRoomRecommendation recomendationfromR = r.getListOfRepRoom().get(0).getListOfRec().get(0);
             
+            assertTrue("Building ID expeted: " + buildingIDfromR + " Found: " + buildingIDfromdatabase,
+                    buildingIDfromR == buildingIDfromdatabase );
+            assertTrue("Room Name expeted: " + roomfromR.getRoomName() + " Found: " + roomfromDB.getRoomName(),
+                    roomfromR.getRoomName().equals(roomfromDB.getRoomName()));
+            assertTrue("MoistMesaured expeted: " + moistfromR.getMeasurePoint() + " Found:  " + moistfromDB.getMeasurePoint(),
+                    moistfromR.getMeasurePoint().equals(moistfromDB.getMeasurePoint()));
+            assertTrue("Damage expeted: " + damagefromR.getWhatHappened() + " Found: " + damagefromDB.getWhatHappened(),
+                    damagefromR.getWhatHappened().equals(damagefromDB.getWhatHappened()));
+            assertTrue("Interior Name expeted: " + interiorfromR.getRepRoomIntName() + " Found: " + interiorfromDB.getRepRoomIntName()
+                    ,interiorfromR.getRepRoomIntName().equals(interiorfromDB.getRepRoomIntName()));
+            assertTrue("Interior Remark expeted: " + interiorfromR.getRemark() + " Found: " + interiorfromDB.getRemark(),
+                    interiorfromR.getRemark().equals(interiorfromDB.getRemark()));
+            assertTrue("Recomendation Remark expeted: " + recomendationfromR.getRecommendation() + " Found: " + recomendationfromDatabase.getRecommendation(),
+                    recomendationfromR.getRecommendation().equals(recomendationfromDatabase.getRecommendation()));
             
+
         } catch (PolygonException ex) {
             System.out.println("Error Polygon Exception " + ex);
             ex.printStackTrace();
         }
+
+    }
+
+    @Test
+    public void TestMoist() {
+
+    }
+
+    @Test
+    public void TestRecomendation() {
 
     }
 
