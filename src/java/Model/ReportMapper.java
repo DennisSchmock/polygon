@@ -342,8 +342,6 @@ public class ReportMapper {
             statement.setString(2, reportRoom.getMoist().getMeasurePoint());
             statement.setInt(3, reportRoom.getRepRoomId());
             statement.executeUpdate();
-
-        
     }
 
     private void saveExteriorToDB(Report r, Connection con) throws Exception {
@@ -390,7 +388,6 @@ public class ReportMapper {
                 reportRoom.setMoist(getMoist(reportRoomId, con));
                 reportRoom.setRrPic(getListOfRoomPics(reportRoomId, con));
                 reportRooms.add(reportRoom);
-                
             }
             return reportRooms;
         } catch (Exception e) {
@@ -426,7 +423,6 @@ public class ReportMapper {
     private ArrayList<ReportFloor> getReportFloors(int buildingId,int reportId,Connection con) throws PolygonException {
     ArrayList<ReportFloor> reportFloors = new ArrayList<>();
     String SQLString = "SELECT * FROM building_floor where idbuilding = ?;";
-
          try (PreparedStatement statement = con.prepareStatement(SQLString)) {
             statement.setInt(1, buildingId);
             ResultSet rs = statement.executeQuery();
@@ -502,8 +498,6 @@ public class ReportMapper {
     private void saveRoomPics(ReportRoom reportRoom, Connection con) throws Exception{
         String SQLString = "insert into report_room_pic(description, filename,reportroom) values (?,?,?)";
         for (ReportPic  rrPic : reportRoom.getRrPic()) {
-            
-        
         PreparedStatement statement
                 = con.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, rrPic.getDescription());
@@ -529,14 +523,8 @@ public class ReportMapper {
             return listOfRooms;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfRoomPics");
-            
             System.out.println(e.getMessage());
             throw new PolygonException("Error retrieving images from database");
             
         }}
-
-   
-
-    
-
 }
