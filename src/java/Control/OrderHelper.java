@@ -27,8 +27,6 @@ public class OrderHelper {
     BuildingHelper bh;
     CreateUserHelper cuh;
     
-    
-
     @EJB
     private MailSenderBean mailSender;
     public OrderHelper(FrontControl fc, BuildingHelper bh, CreateUserHelper cuh){
@@ -54,8 +52,9 @@ public class OrderHelper {
         Date date = new Date(Calendar.getInstance().getTime().getTime());
         Building b = (Building) request.getSession().getAttribute("building");
         Customer customer = (Customer) request.getSession().getAttribute("customer");
-        frontControl.order = new Order(date, serviceDesc, problemStmt, orderStat, customer.getCustomerId(), b.getBdgId());
-        df.addNewOrder(frontControl.order);
+        Order o = new Order(date, serviceDesc, problemStmt, orderStat, customer.getCustomerId(), b.getBdgId());
+        sessionObj.setAttribute("selectedOrder", o);
+        df.addNewOrder(o);
         sendOrderEmail(request);
     }
 
@@ -99,7 +98,7 @@ public class OrderHelper {
         String username = "noreply.polygonproject";
         String password = "poly123go";
         //Call to  mail sender bean
-        mailSender.sendEmail(subject, message);
+        mailSender.sendEmail(toEmail, fromEmail, username, password, subject, message);
         request.getSession().setAttribute("customer", customer);
     }
     

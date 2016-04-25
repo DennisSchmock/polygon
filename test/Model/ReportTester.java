@@ -117,8 +117,12 @@ public class ReportTester {
         try {
             reportID = rm.reportToDataBase(r, con);
             Report reportfromDatabase =  rm.getSingleReport(reportID, con);
-            System.out.println(r.toString());
-            System.out.println(reportfromDatabase.toString());
+            
+          ReportRoomRecommendation tempRecomendationfromDatabase = reportfromDatabase.getListOfRepRoom().get(0).getListOfRec().get(0);
+          ReportRoomRecommendation tempfromR = r.getListOfRepRoom().get(0).getListOfRec().get(0);
+
+            assertTrue("The objects were not equal", tempfromR.getRecommendation().equals(tempRecomendationfromDatabase.getRecommendation()) );
+            
             
         } catch (PolygonException ex) {
             System.out.println("Error Polygon Exception " + ex);

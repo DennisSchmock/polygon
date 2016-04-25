@@ -49,7 +49,7 @@ public class FrontControl extends HttpServlet {
     
     private boolean testing = false;
     //store objects since get parameter values resets
-    Order order;
+//    Order order;
    
 
     

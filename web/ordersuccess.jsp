@@ -14,7 +14,7 @@
     <form action="frontpage" method="POST">
     <div class="w3-row-padding" align = "center">
         <h1>Thank you for your order!</h1>  
-        <i>An email of your order request was forwarded to noreply.polygonproject@gmail.com</i><br>
+        <i>An email of your order request  forwarded to noreply.polygonproject@gmail.com</i><br>
         <i>You can check order progress in your Order History.</i>
     </div>
         <br>
