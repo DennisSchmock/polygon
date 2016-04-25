@@ -18,7 +18,8 @@ import javax.mail.internet.MimeMessage;
 @Stateless
 public class MailSenderBean {
 
-    public void sendEmail(String toEmail,String fromEmail,String username,String password,String subject,String message) {
+    public void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message) {
+        
         Properties props = System.getProperties();
         //properties set up
         props.put("mail.smtp.starttls.enable", "true");
@@ -45,9 +46,8 @@ public class MailSenderBean {
             mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             mailMessage.setText(message);
             mailMessage.setSubject(subject);
-            
+
             Transport.send(mailMessage);
-            System.out.println("DONE EMAIL SENT!");
         } catch (MessagingException me) {
             me.getMessage();
         }

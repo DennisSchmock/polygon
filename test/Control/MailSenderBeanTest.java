@@ -30,12 +30,13 @@ public class MailSenderBeanTest {
     @Before
     public void setUp() throws MessagingException {
         mailSender = new MailSenderBean();
-        toEmail = "test.polygonproject@gmail.com";
+        toEmail = "noreply.polygonproject@gmail.com";
         subject  = "TEST";
         message = "This is just for testing";
-        fromEmail = "noreply.polygonproject@gmail.com";
+        fromEmail = "test.polygonproject@gmail.com";
         username = "test.polygonproject";
         password = "password";
+        
         Mailbox.clearAll();
         
     }
@@ -43,8 +44,10 @@ public class MailSenderBeanTest {
     //uses the Mock-JavaMail  approach to read the mails from the Mock Email Server.
     @Test
     public void testSendEmail() throws Exception {
-        mailSender.sendEmail(toEmail, fromEmail, username, password, subject, message);
+        mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
+
         List<Message> inbox = Mailbox.get(toEmail);
+
         assertTrue(inbox.size() == 1);
         assertEquals(subject, inbox.get(0).getSubject());
         assertEquals(message, inbox.get(0).getContent());
