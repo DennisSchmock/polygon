@@ -54,8 +54,9 @@ public class OrderHelper {
         Date date = new Date(Calendar.getInstance().getTime().getTime());
         Building b = (Building) request.getSession().getAttribute("building");
         Customer customer = (Customer) request.getSession().getAttribute("customer");
-        frontControl.order = new Order(date, serviceDesc, problemStmt, orderStat, customer.getCustomerId(), b.getBdgId());
-        df.addNewOrder(frontControl.order);
+        Order o = new Order(date, serviceDesc, problemStmt, orderStat, customer.getCustomerId(), b.getBdgId());
+        sessionObj.setAttribute("selectedOrder", o);
+        df.addNewOrder(o);
         sendOrderEmail(request);
     }
 

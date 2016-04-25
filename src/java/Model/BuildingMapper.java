@@ -763,7 +763,7 @@ public class BuildingMapper{
         
             
             
-        String sql = "insert into floorplanz (floorplanpath,documentname,floor_id,documentsize) values  (?,?,?,?) ";
+        String sql = "insert into floorplan (floorplanpath,documentname,floor_id,documentsize) values  (?,?,?,?) ";
         try {
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, filename);
