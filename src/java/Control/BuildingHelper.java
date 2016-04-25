@@ -280,5 +280,23 @@ public class BuildingHelper {
         List<Building> buildingList = df.getListOfBuildings(customerID);
         sessionObj.setAttribute("listOfBuildings", buildingList);
     }
+
+    /**
+     * Loads all the customers buildings, based on whitch user the empoleyee
+     * choose, and sets that in the session obj.
+     *
+     * @param sessionObj
+     * @param df
+     */
+    void loadCustomersBuildings(HttpServletRequest request, HttpSession sessionObj, DomainFacade df) throws PolygonException {
+        sessionObj.setAttribute("customerSelcted", true);
+        int cusid = Integer.parseInt(request.getParameter("owners"));
+        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
+        sessionObj.setAttribute("customersBuildings", listOfBuildings);
+        Customer customer = df.getCustomer(cusid);
+        customer.setBuildings(listOfBuildings);
+        sessionObj.setAttribute("selectedCustomer", customer);
+        request.getSession().setAttribute("customer", customer);
+    }
     
 }

@@ -7,32 +7,15 @@ package Control;
 
 import Domain.DomainFacade;
 import Domain.Building;
-import Domain.BuildingFloor;
-import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.Order;
 import Domain.Report;
-import Domain.ReportRoom;
-import Domain.ReportRoomDamage;
-import Domain.ReportExterior;
-import Domain.ReportPic;
-import Domain.ReportRoomInterior;
-import Domain.ReportRoomMoist;
-import Domain.ReportRoomRecommendation;
-import Domain.User;
 import Domain.Exceptions.PolygonException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -122,7 +105,7 @@ public class FrontControl extends HttpServlet {
         //For choosing the customer //TODO split redirect and action
         if (page.equalsIgnoreCase("report_cus_choosen")) {
             url = "/reportJSPs/choosebuilding.jsp";
-            loadCustomersBuildings(request, sessionObj, df);
+                bh.loadCustomersBuildings(request, sessionObj, df);
         }
         //When building has been chosen, it sets up the report object
         if (page.equalsIgnoreCase("report_start")) {
@@ -237,14 +220,12 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("building", b);
             response.sendRedirect("viewbuildingadmin.jsp");
             return;
-
         }
 
         /**
          * sending a rediret is better, because a forward will add to the
          * database twice
          */
-        
         //TODO seperate redirect and action
         if (page.equalsIgnoreCase("newbuilding")) {
 
@@ -266,9 +247,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("customersubmitted.jsp");
             return;
         }
-
-       
-
+        
         if (page.equalsIgnoreCase("addfloorsubmit")) {
             bh.addFloors(request, df, sessionObj, this);
             response.sendRedirect("addfloor.jsp");
@@ -289,7 +268,7 @@ public class FrontControl extends HttpServlet {
         }
 
         if (page.equalsIgnoreCase("selCust")) {
-            loadCustomersBuildings(request, sessionObj, df);
+                bh.loadCustomersBuildings(request, sessionObj, df);
             response.sendRedirect("addfloor.jsp");
             return;
         }
@@ -357,7 +336,6 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("vieworder")) {
             int orderNumber = Integer.parseInt(request.getParameter("ordernumber"));
             sessionObj.setAttribute("orderNumber",orderNumber);
-            
             sessionObj.setAttribute("selectedOrder", df.getOrder(orderNumber));
             response.sendRedirect("vieworder.jsp");
             return;
@@ -375,7 +353,6 @@ public class FrontControl extends HttpServlet {
         
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
-
         }
 
         if (page.equalsIgnoreCase("login")) {
@@ -402,20 +379,15 @@ public class FrontControl extends HttpServlet {
             rh.printReport(sessionObj, df, response, this);
             return;
         }
-        
-        
         } catch (PolygonException ex) {
                 Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("errormessage", ex.getMessage());
                 url="/errorpage.jsp";
             }
-
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
-
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -456,26 +428,4 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    /**
-     * Loads all the customers buildings, based on whitch user the empoleyee
-     * choose, and sets that in the session obj.
-     *
-     * @param sessionObj
-     * @param df
-     */
-    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) throws PolygonException {
-        sessionObj.setAttribute("customerSelcted", true);
-        int cusid = Integer.parseInt(request.getParameter("owners"));
-        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
-        sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        Customer customer = df.getCustomer(cusid);
-        customer.setBuildings(listOfBuildings);
-        sessionObj.setAttribute("selectedCustomer", customer);
-        request.getSession().setAttribute("customer", customer);
-
-    }
-
-
 }
-
