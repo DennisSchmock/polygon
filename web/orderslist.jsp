@@ -8,14 +8,15 @@
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-    <title>List of Orders</title>
     <%@include file="Style/Header.jsp" %>
 <main>
-    <div class="w3-row-padding">
-        <h1 align = "center">List Of Orders</h1>
-         <table name ="orders">
-             <i>This is sorted by the order status progress.</i><br>
-            <i>Click the order number to see order details and update the status of an order.</i>
+    <div class="w3-row-padding"><div class="w3-full w3-container">
+        This is sorted by the order status progress.<br>
+            Click the order number to see order details and update the status of an order.
+            </div>
+        <div class="w3-full">
+         <table class="w3-table">
+          
              <th align="left">ORDER NUMBER</th>
              <th align="left">BUILDING</th>
              <th align="left">SERVICE DESCRIPTION</th>
@@ -27,10 +28,11 @@
             <td>${order.buildingName}</td>
             <td>${order.serviceDescription}</td>
             <td><progress value="${order.orderStatus}" max="5"></progress></td>
-            <td>${order.statDesc}</td><br>
+            <td>${order.statDesc}</td>
             </tr>
         </c:forEach> 
          </table>
+            </div>
     </div>
 </main>
 

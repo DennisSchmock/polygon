@@ -411,7 +411,7 @@ public class ReportMapper {
                     String place = rs.getString("report_room_moist_place");
                     String measured = rs.getString("report_room_moist_measured");
                   
-            moist = new ReportRoomMoist(place,measured);
+            moist = new ReportRoomMoist(measured, place);
             return moist;
         } catch (Exception e) {
             System.out.println("Fail in ReportMapper-getListOfDamages");

@@ -28,7 +28,7 @@
                     <td>${order.buildingName}</td>
                     <td>${order.serviceDescription}</td>
                     <td><progress value="${order.orderStatus}" max="5"></progress></td>
-                    <td>${order.statDesc}</td><br>
+                    <td>${order.statDesc}</td>
                     </tr>
                 </c:forEach> 
             </table>

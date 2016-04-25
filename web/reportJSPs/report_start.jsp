@@ -36,15 +36,13 @@
     <input type="hidden" name="page" value="ChooseRoom" /> 
    
     <h2>Remarks on Roof:</h2>
-    <textarea name="remarksOnRoof" rows="4" cols="20">
-    </textarea>
+    <textarea name="remarksOnRoof" rows="4" cols="20"></textarea>
     
     <br>
     
     
     <h2>Remarks on Walls:</h2>
-    <textarea name="remarksOnWall" rows="4" cols="20">
-    </textarea>
+    <textarea name="remarksOnWall" rows="4" cols="20" ></textarea>
     
     <br>
     
@@ -58,12 +56,11 @@
     <input type="file" name="uploadFile" />
     
     <h1>Decription of Pictures:</h1>
-    <textarea name="decriptionOfPicture" rows="4" cols="20">
-    </textarea>
+    <textarea name="decriptionOfPicture" rows="4" cols="20"></textarea>
 
         </div>
         <br>
-        <input type="submit" value="Next" name="submitButton" />
+        <input type="submit" value="Next" name="submitButton"  />
     </form>
 
 
