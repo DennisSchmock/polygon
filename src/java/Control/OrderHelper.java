@@ -27,6 +27,8 @@ public class OrderHelper {
     BuildingHelper bh;
     CreateUserHelper cuh;
     
+    
+
     @EJB
     private MailSenderBean mailSender;
     public OrderHelper(FrontControl fc, BuildingHelper bh, CreateUserHelper cuh){
@@ -98,7 +100,7 @@ public class OrderHelper {
         String username = "noreply.polygonproject";
         String password = "poly123go";
         //Call to  mail sender bean
-        mailSender.sendEmail(toEmail, fromEmail, username, password, subject, message);
+        mailSender.sendEmail(fromEmail, username, password, toEmail, subject, message);
         request.getSession().setAttribute("customer", customer);
     }
     

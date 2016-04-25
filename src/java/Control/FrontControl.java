@@ -49,11 +49,8 @@ public class FrontControl extends HttpServlet {
     
     private boolean testing = false;
     //store objects since get parameter values resets
-//    Order order;
+    //Order order;
    
-
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -74,7 +71,6 @@ public class FrontControl extends HttpServlet {
         }
 
         HttpSession sessionObj = request.getSession(); //Get the session
-
         DomainFacade df = (DomainFacade) sessionObj.getAttribute("Controller");     //Get the DomainFacede
         //If it is a new session, create a new DomainFacade Object and put it in the session.
         sessionObj.setAttribute("testing", testing);
@@ -90,9 +86,6 @@ public class FrontControl extends HttpServlet {
         if (testing) System.out.println("Redirect parameter (page) set to:");
         if (testing) System.out.println(page);
         try {
-
-       
-
         if (page == null) {
             page = "/index.jsp";
         }
@@ -105,7 +98,7 @@ public class FrontControl extends HttpServlet {
         //For choosing the customer //TODO split redirect and action
         if (page.equalsIgnoreCase("report_cus_choosen")) {
             url = "/reportJSPs/choosebuilding.jsp";
-            loadCustomersBuildings(request, sessionObj, df);
+                bh.loadCustomersBuildings(request, sessionObj, df);
         }
         //When building has been chosen, it sets up the report object
         if (page.equalsIgnoreCase("report_start")) {
@@ -136,11 +129,8 @@ public class FrontControl extends HttpServlet {
             url = "/viewreport.jsp";
            rh.finishReportObject(request,sessionObj);
            int reportId = rh.saveFinishedReport(sessionObj,df);
-            
                 request.getSession().setAttribute("report", df.getReport(reportId));
-            
         }
-
         
         if (page.equalsIgnoreCase("toFinishReport")) {
             url = "/reportJSPs/finishreport.jsp";
@@ -185,7 +175,6 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("viewreport")) {
             int reportId = Integer.parseInt(request.getParameter("reportid"));
             Report report = df.getReport(reportId);
-
             sessionObj.setAttribute("report", report);
             response.sendRedirect("viewreport.jsp");
             return;
@@ -196,7 +185,6 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("customers", customers);
             response.sendRedirect("viewcustomers.jsp");
             return;
-
         }
 
         if (page.equalsIgnoreCase("viewcustomer")) {
@@ -210,7 +198,6 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("buildings", buildings);
             response.sendRedirect("viewcustomer.jsp");
             return;
-
         }
 
         //This gets a Dash for a building
@@ -220,14 +207,12 @@ public class FrontControl extends HttpServlet {
             sessionObj.setAttribute("building", b);
             response.sendRedirect("viewbuildingadmin.jsp");
             return;
-
         }
 
         /**
          * sending a rediret is better, because a forward will add to the
          * database twice
          */
-        
         //TODO seperate redirect and action
         if (page.equalsIgnoreCase("newbuilding")) {
 
@@ -249,9 +234,7 @@ public class FrontControl extends HttpServlet {
             response.sendRedirect("customersubmitted.jsp");
             return;
         }
-
-       
-
+        
         if (page.equalsIgnoreCase("addfloorsubmit")) {
             bh.addFloors(request, df, sessionObj, this);
             response.sendRedirect("addfloor.jsp");
@@ -272,7 +255,7 @@ public class FrontControl extends HttpServlet {
         }
 
         if (page.equalsIgnoreCase("selCust")) {
-            loadCustomersBuildings(request, sessionObj, df);
+                bh.loadCustomersBuildings(request, sessionObj, df);
             response.sendRedirect("addfloor.jsp");
             return;
         }
@@ -340,7 +323,6 @@ public class FrontControl extends HttpServlet {
         if (page.equalsIgnoreCase("vieworder")) {
             int orderNumber = Integer.parseInt(request.getParameter("ordernumber"));
             sessionObj.setAttribute("orderNumber",orderNumber);
-            
             sessionObj.setAttribute("selectedOrder", df.getOrder(orderNumber));
             response.sendRedirect("vieworder.jsp");
             return;
@@ -358,7 +340,6 @@ public class FrontControl extends HttpServlet {
         
         if (page.equalsIgnoreCase("continue")) {
             url = "/addroom.jsp";
-
         }
 
         if (page.equalsIgnoreCase("login")) {
@@ -385,20 +366,15 @@ public class FrontControl extends HttpServlet {
             rh.printReport(sessionObj, df, response, this);
             return;
         }
-        
-        
         } catch (PolygonException ex) {
                 Logger.getLogger(FrontControl.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("errormessage", ex.getMessage());
                 url="/errorpage.jsp";
             }
-
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
-
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -439,26 +415,4 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    /**
-     * Loads all the customers buildings, based on whitch user the empoleyee
-     * choose, and sets that in the session obj.
-     *
-     * @param sessionObj
-     * @param df
-     */
-    private void loadCustomersBuildings(HttpServletRequest request,HttpSession sessionObj, DomainFacade df) throws PolygonException {
-        sessionObj.setAttribute("customerSelcted", true);
-        int cusid = Integer.parseInt(request.getParameter("owners"));
-        List<Building> listOfBuildings = df.getListOfBuildings(cusid);
-        sessionObj.setAttribute("customersBuildings", listOfBuildings);
-        Customer customer = df.getCustomer(cusid);
-        customer.setBuildings(listOfBuildings);
-        sessionObj.setAttribute("selectedCustomer", customer);
-        request.getSession().setAttribute("customer", customer);
-
-    }
-
-
 }
-
