@@ -52,7 +52,9 @@ public class DBconnector {
 
     /**
      * The purpose of this method is to return a Database connection. Since the 
-     * Connection is assigned to a singleton, it checks
+     * Connection is assigned to a singleton, it checks wether or not the connection is 
+     * still alive (the DB might reclaim the connection), and returns a new connection
+     * if that is the case.
      * @return
      */
     public Connection getConnection() {
