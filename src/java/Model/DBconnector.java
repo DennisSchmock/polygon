@@ -7,6 +7,8 @@ package Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -43,5 +45,23 @@ public class DBconnector {
 
     public Connection getConnection() {
         return con;
+    }
+    
+    public static void cleanUp(PreparedStatement stmt, ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error in DB.cleanUp() closing resultSet" + e);
+        }
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error in DB.cleanUp() closing preparedStatement" + e);
+        }
+       
     }
 }
