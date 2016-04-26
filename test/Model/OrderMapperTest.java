@@ -40,7 +40,7 @@ public class OrderMapperTest {
         dbf = DBFacade.getInstance();
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
-        dbf.setCon(con);
+        dbf.setTestConnection(con);
 //        stringStat = "Ongoing";
         date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         rightOrder=new Order(date,"Check-up Building", "for annual inspection",1,1,1);

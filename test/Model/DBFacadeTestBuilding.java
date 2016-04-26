@@ -38,7 +38,7 @@ public class DBFacadeTestBuilding {
         dbf = DBFacade.getInstance();
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
-        dbf.setCon(con);
+        dbf.setTestConnection(con);
     }
 
 //

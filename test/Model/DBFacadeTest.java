@@ -41,7 +41,7 @@ public class DBFacadeTest {
         dbf = DBFacade.getInstance();
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
-        dbf.setCon(con);
+        dbf.setTestConnection(con);
         
        //expected customer
         c=new Customer("CPHBusiness","Miriam Sørensen","ms@cphbusiness.dk","Nørgaardsvej","30","21",3245,"Lyngby","+4553354494");

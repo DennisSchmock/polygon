@@ -39,6 +39,10 @@ public class DBconnector {
         } 
     }
 
+    /**
+     * The purpose of this method is to return a singleton DB-connector. 
+     * @return
+     */
     public static DBconnector getInstance() {
         if (instance == null) {
             instance = new DBconnector();
@@ -46,6 +50,11 @@ public class DBconnector {
         return instance;
     }
 
+    /**
+     * The purpose of this method is to return a Database connection. Since the 
+     * Connection is assigned to a singleton, it checks
+     * @return
+     */
     public Connection getConnection() {
         try {
             if (!con.isValid(5)){              
