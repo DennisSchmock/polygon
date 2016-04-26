@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Data.DBFacade;
 import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;

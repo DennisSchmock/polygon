@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,6 +47,13 @@ public class DBconnector {
     }
 
     public Connection getConnection() {
+        try {
+            if (!con.isValid(5)){              
+                this.con = DriverManager.getConnection(url, dbuser, pwd);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBconnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return con;
     }
     

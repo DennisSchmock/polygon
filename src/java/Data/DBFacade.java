@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Data;
 
 import Domain.*;
 import Domain.Exceptions.PolygonException;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class DBFacade {
 
-    private Connection con;
+   // private Connection con;
     private static DBFacade instance;
     private CustomerMapper cm;
     private BuildingMapper bm;
@@ -34,44 +34,11 @@ public class DBFacade {
 
     public static void main(String[] args) {
         DBFacade facade = getInstance();
-//        Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//        String stringStat = "test";
-//        Order orderWrongStat = new Order(date,"Check-up Building", "for annual inspection",stringStat,1,1);
-//        System.out.println(facade.addNewOrder(orderWrongStat));
-//        String username = "daeniz";
-//        Customer c = facade.getCustomerAfterLogIn(username);
-//        System.out.println("c" + c.getCustomerId());
-//        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//        Order o = new Order(date,"check-up","inspection",1,1,2);
-//        facade.addNewOrder(o);
-        
-//        facade.deleteBuilding(22);
-//        BuildingRoom newRoom = new BuildingRoom("Kitchen",1);
-//        facade.saveBuildingRoom(newRoom);
-//        ArrayList <BuildingRoom> rl = facade.getRoomList(1);
-//        for (BuildingRoom br : rl) {
-//            System.out.println("floor:" + br.getRoomName());
-//        }
-//        Report report = facade.getSingleReport(1);
-//        for (ReportFloor reportFloor : report.getReportFloors()) {
-//            System.out.println("****Floor number: " + reportFloor.getFloorId() + " " + reportFloor.getFloorNumber());
-//            for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
-//                System.out.println("***Roomname: " + reportRoom.getRoomName());
-//                for (ReportRoomInterior reportRoomInterior : reportRoom.getListOfInt()) {
-//                    System.out.println("  InteriorName: " + reportRoomInterior.getRepRoomIntName());
-//                    System.out.println("    InteriorRemark: " + reportRoomInterior.getRemark());
-//                    
-//                }
-//                
-//            }
-//        }
-//       System.out.println( "Numbers of floors in building" + report.getReportFloors().size());
-        
 
     }
 
     private DBFacade() {
-        con = DBconnector.getInstance().getConnection();
+        //con = DBconnector.getInstance().getConnection();
         //this.con = con;
         cm = new CustomerMapper();
         bm = new BuildingMapper();
@@ -108,7 +75,7 @@ public class DBFacade {
     }
 
     public Contact getContact(int custID) {
-        return cm.getContact(custID, con);
+        return cm.getContact(custID, getCon());
     }
 
     
@@ -124,14 +91,14 @@ public class DBFacade {
      * @return The created building with it's ID set
      */
     public Building saveNewBuilding(Building b) throws PolygonException {
-        b=bm.saveNewBuildingDB(b, con);
+        b=bm.saveNewBuildingDB(b, getCon());
         System.out.println("Saved building");
         return b;
     }
     
     public String saveBuildingPic(int buildId, String filename) throws PolygonException {
         System.out.println("Saving buildingPic db-facade");
-        return bm.saveBuildingPic(buildId, filename, con);
+        return bm.saveBuildingPic(buildId, filename, getCon());
         
     }
 
@@ -142,7 +109,7 @@ public class DBFacade {
      * @return An list of buildings related to the customerID
      */
     public List<Building> getListOfbuildingsDB(int customerID) throws PolygonException {
-        return bm.getListOfBuildingsBM(customerID, con);
+        return bm.getListOfBuildingsBM(customerID, getCon());
     }
 
     /**
@@ -152,16 +119,16 @@ public class DBFacade {
      *
      */
     public void updateBuildingDBFacade(Building updatedBuildObj) throws PolygonException {
-        bm.updateBuildingBm(updatedBuildObj, con);
+        bm.updateBuildingBm(updatedBuildObj, getCon());
     }
 
     //Sending the report as a whole to DB - new method
     public void newReportToDB(Report R) throws PolygonException {
-            nrm.reportToDataBase(R, con);
+            nrm.reportToDataBase(R, getCon());
     }
 
     public User loadUser(String username) {
-        return um.getUser(username, con);
+        return um.getUser(username, getCon());
     }
 
     /**
@@ -171,34 +138,34 @@ public class DBFacade {
      * @param user to be inserted to
      */
     public void createUserDBFacade(User user) {
-        um.addUserToDB(user, con);
+        um.addUserToDB(user, getCon());
     }
 
     /**
      * @return the con
      */
     public Connection getCon() {
-        return con;
+    return DBconnector.getInstance().getConnection();
     }
 
-    /**
-     * @param con the con to set
-     */
-    public void setCon(Connection con) {
-        this.con = con;
-        System.out.println(con);
-    }
+//    /**
+//     * @param con the con to set
+//     */
+//    public void setCon(Connection con) {
+//        this.con = con;
+//        System.out.println(con);
+//    }
 
     /**
      * Creates the tuble in the database for a Report.
      * @param report Report to be saved in the database
      */
     public int reportToDataBase(Report report) throws PolygonException {
-           return nrm.reportToDataBase(report, con);
+           return nrm.reportToDataBase(report, getCon());
     }
 
     public ArrayList<Report> getListOfReports(int buildingId) throws PolygonException {
-        return nrm.getAllReportsBuilding(buildingId, con);
+        return nrm.getAllReportsBuilding(buildingId, getCon());
     }
     
     /**
@@ -215,12 +182,12 @@ public class DBFacade {
      * @return Returs an list of All customers in the database
      */
     public List<Customer> getAllCustomers() {
-        return cm.getAllCustomersCM(con);
+        return cm.getAllCustomersCM(getCon());
 
 }
     public User getPolygonUser(String userName) {
         
-        return um.getPolygonUser(userName, con);
+        return um.getPolygonUser(userName, getCon());
     }
     
     /** 
@@ -231,7 +198,7 @@ public class DBFacade {
      * @return a boolean. False if not validated and true if validated
      */
     public boolean validatePolygonUser(String userName, String pwd) {
-        return um.validatePolygonUser(userName,pwd,con);
+        return um.validatePolygonUser(userName,pwd,getCon());
     }
     
     /**
@@ -240,14 +207,14 @@ public class DBFacade {
      * @return
      */
     public Building getBuilding(int bdgId) throws PolygonException{
-        Building b=bm.getBuilding(bdgId, con);
-        String imgPath = bm.getLatestBuildingImage(bdgId, con);
+        Building b=bm.getBuilding(bdgId, getCon());
+        String imgPath = bm.getLatestBuildingImage(bdgId, getCon());
         b.setBuilding_pic(imgPath);
         return b;
     }
     
     public String getLatestBuildingImage(int buildingId) throws PolygonException{
-        return bm.getLatestBuildingImage(buildingId, con);
+        return bm.getLatestBuildingImage(buildingId, getCon());
         
     }
 
@@ -256,7 +223,7 @@ public class DBFacade {
      * @param bf the BuildingFloor object will be added to the database
      */
     public void addFloor(BuildingFloor bf) throws PolygonException {
-        bm.addFloor(bf,con);
+        bm.addFloor(bf,getCon());
     }
     
     /**
@@ -265,7 +232,7 @@ public class DBFacade {
      * @return a list of floors from the database based on the building ID
      */
     public ArrayList<BuildingFloor> getListOfFloors(int bdgId) throws PolygonException{
-        return bm.getFloorsList(bdgId, con);
+        return bm.getFloorsList(bdgId, getCon());
     }
 
     /**
@@ -274,7 +241,7 @@ public class DBFacade {
      * @return The new buildingRoom with an uniqe ID.
      */
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) throws PolygonException {
-        return bm.saveBuildingRoom(newRoom, con);
+        return bm.saveBuildingRoom(newRoom, getCon());
     }
     
     /**
@@ -283,7 +250,7 @@ public class DBFacade {
      * @return BuildingFloor object based on the floor ID
      */
     public BuildingFloor getFloor(int id) throws PolygonException{
-        return bm.getFloor(id, con);
+        return bm.getFloor(id, getCon());
     }
     
     /**
@@ -292,7 +259,7 @@ public class DBFacade {
      * @param totalRooms new number of rooms to be updated in the database
      */
     public void updateFloor(int id, int totalRooms) throws PolygonException{
-        bm.updateFloor(id, con, totalRooms);
+        bm.updateFloor(id, getCon(), totalRooms);
     }
     
     /**
@@ -301,7 +268,7 @@ public class DBFacade {
      * @return a list of Building Rooms based on the floor ID
      */
     public ArrayList<BuildingRoom> getRoomList(int flrId) throws PolygonException{
-        return bm.getRoomList(flrId, con);
+        return bm.getRoomList(flrId, getCon());
     }
     
     /**
@@ -309,7 +276,7 @@ public class DBFacade {
      * @param bdgId buildingId of the building that has to be deleted
      */
     public void deleteBuilding(int bdgId) throws PolygonException{
-        bm.deleteBuilding(bdgId, con);
+        bm.deleteBuilding(bdgId, getCon());
     }
     
     /**
@@ -317,7 +284,7 @@ public class DBFacade {
      * @param br new BuildingRoom that holds the changes
      */
     public void updateRoom(BuildingRoom br) throws PolygonException{
-        bm.updateRoom(br, con);
+        bm.updateRoom(br, getCon());
     }
     
     /**
@@ -325,7 +292,7 @@ public class DBFacade {
      * @param bf new BuildingFloor that holds the changes
      */
     public void updateFloor(BuildingFloor bf) throws PolygonException{
-        bm.updateFloor(bf, con);
+        bm.updateFloor(bf, getCon());
     }
     
     /**
@@ -333,20 +300,20 @@ public class DBFacade {
      * @param b new Building that holds the changes
      */
     public void updateBuilding(Building b) throws PolygonException{
-        bm.updateBuilding(b, con);
+        bm.updateBuilding(b, getCon());
     }
 
     public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
-       return nrm.getSimpleListOfReports(con);
+       return nrm.getSimpleListOfReports(getCon());
 
     }
 
     public void saveBuildingFiles(Building b) throws PolygonException {
-        bm.saveBuildingDocs(b, con);
+        bm.saveBuildingDocs(b, getCon());
     }
 
     public void saveFloorplan(int floor, Floorplan f) throws PolygonException {
-        bm.saveFloorplan(floor, f,con);
+        bm.saveFloorplan(floor, f,getCon());
                 }
     
     
@@ -357,7 +324,7 @@ public class DBFacade {
      * @return just for testing
      */
     public boolean addNewOrder(Order o){
-            return om.addNewOrder(o, con);
+            return om.addNewOrder(o, getCon());
     }
     
     /**
@@ -366,7 +333,7 @@ public class DBFacade {
      * @return an Order
      */
     public Order getOrder(int orderNum){
-        return om.getOrder(orderNum, con);
+        return om.getOrder(orderNum, getCon());
     }
     
     /**
@@ -375,7 +342,7 @@ public class DBFacade {
      * @return
      */
     public Customer getCustomerAfterLogIn(String username){
-        return cm.getCustomerAfterLogIn(username, con);
+        return cm.getCustomerAfterLogIn(username, getCon());
     }
     
     /**
@@ -384,7 +351,7 @@ public class DBFacade {
      * @return status description
      */
     public String getOrderStatus(int stat){
-        return om.getOrderStatus(stat, con);
+        return om.getOrderStatus(stat, getCon());
     }
     
     /**
@@ -393,7 +360,7 @@ public class DBFacade {
      * @return list of Orders
      */
     public ArrayList<Order> getlistOfOrders(int custId) throws PolygonException{
-        return om.getListOfOrders(custId, con);
+        return om.getListOfOrders(custId, getCon());
     }
     
     /**
@@ -401,7 +368,7 @@ public class DBFacade {
      * @return list of all Orders
      */
     public ArrayList<Order> getListOfAllOrders() throws PolygonException{
-        return om.getListOfAllOrders(con);
+        return om.getListOfAllOrders(getCon());
     
     }
     
@@ -414,7 +381,7 @@ public class DBFacade {
      * @return an ArrayList of Floorplan objects
      */
     public ArrayList<Floorplan> getFloorplans(int floorId) throws PolygonException{
-        return bm.getFloorplans(floorId, con);
+        return bm.getFloorplans(floorId, getCon());
     }
 
     /**
@@ -423,6 +390,6 @@ public class DBFacade {
      * @param newStat holds the change
      */
     public void updateOrder(int orderNumber, int newStat) {
-        om.updateOrder(orderNumber,newStat,con);
+        om.updateOrder(orderNumber,newStat,getCon());
     }
 }

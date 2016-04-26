@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Data.DBFacade;
 import Domain.Building;
 import Domain.BuildingRoom;
 import Domain.Exceptions.PolygonException;

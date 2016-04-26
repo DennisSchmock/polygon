@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Data.ReportMapper;
 import java.sql.Connection;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Data.DBFacade;
 import Domain.Order;
 import java.sql.Connection;
 import java.sql.Date;
