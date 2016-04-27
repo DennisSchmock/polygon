@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Data;
 
 import Domain.Building;
 import Domain.BuildingFile;
@@ -29,6 +29,7 @@ import java.util.logging.Logger;
  * @author Dennis Schmock and Daniel Grønberg
  */
 public class BuildingMapper{
+    private ReportMapper rm = new ReportMapper();
 
     /**
      * saves the building object in the database
@@ -203,32 +204,32 @@ public class BuildingMapper{
      * @param con Connection to the Database
      * @return An object of the building
      */
-    public Building getBuildingBM(int buildingID, Connection con) throws PolygonException {
-
-        String sqlString = "SELECT * FROM building where customer_id=?";
-        Building temp = null;
-        try {
-            PreparedStatement statement = con.prepareStatement(sqlString);
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                temp = new Building(
-                        rs.getString("building_name"),
-                        rs.getString("building_adress"),
-                        rs.getString("building_housenumber"),
-                        rs.getInt("building_zip"),
-                        rs.getInt("building_buildyear"),
-                        rs.getDouble("building_m2"),
-                        rs.getString("building_use"));
-                temp.setCustId(rs.getInt("customer_id"));
-                temp.setBdgId(rs.getInt("idbuilding"));
-            }
-        } catch (SQLException ex) {
-            System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
-            throw new PolygonException("Database error");
-        }
-        return temp;
-    }
+//    public Building getBuildingBM(int buildingID, Connection con) throws PolygonException {
+//
+//        String sqlString = "SELECT * FROM building where customer_id=?";
+//        Building temp = null;
+//        try {
+//            PreparedStatement statement = con.prepareStatement(sqlString);
+//            ResultSet rs = statement.executeQuery();
+//
+//            while (rs.next()) {
+//                temp = new Building(
+//                        rs.getString("building_name"),
+//                        rs.getString("building_adress"),
+//                        rs.getString("building_housenumber"),
+//                        rs.getInt("building_zip"),
+//                        rs.getInt("building_buildyear"),
+//                        rs.getDouble("building_m2"),
+//                        rs.getString("building_use"));
+//                temp.setCustId(rs.getInt("customer_id"));
+//                temp.setBdgId(rs.getInt("idbuilding"));
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
+//            throw new PolygonException("Database error");
+//        }
+//        return temp;
+//    }
 
     /**
      * The purpose of this method is to get a building from a specific building id
@@ -257,6 +258,7 @@ public class BuildingMapper{
 
             b = new Building(buildingId, name, size, address, houseNumber, yr, zip, use, cusId);
             b.setListOfFloors(getFloorsList(buildingId, con));
+            b.setListOfReports(rm.getAllReportsBuilding(buildingId, con));
 
             return b;
         } catch (SQLException ex) {
@@ -778,6 +780,45 @@ public class BuildingMapper{
             throw new PolygonException("Error saving floorplan to database - "
                     + "The file was NOT uploaded");
         }
+    }
+
+    /**
+     * The purpose of this method is to return a simple building for the orders.
+     * @param bdgId
+     * @param con
+     * @return
+     * @throws PolygonException
+     */
+    public Building getBuildingSimple(int bdgId, Connection con) throws PolygonException {
+         Building b;
+        String SQLString = "select * from building where idbuilding=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, bdgId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            int buildingId = rs.getInt("idbuilding");
+            String name = rs.getString("building_name");
+            double size = rs.getDouble("building_m2");
+            String address = rs.getString("building_adress");
+            String houseNumber = rs.getString("building_housenumber");
+            int yr = rs.getInt("building_buildyear");
+            int zip = rs.getInt("building_zip");
+            String use = rs.getString("building_use");
+            int cusId = rs.getInt("customer_id");
+
+            b = new Building(buildingId, name, size, address, houseNumber, yr, zip, use, cusId);
+            //b.setListOfFloors(getFloorsList(buildingId, con));
+            //b.setListOfReports(rm.getAllReportsBuilding(buildingId, con));
+
+            return b;
+        } catch (SQLException ex) {
+            System.out.println("Fail in NewBuildingMapper-getBuilding");
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
+        }
+
     }
 }
 

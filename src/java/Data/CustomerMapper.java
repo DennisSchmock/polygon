@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Data;
 
 import Domain.*;
 import java.sql.Connection;
@@ -21,6 +21,8 @@ import java.util.logging.Logger;
  * @author Dennis Schmock
  */
 public class CustomerMapper {
+    
+    private BuildingMapper bm = new BuildingMapper();
 
     /**
      * This method takes the 
@@ -130,6 +132,7 @@ public class CustomerMapper {
                 rs.getString("cvr"),
                 rs.getInt("zipcode"),
                 rs.getString("phone"));
+                c.setBuildings(bm.getListOfBuildingsBM(id, con));
                 return c;
             }
             

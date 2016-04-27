@@ -1,4 +1,4 @@
-package Model;
+package Data;
 
 import Domain.Building;
 import Domain.Exceptions.PolygonException;
@@ -131,7 +131,7 @@ public class OrderMapper {
                 int os = rs.getInt("order_status");
                 int bdgId = rs.getInt("idbuilding");
                 String statDesc = getOrderStatus(os, con);
-                Building b = bm.getBuilding(bdgId, con);
+                Building b = bm.getBuildingSimple(bdgId, con);
                 Order o = new Order(on,d,sd,ps,os,custId,bdgId,statDesc,b.getBuildingName());
                 orderList.add(o);
             }
@@ -165,7 +165,7 @@ public class OrderMapper {
                 int c = rs.getInt("customer_id");
                 int bdgId = rs.getInt("idbuilding");
                 String statDesc = getOrderStatus(os, con);
-                Building b = bm.getBuilding(bdgId, con);
+                Building b = bm.getBuildingSimple(bdgId, con);
                 Order o = new Order(on,d,sd,ps,os,c,bdgId,statDesc,b.getBuildingName());
                 orderList.add(o);
             }
