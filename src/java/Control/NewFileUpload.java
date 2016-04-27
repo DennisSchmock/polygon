@@ -5,7 +5,12 @@
  */
 package Control;
 
+import Domain.Building;
 import Domain.BuildingFile;
+import Domain.BuildingFiles;
+import Domain.BuildingFloor;
+import Domain.DomainFacade;
+import Domain.Exceptions.PolygonException;
 import Domain.Floorplan;
 import Domain.ReportPic;
 import java.io.File;
@@ -19,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 /**
@@ -273,5 +279,82 @@ public class NewFileUpload {
             return f;
         }
         return null;
+    }
+
+    /**
+     * Strips request of fileparts and uploads them to the documents folder Then
+     * puts the information it gets back into the Buildings BuildingFiles list
+     * Lastly updates the information in the db
+     *
+     * @param request
+     * @param parts
+     * @param df
+     * @param frontControl
+     * @return
+     */
+    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df, FrontControl frontControl) throws PolygonException {
+        ArrayList<BuildingFiles> files;
+        Building b = (Building) request.getSession().getAttribute("building");
+        if (b != null) {
+            files = b.getListOfFiles();
+            System.out.println("b not null");
+            //Add to folder
+            ArrayList<BuildingFile> file;
+            String filesDescription;
+            file = saveBuildingDocs(frontControl.getServletContext().getRealPath(""), parts);
+            filesDescription = request.getParameter("fileRemarks");
+            if (file == null) {
+                System.out.println("file is null");
+            }
+            if (filesDescription == null) {
+                System.out.println("fileDescrip is null");
+            }
+            if (files == null) {
+                System.out.println("files is null");
+            }
+            files.add(new BuildingFiles(file, filesDescription));
+            b.setListOfFiles(files);
+            //Add to db
+            df.saveBuildingFiles(b);
+            request.setAttribute("filessubmitted", true);
+        }
+        request.setAttribute("roomfiles", true);
+        return request;
+    }
+
+    /**
+     * Strips request of fileparts and uploads them to the floorplan folder Then
+     * puts the information it gets back into the Buildings Floor objects Lastly
+     * updates the information in the db
+     *
+     * @param request
+     * @param parts
+     * @param df
+     * @return
+     */
+    public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df, FrontControl frontControl) throws PolygonException {
+        ArrayList<BuildingFloor> floors;
+        Building b = (Building) request.getSession().getAttribute("building");
+        if (b != null) {
+            //Add to folder
+            ArrayList<Floorplan> floorplans;
+            floorplans = saveFloorplans(frontControl.getServletContext().getRealPath(""), parts);
+            //Add to buildings floorobject
+            floors = b.getListOfFloors();
+            int chosenFloor = Integer.parseInt(request.getParameter("floors"));
+            for (BuildingFloor floor : floors) {
+                if (floor.getFloorId() == chosenFloor) {
+                    ArrayList<Floorplan> fp = floor.getFloorplans();
+                    fp.addAll(floorplans);
+                    floor.setFloorplans(fp);
+                }
+            }
+            //Add to db
+            df.saveFloorplans(chosenFloor, floorplans);
+            //Set succesattribute
+            request.setAttribute("filessubmitted", true);
+        }
+        request.setAttribute("roomfiles", true);
+        return request;
     }
 }
