@@ -781,6 +781,45 @@ public class BuildingMapper{
                     + "The file was NOT uploaded");
         }
     }
+
+    /**
+     * The purpose of this method is to return a simple building for the orders.
+     * @param bdgId
+     * @param con
+     * @return
+     * @throws PolygonException
+     */
+    public Building getBuildingSimple(int bdgId, Connection con) throws PolygonException {
+         Building b;
+        String SQLString = "select * from building where idbuilding=?";
+        try (PreparedStatement statement = con.prepareStatement(SQLString)) {
+            statement.setInt(1, bdgId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            int buildingId = rs.getInt("idbuilding");
+            String name = rs.getString("building_name");
+            double size = rs.getDouble("building_m2");
+            String address = rs.getString("building_adress");
+            String houseNumber = rs.getString("building_housenumber");
+            int yr = rs.getInt("building_buildyear");
+            int zip = rs.getInt("building_zip");
+            String use = rs.getString("building_use");
+            int cusId = rs.getInt("customer_id");
+
+            b = new Building(buildingId, name, size, address, houseNumber, yr, zip, use, cusId);
+            //b.setListOfFloors(getFloorsList(buildingId, con));
+            //b.setListOfReports(rm.getAllReportsBuilding(buildingId, con));
+
+            return b;
+        } catch (SQLException ex) {
+            System.out.println("Fail in NewBuildingMapper-getBuilding");
+            System.out.println(ex.getMessage());
+            throw new PolygonException("Database error");
+        }
+
+    }
 }
 
 

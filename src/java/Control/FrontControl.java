@@ -473,7 +473,7 @@ public class FrontControl extends HttpServlet {
 //
                 request.setAttribute("reportroom", rr);
                 request.setAttribute("showroom", true);
-                url = "/viewbuildingadmin.jsp";
+                url = "/viewreport.jsp";
 
             }
 
