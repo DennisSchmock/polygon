@@ -239,15 +239,12 @@ public class BuildingHelper {
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
         String buildingPic = nfu.savePictureBuilding(frontControl.getServletContext().getRealPath(""), parts);
         if (buildingPic != null){
-            System.out.println("BuildingPic != null");
         //Calls method to upload file and get a string with filename back
         buildingToBeEdited.setBuilding_pic(buildingPic);
         
         //This call should perhaps be moved to a deeper layer
         df.saveBuildingPic(buildingToBeEdited.getBdgId(), buildingToBeEdited.getBuildingPic());
-        }   
-        System.out.println("BuildingPic");
-        System.out.println(buildingToBeEdited.getBuildingPic());
+        }
         df.Updatebuilding(buildingToBeEdited);
         session.setAttribute("newbuilding", buildingToBeEdited);
         return buildingToBeEdited;
