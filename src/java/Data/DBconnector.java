@@ -19,10 +19,10 @@ import java.util.logging.Logger;
  */
 public class DBconnector {
 
-    public static final String driver = "org.mariadb.jdbc.Driver";
-    public static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polygon";
-    public static final String dbuser = "polygonuser";
-    public static final String pwd = "Ospekos_22";
+    private static final String driver = "org.mariadb.jdbc.Driver";
+    private static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polygon";
+    private static final String dbuser = "polygonuser";
+    private static final String pwd = "Ospekos_22";
 
     private Connection con;
     
