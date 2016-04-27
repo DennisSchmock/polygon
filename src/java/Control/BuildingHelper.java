@@ -11,6 +11,7 @@ import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.DomainFacade;
 import Domain.Exceptions.PolygonException;
+import Domain.Floorplan;
 import Domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -303,6 +304,42 @@ public class BuildingHelper {
         customer.setBuildings(listOfBuildings);
         sessionObj.setAttribute("selectedCustomer", customer);
         request.getSession().setAttribute("customer", customer);
+    }
+
+
+    void addRoom(HttpServletRequest request, DomainFacade df, int floorId) throws PolygonException {
+        Building b = (Building) request.getSession().getAttribute("building");
+        String roomName = (String) request.getParameter("roomname");
+        if (roomName != null) {
+            BuildingRoom br = new BuildingRoom(roomName, floorId);
+            df.addRoom(br);
+            b = df.getBuilding(b.getBdgId());
+            request.getSession().setAttribute("building", b);
+        }
+    }
+
+    /**
+     * The purpose of this method is, to add a new floor to a building, based on
+     * the buildings id.
+     *
+     * @param request
+     * @param df
+     * @param sessionObj
+     */
+    void addFloors(HttpServletRequest request, DomainFacade df) throws PolygonException {
+        String floorNum = (String) request.getParameter("floornumber");
+        String floorSize = (String) request.getParameter("floorsize");
+        String totalRooms = (String) request.getParameter("totalrooms");
+        Building b = (Building) request.getSession().getAttribute("building");
+        if (floorNum != null && b != null) {
+            int n = (int) Integer.parseInt(floorNum);
+            double s = (double) Double.parseDouble(floorSize);
+            int r = (int) Integer.parseInt(totalRooms);
+            BuildingFloor bf = new BuildingFloor(n, s, b.getBdgId());
+            df.addFloors(bf);
+            b = df.getBuilding(b.getBdgId());
+            request.getSession().setAttribute("building", b);
+        }
     }
     
 }

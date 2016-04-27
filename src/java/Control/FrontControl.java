@@ -435,12 +435,12 @@ public class FrontControl extends HttpServlet {
             }
 
             if (action.equalsIgnoreCase("addfloorsubmit")) {
-                addFloors(request, df);
+                bh.addFloors(request, df);
 
             }
             if (action.equalsIgnoreCase("addroomsubmit")) {
                 int floorId = Integer.parseInt(request.getParameter("floorID"));
-                addRoom(request, df, floorId);
+                bh.addRoom(request, df, floorId);
                 request.setAttribute("showBuilding", true);
                 url = "/viewbuildingadmin.jsp";
 
@@ -473,6 +473,7 @@ public class FrontControl extends HttpServlet {
 //
                 request.setAttribute("reportroom", rr);
                 request.setAttribute("showroom", true);
+                url = "/viewreport.jsp";
 
             }
 
@@ -481,6 +482,8 @@ public class FrontControl extends HttpServlet {
                 //int buildId = Integer.parseInt(request.getParameter("buildingid"));
                 request.setAttribute("roomfiles", true);
                 //request.setAttribute("reportroom", report.getReportRoomFromReportFloor(roomId) );
+                url = "/viewbuildingadmin.jsp";
+
             }
             if (action.equalsIgnoreCase("addfloorplans")) {
                 Building b = (Building) request.getSession().getAttribute("building");
@@ -489,14 +492,19 @@ public class FrontControl extends HttpServlet {
                 request.getSession().setAttribute("floorplans", plans);
                 request.getSession().setAttribute("floorsList", bfList);
                 request.setAttribute("addfloorplans", true);
+                url = "/viewbuildingadmin.jsp";
+
             }
 
             if (action.equalsIgnoreCase("addfilessubmit")) {
-                request = addFiles(request, parts, df);
+                request = nfu.addFiles(request, parts, df, this);
+                url = "/viewbuildingadmin.jsp";
+
             }
 
             if (action.equalsIgnoreCase("addfloorplanssubmit")) {
-                request = addFloorplans(request, parts, df);
+                request = nfu.addFloorplans(request, parts, df, this);
+                url = "/viewbuildingadmin.jsp";
 
             }
 
@@ -510,6 +518,10 @@ public class FrontControl extends HttpServlet {
                 int buildId = Integer.parseInt(request.getParameter("buildingid"));
                 Building b = df.getBuilding(buildId);
                 request.getSession().setAttribute("building", b);
+            }
+            if (action.equalsIgnoreCase("viewbuildingreports")) {
+                request.setAttribute("viewbuildingreports", true);
+                url = "/viewbuildingadmin.jsp";
 
             }
         } catch (PolygonException ex) {
@@ -520,44 +532,6 @@ public class FrontControl extends HttpServlet {
         RequestDispatcher dispatcher
                 = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
-    }
-
-    /**
-     * The purpose of this method is, to add a new floor to a building, based on
-     * the buildings id.
-     *
-     * @param request
-     * @param df
-     * @param sessionObj
-     */
-    private void addFloors(HttpServletRequest request, DomainFacade df) throws PolygonException {
-        String floorNum = (String) request.getParameter("floornumber");
-        String floorSize = (String) request.getParameter("floorsize");
-        String totalRooms = (String) request.getParameter("totalrooms");
-        Building b = (Building) request.getSession().getAttribute("building");
-
-        if (floorNum != null && b != null) {
-            int n = (int) Integer.parseInt(floorNum);
-            double s = (double) Double.parseDouble(floorSize);
-            int r = (int) Integer.parseInt(totalRooms);
-            BuildingFloor bf = new BuildingFloor(n, s, b.getBdgId());
-            df.addFloors(bf);
-            b = df.getBuilding(b.getBdgId());
-            request.getSession().setAttribute("building", b);
-        }
-
-    }
-
-    private void addRoom(HttpServletRequest request, DomainFacade df, int floorId) throws PolygonException {
-        Building b = (Building) request.getSession().getAttribute("building");
-
-        String roomName = (String) request.getParameter("roomname");
-        if (roomName != null) {
-            BuildingRoom br = new BuildingRoom(roomName, floorId);
-            df.addRoom(br);
-            b = df.getBuilding(b.getBdgId());
-            request.getSession().setAttribute("building", b);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -598,89 +572,5 @@ public class FrontControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    /**
-     * Strips request of fileparts and uploads them to the documents folder Then
-     * puts the information it gets back into the Buildings BuildingFiles list
-     * Lastly updates the information in the db
-     *
-     * @param request
-     * @param parts
-     * @param df
-     * @return
-     */
-    public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
-        ArrayList<BuildingFiles> files;
-        Building b = (Building) request.getSession().getAttribute("building");
-
-        if (b != null) {
-            files = b.getListOfFiles();
-
-            System.out.println("b not null");
-            //Add to folder
-            ArrayList<BuildingFile> file;
-
-            String filesDescription;
-            file = nfu.saveBuildingDocs(getServletContext().getRealPath(""), parts);
-            filesDescription = request.getParameter("fileRemarks");
-            if (file == null) {
-                System.out.println("file is null");
-            }
-            if (filesDescription == null) {
-                System.out.println("fileDescrip is null");
-            }
-            if (files == null) {
-                System.out.println("files is null");
-            }
-            files.add(new BuildingFiles(file, filesDescription));
-            b.setListOfFiles(files);
-            //Add to db
-            df.saveBuildingFiles(b);
-
-            request.setAttribute("filessubmitted", true);
-        }
-        request.setAttribute("roomfiles", true);
-        return request;
-    }
-
-    /**
-     * Strips request of fileparts and uploads them to the floorplan folder Then
-     * puts the information it gets back into the Buildings Floor objects Lastly
-     * updates the information in the db
-     *
-     * @param request
-     * @param parts
-     * @param df
-     * @return
-     */
-    public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df) throws PolygonException {
-        ArrayList<BuildingFloor> floors;
-        Building b = (Building) request.getSession().getAttribute("building");
-
-        if (b != null) {
-            //Add to folder
-            ArrayList<Floorplan> floorplans;
-            floorplans = nfu.saveFloorplans(getServletContext().getRealPath(""), parts);
-
-            //Add to buildings floorobject
-            floors = b.getListOfFloors();
-            int chosenFloor = Integer.parseInt(request.getParameter("floors"));
-            for (BuildingFloor floor : floors) {
-                if (floor.getFloorId() == chosenFloor) {
-                    ArrayList<Floorplan> fp = floor.getFloorplans();
-                    fp.addAll(floorplans);
-                    floor.setFloorplans(fp);
-                }
-            }
-
-            //Add to db
-            df.saveFloorplans(chosenFloor, floorplans);
-
-            //Set succesattribute
-            request.setAttribute("filessubmitted", true);
-        }
-        request.setAttribute("roomfiles", true);
-        return request;
-    }
 
 }
