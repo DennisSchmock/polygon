@@ -121,12 +121,12 @@ function yesnoCheck() {
             
  <BR>
      When has the damage happend:
-     <textarea name="damageTime" rows="2" cols="20"></textarea>
+     <textarea name="damageTime" rows="2" cols="20" maxlength="50"></textarea>
      
      <br>
      
      Where
-     <textarea name="damagePlace" rows="2" cols="20"></textarea>
+     <textarea name="damagePlace" rows="2" cols="20" maxlength="250"></textarea>
      
      <br>
      
@@ -169,12 +169,12 @@ function yesnoCheck() {
         Moist scan Result:
         
         
-        <textarea name="moistScanResult" rows="2" cols="20"></textarea>
+        <textarea name="moistScanResult" rows="2" cols="20" maxlength="100"></textarea>
         
         <br>
         Moist  scan Area:
         
-        <textarea name="moistScanArea" rows="2" cols="20"></textarea>
+        <textarea name="moistScanArea" rows="2" cols="20" maxlength="250"></textarea>
         
         <br>
       </div>

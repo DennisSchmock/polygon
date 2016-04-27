@@ -6,7 +6,7 @@
 package Domain;
 
 import Domain.Exceptions.PolygonException;
-import Model.DBFacade;
+import Data.DBFacade;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;

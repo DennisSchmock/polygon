@@ -1,4 +1,4 @@
-package Model;
+package Data;
 
 import Domain.Building;
 import Domain.Exceptions.PolygonException;

@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Data.DBFacade;
 import Domain.Building;
 import Domain.BuildingRoom;
 import Domain.Exceptions.PolygonException;
@@ -37,7 +38,7 @@ public class DBFacadeTestBuilding {
         dbf = DBFacade.getInstance();
         Connection con =fixture.getConnection();
         con.setAutoCommit(true);
-        dbf.setCon(con);
+        dbf.setTestConnection(con);
     }
 
 //

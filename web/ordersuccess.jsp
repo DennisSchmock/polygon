@@ -14,6 +14,10 @@
     <form action="frontpage" method="POST">
     <div class="w3-row-padding" align = "center">
         <h1>Thank you for your order!</h1>  
+        <i>An email of your order request has been sent to noreply.polygonproject@gmail.com</i><br>
+        <i><b>Gmail Account</b></i><br>
+        <i><b>Username:</b> noreply.polygonproject</i><br>
+        <i><b>Password:</b> poly123go</i><br><br>
         <i>You can check order progress in your Order History.</i>
     </div>
         <br>
