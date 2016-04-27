@@ -78,6 +78,7 @@ public class FrontControl extends HttpServlet {
             df = DomainFacade.getInstance();
             sessionObj.setAttribute("Controller", df);
         }
+        sessionObj.setMaxInactiveInterval(300);
 
         //Set base url
         String url = "/index.jsp";
