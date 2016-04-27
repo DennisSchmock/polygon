@@ -42,7 +42,8 @@ public class NewFileUpload {
 
         System.out.println("Inside nfu savePicBuild");
         Part filePart = getSinglePart(parts);
-        if (filePart != null) {
+        if (filePart != null && !filePart.getSubmittedFileName().isEmpty()) {
+            System.out.println("filePart Not empty uploading");
             String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
             String extension = fileDotSplit[fileDotSplit.length - 1];               //Take last part of filename(the extension)
 

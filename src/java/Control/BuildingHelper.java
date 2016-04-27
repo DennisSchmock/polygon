@@ -12,10 +12,14 @@ import Domain.Customer;
 import Domain.DomainFacade;
 import Domain.Exceptions.PolygonException;
 import Domain.User;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
@@ -232,10 +236,15 @@ public class BuildingHelper {
         buildingToBeEdited.setBuildingSize(Double.parseDouble(request.getParameter("buildingSize")));
         buildingToBeEdited.setBuildingYear(Integer.parseInt(request.getParameter("BuildingYear")));
         buildingToBeEdited.setUseOfBuilding(request.getParameter("useOfBuilding"));
+        String buildingPic = nfu.savePictureBuilding(frontControl.getServletContext().getRealPath(""), parts);
+        if (buildingPic != null){
+            System.out.println("BuildingPic != null");
         //Calls method to upload file and get a string with filename back
-        buildingToBeEdited.setBuilding_pic(nfu.savePictureBuilding(frontControl.getServletContext().getRealPath(""), parts));
+        buildingToBeEdited.setBuilding_pic(buildingPic);
+        
         //This call should perhaps be moved to a deeper layer
         df.saveBuildingPic(buildingToBeEdited.getBdgId(), buildingToBeEdited.getBuildingPic());
+        }   
         System.out.println("BuildingPic");
         System.out.println(buildingToBeEdited.getBuildingPic());
         df.Updatebuilding(buildingToBeEdited);
