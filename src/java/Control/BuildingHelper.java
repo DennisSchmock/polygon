@@ -26,9 +26,6 @@ import javax.servlet.http.Part;
  */
 public class BuildingHelper {
     private NewFileUpload nfu;
-    //private Building building;
-    //private BuildingRoom buildingroom;
-    //private BuildingFloor buildingfloor;
     private CreateUserHelper cuh;
     
     public BuildingHelper(NewFileUpload nfu, CreateUserHelper cuh){

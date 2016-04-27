@@ -41,15 +41,13 @@ public class NewFileUpload {
     public String savePictureBuilding(String parentFolder, Collection<Part> parts) {
 
         System.out.println("Inside nfu savePicBuild");
-
         Part filePart = getSinglePart(parts);
         if (filePart != null) {
-
             String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
             String extension = fileDotSplit[fileDotSplit.length - 1];               //Take last part of filename(the extension)
 
             String filename = nextFileId(); //Make random filename and upload to folder.
-            filename = filename + "." + extension;  //+ extension
+            filename = filename + "." + extension;
             uploadFile(filePart, parentFolder, "buildingPic", filename);
             return filename; //Upload the file in buildingPicFolder
         }
@@ -76,12 +74,10 @@ public class NewFileUpload {
             if (fileParts != null) {
                 for (Part filePart : fileParts) {
                     BuildingFile bf = saveBuildingDoc(parentFolder, filePart);
-
                     buildingfile.add(bf);
                     System.out.println(bf.getDocumentname());
                     System.out.println(bf.getSize());
                 }
-
             }
         }
         return buildingfile;
@@ -105,12 +101,10 @@ public class NewFileUpload {
             if (fileParts != null) {
                 for (Part filePart : fileParts) {
                     Floorplan f = saveFloorplan(parentFolder, filePart);
-
                     floorplans.add(f);
                     System.out.println(f.getDocumentname());
                     System.out.println(f.getSize());
                 }
-
             }
         }
         return floorplans;
@@ -119,7 +113,6 @@ public class NewFileUpload {
     public String saveExtPicture(String parentFolder, Collection<Part> parts) {
 
         System.out.println("Inside nfu saveExtPic");
-
         Part filePart = getSinglePart(parts);
         if (filePart != null) {
             String filename = getNewFileName(filePart);
@@ -128,7 +121,6 @@ public class NewFileUpload {
             return filename; //Upload the file in buildingPicFolder
         }
         return null;
-
     }
 
     public ArrayList<ReportPic> addReportRoomPics(String parentFolder, String description, Collection<Part> parts) {
@@ -147,10 +139,8 @@ public class NewFileUpload {
                     }
                     System.out.println(filename);
                 }
-
             }
         }
-
         return rrPic;
     }
 
@@ -165,7 +155,6 @@ public class NewFileUpload {
             return filename; //Upload the file in buildingPicFolder
         }
         return null;
-
     }
 
     /**
@@ -182,12 +171,10 @@ public class NewFileUpload {
         // Deliberate in this case for the purpose of being able to implement across multiple systems
         String uploadFolder = parentFolder//getServletContext().getRealPath("")
                 + File.separator;
-
         File uploads = new File(uploadFolder);
         uploads = new File(uploads.getParentFile().getParent() + File.separator + "web" + File.separator + folder);
         if (filename != null) {
             File file = new File(uploads, filename);
-
             try (InputStream input = filePart.getInputStream()) {
                 Files.copy(input, file.toPath());
             } catch (IOException ex) {
@@ -214,12 +201,10 @@ public class NewFileUpload {
             }
         }
         return null;
-
     }
 
     public List<Part> getAllParts(Collection<Part> parts) {
         List<Part> fileParts = new ArrayList();
-
         //Checks if the form might(!?) contain a file for upload
         //Extracts the part of the form that is the file
         for (Part part : parts) {
@@ -228,7 +213,6 @@ public class NewFileUpload {
             }
         }
         return fileParts;
-
     }
 
     public String getNewFileName(Part filePart) {
@@ -262,7 +246,6 @@ public class NewFileUpload {
     private Floorplan saveFloorplan(String parentFolder, Part filePart) {
         System.out.println("Inside nfu saveFloorplan");
         if (filePart != null) {
-
             String filename = getNewFileName(filePart);
             String documentname = filePart.getSubmittedFileName();
             long bytesize = filePart.getSize();

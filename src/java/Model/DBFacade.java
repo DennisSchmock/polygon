@@ -219,7 +219,6 @@ public class DBFacade {
 
 }
     public User getPolygonUser(String userName) {
-        
         return um.getPolygonUser(userName, con);
     }
     
@@ -334,6 +333,7 @@ public class DBFacade {
      */
     public void updateBuilding(Building b) throws PolygonException{
         bm.updateBuilding(b, con);
+        
     }
 
     public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
