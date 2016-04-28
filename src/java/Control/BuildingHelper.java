@@ -11,7 +11,6 @@ import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.DomainFacade;
 import Domain.Exceptions.PolygonException;
-import Domain.Floorplan;
 import Domain.User;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -352,6 +352,7 @@ public class ReportHelper {
         String realPath = frontControl.getServletContext().getRealPath("");
         String fileName = "ReportFile" + report.getReportId();
         printer.sendReportToPrint(report, building, realPath, fileName);
+        
         //This tells the browser that we will send a PDF file to the browser
         response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".pdf");
         File filepath = new File(realPath + File.separator);

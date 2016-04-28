@@ -13,26 +13,25 @@
 <%@include file="Style/Header.jsp" %>
 
 <main>
-    <div class="w3-center">
-        <div class="w3-row-padding">
-            <div class="w3-container w3-black">
-                <h3>List of customers</h3></div>
-        </div>
-        <div class="w3-row-padding">
+
+    <div class="w3-row-padding">
+        <div class="w3-container w3-black">
+            <h3>List of customers</h3></div>
+    </div>
+    <div class="w3-row-padding">
 
 
-            <ul class="w3-ul w3-card-4">
-                
-                <c:forEach items="${sessionScope.customers}" var="customer">
+        <ul class="w3-ul w3-card-4 w3-hoverable">
+
+            <c:forEach items="${sessionScope.customers}" var="customer">
 
 
-                    <li><a href="frontpage?page=viewcustomer&customerid=${customer.customerId}">Company Name: ${customer.companyName} Adress: ${customer.street}</a> 
-                    </li>
+                <li><div class="w3-row-padding"><a href="frontpage?page=viewcustomer&customerid=${customer.customerId}"><div class="w3-third">Company Name: ${customer.companyName}</div><div class="w3-third"> Adress: ${customer.street}</div></a> 
+                </div></li>
 
-                </c:forEach>
-            </ul>
+            </c:forEach>
+        </ul>
 
-        </div>
     </div>
 </main>
 <%@include file="Style/Footer.jsp" %>

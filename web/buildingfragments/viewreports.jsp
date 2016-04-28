@@ -10,7 +10,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-    <div class="w3-center">
         <div class="w3-row-padding">
             <div class="w3-container w3-black">
                 <h3>List of reports</h3></div>
@@ -28,4 +27,3 @@
                 </ul>
             
         </div>
-    </div>
