@@ -7,8 +7,6 @@ package Control;
 
 import Domain.DomainFacade;
 import Domain.Building;
-import Domain.BuildingFile;
-import Domain.BuildingFiles;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
@@ -85,7 +83,6 @@ public class FrontControl extends HttpServlet {
             df = DomainFacade.getInstance();
             sessionObj.setAttribute("Controller", df);
         }
-        sessionObj.setMaxInactiveInterval(300);
 
         //Set base url
         String url = "/index.jsp";
