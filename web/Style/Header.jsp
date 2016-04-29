@@ -12,8 +12,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
         <link rel="stylesheet" type="text/css" href="Style/Style.css">
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-
 
 
     </head>
@@ -28,16 +26,12 @@
                     <c:out value="${sessionScope.user.fName}"/> 
                     <c:out value="${sessionScope.user.lName}"/><br>
                     <a href="login?page=logout">log out</a>
-
-
                 </div>
 
             </c:if>
         </header>
 
         <ul class="w3-navbar w3-blue">
-
-
             <c:if test="${sessionScope.loggedin||sessionScope.testing==true}">
                 <c:if test="${sessionScope.user.role=='customer'||sessionScope.testing==true}">
                     <li><a href="frontpage?page=viewlistofbuildings">View My Buildings</a></li>
@@ -65,6 +59,6 @@
                 </li>
                  </c:if>
             </c:if>
-            <c:if test="${sessionScope.loggedin==null}"><li><a href="login?page=login">Login</a></li></c:if>
+                <c:if test="${sessionScope.loggedin==null||sessionScope.loggedin==false}"><li><a href="login?page=login">Login</a></li></c:if>
 
         </ul>
