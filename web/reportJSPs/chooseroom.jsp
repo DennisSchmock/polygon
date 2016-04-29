@@ -71,7 +71,6 @@
             <input type="submit" value="Add Room" />
         </form>
         
-        Add a Floor not there:  <input type="submit" value="Not IMPLEMENTED!" name="Floor" />
         
     </div>
     

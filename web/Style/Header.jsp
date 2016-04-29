@@ -54,7 +54,6 @@
                         <a href="frontpage?page=addcustomer">Add customer</a>
                         <a href="frontpage?page=viewcustomers">View Customers</a>
                         <a href="viewreports?action=listreports">View Reports</a>
-                        <a href="#">View Buildings*</a>
                         <a href="frontpage?page=addfloor">Add Floors and rooms</a>
                     </div>
                 </li>
