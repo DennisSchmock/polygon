@@ -21,7 +21,7 @@ class CreateUserHelper {
 
     //Customer customer;
 
-    void createNewCustomer(DomainFacade df, HttpSession session, HttpServletRequest request) {
+    public void createNewCustomer(DomainFacade df, HttpSession session, HttpServletRequest request) {
         String companyName = request.getParameter("companyname");
         String contactPerson = request.getParameter("contactperson");
         String street = request.getParameter("street");
@@ -35,7 +35,7 @@ class CreateUserHelper {
    
     }
 
-    void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session, FrontControl frontControl) {
+    public void createNewCustomer(HttpServletRequest request, DomainFacade df, HttpSession session, FrontControl frontControl) {
         createNewCustomer(df, session, request);
     }
 
@@ -63,34 +63,30 @@ class CreateUserHelper {
     }
 
     /**
-     * Method that sets up, for the emp whitch building he has to create an
+     * Method that sets up, for the emp which building he has to create an
      * report for. Needs to load all the customers.
      *
      * @param request
      * @param sessionObj
      * @param df
      */
-    void chooseCustomer(HttpSession sessionObj, DomainFacade df) {
+    public void chooseCustomer(HttpSession sessionObj, DomainFacade df) {
         List<Customer> allCustomers = df.loadAllCustomers();
         sessionObj.setAttribute("allCustomers", allCustomers);
     }
 
     /**
-     * Method for logging an user in. Question: The cus login set a session
-     * parameter that is called "user" This method could just use that aswell,
-     * to store the object Or have a different parameter. Also we need to find
-     * out if the loggedin should be an int. 0 = not logged in, 1= cus_loggedin,
-     * 2= emp_loggedin
+     * Method for logging an user in. 
      *
      * @param df
      * @param request
      * @param response
      */
-    void emplogin(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
+    public void emplogin(DomainFacade df, HttpServletRequest request, HttpServletResponse response) {
         String username = (String) request.getParameter("username");
         String pwd = (String) request.getParameter("pwd");
         if (df.logEmpUserIn(username, pwd)) {
-            // not implemented!
+          
             request.getSession().setAttribute("loggedin", true);
             User user = df.loadEmpUser(username); // not implemented!
             request.getSession().setAttribute("user", user);
