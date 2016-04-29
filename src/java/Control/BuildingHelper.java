@@ -30,9 +30,9 @@ import javax.servlet.http.Part;
  */
 public class BuildingHelper {
     private NewFileUpload nfu;
-    private CreateUserHelper cuh;
+    private UserHelper cuh;
     
-    public BuildingHelper(NewFileUpload nfu, CreateUserHelper cuh){
+    public BuildingHelper(NewFileUpload nfu, UserHelper cuh){
         this.nfu=nfu;
         this.cuh=cuh;
     }

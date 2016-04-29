@@ -46,7 +46,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @MultipartConfig
 public class FrontControl extends HttpServlet {
 
-    private final CreateUserHelper cuh = new CreateUserHelper();
+    private final UserHelper cuh = new UserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
     private final BuildingHelper bh = new BuildingHelper(nfu, cuh);
     private final ReportHelper rh = new ReportHelper(nfu);

@@ -32,13 +32,13 @@
         </header>
 
         <ul class="w3-navbar w3-blue">
-            <c:if test="${sessionScope.loggedin||sessionScope.testing==true}">
-                <c:if test="${sessionScope.user.role=='customer'||sessionScope.testing==true}">
+            <c:if test="${sessionScope.loggedin==true}">
+                <c:if test="${sessionScope.user.role=='customer'}">
                     <li><a href="frontpage?page=viewlistofbuildings">View My Buildings</a></li>
                     <li><a href="frontpage?page=orderRequest">Order Request</a></li>
                     <li><a href="frontpage?page=orderhistory">Order History</a></li>
                     </c:if>
-                    <c:if test="${sessionScope.user.role=='employee'||sessionScope.testing==true}"> 
+                    <c:if test="${sessionScope.user.role=='employee'}"> 
                     <li><a href="frontpage?page=newreport">Add Report</a></li>
                     <li><a href="frontpage?page=orderslist">Orders List</a></li>
                     </c:if>

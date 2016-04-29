@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Dennis Schmock
  */
-class CreateUserHelper {
+class UserHelper {
 
     //Customer customer;
 
