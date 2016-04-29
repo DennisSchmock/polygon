@@ -15,6 +15,7 @@ import Domain.Report;
 import Domain.Exceptions.PolygonException;
 import Domain.Floorplan;
 import Domain.ReportRoom;
+import Domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -173,10 +174,14 @@ public class FrontControl extends HttpServlet {
             }
 
             //Viewing the list of all the 
-            if (page.equalsIgnoreCase("viewlistofbuildings")) {
+            if (page.equalsIgnoreCase("viewmybuildings")) {
                 bh.findListOfBuilding(request, df, sessionObj);
-                url = "/viewlistofbuildings.jsp";
+                User tempUser = (User)request.getSession().getAttribute("user");
+                List<Building> buildings = df.getListOfBuildings(tempUser.getCustomerid());
+                url = "/viewcustomer.jsp";
+                sessionObj.setAttribute("buildings", buildings);
             }
+            
 
             //Edit a building
             if (page.equalsIgnoreCase("editBuilding")) {
@@ -199,6 +204,7 @@ public class FrontControl extends HttpServlet {
                 response.sendRedirect("viewcustomers.jsp");
                 return;
             }
+            
 
             if (page.equalsIgnoreCase("viewcustomer")) {
                 int custId = Integer.parseInt(request.getParameter("customerid"));
