@@ -176,12 +176,11 @@ public class FrontControl extends HttpServlet {
             //Viewing the list of all the 
             if (page.equalsIgnoreCase("viewmybuildings")) {
                 bh.findListOfBuilding(request, df, sessionObj);
-                User tempUser = (User)request.getSession().getAttribute("user");
+                User tempUser = (User) request.getSession().getAttribute("user");
                 List<Building> buildings = df.getListOfBuildings(tempUser.getCustomerid());
                 url = "/viewcustomer.jsp";
                 sessionObj.setAttribute("buildings", buildings);
             }
-            
 
             //Edit a building
             if (page.equalsIgnoreCase("editBuilding")) {
@@ -204,7 +203,6 @@ public class FrontControl extends HttpServlet {
                 response.sendRedirect("viewcustomers.jsp");
                 return;
             }
-            
 
             if (page.equalsIgnoreCase("viewcustomer")) {
                 int custId = Integer.parseInt(request.getParameter("customerid"));
@@ -440,6 +438,7 @@ public class FrontControl extends HttpServlet {
 
             if (action.equalsIgnoreCase("addfloorsubmit")) {
                 bh.addFloors(request, df);
+                url = "/viewbuildingadmin.jsp";
 
             }
             if (action.equalsIgnoreCase("addroomsubmit")) {
