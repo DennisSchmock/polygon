@@ -30,6 +30,13 @@ public class Contact {
         this.custID = custID;
     }
 
+    /**
+     *
+     * @param name
+     * @param email
+     * @param telNum
+     * @param custID
+     */
     public Contact(String name, String email, String telNum, int custID) {
         this.name = name;
         this.email = email;
@@ -37,26 +44,50 @@ public class Contact {
         this.custID = custID;
     }
     
+    /**
+     *
+     * @param contactID
+     */
     public void setContactID(int contactID) {
         this.contactID = contactID;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getContactID() {
         return contactID;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTelNum() {
         return telNum;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCustID() {
         return custID;
     }

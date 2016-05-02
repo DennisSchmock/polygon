@@ -32,6 +32,11 @@ public class BuildingHelper {
     private NewFileUpload nfu;
     private UserHelper cuh;
     
+    /**
+     *
+     * @param nfu
+     * @param cuh
+     */
     public BuildingHelper(NewFileUpload nfu, UserHelper cuh){
         this.nfu=nfu;
         this.cuh=cuh;

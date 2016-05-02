@@ -31,6 +31,13 @@ public class OrderHelper {
 
     @EJB
     private MailSenderBean mailSender;
+
+    /**
+     *
+     * @param fc
+     * @param bh
+     * @param cuh
+     */
     public OrderHelper(FrontControl fc, BuildingHelper bh, UserHelper cuh){
         this.bh=bh;
         this.cuh = cuh;
@@ -41,6 +48,7 @@ public class OrderHelper {
      * @param request
      * @param sessionObj
      * @param df
+     * @param frontControl
      */
     public void saveOrder(HttpServletRequest request, HttpSession sessionObj, DomainFacade df, FrontControl frontControl) {
         String serviceDesc = (String) request.getParameter("services");

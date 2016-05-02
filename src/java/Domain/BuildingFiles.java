@@ -17,25 +17,45 @@ public class BuildingFiles implements Serializable{
     private ArrayList<BuildingFile> listOfFileInfo;
     private String description;
 
+    /**
+     *
+     * @param listOfFileInfo
+     * @param description
+     */
     public BuildingFiles(ArrayList<BuildingFile> listOfFileInfo, String description) {
         this.listOfFileInfo = listOfFileInfo;
         this.description = description;
         
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public ArrayList<BuildingFile> getListOfFileInfo() {
         return listOfFileInfo;
     }
 
+    /**
+     *
+     * @param listOfFilenames
+     */
     public void setListOfFileInfo(ArrayList<String> listOfFilenames) {
         this.listOfFileInfo = listOfFileInfo;
     }

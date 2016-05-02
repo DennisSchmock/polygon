@@ -46,63 +46,110 @@ public class ReportExterior implements Serializable{
         this.reportId = reportId;
     }
     
-    
-
-    
-    
+    /**
+     *
+     * @param repExtDescription
+     * @param repExtPic
+     * @param reportId
+     */
     public ReportExterior( String repExtDescription, String repExtPic, int reportId) {
         this.repExtDescription = repExtDescription;
         this.repExtPic = repExtPic;
         this.reportId = reportId;
     }
     
-   
-
+    /**
+     *
+     * @param repExtId
+     */
     public void setRepExtId(int repExtId) {
         this.repExtId = repExtId;
     }
 
-    
+    /**
+     *
+     * @return
+     */
     public int getRepExtId() {
         return repExtId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRepExtDescription() {
         return repExtDescription;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRepExtPic() {
         return repExtPic;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getReportId() {
         return reportId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRepExtInspectedArea() {
         return repExtInspectedArea;
     }
 
+    /**
+     *
+     * @param repExtInspectedArea
+     */
     public void setRepExtInspectedArea(String repExtInspectedArea) {
         this.repExtInspectedArea = repExtInspectedArea;
     }
 
+    /**
+     *
+     * @param repExtDescription
+     */
     public void setRepExtDescription(String repExtDescription) {
         this.repExtDescription = repExtDescription;
     }
 
+    /**
+     *
+     * @param repExtPic
+     */
     public void setRepExtPic(String repExtPic) {
         this.repExtPic = repExtPic;
     }
 
+    /**
+     *
+     * @param reportId
+     */
     public void setReportId(int reportId) {
         this.reportId = reportId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRepExtPicDescriptoin() {
         return repExtPicDecription;
     }
 
+    /**
+     *
+     * @param repExtPicDescriptoin
+     */
     public void setRepExtPicDescriptoin(String repExtPicDescriptoin) {
         this.repExtPicDecription = repExtPicDescriptoin;
     }

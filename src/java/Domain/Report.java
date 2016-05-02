@@ -32,6 +32,8 @@ public class Report implements Serializable{
      * @param date   date
      * @param buildingId    building's ID
      * @param catCon  category conclusion
+     * @param polygonUser
+     * @param customerName
      */
     public Report(int reportId, Date date, int buildingId, int catCon, String polygonUser, String customerName) {
         this.reportId = reportId;
@@ -42,6 +44,12 @@ public class Report implements Serializable{
         this.customerAccountable = customerName;
     }
     
+    /**
+     *
+     * @param Date
+     * @param buildingId
+     * @param catCon
+     */
     public Report(String Date, int buildingId, int catCon) {
         this.date = date;
         this.buildingId = buildingId;
@@ -50,11 +58,19 @@ public class Report implements Serializable{
         this.listOfRepExt = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param buildingId
+     * @param polygonUserID
+     */
     public Report(int buildingId, String polygonUserID) {
         this.buildingId = buildingId;
         this.polygonUserName = polygonUserID;
     }
 
+    /**
+     *
+     */
     public Report() {
     }
     
@@ -76,61 +92,107 @@ public class Report implements Serializable{
         return null;
     }
 
-    
-    
-
+    /**
+     *
+     * @param id
+     * @return
+     */
     public ReportRoom getReportRoom(int id){
         return this.getListOfRepRoom().get(id);
     }
     
-   
+    /**
+     *
+     * @param reportId
+     */
     public void setReportId(int reportId) {
         this.reportId = reportId;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getReportId() {
         return reportId;
     }
     
-    
-
+    /**
+     *
+     * @return
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportRoom> getListOfRepRoom() {
         return listOfRepRoom;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportExterior> getListOfRepExt() {
         return listOfRepExt;
     }
 
+    /**
+     *
+     * @param listOfRepRoomExt
+     */
     public void setListOfRepExt(ArrayList<ReportExterior> listOfRepRoomExt) {
         this.listOfRepExt = listOfRepRoomExt;
     }
 
-  
+    /**
+     *
+     * @param listOfRepRoom
+     */
     public void setListOfRepRoom(ArrayList<ReportRoom> listOfRepRoom) {
         this.listOfRepRoom = listOfRepRoom;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCategoryConclusion() {
         return categoryConclusion;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPolygonUserName() {
         return polygonUserName;
     }
 
+    /**
+     *
+     * @param polygonUserName
+     */
     public void setPolygonUserName(String polygonUserName) {
         this.polygonUserName = polygonUserName;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isFinshed() {
         return finshed;
     }
 
+    /**
+     *
+     * @param finshed
+     */
     public void setFinshed(boolean finshed) {
         this.finshed = finshed;
     }
@@ -151,18 +213,34 @@ public class Report implements Serializable{
         this.buildingId = buildingId;
     }
 
+    /**
+     *
+     * @param categoryConclusion
+     */
     public void setCategoryConclusion(int categoryConclusion) {
         this.categoryConclusion = categoryConclusion;
     }
 
+    /**
+     *
+     * @param date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCustomerAccountable() {
         return customerAccountable;
     }
 
+    /**
+     *
+     * @param customerAccountable
+     */
     public void setCustomerAccountable(String customerAccountable) {
         this.customerAccountable = customerAccountable;
     }
@@ -195,10 +273,18 @@ public class Report implements Serializable{
         return reportExtString;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportPic> getListOfExtPics() {
         return listOfExtPics;
     }
 
+    /**
+     *
+     * @param listOfExtPics
+     */
     public void setListOfExtPics(ArrayList<ReportPic> listOfExtPics) {
         this.listOfExtPics = listOfExtPics;
     }

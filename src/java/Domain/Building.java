@@ -29,9 +29,22 @@ public class Building implements Serializable{
     private int custId;
     private int buildingState;
 
+    /**
+     *
+     */
     public Building() {
     }
     
+    /**
+     *
+     * @param buildingName
+     * @param streetAddress
+     * @param streetNumber
+     * @param zipCode
+     * @param buildingYear
+     * @param buildingSize
+     * @param useOfBuilding
+     */
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
         this.buildingName = buildingName;
         this.streetAddress = streetAddress;
@@ -43,6 +56,18 @@ public class Building implements Serializable{
         buildingPic="0.png";
     }
 
+    /**
+     *
+     * @param bdgId
+     * @param buildingName
+     * @param buildingSize
+     * @param streetAddress
+     * @param streetNumber
+     * @param buildingYear
+     * @param zipCode
+     * @param useOfBuilding
+     * @param custId
+     */
     public Building(int bdgId, String buildingName,double buildingSize, String streetAddress, String streetNumber, int buildingYear, int zipCode, String useOfBuilding, int custId) {
         this.bdgId = bdgId;
         this.buildingName = buildingName;
@@ -57,6 +82,19 @@ public class Building implements Serializable{
         buildingPic="0.png";
     }
 
+    /**
+     *
+     * @param bdgId
+     * @param buildingName
+     * @param streetAddress
+     * @param streetNumber
+     * @param zipCode
+     * @param buildingYear
+     * @param buildingSize
+     * @param useOfBuilding
+     * @param custId
+     * @param buildingState
+     */
     public Building(int bdgId, String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding, int custId, int buildingState) {
         this.bdgId = bdgId;
         this.buildingName = buildingName;
@@ -109,119 +147,228 @@ public class Building implements Serializable{
     }
     
     //Getters and setters below this line.
+
+    /**
+     *
+     * @return
+     */
     public int getBuildingState() {
         return buildingState;
     }
 
+    /**
+     *
+     * @param buildingState
+     */
     public void setBuildingState(int buildingState) {
         this.buildingState = buildingState;
     }
     
-    
+    /**
+     *
+     * @return
+     */
     public int getBdgId() {
         return bdgId;
     }
 
+    /**
+     *
+     * @param bdgId
+     */
     public void setBdgId(int bdgId) {
         this.bdgId = bdgId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBuildingName() {
         return buildingName;
     }
 
+    /**
+     *
+     * @param buildingName
+     */
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getStreetAddress() {
         return streetAddress;
     }
 
+    /**
+     *
+     * @param streetAddress
+     */
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getStreetNumber() {
         return streetNumber;
     }
 
+    /**
+     *
+     * @param streetNumber
+     */
     public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getZipCode() {
         return zipCode;
     }
 
+    /**
+     *
+     * @param zipCode
+     */
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBuildingYear() {
         return buildingYear;
     }
 
+    /**
+     *
+     * @param buildingYear
+     */
     public void setBuildingYear(int buildingYear) {
         this.buildingYear = buildingYear;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getBuildingSize() {
         return buildingSize;
     }
 
+    /**
+     *
+     * @param buildingSize
+     */
     public void setBuildingSize(double buildingSize) {
         this.buildingSize = buildingSize;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUseOfBuilding() {
         return useOfBuilding;
     }
 
+    /**
+     *
+     * @param useOfBuilding
+     */
     public void setUseOfBuilding(String useOfBuilding) {
         this.useOfBuilding = useOfBuilding;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Report> getListOfReports() {
         return listOfReports;
     }
 
+    /**
+     *
+     * @param listOfReports
+     */
     public void setListOfReports(ArrayList<Report> listOfReports) {
         this.listOfReports = listOfReports;
     }
     
-        public int getCustId() {
+    /**
+     *
+     * @return
+     */
+    public int getCustId() {
         return custId;
     }
 
+    /**
+     *
+     * @param custId
+     */
     public void setCustId(int custId) {
         this.custId = custId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBuildingPic() {
         return buildingPic;
     }
 
+    /**
+     *
+     * @param building_pic
+     */
     public void setBuilding_pic(String building_pic) {
         this.buildingPic = building_pic;
     }
 
-    
-
+    /**
+     *
+     * @return
+     */
     public ArrayList<BuildingFloor> getListOfFloors() {
         return listOfFloors;
     }
 
+    /**
+     *
+     * @param listOfFloors
+     */
     public void setListOfFloors(ArrayList<BuildingFloor> listOfFloors) {
         this.listOfFloors = listOfFloors;
     }
   
-
+    /**
+     *
+     * @return
+     */
     public ArrayList<BuildingFiles> getListOfFiles() {
         if (listOfFiles==null) listOfFiles=new ArrayList();
         return listOfFiles;
     }
 
+    /**
+     *
+     * @param listOfFiles
+     */
     public void setListOfFiles(ArrayList<BuildingFiles> listOfFiles) {
         this.listOfFiles = listOfFiles;
     }

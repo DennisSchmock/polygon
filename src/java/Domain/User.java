@@ -46,6 +46,10 @@ public class User {
 
     }
    
+    /**
+     *
+     * @param customerid
+     */
     public void setCustomerid(int customerid) {
         this.customerid = customerid;
     }
@@ -74,26 +78,50 @@ public class User {
 
     PasswordHandler pwdHandler = new PasswordHandler();
 
+    /**
+     *
+     * @return
+     */
     public boolean checkPassWord() {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     *
+     * @param username
+     */
     public void setUserName(String username) {
         this.userName = username;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCustomerid() {
         return customerid;
     }

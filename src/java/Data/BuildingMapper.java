@@ -37,6 +37,8 @@ public class BuildingMapper{
      *
      * @param b building to be added to database
      * @param con connection to database
+     * @return 
+     * @throws Domain.Exceptions.PolygonException 
      */
     public Building saveNewBuildingDB(Building b, Connection con) throws PolygonException {
         String sqlString = "insert into building(building_name, building_m2, "
@@ -73,6 +75,7 @@ public class BuildingMapper{
      * @param filename full filename ie xxx.jpg
      * @param con
      * @return the same filename that was put in. for some odd reason
+     * @throws Domain.Exceptions.PolygonException
      */
     public String saveBuildingPic(int buildId, String filename, Connection con) throws PolygonException {
         int imgId = 0;
@@ -104,6 +107,7 @@ public class BuildingMapper{
      * @param customerID ID of the customer that is to be loaded
      * @param con Connection to Database
      * @return An list of buildings related to the customerID
+     * @throws Domain.Exceptions.PolygonException
      */
     public List<Building> getListOfBuildingsBM(int customerID, Connection con) throws PolygonException {
         List<Building> buildingList = new ArrayList<>();
@@ -163,6 +167,7 @@ public class BuildingMapper{
      * @param updatedBuildObj Holds all the information that is needed to update
      * the building tuble in the database
      * @param con Connection to the database
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateBuildingBm(Building updatedBuildObj, Connection con) throws PolygonException {
         String sqlString = "UPDATE building "
@@ -202,6 +207,7 @@ public class BuildingMapper{
      * @param bdgId
      * @param con
      * @return
+     * @throws Domain.Exceptions.PolygonException
      */
     public Building getBuilding(int bdgId, Connection con) throws PolygonException {
         Building b;
@@ -238,6 +244,7 @@ public class BuildingMapper{
      * The purpofse of this method is to add a floor object to the database
      * @param bf floor object
      * @param con
+     * @throws Domain.Exceptions.PolygonException
      */
     public void addFloor(BuildingFloor bf, Connection con) throws PolygonException {
         String SQLString = "insert into building_floor(floor_number,floor_size,total_rooms,idbuilding) values (?,?,?,?)";
@@ -266,6 +273,7 @@ public class BuildingMapper{
      * @param buildingId the id of the building
      * @param con 
      * @return a list of floors
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<BuildingFloor> getFloorsList(int buildingId, Connection con) throws PolygonException {
         ArrayList<BuildingFloor> floorsList = new ArrayList();
@@ -297,6 +305,7 @@ public class BuildingMapper{
      * @param floorId the id of the floor we need
      * @param con
      * @return a list of rooms
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<BuildingRoom> getRoomList(int floorId, Connection con) throws PolygonException {
         ArrayList<BuildingRoom> roomList = new ArrayList();
@@ -326,6 +335,7 @@ public class BuildingMapper{
      * @param floorId id to choose a specific floor in db
      * @param con
      * @return a list of Floorplan objects
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Floorplan> getFloorplans(int floorId, Connection con) throws PolygonException {
         ArrayList<Floorplan> floorplans = new ArrayList();
@@ -357,6 +367,7 @@ public class BuildingMapper{
      * @param buildingId id of the building to find an image for
      * @param con
      * @return the last image to come out of the db with the buildingId
+     * @throws Domain.Exceptions.PolygonException
      */
     public String getLatestBuildingImage(int buildingId, Connection con) throws PolygonException {
         String filename = null;
@@ -535,6 +546,7 @@ public class BuildingMapper{
      * This method will update the building_floor in the database
      * @param bf new BuildingFloor that holds the changes
      * @param con
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateFloor(BuildingFloor bf, Connection con) throws PolygonException{
         String SQLString
@@ -561,6 +573,7 @@ public class BuildingMapper{
      * This method will update the building_room in the database
      * @param br new BuildingRoom that holds the changes
      * @param con
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateRoom(BuildingRoom br, Connection con) throws PolygonException{
         String SQLString

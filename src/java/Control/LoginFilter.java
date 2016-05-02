@@ -25,9 +25,22 @@ import javax.servlet.http.HttpSession;
 @WebFilter(urlPatterns = {"/frontpagde", })
 public class LoginFilter implements Filter {
 
+    /**
+     *
+     * @param filterConfig
+     * @throws ServletException
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -46,6 +59,9 @@ public class LoginFilter implements Filter {
         
     }
 
+    /**
+     *
+     */
     @Override
     public void destroy() {
     }

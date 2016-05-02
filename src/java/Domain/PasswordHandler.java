@@ -15,12 +15,22 @@ public class PasswordHandler {
 
     StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
-
+    /**
+     *
+     * @param pwd
+     * @return
+     */
     public String encryptPassword(String pwd) {
         String encryptedPassword = passwordEncryptor.encryptPassword(pwd);
         return encryptedPassword;
     }
 
+    /**
+     *
+     * @param inputPwd
+     * @param encpwd
+     * @return
+     */
     public boolean checkPassword(String inputPwd, String encpwd) {
         return passwordEncryptor.checkPassword(inputPwd, encpwd);
 

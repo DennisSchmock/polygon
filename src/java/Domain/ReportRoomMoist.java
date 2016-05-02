@@ -18,6 +18,13 @@ public class ReportRoomMoist implements Serializable {
     private String measurePoint;
     private int reportRoom;
 
+    /**
+     *
+     * @param moistMeasureId
+     * @param moistMeasured
+     * @param measurePoint
+     * @param reportRoom
+     */
     public ReportRoomMoist(int moistMeasureId, String moistMeasured, String measurePoint, int reportRoom) {
         this.moistMeasureId = moistMeasureId;
         this.moistMeasured = moistMeasured;
@@ -36,38 +43,66 @@ public class ReportRoomMoist implements Serializable {
         this.measurePoint = measurePoint;
     }
 
-
-    
-    
-    
+    /**
+     *
+     * @return
+     */
     public int getMoistMeasureId() {
         return moistMeasureId;
     }
 
+    /**
+     *
+     * @param moistMeasureId
+     */
     public void setMoistMeasureId(int moistMeasureId) {
         this.moistMeasureId = moistMeasureId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMoistMeasured() {
         return moistMeasured;
     }
 
+    /**
+     *
+     * @param moistMeasured
+     */
     public void setMoistMeasured(String moistMeasured) {
         this.moistMeasured = moistMeasured;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMeasurePoint() {
         return measurePoint;
     }
 
+    /**
+     *
+     * @param measurePoint
+     */
     public void setMeasurePoint(String measurePoint) {
         this.measurePoint = measurePoint;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getReportRoom() {
         return reportRoom;
     }
 
+    /**
+     *
+     * @param reportRoom
+     */
     public void setReportRoom(int reportRoom) {
         this.reportRoom = reportRoom;
     }

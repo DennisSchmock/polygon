@@ -41,6 +41,15 @@ public class ReportRoomDamage implements Serializable {
         this.whatIsRepaired = whatIsRepaired;
     }
 
+    /**
+     *
+     * @param damageTime
+     * @param place
+     * @param whatHappened
+     * @param whatIsRepaired
+     * @param damageType
+     * @param repRoomId
+     */
     public ReportRoomDamage(String damageTime, String place, String whatHappened, String whatIsRepaired, String damageType, int repRoomId) {
         this.damageTime = damageTime;
         this.place = place;
@@ -67,34 +76,66 @@ public class ReportRoomDamage implements Serializable {
         this.whatIsRepaired = whatIsRepaired;
     }
 
+    /**
+     *
+     * @param repRoomDmgId
+     */
     public void setRepRoomDmgId(int repRoomDmgId) {
         this.repRoomDmgId = repRoomDmgId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRepRoomDmgId() {
         return repRoomDmgId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDamageTime() {
         return damageTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPlace() {
         return place;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getWhatHappened() {
         return whatHappened;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getWhatIsRepaired() {
         return whatIsRepaired;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDamageType() {
         return damageType;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRepRoomId() {
         return repRoomId;
     }

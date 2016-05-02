@@ -114,6 +114,7 @@ public class OrderMapper {
      * @param custId customer Id
      * @param con connection
      * @return list of Orders
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Order> getListOfOrders(int custId, Connection con) throws PolygonException{
         String sql = "select * from orders where customer_id = ?";
@@ -148,6 +149,7 @@ public class OrderMapper {
      * This method will get all the orders from the database
      * @param con connection
      * @return list of all Orders
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Order> getListOfAllOrders(Connection con) throws PolygonException{
         String sql = "select * from orders";

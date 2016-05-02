@@ -33,6 +33,10 @@ public class DBFacade {
     private OrderMapper om;
     private boolean unitTest = false;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         DBFacade facade = getInstance();
 
@@ -117,6 +121,7 @@ public class DBFacade {
      *
      * @param b A Building object that is to be saved in the database
      * @return The created building with it's ID set
+     * @throws Domain.Exceptions.PolygonException
      */
     public Building saveNewBuilding(Building b) throws PolygonException {
         b = bm.saveNewBuildingDB(b, getCon());
@@ -140,6 +145,7 @@ public class DBFacade {
      *
      * @param customerID ID of the customer that is to be loaded
      * @return An list of buildings related to the customerID
+     * @throws Domain.Exceptions.PolygonException
      */
     public List<Building> getListOfbuildingsDB(int customerID) throws PolygonException {
         return bm.getListOfBuildingsBM(customerID, getCon());
@@ -149,6 +155,7 @@ public class DBFacade {
      * Sends the to be updated building object to the right mapper
      *
      * @param updatedBuildObj The object that should be updated in the database
+     * @throws Domain.Exceptions.PolygonException
      *
      */
     public void updateBuildingDBFacade(Building updatedBuildObj) throws PolygonException {
@@ -156,6 +163,12 @@ public class DBFacade {
     }
 
     //Sending the report as a whole to DB - new method
+
+    /**
+     *
+     * @param R
+     * @throws PolygonException
+     */
     public void newReportToDB(Report R) throws PolygonException {
         nrm.reportToDataBase(R, getCon());
     }
@@ -197,6 +210,8 @@ public class DBFacade {
      * Creates the tuble in the database for a Report.
      *
      * @param report Report to be saved in the database
+     * @return 
+     * @throws Domain.Exceptions.PolygonException 
      */
     public int reportToDataBase(Report report) throws PolygonException {
         return nrm.reportToDataBase(report, getCon());
@@ -260,6 +275,7 @@ public class DBFacade {
      *
      * @param bdgId
      * @return
+     * @throws Domain.Exceptions.PolygonException
      */
     public Building getBuilding(int bdgId) throws PolygonException {
         Building b = bm.getBuilding(bdgId, getCon());
@@ -283,6 +299,7 @@ public class DBFacade {
      * redirects to the BuildingMapper
      *
      * @param bf the BuildingFloor object will be added to the database
+     * @throws Domain.Exceptions.PolygonException
      */
     public void addFloor(BuildingFloor bf) throws PolygonException {
         bm.addFloor(bf, getCon());
@@ -293,6 +310,7 @@ public class DBFacade {
      *
      * @param bdgId building Id
      * @return a list of floors from the database based on the building ID
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<BuildingFloor> getListOfFloors(int bdgId) throws PolygonException {
         return bm.getFloorsList(bdgId, getCon());
@@ -303,6 +321,7 @@ public class DBFacade {
      *
      * @param newRoom Room the be created in the Database
      * @return The new buildingRoom with an uniqe ID.
+     * @throws Domain.Exceptions.PolygonException
      */
     public BuildingRoom saveBuildingRoom(BuildingRoom newRoom) throws PolygonException {
         return bm.saveBuildingRoom(newRoom, getCon());
@@ -313,6 +332,7 @@ public class DBFacade {
      *
      * @param id floor ID
      * @return BuildingFloor object based on the floor ID
+     * @throws Domain.Exceptions.PolygonException
      */
     public BuildingFloor getFloor(int id) throws PolygonException {
         return bm.getFloor(id, getCon());
@@ -323,6 +343,7 @@ public class DBFacade {
      *
      * @param id floorID
      * @param totalRooms new number of rooms to be updated in the database
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateFloor(int id, int totalRooms) throws PolygonException {
         bm.updateFloor(id, getCon(), totalRooms);
@@ -333,6 +354,7 @@ public class DBFacade {
      *
      * @param flrId floor ID
      * @return a list of Building Rooms based on the floor ID
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<BuildingRoom> getRoomList(int flrId) throws PolygonException {
         return bm.getRoomList(flrId, getCon());
@@ -342,6 +364,7 @@ public class DBFacade {
      * redirects to the buildingMapper
      *
      * @param bdgId buildingId of the building that has to be deleted
+     * @throws Domain.Exceptions.PolygonException
      */
     public void deleteBuilding(int bdgId) throws PolygonException {
         bm.deleteBuilding(bdgId, getCon());
@@ -351,6 +374,7 @@ public class DBFacade {
      * redirects to the buildingMapper
      *
      * @param br new BuildingRoom that holds the changes
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateRoom(BuildingRoom br) throws PolygonException {
         bm.updateRoom(br, getCon());
@@ -360,6 +384,7 @@ public class DBFacade {
      * redirects to the BuildingMapper
      *
      * @param bf new BuildingFloor that holds the changes
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateFloor(BuildingFloor bf) throws PolygonException {
         bm.updateFloor(bf, getCon());
@@ -369,20 +394,37 @@ public class DBFacade {
      * redirects to the BuildingMapper
      *
      * @param b new Building that holds the changes
+     * @throws Domain.Exceptions.PolygonException
      */
     public void updateBuilding(Building b) throws PolygonException {
         bm.updateBuilding(b, getCon());
     }
 
+    /**
+     *
+     * @return
+     * @throws PolygonException
+     */
     public ArrayList<Report> getSimpleListOfReports() throws PolygonException {
         return nrm.getSimpleListOfReports(getCon());
 
     }
 
+    /**
+     *
+     * @param b
+     * @throws PolygonException
+     */
     public void saveBuildingFiles(Building b) throws PolygonException {
         bm.saveBuildingDocs(b, getCon());
     }
 
+    /**
+     *
+     * @param floor
+     * @param f
+     * @throws PolygonException
+     */
     public void saveFloorplan(int floor, Floorplan f) throws PolygonException {
         bm.saveFloorplan(floor, f, getCon());
     }
@@ -433,6 +475,7 @@ public class DBFacade {
      *
      * @param custId customer ID
      * @return list of Orders
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Order> getlistOfOrders(int custId) throws PolygonException {
         return om.getListOfOrders(custId, getCon());
@@ -442,6 +485,7 @@ public class DBFacade {
      * redirects to OrderMapper
      *
      * @return list of all Orders
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Order> getListOfAllOrders() throws PolygonException {
         return om.getListOfAllOrders(getCon());
@@ -454,6 +498,7 @@ public class DBFacade {
      *
      * @param floorId the ID of a BuildingFloor object
      * @return an ArrayList of Floorplan objects
+     * @throws Domain.Exceptions.PolygonException
      */
     public ArrayList<Floorplan> getFloorplans(int floorId) throws PolygonException {
         return bm.getFloorplans(floorId, getCon());

@@ -52,6 +52,18 @@ public class Customer implements Serializable{
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     *
+     * @param customerId
+     * @param companyName
+     * @param contactPerson
+     * @param cusMail
+     * @param street
+     * @param streetNumber
+     * @param cusCVR
+     * @param zip
+     * @param phoneNumber
+     */
     public Customer(int customerId, String companyName, String contactPerson, String cusMail, String street, String streetNumber, String cusCVR, int zip, String phoneNumber) {
         this.customerId = customerId;
         this.companyName = companyName;
@@ -251,10 +263,18 @@ public class Customer implements Serializable{
         this.buildings = buildings;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Order> getListOfOrders() {
         return listOfOrders;
     }
 
+    /**
+     *
+     * @param listOfOrders
+     */
     public void setListOfOrders(ArrayList<Order> listOfOrders) {
         this.listOfOrders = listOfOrders;
     }

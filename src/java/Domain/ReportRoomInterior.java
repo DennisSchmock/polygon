@@ -31,6 +31,12 @@ public class ReportRoomInterior implements Serializable{
         this.repRoomId = repRoomId;
     }
     
+    /**
+     *
+     * @param repRoomIntName
+     * @param remark
+     * @param repRoomId
+     */
     public ReportRoomInterior(String repRoomIntName, String remark, int repRoomId) {
         this.repRoomIntName = repRoomIntName;
         this.remark = remark;
@@ -47,23 +53,42 @@ public class ReportRoomInterior implements Serializable{
         this.remark = remark;
     }
 
+    /**
+     *
+     * @param repRoomIntId
+     */
     public void setRepRoomIntId(int repRoomIntId) {
         this.repRoomIntId = repRoomIntId;
     }
 
-    
+    /**
+     *
+     * @return
+     */
     public int getRepRoomIntId() {
         return repRoomIntId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRepRoomIntName() {
         return repRoomIntName;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRemark() {
         return remark;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRepRoomId() {
         return repRoomId;
     }

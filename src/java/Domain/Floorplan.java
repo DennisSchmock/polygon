@@ -13,6 +13,12 @@ import java.io.Serializable;
  */
 public class Floorplan extends BuildingFile implements Serializable {
     
+    /**
+     *
+     * @param size
+     * @param filename
+     * @param documentname
+     */
     public Floorplan(int size, String filename, String documentname) {
         super(size, filename, documentname);
     }

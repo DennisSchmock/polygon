@@ -43,7 +43,15 @@ public class Order{
         this.buildingName = buildingName;
     }
 
-    
+    /**
+     *
+     * @param orderDate
+     * @param serviceDescription
+     * @param problemStatement
+     * @param orderStatus
+     * @param customerId
+     * @param buildingId
+     */
     public Order(Date orderDate,String serviceDescription, String problemStatement,int orderStatus, int customerId, int buildingId) {
         this.orderDate = orderDate;
         this.serviceDescription = serviceDescription;
@@ -70,75 +78,147 @@ public class Order{
    }};
     
     //Setters and getters below this point
+
+    /**
+     *
+     * @return
+     */
      public String getBuildingName() {
         return buildingName;
     }
 
+    /**
+     *
+     * @param buildingName
+     */
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
     }
 
-    
+    /**
+     *
+     * @return
+     */
     public String getStatDesc() {
         return statDesc;
     }
 
+    /**
+     *
+     * @param statDesc
+     */
     public void setStatDesc(String statDesc) {
         this.statDesc = statDesc;
     }
     
+    /**
+     *
+     * @return
+     */
     public Date getOrderDate() {
         return orderDate;
     }
 
+    /**
+     *
+     * @param orderDate
+     */
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOrderNumber() {
         return orderNumber;
     }
 
+    /**
+     *
+     * @param orderNumber
+     */
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getServiceDescription() {
         return serviceDescription;
     }
 
+    /**
+     *
+     * @param serviceDescription
+     */
     public void setServiceDescription(String serviceDescription) {
         this.serviceDescription = serviceDescription;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getProblemStatement() {
         return problemStatement;
     }
 
+    /**
+     *
+     * @param problemStatement
+     */
     public void setProblemStatement(String problemStatement) {
         this.problemStatement = problemStatement;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOrderStatus() {
         return orderStatus;
     }
 
+    /**
+     *
+     * @param orderStatus
+     */
     public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCustomerId() {
         return customerId;
     }
 
+    /**
+     *
+     * @param customerId
+     */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBuildingId() {
         return buildingId;
     }
 
+    /**
+     *
+     * @param buildingId
+     */
     public void setBuildingId(int buildingId) {
         this.buildingId = buildingId;
     }

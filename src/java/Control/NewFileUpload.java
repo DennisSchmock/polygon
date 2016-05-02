@@ -323,6 +323,7 @@ public class NewFileUpload {
      * @param df
      * @param frontControl
      * @return
+     * @throws Domain.Exceptions.PolygonException
      */
     public HttpServletRequest addFiles(HttpServletRequest request, Collection<Part> parts, DomainFacade df, FrontControl frontControl) throws PolygonException {
         ArrayList<BuildingFiles> files;
@@ -362,7 +363,9 @@ public class NewFileUpload {
      * @param request
      * @param parts
      * @param df
+     * @param frontControl
      * @return
+     * @throws Domain.Exceptions.PolygonException
      */
     public HttpServletRequest addFloorplans(HttpServletRequest request, Collection<Part> parts, DomainFacade df, FrontControl frontControl) throws PolygonException {
         ArrayList<BuildingFloor> floors;

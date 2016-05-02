@@ -29,27 +29,52 @@ public class ReportRoomRecommendation implements Serializable{
         this.repRoomId = repRoomId;
     }
 
+    /**
+     *
+     * @param recommendation
+     * @param repRoomId
+     */
     public ReportRoomRecommendation(String recommendation, int repRoomId) {
         this.recommendation = recommendation;
         this.repRoomId = repRoomId;
     }
 
+    /**
+     *
+     * @param recommendation
+     */
     public ReportRoomRecommendation(String recommendation) {
         this.recommendation = recommendation;
     }
 
+    /**
+     *
+     * @param repRoomRecId
+     */
     public void setRepRoomRecId(int repRoomRecId) {
         this.repRoomRecId = repRoomRecId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRepRoomRecId() {
         return repRoomRecId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRecommendation() {
         return recommendation;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRepRoomId() {
         return repRoomId;
     }

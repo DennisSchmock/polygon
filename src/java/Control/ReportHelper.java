@@ -40,6 +40,10 @@ public class ReportHelper {
     private final PrinterPDF printer = new PrinterPDF();
     NewFileUpload nfu;
     
+    /**
+     *
+     * @param nfu
+     */
     public ReportHelper(NewFileUpload nfu){
         this.nfu = nfu;
     }
@@ -160,6 +164,8 @@ public class ReportHelper {
      *
      * @param request Holds the fields, the user have inserted.
      * @param sessionObj Holds obejcts like report, and building for report
+     * @param parts
+     * @param frontControl
      */
     public void saveReportExterior(HttpServletRequest request, HttpSession sessionObj, Collection<Part> parts, FrontControl frontControl) {
         String remarksOnRoof = request.getParameter("remarksOnRoof");
@@ -338,6 +344,7 @@ public class ReportHelper {
      * to create
      * @param df Connection to the domain.
      * @param response Responce object to place the file in.
+     * @param frontControl
      * @throws Domain.Exceptions.PolygonException Throws an Polygon if there is any problem
      * with creating an PDF File
      */

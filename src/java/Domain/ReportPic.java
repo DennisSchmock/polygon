@@ -16,31 +16,60 @@ public class ReportPic implements Serializable {
     private String filename;
     private String description;
 
+    /**
+     *
+     * @param filename
+     * @param description
+     */
     public ReportPic(String filename, String description) {
         this.filename = filename;
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFilename() {
         return filename;
     }
 
+    /**
+     *
+     * @param filename
+     */
     public void setFilename(String filename) {
         this.filename = filename;
     }

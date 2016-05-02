@@ -90,51 +90,99 @@ public class ReportRoom implements Serializable{
     
     
     //Getters and setters below this point
+
+    /**
+     *
+     * @param repRoomId
+     */
     public void setRepRoomId(int repRoomId) {
         this.repRoomId = repRoomId;
     }
 
-    
+    /**
+     *
+     * @return
+     */
     public int getRepRoomId() {
         return repRoomId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRoomName() {
         return roomName;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getReportId() {
         return reportId;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportRoomDamage> getListOfDamages() {
         return listOfDamages;
     }
 
+    /**
+     *
+     * @param listOfDamages
+     */
     public void setListOfDamages(ArrayList<ReportRoomDamage> listOfDamages) {
         this.listOfDamages = listOfDamages;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportRoomInterior> getListOfInt() {
         return listOfInt;
     }
     
-        public void setListOfInt(ArrayList<ReportRoomInterior> listOfInt) {
+    /**
+     *
+     * @param listOfInt
+     */
+    public void setListOfInt(ArrayList<ReportRoomInterior> listOfInt) {
         this.listOfInt = listOfInt;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportRoomRecommendation> getListOfRec() {
         return listOfRec;
     }
 
+    /**
+     *
+     * @param listOfRec
+     */
     public void setListOfRec(ArrayList<ReportRoomRecommendation> listOfRec) {
         this.listOfRec = listOfRec;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBuildingRoomId() {
         return buildingRoomId;
     }
 
+    /**
+     *
+     * @param buildingRoomId
+     */
     public void setBuildingRoomId(int buildingRoomId) {
         this.buildingRoomId = buildingRoomId;
     }
@@ -153,20 +201,34 @@ public class ReportRoom implements Serializable{
         this.moist = moist;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getRoomFloor() {
         return roomFloor;
     }
 
+    /**
+     *
+     * @param roomFloor
+     */
     public void setRoomFloor(String roomFloor) {
         this.roomFloor = roomFloor;
     }
 
-
-
+    /**
+     *
+     * @return
+     */
     public ArrayList<ReportPic> getRrPic() {
         return rrPic;
     }
 
+    /**
+     *
+     * @param rrPic
+     */
     public void setRrPic(ArrayList<ReportPic> rrPic) {
         this.rrPic = rrPic;
     }

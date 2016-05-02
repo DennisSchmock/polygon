@@ -21,6 +21,14 @@ public class ReportFloor implements Serializable{
     private int squareMeters;
     private ArrayList<ReportRoom> reportRooms = new ArrayList<>();
     
+    /**
+     *
+     * @param floorId
+     * @param floorNumber
+     * @param m2
+     * @param reportId
+     * @param buildingId
+     */
     public ReportFloor (int floorId,int floorNumber,int m2, int reportId,int buildingId){
         this.floorId = floorId;
         this.floorNumber = floorNumber;
