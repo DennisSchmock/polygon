@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 /**
  * This Class is responsable for one thing only. Printing an Report in PDF file.
- *
+ * Note from Dennis. TODO: Most of the code in this class should have been in the Domain Layer
  * @author Daniel
  */
 public class PrinterPDF {

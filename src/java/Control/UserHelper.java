@@ -76,7 +76,7 @@ class UserHelper {
     }
 
     /**
-     * Method for logging an user in. 
+     * Method for logging a Polygon Employee user in. 
      *
      * @param df
      * @param request

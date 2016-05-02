@@ -53,12 +53,10 @@ public class BuildingHelper {
         User userLoggedIn = (User) session.getAttribute("user");
         String buildingPic = nfu.savePictureBuilding(frontControl.getServletContext().getRealPath(""), parts);
         int custId = userLoggedIn.getCustomerid();
-        System.out.println("CustId");
-        System.out.println(custId);
+       
         if (custId == 0 && request.getParameter("customerId") != null) {
             custId = Integer.parseInt(request.getParameter("customerId"));
         }
-        System.out.println(custId);
         Building b = df.createnewBuilding(buildingName, StreetAddress, StreetNumber, zipcode, buildingsize, buildingYear, useOfBuilding, custId);
         b.setCustId(custId);
         b.setBuilding_pic(buildingPic);
@@ -133,8 +131,7 @@ public class BuildingHelper {
         }
         List<Building> listofbuildings = (List<Building>) sessionObj.getAttribute("listOfBuildings");
         int buildingID = Integer.parseInt(request.getParameter("buildingidEdit"));
-        System.out.println("Building Id in findBuilding");
-        System.out.println(buildingID);
+        
         for (Building building : listofbuildings) {
             if (building.getBdgId() == buildingID) {
                 building.setBuilding_pic(df.getLatestBuildingImage(building.getBdgId())); //Call db to see if there is an Img for the building and add the latest to the object
@@ -170,6 +167,13 @@ public class BuildingHelper {
         request.getSession().setAttribute("buildingfloor", buildingfloor);
     }
 
+    /**
+     * The purpose of this method is to load all buildings after a user is logged in.
+     * @param sessionObj
+     * @param df
+     * @param frontControl
+     * @throws PolygonException
+     */
     public void loadBuildingsAfterLogIn(HttpSession sessionObj, DomainFacade df, FrontControl frontControl) throws PolygonException {
         Customer customer = (Customer) sessionObj.getAttribute("customer");
         List<Building> listOfBuildings = df.getListOfBuildings(customer.getCustomerId());
@@ -224,7 +228,6 @@ public class BuildingHelper {
      * that that we have to change based on the input fields
      */
     Building updateBuilding(HttpServletRequest request, DomainFacade df, HttpSession session, Collection<Part> parts, FrontControl frontControl) throws PolygonException {
-        System.out.println(request.getCharacterEncoding());
         Building buildingToBeEdited = (Building) session.getAttribute("buildingToBeEdited"); // Had been edited to "building"?! gave crash
         if (buildingToBeEdited == null) {
             buildingToBeEdited = (Building) session.getAttribute("building");
@@ -302,8 +305,14 @@ public class BuildingHelper {
         request.getSession().setAttribute("customer", customer);
     }
 
-
-    void addRoom(HttpServletRequest request, DomainFacade df, int floorId) throws PolygonException {
+    /**
+     * The purpose of this method, is to add a room to the Building, based on floorid.
+     * @param request
+     * @param df
+     * @param floorId
+     * @throws PolygonException
+     */
+    public void addRoom(HttpServletRequest request, DomainFacade df, int floorId) throws PolygonException {
         Building b = (Building) request.getSession().getAttribute("building");
         String roomName = (String) request.getParameter("roomname");
         if (roomName != null) {

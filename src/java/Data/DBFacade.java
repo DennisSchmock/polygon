@@ -18,7 +18,7 @@ import java.util.List;
  * Contains the connection to the connections to the database Uses all of the
  * mappers to retrieve info from the database or uses the mappers to save
  * information to the database. Does not handle SQL statements directly but
- * controls which mapper to use.
+ * controls which mappers to use.
  *
  * @author dennisschmock
  */
@@ -47,6 +47,10 @@ public class DBFacade {
 
     }
 
+    /**
+     * Implements a singleton pattern. 
+     * @return
+     */
     public static DBFacade getInstance() {
         if (instance == null) {
             instance = new DBFacade();
@@ -54,26 +58,56 @@ public class DBFacade {
         return instance;
     }
 
+    /**
+     * Uses customer mapper to retrive and return a customer object
+     * @param customerid
+     * @return
+     */
     public Customer getCustomer(int customerid) {
         return cm.getCustomer(customerid, getCon());
     }
 
+    /**
+     * Uses UserMapper to validate a user. Returns false if user does not exist or 
+     * incorrect password.
+     * @param username
+     * @param pwd
+     * @return true or false
+     */
     public boolean validateUser(String username, String pwd) {
         return um.validateUser(username, pwd, getCon());
     }
 
+    /**
+     * Uses CustomerMapper to add a customer object to the database
+     * @param cus
+     */
     public void addCustomer(Customer cus) {
         cm.addCustomerToDB(cus, getCon());
     }
 
+    /**
+     * Uses customer mapper to save a contact to the database.
+     * @param c
+     */
     public void saveContact(Contact c) {
         cm.saveContact(c, getCon());
     }
 
+    /**
+     * uses customer mapper to retrive a contact object from database
+     * @param custID
+     * @return
+     */
     public Contact getContact(int custID) {
         return cm.getContact(custID, getCon());
     }
 
+    /**
+     * uses the CustomerMapper to rerive a list of contacts based on customer id.
+     * @param id
+     * @return
+     */
     public ArrayList<Contact> getListOfContacts(int id) {
         return cm.getListOfContacts(id, getCon());
     }
@@ -86,12 +120,17 @@ public class DBFacade {
      */
     public Building saveNewBuilding(Building b) throws PolygonException {
         b = bm.saveNewBuildingDB(b, getCon());
-        System.out.println("Saved building");
         return b;
     }
 
+    /**
+     * Saves a Building picture reference to database. 
+     * @param buildId
+     * @param filename
+     * @return
+     * @throws PolygonException
+     */
     public String saveBuildingPic(int buildId, String filename) throws PolygonException {
-        System.out.println("Saving buildingPic db-facade");
         return bm.saveBuildingPic(buildId, filename, getCon());
 
     }
@@ -121,6 +160,11 @@ public class DBFacade {
         nrm.reportToDataBase(R, getCon());
     }
 
+    /**
+     * Loads a user object based on username.
+     * @param username
+     * @return
+     */
     public User loadUser(String username) {
         return um.getUser(username, getCon());
     }
@@ -148,13 +192,7 @@ public class DBFacade {
         return DBconnector.getInstance().getConnection();
     }
 
-//    /**
-//     * @param con the con to set
-//     */
-//    public void setCon(Connection con) {
-//        this.con = con;
-//        System.out.println(con);
-//    }
+
     /**
      * Creates the tuble in the database for a Report.
      *
@@ -164,6 +202,12 @@ public class DBFacade {
         return nrm.reportToDataBase(report, getCon());
     }
 
+    /**
+     * The purpse of this method is to retrieve a list of reports for a specific building
+     * @param buildingId 
+     * @return An arraylist of Reports
+     * @throws PolygonException
+     */
     public ArrayList<Report> getListOfReports(int buildingId) throws PolygonException {
         return nrm.getAllReportsBuilding(buildingId, getCon());
     }
@@ -173,6 +217,7 @@ public class DBFacade {
      *
      * @param reportId
      * @return a report object.
+     * @throws Domain.Exceptions.PolygonException
      */
     public Report getSingleReport(int reportId) throws PolygonException {
         return nrm.getSingleReport(reportId, getCon());
@@ -188,6 +233,11 @@ public class DBFacade {
 
     }
 
+    /**
+     * The purpose of this method is to retrive a Polygon Employee as a user Object.
+     * @param userName
+     * @return User object
+     */
     public User getPolygonUser(String userName) {
 
         return um.getPolygonUser(userName, getCon());
@@ -218,6 +268,12 @@ public class DBFacade {
         return b;
     }
 
+    /**
+     * Method for retrieving the latest building image.
+     * @param buildingId
+     * @return filename and path.
+     * @throws PolygonException
+     */
     public String getLatestBuildingImage(int buildingId) throws PolygonException {
         return bm.getLatestBuildingImage(buildingId, getCon());
 

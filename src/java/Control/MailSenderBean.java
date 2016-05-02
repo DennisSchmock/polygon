@@ -12,12 +12,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- *
+ * The purpose of this class, is to send mail, when a order request is made by
+ * a customer.
+ * 
+ * (Note from Dennis. TODO: Move class to domain layer!) 
  * @author Cherry
  */
 @Stateless
 public class MailSenderBean {
 
+    /**
+     * The purpose of this method, is to send a mail.
+     * @param fromEmail The no-reply mail that is the official sender
+     * @param username username to the mailhost
+     * @param password password for the mailhost
+     * @param toEmail the inbox at polygon. 
+     * @param subject 
+     * @param message
+     */
     public void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message) {
         
         Properties props = System.getProperties();

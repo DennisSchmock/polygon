@@ -32,7 +32,8 @@ public class BuildingMapper{
     private ReportMapper rm = new ReportMapper();
 
     /**
-     * saves the building object in the database
+     * The purpose of this method, is to take a building object, and save it to the 
+     * database.
      *
      * @param b building to be added to database
      * @param con connection to database
@@ -75,8 +76,7 @@ public class BuildingMapper{
      */
     public String saveBuildingPic(int buildId, String filename, Connection con) throws PolygonException {
         int imgId = 0;
-        System.out.println("build id");
-        System.out.println(buildId);
+      
 
         try {
             String sqlString = "insert into building_pic(filename,building_id) values(?,?)";
@@ -95,7 +95,6 @@ public class BuildingMapper{
             throw new PolygonException("Database error");
         }
         String filePath = filename;
-        System.out.println(filePath);
         return filePath;
     }
 
@@ -187,7 +186,6 @@ public class BuildingMapper{
             statement.setString(7, updatedBuildObj.getUseOfBuilding());
             statement.setInt(8, updatedBuildObj.getCustId());
             statement.setInt(9, updatedBuildObj.getBdgId());
-            System.out.println(statement.toString());
             statement.execute();
 
         } catch (SQLException ex) {
@@ -196,40 +194,8 @@ public class BuildingMapper{
         }
     }
 
-    /**
-     * Loads info from tuble with the buildingID in the table building. Creates
-     * a building object based on that, an returns that.
-     *
-     * @param buildingID BuildingID for the requested tuble
-     * @param con Connection to the Database
-     * @return An object of the building
-     */
-//    public Building getBuildingBM(int buildingID, Connection con) throws PolygonException {
-//
-//        String sqlString = "SELECT * FROM building where customer_id=?";
-//        Building temp = null;
-//        try {
-//            PreparedStatement statement = con.prepareStatement(sqlString);
-//            ResultSet rs = statement.executeQuery();
-//
-//            while (rs.next()) {
-//                temp = new Building(
-//                        rs.getString("building_name"),
-//                        rs.getString("building_adress"),
-//                        rs.getString("building_housenumber"),
-//                        rs.getInt("building_zip"),
-//                        rs.getInt("building_buildyear"),
-//                        rs.getDouble("building_m2"),
-//                        rs.getString("building_use"));
-//                temp.setCustId(rs.getInt("customer_id"));
-//                temp.setBdgId(rs.getInt("idbuilding"));
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("SQL ERROR IN UPDATEBUILDINGBM " + ex);
-//            throw new PolygonException("Database error");
-//        }
-//        return temp;
-//    }
+    
+
 
     /**
      * The purpose of this method is to get a building from a specific building id
@@ -377,7 +343,6 @@ public class BuildingMapper{
                 );
                 temp.setFileID(rs.getInt("floorplan_id"));
                 floorplans.add(temp);
-                System.out.println(temp.getFilename());
             }
         } catch (SQLException ex) {
             System.out.println("SQL Exception in BUILDINGMAPPER/getfloorplan list: " + ex);
@@ -395,13 +360,10 @@ public class BuildingMapper{
      */
     public String getLatestBuildingImage(int buildingId, Connection con) throws PolygonException {
         String filename = null;
-        System.out.println("getLatestBuildingImage");
         String SQLString = "select * from building_pic where building_id=?";
         try (PreparedStatement statement = con.prepareStatement(SQLString)) {
-            System.out.println("statement prepared");
             statement.setInt(1, buildingId);
             ResultSet rs = statement.executeQuery();
-            System.out.println("query executed");
 
             while (rs.next()){
             filename = rs.getString("filename");
@@ -707,9 +669,7 @@ public class BuildingMapper{
             String description = file.getDescription();
             ArrayList<BuildingFile> individualFiles=file.getListOfFileInfo();
             for (BuildingFile individualFile : individualFiles) {
-                
-                System.out.println("Trying to save buildingfile:");
-                System.out.println(individualFile.getDocumentname());
+            
                 saveBuildingDoc(buildingId, description,individualFile,con);
                 
             }

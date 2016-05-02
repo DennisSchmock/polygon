@@ -14,11 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * The purpose of this class, is to create a connection to the database
+ * This class is written with inspiration from the DatamapperAllTheWay example
+ * 
+ * 
  * @author Dennis Schmock
  */
 public class DBconnector {
-
+    
+    private static final String driverMySql = "";
     private static final String driver = "org.mariadb.jdbc.Driver";
     private static final String url = "jdbc:mysql://it-vejlederen.dk:3306/Polygon";
     private static final String dbuser = "polygonuser";
@@ -74,14 +78,21 @@ public class DBconnector {
                 rs.close();
             }
         } catch (Exception e) {
-            System.out.println("Error in DB.cleanUp() closing resultSet" + e);
+            System.out.println("Error in DBconnector.cleanUp() closing resultSet" + e);
         }
         try {
             if (stmt != null) {
                 stmt.close();
             }
         } catch (Exception e) {
-            System.out.println("Error in DB.cleanUp() closing preparedStatement" + e);
+            System.out.println("Error in DBconnector.cleanUp() closing preparedStatement" + e);
+        }
+        try {
+            if (con !=null){
+                con.close();
+            }
+        } catch (Exception e){
+            System.out.println("Error ind DB.");
         }
        
     }

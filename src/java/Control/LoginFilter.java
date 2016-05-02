@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
+ * The purpose of this method is to create a loginfilter that will deny users certain 
+ * url-patterns based on their role. Not implemented.
  * @author Dennis Schmock
  */
 @WebFilter(urlPatterns = {"/frontpagde", })

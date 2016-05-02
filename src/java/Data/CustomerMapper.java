@@ -18,14 +18,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Dennis Schmock
+ * @author Dennis Schmock and Cherry Rose
  */
 public class CustomerMapper {
     
     private BuildingMapper bm = new BuildingMapper();
 
     /**
-     * This method takes the 
+     * This method takes the customer object and saves it to the database.
      * @param cus the customer object
      * @param con the connection to the database
      */
@@ -58,7 +58,8 @@ public class CustomerMapper {
     
 
     /**
-     *
+     * The purpose of this method is to create a contact for a customer and add
+     * it to the database. Not implemented fully in the project. 
      * @param c new Contact
      * @param con
      * save a new contact to DB
@@ -83,7 +84,8 @@ public class CustomerMapper {
     }
     
     /**
-     *
+     * The purpose of this method is to retrieve a list of contacts for a customer
+     * based on the customer id. (Should be a customer reference!).
      * @param id   the customer ID
      * @param con  connection to the DB
      * @return  a list of contacts of a certain customer
@@ -111,10 +113,13 @@ public class CustomerMapper {
         }
     }
     
-    public void editCustomer() {
-
-    }
-
+    /**
+     * The purpose of this method is to map a customer object, referencing 
+     * all building objects inside the customer object. 
+     * @param id the 
+     * @param con
+     * @return
+     */
     public Customer getCustomer(int id, Connection con){
         Customer c=null;
         String SQLString = "select * from customer where customer_id=?";
@@ -133,6 +138,7 @@ public class CustomerMapper {
                 rs.getInt("zipcode"),
                 rs.getString("phone"));
                 c.setBuildings(bm.getListOfBuildingsBM(id, con));
+                
                 return c;
             }
             
@@ -169,6 +175,12 @@ public class CustomerMapper {
         return c;
     }
     
+    /**
+     * The purpose of this method is, to retrive contact based on customer id.
+     * @param custID
+     * @param con
+     * @return
+     */
     public Contact getContact(int custID, Connection con) {
         Contact c=null;
         String SQLString = "select * from contact where customerID=?";
@@ -193,7 +205,7 @@ public class CustomerMapper {
         return c;}
 
     /**
-     * Retrives the list of all the Customers in the database Polygon
+     * Retrives the list of all the Customers in the database Polygon, without loading referenced objects
      * @param con Connection to database
      * @return Returs an list of All customers in the database
      */

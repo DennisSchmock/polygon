@@ -28,7 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 /**
- *
+ * The purpose of this class is to upload files and images to the folder on the server
+ * (Note from Dennis: Most of the methods in this class should be moved to the Domain Layer)
  * @author Daniel Grønbjerg
  */
 public class NewFileUpload {
@@ -109,27 +110,39 @@ public class NewFileUpload {
                 for (Part filePart : fileParts) {
                     Floorplan f = saveFloorplan(parentFolder, filePart);
                     floorplans.add(f);
-                    System.out.println(f.getDocumentname());
-                    System.out.println(f.getSize());
+                    
                 }
             }
         }
         return floorplans;
     }
 
+    /**
+     * The purpose of this method, is to upload files to the exterior, and return the
+     * filename.
+     * @param parentFolder 
+     * @param parts The filepart that should get uploaded.
+     * @return
+     */
     public String saveExtPicture(String parentFolder, Collection<Part> parts) {
 
-        System.out.println("Inside nfu saveExtPic");
         Part filePart = getSinglePart(parts);
         if (filePart != null) {
             String filename = getNewFileName(filePart);
             uploadFile(filePart, parentFolder, "ReportExtPic", filename);
-            System.out.println(filename);
             return filename; //Upload the file in buildingPicFolder
         }
         return null;
     }
 
+    /**
+     * The purpose of this method is to add pictures to the Report Room. It will return
+     * an ArrayList with ReportPic objects
+     * @param parentFolder folder to upload
+     * @param description a short description of the picture
+     * @param parts the picture to upload.
+     * @return
+     */
     public ArrayList<ReportPic> addReportRoomPics(String parentFolder, String description, Collection<Part> parts) {
         System.out.println("AddRepRoomPics");
         ArrayList<ReportPic> rrPic = null;
@@ -151,6 +164,13 @@ public class NewFileUpload {
         return rrPic;
     }
 
+    /**
+     * The purpose of this method is, to add a picture to a ReportRoom. Returns a 
+     * string with the filename.
+     * @param parentFolder The folder to upload in.
+     * @param part the file that should get uploaded
+     * @return a filename
+     */
     public String saveRoomPicture(String parentFolder, Part part) {
 
         System.out.println("Inside nfu saveRoomPic");
@@ -193,14 +213,19 @@ public class NewFileUpload {
     private SecureRandom random = new SecureRandom();
 
     /**
-     * Creates a random String to use for filenaming to prevent "overlap"
+     * Creates a random String to use for filenaming to prevent duplicate
      *
-     * @return
+     * @return 
      */
     public String nextFileId() {
         return new BigInteger(130, random).toString(32);
     }
 
+    /**
+     * the purpose of this method is, to extract a single filepart from the Collection<Part>
+     * @param parts
+     * @return
+     */
     public Part getSinglePart(Collection<Part> parts) {
         for (Part part : parts) {
             if (part.getName().equals("uploadFile")) {
@@ -210,6 +235,12 @@ public class NewFileUpload {
         return null;
     }
 
+    /**
+     * The purpose of this method is to extract multiple filesparts from a Collection<Part>
+     * and return them as a List<Part>.
+     * @param parts
+     * @return List<Part>
+     */
     public List<Part> getAllParts(Collection<Part> parts) {
         List<Part> fileParts = new ArrayList();
         //Checks if the form might(!?) contain a file for upload
@@ -222,6 +253,11 @@ public class NewFileUpload {
         return fileParts;
     }
 
+    /**
+     * The purpose of this method, is to create a random filename for a file, and return it as a string.
+     * @param filePart The file to be named
+     * @return the filename
+     */
     public String getNewFileName(Part filePart) {
         String[] fileDotSplit = filePart.getSubmittedFileName().split("\\."); //Split by dot
         String extension = "";
@@ -234,6 +270,12 @@ public class NewFileUpload {
         return filename;
     }
 
+    /**
+     * The purpose of this method is to add documents to a building. 
+     * @param parentFolder The folder to upload to
+     * @param filePart The file to upload
+     * @return a BuildingFile object
+     */
     private BuildingFile saveBuildingDoc(String parentFolder, Part filePart) {
         System.out.println("Inside nfu saveBuildingDoc");
         if (filePart != null) {
@@ -250,6 +292,12 @@ public class NewFileUpload {
         return null;
     }
 
+    /**
+     * The purpose of this method is, to upload floorplans to a building.
+     * @param parentFolder the folder to upload to
+     * @param filePart the file to upload.
+     * @return a Floorplan object.
+     */
     private Floorplan saveFloorplan(String parentFolder, Part filePart) {
         System.out.println("Inside nfu saveFloorplan");
         if (filePart != null) {

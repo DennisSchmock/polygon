@@ -34,7 +34,7 @@ import javax.servlet.http.Part;
 
 /**
  *
- * @author danie
+ * @author Dennis, Daniel, Daniel, Cherry
  */
 public class ReportHelper {
     private final PrinterPDF printer = new PrinterPDF();
@@ -307,10 +307,7 @@ public class ReportHelper {
         if (description == null) {
             description = "";
         }
-        System.out.println("Size of parts in reportroom");
-        if (parts != null) {
-            System.out.println(parts.size());
-        }
+        
         rrPic = nfu.addReportRoomPics(frontControl.getServletContext().getRealPath(""), description, parts);
         // After all of the elemets has been added to the report_Room
         // The report_Room, should be saved in the Report att.
@@ -318,7 +315,6 @@ public class ReportHelper {
         ReportRoom reportRoom = (ReportRoom) sessionObj.getAttribute("reportRoomToBeCreated");
         Report report = (Report) sessionObj.getAttribute("reportToBeCreated");
         reportRoom.setRrPic(rrPic);
-        System.out.println(rrPic.size());
         if (report.getListOfRepRoom() == null) {
             // means that the report does not contain any rooms yet
             ArrayList<ReportRoom> roomList = new ArrayList();
@@ -332,7 +328,6 @@ public class ReportHelper {
             report.setListOfRepRoom(roomList);
             sessionObj.setAttribute("reportToBeCreated", report);
         }
-        System.out.println(report.toString()); // for testing
     }
 
     /**
@@ -346,7 +341,7 @@ public class ReportHelper {
      * @throws Domain.Exceptions.PolygonException Throws an Polygon if there is any problem
      * with creating an PDF File
      */
-    void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response, FrontControl frontControl) throws PolygonException {
+    public void printReport(HttpSession sessionObj, DomainFacade df, HttpServletResponse response, FrontControl frontControl) throws PolygonException {
         Report report = (Report) sessionObj.getAttribute("report");
         Building building = df.getBuilding(report.getBuildingId());
         String realPath = frontControl.getServletContext().getRealPath("");
