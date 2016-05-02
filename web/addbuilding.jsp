@@ -13,7 +13,10 @@
 <%@include file="Style/Header.jsp" %>
 
 <main>
-    <h1>Here you can add a building</h1>
+    <div class="w3-row-padding">
+    <div class="w3-container w3-black">
+    <h3>Add building</h3>
+    </div><br>
 
     <form name="Building Form" action="frontpage" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="page" value="newbuilding" />
@@ -52,7 +55,7 @@
         <br>
         <span  class="form-field-no-caption"><input type="submit" value="Save Building" name="submitbuilding"  /></span>
     </form>
-
+</div>
 </main>
 
 

@@ -13,20 +13,24 @@
 <%@include file="Style/Header.jsp" %>
 
 <main>
-    
-    <h1>Buildings associated with ${customer.companyName}</h1>
-    <ul class="w3-ul w3-card-4">
-                
-                <c:forEach items="${sessionScope.buildings}" var="building">
+    <div class="w3-row-padding">
+    <div class="w3-container w3-black">
+    <h3>Buildings associated with ${customer.companyName}</h3>
+    </div>
+    <ul class="w3-ul w3-card-4 w3-hoverable">
+
+        <c:forEach items="${sessionScope.buildings}" var="building">
 
 
-                    <li><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}"><b>   Building: </b>${building.buildingName} <b>   Address:</b> ${building.streetAddress} ${building.streetNumber} <b>   State:</b>${building.buildingState} </a> 
-                    </li>
+            <li> <div class="w3-row-padding"><a href="viewreport1?action=viewbuildingadmin&buildingid=${building.bdgId}"><div class="w3-quarter"><b>   Building: </b>${building.buildingName}</div><div class="w3-quarter"> <b>   Address:</b> ${building.streetAddress} ${building.streetNumber}</div><div class="w3-quarter"> <b>   State:</b>${building.buildingState}</div> </a> 
+                </div>
+            </li>
+        </c:forEach>
 
-                </c:forEach>
-            </ul>
-    
-    
+
+    </ul>
+
+</div>
 </main>
 
 

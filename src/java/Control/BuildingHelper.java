@@ -11,7 +11,6 @@ import Domain.BuildingRoom;
 import Domain.Customer;
 import Domain.DomainFacade;
 import Domain.Exceptions.PolygonException;
-import Domain.Floorplan;
 import Domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,9 +30,9 @@ import javax.servlet.http.Part;
  */
 public class BuildingHelper {
     private NewFileUpload nfu;
-    private CreateUserHelper cuh;
+    private UserHelper cuh;
     
-    public BuildingHelper(NewFileUpload nfu, CreateUserHelper cuh){
+    public BuildingHelper(NewFileUpload nfu, UserHelper cuh){
         this.nfu=nfu;
         this.cuh=cuh;
     }

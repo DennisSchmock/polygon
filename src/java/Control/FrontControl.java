@@ -7,8 +7,6 @@ package Control;
 
 import Domain.DomainFacade;
 import Domain.Building;
-import Domain.BuildingFile;
-import Domain.BuildingFiles;
 import Domain.BuildingFloor;
 import Domain.BuildingRoom;
 import Domain.Customer;
@@ -17,6 +15,7 @@ import Domain.Report;
 import Domain.Exceptions.PolygonException;
 import Domain.Floorplan;
 import Domain.ReportRoom;
+import Domain.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +47,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @MultipartConfig
 public class FrontControl extends HttpServlet {
 
-    private final CreateUserHelper cuh = new CreateUserHelper();
+    private final UserHelper cuh = new UserHelper();
     private final NewFileUpload nfu = new NewFileUpload();
     private final BuildingHelper bh = new BuildingHelper(nfu, cuh);
     private final ReportHelper rh = new ReportHelper(nfu);
@@ -175,10 +174,14 @@ public class FrontControl extends HttpServlet {
             }
 
             //Viewing the list of all the 
-            if (page.equalsIgnoreCase("viewlistofbuildings")) {
+            if (page.equalsIgnoreCase("viewmybuildings")) {
                 bh.findListOfBuilding(request, df, sessionObj);
-                url = "/viewlistofbuildings.jsp";
+                User tempUser = (User)request.getSession().getAttribute("user");
+                List<Building> buildings = df.getListOfBuildings(tempUser.getCustomerid());
+                url = "/viewcustomer.jsp";
+                sessionObj.setAttribute("buildings", buildings);
             }
+            
 
             //Edit a building
             if (page.equalsIgnoreCase("editBuilding")) {
@@ -201,6 +204,7 @@ public class FrontControl extends HttpServlet {
                 response.sendRedirect("viewcustomers.jsp");
                 return;
             }
+            
 
             if (page.equalsIgnoreCase("viewcustomer")) {
                 int custId = Integer.parseInt(request.getParameter("customerid"));

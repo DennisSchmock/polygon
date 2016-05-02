@@ -80,11 +80,6 @@
     <br>
     <br>
     
-    <h1>Overview for report</h1>
-    
-    
-    ${sessionScope.reportToBeCreated}
-    
     
     
     

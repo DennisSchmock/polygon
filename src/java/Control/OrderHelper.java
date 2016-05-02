@@ -25,13 +25,13 @@ import javax.servlet.http.HttpSession;
 public class OrderHelper {
     FrontControl fc;
     BuildingHelper bh;
-    CreateUserHelper cuh;
+    UserHelper cuh;
     
     
 
     @EJB
     private MailSenderBean mailSender;
-    public OrderHelper(FrontControl fc, BuildingHelper bh, CreateUserHelper cuh){
+    public OrderHelper(FrontControl fc, BuildingHelper bh, UserHelper cuh){
         this.bh=bh;
         this.cuh = cuh;
         this.fc=fc;

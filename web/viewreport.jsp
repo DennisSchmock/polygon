@@ -13,7 +13,6 @@
 <%@include file="Style/Header.jsp" %>
 <nav class="w3-sidenav w3-light-grey" style="width:150px;float: left">
     <a href="getreport?action=showreport&reportid=${sessionScope.report.reportId}">View main info</a> 
-    <a href="#">Print Report*</a>
 
     <a class="w3-grey" href="#"></a>
 
