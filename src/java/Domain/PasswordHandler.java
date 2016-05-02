@@ -15,13 +15,6 @@ public class PasswordHandler {
 
     StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
-    public static void main(String[] args) {
-        PasswordHandler pwdh = new PasswordHandler();
-        String myPassword = "mypassword";
-        String encPassword = pwdh.encryptPassword(myPassword);
-        System.out.println(myPassword + " Becomes: " + encPassword);
-        System.out.println("Password checks out?: " + pwdh.checkPassword(myPassword, encPassword));
-    }
 
     public String encryptPassword(String pwd) {
         String encryptedPassword = passwordEncryptor.encryptPassword(pwd);

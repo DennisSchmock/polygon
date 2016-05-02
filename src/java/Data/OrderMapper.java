@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- *
+ * The purpose of the class, is to map orders.
  * @author CJS
  */
 public class OrderMapper {

@@ -57,14 +57,12 @@ public class Report implements Serializable{
 
     public Report() {
     }
-
     
-    
-
-    public ReportRoom getReportRoom(int id){
-        return this.getListOfRepRoom().get(id);
-    }
-    
+    /**
+     * The purpose of this method, is to get a specific report room based on id.
+     * @param reportRoomId
+     * @return
+     */
     public ReportRoom getReportRoomFromReportFloor(int reportRoomId){
         for (ReportFloor reportFloor : getReportFloors()) {
             for (ReportRoom reportRoom : reportFloor.getReportRooms()) {
@@ -77,6 +75,15 @@ public class Report implements Serializable{
         }
         return null;
     }
+
+    
+    
+
+    public ReportRoom getReportRoom(int id){
+        return this.getListOfRepRoom().get(id);
+    }
+    
+   
     public void setReportId(int reportId) {
         this.reportId = reportId;
     }

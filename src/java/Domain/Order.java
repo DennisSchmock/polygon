@@ -52,6 +52,24 @@ public class Order{
         this.customerId = customerId;
         this.buildingId = buildingId;
     }
+    
+     /**
+     * This will sort the status of the orders
+     */
+    
+    public static Comparator<Order> orderStat = new Comparator<Order>() {
+
+	public int compare(Order o1, Order o2) {
+
+	   int stat01 = o1.getOrderStatus();
+	   int stat02 = o2.getOrderStatus();
+
+	   /*For ascending order*/
+	   return stat01-stat02;
+
+   }};
+    
+    //Setters and getters below this point
      public String getBuildingName() {
         return buildingName;
     }
@@ -131,20 +149,6 @@ public class Order{
 //        return compareStat-this.orderStatus;
 //    }
 
-    /**
-     * This will sort the status of the orders
-     */
-    
-    public static Comparator<Order> orderStat = new Comparator<Order>() {
-
-	public int compare(Order o1, Order o2) {
-
-	   int stat01 = o1.getOrderStatus();
-	   int stat02 = o2.getOrderStatus();
-
-	   /*For ascending order*/
-	   return stat01-stat02;
-
-   }};
+   
 
 }

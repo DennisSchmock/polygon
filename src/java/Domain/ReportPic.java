@@ -8,7 +8,7 @@ package Domain;
 import java.io.Serializable;
 
 /**
- *
+ * The purpose of this class is to create a ReportPic object
  * @author danie
  */
 public class ReportPic implements Serializable {

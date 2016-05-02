@@ -48,7 +48,6 @@ public class ReportMapper {
             int reportId = 0;
             if (rs.next()) {   // Changed from !rs.next() as this didn't return the key
                 reportId = rs.getInt(1);
-                System.out.println("Report id = " + reportId);
                 r.setReportId(reportId);
             }
             if(r.getListOfRepRoom() != null){
@@ -60,7 +59,6 @@ public class ReportMapper {
             
             
             con.commit();
-            System.out.println("Report Saved in database Succes - Yeah 8)");
             return reportId;
 
         } catch (Exception e) {
@@ -74,7 +72,7 @@ public class ReportMapper {
             System.out.println(e);
             e.printStackTrace();
             throw new PolygonException("Database error");
-        }
+        } 
         
 
     }
@@ -110,7 +108,6 @@ public class ReportMapper {
             
             r.setReportFloors(getReportFloors(buildingId,reportId,con));
             r.setListOfRepRoom(getReportRooms(reportId, con));
-            System.out.println("AddedRoom!!!");
             r.setListOfRepExt(getReportExterior(reportId, con));
 
             return r;
@@ -254,7 +251,6 @@ public class ReportMapper {
                 statement.setString(1, reportRoom.getRoomName());
                 statement.setInt(2, r.getReportId());
                 statement.setInt(3, reportRoom.getBuildingRoomId());
-                System.out.println( "ReportRoom Building FOREIGN KEY: " + reportRoom.getBuildingRoomId());
                 statement.executeUpdate();
                 ResultSet rs = statement.getGeneratedKeys();
                 int roomId = 0;

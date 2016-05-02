@@ -64,7 +64,6 @@ public class UserMapper {
             stmt.setString(1, userName);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                System.out.println(rs.getString("pwd"));
                 boolean validated = rs.getString("pwd").equals(pwd);
                 return validated;
             }
@@ -124,7 +123,6 @@ public class UserMapper {
             stmt.setString(1, userName);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                System.out.println(rs.getString("pwd"));
                 boolean validated = rs.getString("pwd").equals(pwd);
                 return validated;
             }
@@ -155,7 +153,6 @@ public class UserMapper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String role = rs.getString("role");
-                System.out.println("Role is: " + role);
                 user = new User(userName, pwd, fName, lName, email, phone, companyname,role);
             }
 

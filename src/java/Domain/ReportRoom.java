@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
+ * The purpose of this object, is to create a ReportRoom object.
  * @author CJS
  */
 public class ReportRoom implements Serializable{
@@ -58,7 +58,38 @@ public class ReportRoom implements Serializable{
         this.buildingRoomId = buildingRoomId;
     }
 
+        @Override
+    public String toString() {
+        return "ReportRoom{" + "repRoomId=" + repRoomId + ", roomName=" + roomName + ", reportId=" + reportId + ", roomFloor=" + roomFloor + ", buildingRoomId=" + buildingRoomId + ", moist=" + moist + '}'
+                + roomDamages() + roomInterior() + roomRec();
+    }
+
+    private String roomDamages() {
+        String damageString="\n";
+        for (ReportRoomDamage damage : listOfDamages) {
+            damageString += damage.toString() + "\n";
+        }
+        return damageString;
+    }
+
+    private String roomInterior() {
+        String InteriorString="\n";
+        for (ReportRoomInterior interior : listOfInt) {
+            InteriorString += interior.toString() + "\n";
+        }
+        return InteriorString;
+    }
+
+    private String roomRec() {
+        String RecomendationString="\n";
+        for (ReportRoomRecommendation recommendation : listOfRec) {
+            RecomendationString += recommendation.toString() + "\n";
+        }
+        return RecomendationString;
+    }
     
+    
+    //Getters and setters below this point
     public void setRepRoomId(int repRoomId) {
         this.repRoomId = repRoomId;
     }
@@ -130,35 +161,7 @@ public class ReportRoom implements Serializable{
         this.roomFloor = roomFloor;
     }
 
-    @Override
-    public String toString() {
-        return "ReportRoom{" + "repRoomId=" + repRoomId + ", roomName=" + roomName + ", reportId=" + reportId + ", roomFloor=" + roomFloor + ", buildingRoomId=" + buildingRoomId + ", moist=" + moist + '}'
-                + roomDamages() + roomInterior() + roomRec();
-    }
 
-    private String roomDamages() {
-        String damageString="\n";
-        for (ReportRoomDamage damage : listOfDamages) {
-            damageString += damage.toString() + "\n";
-        }
-        return damageString;
-    }
-
-    private String roomInterior() {
-        String InteriorString="\n";
-        for (ReportRoomInterior interior : listOfInt) {
-            InteriorString += interior.toString() + "\n";
-        }
-        return InteriorString;
-    }
-
-    private String roomRec() {
-        String RecomendationString="\n";
-        for (ReportRoomRecommendation recommendation : listOfRec) {
-            RecomendationString += recommendation.toString() + "\n";
-        }
-        return RecomendationString;
-    }
 
     public ArrayList<ReportPic> getRrPic() {
         return rrPic;

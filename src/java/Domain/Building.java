@@ -29,6 +29,9 @@ public class Building implements Serializable{
     private int custId;
     private int buildingState;
 
+    public Building() {
+    }
+    
     public Building(String buildingName, String streetAddress, String streetNumber, int zipCode, int buildingYear, double buildingSize, String useOfBuilding) {
         this.buildingName = buildingName;
         this.streetAddress = streetAddress;
@@ -68,6 +71,44 @@ public class Building implements Serializable{
         this.buildingState = buildingState;
     }
 
+    /**
+     * This will sort the status of the orders
+     */
+    
+    public static Comparator<Building> bdgState = new Comparator<Building>() {
+
+	public int compare(Building b1, Building b2) {
+
+	   int state01 = b1.getBuildingState();
+	   int state02 = b2.getBuildingState();
+
+	   /*For ascending order*/
+	   return state01-state02;
+
+   }};
+    
+    /**
+     * The purpose of this method, is to return a specific room based on room id.
+     * @param RoomId
+     * @return
+     */
+    public BuildingRoom returnARoom(int RoomId){
+       for (BuildingFloor floor : listOfFloors) {
+           for (BuildingRoom room : floor.getListOfRooms()) {
+               if (RoomId==room.getRoomId()){
+                   return room;
+               }
+           }
+           
+       }
+       return null;
+   }
+    @Override
+    public String toString() {
+        return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
+    }
+    
+    //Getters and setters below this line.
     public int getBuildingState() {
         return buildingState;
     }
@@ -76,11 +117,7 @@ public class Building implements Serializable{
         this.buildingState = buildingState;
     }
     
-    public Building() {
-    }
-
     
-  
     public int getBdgId() {
         return bdgId;
     }
@@ -169,10 +206,7 @@ public class Building implements Serializable{
         this.buildingPic = building_pic;
     }
 
-    @Override
-    public String toString() {
-        return "Building{" + "bdgId=" + bdgId + ", buildingName=" + buildingName + ", streetAddress=" + streetAddress + ", streetNumber=" + streetNumber + ", zipCode=" + zipCode + ", buildingYear=" + buildingYear + ", buildingSize=" + buildingSize + ", useOfBuilding=" + useOfBuilding + ", listOfReports=" + listOfReports + ", custId=" + custId + '}';
-    }
+    
 
     public ArrayList<BuildingFloor> getListOfFloors() {
         return listOfFloors;
@@ -181,18 +215,7 @@ public class Building implements Serializable{
     public void setListOfFloors(ArrayList<BuildingFloor> listOfFloors) {
         this.listOfFloors = listOfFloors;
     }
-    
-   public BuildingRoom returnARoom(int RoomId){
-       for (BuildingFloor floor : listOfFloors) {
-           for (BuildingRoom room : floor.getListOfRooms()) {
-               if (RoomId==room.getRoomId()){
-                   return room;
-               }
-           }
-           
-       }
-       return null;
-   }
+  
 
     public ArrayList<BuildingFiles> getListOfFiles() {
         if (listOfFiles==null) listOfFiles=new ArrayList();
@@ -203,20 +226,6 @@ public class Building implements Serializable{
         this.listOfFiles = listOfFiles;
     }
     
-     /**
-     * This will sort the status of the orders
-     */
-    
-    public static Comparator<Building> bdgState = new Comparator<Building>() {
-
-	public int compare(Building b1, Building b2) {
-
-	   int state01 = b1.getBuildingState();
-	   int state02 = b2.getBuildingState();
-
-	   /*For ascending order*/
-	   return state01-state02;
-
-   }};
+     
     
 }
