@@ -73,7 +73,7 @@ public class FrontControl extends HttpServlet {
         //This part of the code, checks if there might be files for upload, and seperates them, if that is the case
         Collection<Part> parts = null;
         if (ServletFileUpload.isMultipartContent(request)) {
-            parts = request.getParts();            //Extracts the part of the form that is the file
+            parts = request.getParts();            //Extracts the part of the form that has files and parameters
         }
 
         HttpSession sessionObj = request.getSession(); //Get the session
